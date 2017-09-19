@@ -1,0 +1,387 @@
+		<!-- <div  onload="myFunction()" class="patient-details responsive-block" style="background-color: #d4dae8;">
+			<div class="responsive-table">
+				<p>Test Booking</p><hr> -->
+				<form style="background-color:#f5f5f5;" class="form-horizontal container-fluid" [formGroup] = "patientData" (ngSubmit) = "patientDatas()">
+
+						<legend>Patient Registration</legend>
+						
+					<div class="row">
+
+
+
+						<div class="form-group col-sm-4 col-lg-4 col-md-4"
+							[ngClass]="{'has-error': patientData.controls.patient_name.invalid && patientData.controls.patient_name.dirty,
+							'has-success': patientData.controls.patient_name.valid && !patientData.controls.patient_name.dirty }">
+							<label for="name" class="col-lg-4 control-label">Patient Name</label>
+							<div class="col-lg-8">
+								<input type="text" class="form-control input-sm" id="name" formControlName="patient_name" placeholder="Patient Name">
+							</div>
+						</div>
+
+
+
+						<div class="form-group col-sm-4 col-lg-4 col-md-4"
+							[ngClass]="{'has-error': patientData.controls.patient_address.invalid && patientData.controls.patient_address.dirty,
+							'has-success': patientData.controls.patient_address.valid && !patientData.controls.patient_address.dirty }">
+							<label for="address" class="col-lg-4 control-label">Patient Address</label>
+							<div class="col-lg-8">
+								<input type="text" class="form-control input-sm" id="address" formControlName="patient_address" placeholder="Patient Address">
+							</div>
+						</div>
+
+
+						
+						<div class="form-group col-sm-4 col-lg-4 col-md-4"
+							[ngClass]="{'has-error': patientData.controls.identity_card.invalid && patientData.controls.identity_card.dirty,
+							'has-success': patientData.controls.identity_card.valid && !patientData.controls.identity_card.dirty }">
+							<label for="nationality" class="col-lg-4 control-label">Nationality</label>
+							<div class="col-lg-8">
+								<input type="text" class="form-control input-sm" id="nationality" formControlName="identity_card" placeholder="Nationality">
+							</div>
+						</div>
+
+
+						<div class="form-group col-sm-4 col-lg-4 col-md-4"
+							[ngClass]="{'has-error': patientData.controls.gender.invalid && patientData.controls.gender.touched,
+							'has-success': patientData.controls.gender.valid && !patientData.controls.gender.touched }">
+							<label for="age" class="col-lg-4 control-label">Gender</label>
+							<div class="col-lg-8">
+									<select class="form-control" id="age" formControlName="gender" (change)="selectAge($event)">
+									  <option value="" selected="">Select Gender</option>
+									  <option *ngFor = "let genderInDropdown of genderInDropdowns; let i =index;"> {{genderInDropdown}}</option>
+									</select>
+							</div>
+						</div>
+						
+						
+						<div class="form-group col-sm-4 col-lg-4 col-md-4"
+							[ngClass]="{'has-error': patientData.controls.age.invalid && patientData.controls.age.touched,
+							'has-success': patientData.controls.age.valid && !patientData.controls.age.touched }">
+							<label for="age" class="col-lg-4 control-label">Age</label>
+							<div class="col-lg-8">
+									<select class="form-control" id="age" formControlName="age" (change)="selectGender($event)">
+									  <option value='' selected="">Select Age</option>
+									  <option *ngFor = "let age_groupInDropdown of age_groupInDropdowns; let i = index;"> {{age_groupInDropdown}}</option>
+									</select>
+							</div>
+						</div>
+
+
+						
+						<div class="form-group col-sm-4 col-lg-4 col-md-4"
+							[ngClass]="{'has-error': patientData.controls.month.invalid && patientData.controls.month.touched || patientData.controls.day.invalid && patientData.controls.day.touched || patientData.controls.year.invalid && patientData.controls.year.touched,
+							'has-success': patientData.controls.month.valid && !patientData.controls.month.touched || patientData.controls.day.valid && !patientData.controls.day.touched || patientData.controls.year.valid && !patientData.controls.year.touched }">
+							<label for="" class="col-lg-4 control-label">DOB</label>
+							<div class="col-lg-8">
+									<div class="col-lg-5 col-sm-5 col-md-5" style = "padding:0px;">
+										<select class="form-control" formControlName="month">
+											<option value="" selected="">Month</option>
+											<option *ngFor = " let month of months"> {{month}}</option>
+										</select>
+									</div>
+									<div class="col-lg-3 col-sm-3 col-md-3" style = "padding:0px;">
+										<select class="form-control" formControlName="day">
+											<option value="" selected="">Day</option>
+											<option *ngFor = " let day of days"> {{day}}</option>
+										</select>
+									</div>
+									<div class="col-lg-4 col-sm-4 col-md-4" style = "padding:0px;">
+										<select class="form-control" formControlName="year">
+											<option value="" selected="">Year</option>
+											<option *ngFor = " let year of years"> {{year}}</option>
+										</select>
+									</div>
+							</div>
+						</div>
+
+
+						
+						<div class="form-group col-sm-4 col-lg-4 col-md-4"
+							[ngClass]="{'has-error': patientData.controls.marital_status.invalid && patientData.controls.marital_status.touched,
+							'has-success': patientData.controls.marital_status.valid && !patientData.controls.marital_status.touched }">
+							<label for="maritalStatus" class="col-lg-4 control-label">Marital Status</label>
+							<div class="col-lg-8">
+									<select class="form-control" id="maritalStatus"  formControlName="marital_status">
+									  <option value="" selected="">Select One</option>
+									  <option *ngFor = "let mrt of mrts; let i = index" > {{mrt}}</option>
+									</select>
+							</div>
+						</div>
+
+
+						
+						<div class="form-group col-sm-4 col-lg-4 col-md-4"
+							[ngClass]="{'has-error': patientData.controls.phone.invalid && patientData.controls.phone.dirty,
+							'has-success': patientData.controls.phone.valid && !patientData.controls.phone.dirty }">
+							<label for="phone" class="col-lg-4 control-label">Phone</label>
+							<div class="col-lg-8">
+								<input type="text" pattern="[0-9]+" class="form-control input-sm" id="phone" formControlName="phone" placeholder="Phone">
+							</div>
+						</div>
+
+
+						
+						<div class="form-group col-sm-4 col-lg-4 col-md-4"
+							[ngClass]="{'has-error': patientData.controls.email.invalid && patientData.controls.email.dirty,
+							'has-success': patientData.controls.email.valid && !patientData.controls.email.dirty }">
+							<label for="email" class="col-lg-4 control-label">E-mail</label>
+							<div class="col-lg-8">
+								<input type="text" class="form-control input-sm" id="email" formControlName="email" placeholder="Email Address">
+							</div>
+						</div>
+
+
+						
+						<div class="form-group col-sm-4 col-lg-4 col-md-4"
+							[ngClass]="{'has-error': patientData.controls.reff_by.invalid && patientData.controls.reff_by.touched,
+							'has-success': patientData.controls.reff_by.valid && !patientData.controls.reff_by.touched }">
+							<label for="reffiredBy" class="col-lg-4 control-label">Reffired By</label>
+							<div class="col-lg-8">
+									<select class="form-control" id="reffiredBy"  formControlName="reff_by">
+									  <option value="" selected="">Sellect Reffired Doctor</option>
+									  <option *ngFor = "let reffBy of reffBys; let i = index">Dr.{{reffBy.name}}</option>
+									</select>
+							</div>
+						</div>
+					</div>
+
+
+
+					<div class="row">
+						<div class="form-group">
+							<div class=" col-sm-4 col-md-4 col-lg-4 col-sm-offset-4  col-md-offset-4  col-lg-offset-4">
+								<div class=" col-sm-4 col-lg-4 col-md-4">
+									<button type="reset" class="btn btn-default btn-xs btn-block">Reset</button>
+								</div>
+								<div class=" col-sm-4 col-lg-4 col-md-4">
+									<button type="submit" [disabled]="!submitButtonStatus" class="btn btn-primary btn-xs btn-block">{{submitButtonStatus?'save':'Saving....'}}</button>
+								</div>
+								<div class=" col-sm-4 col-lg-4 col-md-4">
+									<button type="button" class="btn btn-info btn-xs btn-block">Print</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- <pre>{{genderInDropdowns | json}}</pre> -->
+
+
+
+
+							<!-- <tr>
+								<td class="label"
+									[ngClass]="{'error-feedback': patientData.controls.identity_card.invalid && patientData.controls.identity_card.dirty,
+									'no-error-feedback': patientData.controls.identity_card.valid && !patientData.controls.identity_card.dirty }">
+									<label>Nationality</label>
+								</td>
+								<td class="input">
+									<input type="text" formControlName="identity_card" placeholder="Nationality">
+								</td>
+							</tr>
+
+
+							<tr>
+								<td class="label"
+									[ngClass]="{'error-feedback': patientData.controls.age.invalid && patientData.controls.age.touched,
+									'no-error-feedback': patientData.controls.age.valid && !patientData.controls.age.touched }">
+									<label> Age</label>
+								</td>
+								<td class="input">
+									<select formControlName="age">
+									  <option value='' selected="">Select Age</option>
+									  <option> 0-5</option>
+									  <option> 6-19</option>
+									  <option> 20-39</option>
+									  <option> 40-60</option>
+									  <option> 60 above</option>
+									</select>
+								</td>
+								<td class="label"
+									[ngClass]="{'error-feedback': patientData.controls.gender.invalid && patientData.controls.gender.touched,
+									'no-error-feedback': patientData.controls.gender.valid && !patientData.controls.gender.touched }">
+									<label> Gender</label>
+								</td>
+								<td class="input">
+									<select formControlName="gender">
+									  <option value="" selected="">Select Gender</option>
+									  <option> Male</option>
+									  <option> Female</option>
+									  <option> Third Gender</option>
+									</select>
+								</td>
+								<td class="label"
+									[ngClass]="{'error-feedback': patientData.controls.month.invalid && patientData.controls.month.touched || patientData.controls.day.invalid && patientData.controls.day.touched || patientData.controls.year.invalid && patientData.controls.year.touched,
+									'no-error-feedback': patientData.controls.month.valid && !patientData.controls.month.touched || patientData.controls.day.valid && !patientData.controls.day.touched || patientData.controls.year.valid && !patientData.controls.year.touched }">
+									<label>DOB</label>
+								</td>
+								<td class="input">
+									<select formControlName="month">
+									  <option value="" selected="">Month</option>
+									  <option *ngFor = " let month of months"> {{month}}</option>
+									</select>
+									<select formControlName="day">
+									  <option value="" selected="">Day</option>
+									  <option *ngFor = " let day of days"> {{day}}</option>
+									</select>
+									<select formControlName="year">
+									  <option value="" selected="">Year</option>
+									  <option *ngFor = " let year of years"> {{year}}</option>
+									</select>
+								</td>
+							</tr>
+
+
+							<tr>
+								<td class="label"
+									[ngClass]="{'error-feedback': patientData.controls.marital_status.invalid && patientData.controls.marital_status.touched,
+									'no-error-feedback': patientData.controls.marital_status.valid && !patientData.controls.marital_status.touched }">
+									<label>Marital Status</label>
+								</td>
+								<td class="input">
+									<select formControlName="marital_status">
+									  <option value="" selected="">Select One</option>
+									  <option> Married</option>
+									  <option> Unmarried</option>
+									</select>
+								</td>
+								<td class="label"
+									[ngClass]="{'error-feedback': patientData.controls.phone.invalid && patientData.controls.phone.dirty,
+									'no-error-feedback': patientData.controls.phone.valid && !patientData.controls.phone.dirty }">
+									<label>Phone</label>
+								</td>
+								<td class="input">
+									<input type="text" formControlName="phone" pattern="[0-9]+" placeholder="Phone one">
+								</td>
+								<td class="label"
+									[ngClass]="{'error-feedback': patientData.controls.email.invalid && patientData.controls.email.touched,
+									'no-error-feedback': patientData.controls.email.valid}"
+									>
+									<label>E-mail*</label>
+								</td>
+								<td class="input">
+									<input type="email" formControlName="email" placeholder="Email Address">
+									  <div class="error-msg" 
+									       *ngIf=" patientData.controls.email.invalid && patientData.controls.email.touched">
+									    	Invalid E-mail!
+									  </div>
+								</td>
+							</tr>
+
+							<tr>
+								<td class="label"
+									[ngClass]="{'error-feedback': patientData.controls.reff_by.invalid && patientData.controls.reff_by.touched,
+									'no-error-feedback': patientData.controls.reff_by.valid && !patientData.controls.reff_by.touched}">
+									<label>Reffered By</label>
+								</td>
+								<td class="input">
+									<select formControlName="reff_by">
+									  <option value="" selected="">Sellect Reffired Doctor</option>
+									  <option *ngFor = " let reffBy of reffBys">{{reffBy}}</option>
+									</select>
+									<input style="width: auto;" class="" type="text" formControlName="referred_by" placeholder="Reffered By">
+								</td>
+								<td style="visibility:collapse;"><input type="text" formControlName = "Selectedtest" readonly></td>
+								<td
+								[ngClass]="{'error-feedback': patientData.controls.Selectedtest.invalid,
+								'no-error-feedback': patientData.controls.Selectedtest.valid}">
+									<label *ngIf = "testStatus">Please select test</label>
+								</td>
+								<td></td>
+								<td>
+									<input class="full-width padding-5 ng-primary" type="submit" [disabled] = "!submitButtonStatus" value="{{submitButtonStatus?'save':'Saving....'}}">
+									<input class="full-width padding-5 ng-success" type="button" value="Print">
+								</td>
+							</tr>
+					<div>
+						<pre>Dirty? {{ patientData.controls.age.dirty }}</pre>
+						<pre>Touched? {{ patientData.controls.age.touched }}</pre>
+						<pre>Valid? {{ patientData.controls.age.valid }}</pre>
+						<pre style="clear: both;">{{patientData.value | json}}</pre>
+					</div> -->
+				</form>
+			<!-- </div>
+		</div><hr> -->
+
+		<!-- {{patientId}} -->
+		
+
+
+
+
+
+
+
+
+
+		<!-- <form class="form-horizontal">
+				<fieldset>
+				  <legend>Legend</legend>
+				  <div class="form-group">
+					<label for="inputEmail" class="col-lg-2 control-label">Email</label>
+					<div class="col-lg-10">
+					  <input type="text" class="form-control" id="inputEmail" placeholder="Email">
+					</div>
+				  </div>
+				  <div class="form-group">
+					<label for="inputPassword" class="col-lg-2 control-label">Password</label>
+					<div class="col-lg-10">
+					  <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+					  <div class="checkbox">
+						<label>
+						  <input type="checkbox"> Checkbox
+						</label>
+					  </div>
+					</div>
+				  </div>
+				  <div class="form-group">
+					<label for="textArea" class="col-lg-2 control-label">Textarea</label>
+					<div class="col-lg-10">
+					  <textarea class="form-control" rows="3" id="textArea"></textarea>
+					  <span class="help-block">A longer block of help text that breaks onto a new line and may extend beyond one line.</span>
+					</div>
+				  </div>
+				  <div class="form-group">
+					<label class="col-lg-2 control-label">Radios</label>
+					<div class="col-lg-10">
+					  <div class="radio">
+						<label>
+						  <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+						  Option one is this
+						</label>
+					  </div>
+					  <div class="radio">
+						<label>
+						  <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+						  Option two can be something else
+						</label>
+					  </div>
+					</div>
+				  </div>
+				  <div class="form-group">
+					<label for="select" class="col-lg-2 control-label">Selects</label>
+					<div class="col-lg-10">
+					  <select class="form-control" id="select">
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+						<option>5</option>
+					  </select>
+					  <br>
+					  <select multiple="" class="form-control">
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+						<option>5</option>
+					  </select>
+					</div>
+				  </div>
+				  <div class="form-group">
+					<div class="col-lg-10 col-lg-offset-2">
+					  <button type="reset" class="btn btn-default">Cancel</button>
+					  <button type="submit" class="btn btn-primary">Submit</button>
+					</div>
+				  </div>
+				</fieldset>
+			  </form> -->

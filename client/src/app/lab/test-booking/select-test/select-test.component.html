@@ -1,0 +1,39 @@
+<div [hidden]="!alive">
+    <legend>Select Test</legend>
+    <div class="list-group" style="height:60vh; overflow:auto;background-color:#f5f5f5">
+            <a class="list-group-item" *ngFor = "let testTable of testTables; let i = index" (click) = "dragTr(testTable)">{{testTable?.name}}</a>
+    </div>
+</div>
+<!-- <pre>{{testTables | json}}</pre> -->
+<!--     
+    <div class="main" [hidden]="!alive">
+        <table>
+            <thead>
+                <tr>
+                    <th>:: Test Name</th>
+                    <th> :: Lower Bound</th>
+                    <th> :: Upper Bound</th>
+                    <th> :: Units</th>
+                    <th> :: Rate</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor = "let testTable of testTables; let i = index" (click)="dragTr(testTable)">
+                    <td>{{testTable.testName}}</td>
+                    <td>{{testTable.LBound}}</td>
+                    <td>{{testTable.UBound}}</td>
+                    <td>{{testTable.units}}</td>
+                    <td>{{testTable.rate}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td> Total</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+
+            </tfoot>
+        </table>
+    </div> -->

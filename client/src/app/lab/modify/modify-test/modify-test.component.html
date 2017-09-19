@@ -1,0 +1,337 @@
+<section [ngClass] = "{'col-md-12 col-sm-12 col-lg-12' : fullTestSection,
+                      'col-md-6 col-sm-6 col-lg-6' : !fullTestSection }" style="vertical-align:center;">
+  <!-- <div style = "float: left">
+      <ol class="breadcrumb">
+          <li><a (click) = "">Department:{{selectedTestType}}</a></li>
+          <li><a (click) = "">TestType:{{selectedTesttype}}</a></li>
+        </ol>
+  </div> -->
+  <div style="float:right;">
+    <input type="button" class="btn btn-info" (click)="showModalToAdd()" value="Add Test" data-toggle="modal" data-target="#TestModal">
+    <!-- (click) = "departmentToggle()" -->
+    <!-- <i style="padding: auto 15px; cursor:pointer;" class="fa fa-plus fa-lg"></i></button> -->
+  </div>
+
+  <div>
+    <legend>Test List</legend>
+    <div class="table-responsive" style="overflow:auto;height:85vh;">
+      <form>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th> S.N </th>
+              <th> Name </th>
+              <th> Description </th>
+              <th> Action </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let responseData of responseDatas; let i = index">
+              <td class="text-info">{{responseDatas?.length - i}}</td>
+              <td class="text-info">{{responseData?.name}}</td>
+              <td>{{responseData?.description}}</td>
+              <td>
+                <button class="btn btn-default" type="button">&nbsp;<i class="fa fa-plus" aria-hidden="true" (click) = "testDetailsForm(i)"> &nbsp;</i></button>
+                <button class="btn btn-primary" type="button">&nbsp;<i class="fa fa-pencil-square-o" aria-hidden="true" data-toggle="modal" (click) = "editTest(i)" data-target="#TestModal">&nbsp; </i></button>
+                <button class="btn btn-danger" type="button" value="Delete">&nbsp;<i class="fa fa-trash" aria-hidden="true" data-toggle="modal" (click) = "configDelete(i)" data-target="#TestModal"> &nbsp;</i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- <div class="row">
+            <pre>
+              {{responseDatas | json}}
+            </pre>
+        </div> -->
+      </form>
+    </div>
+  </div>
+
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="TestModal" role="dialog" data-backdrop="static">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">{{title}}</h4>
+        </div>
+        <form [formGroup]="modefyTest" autocomplete="off">
+          <div class="modal-body">
+
+            <div class="row">
+              <div *ngIf="showDeleteBlock" class="col-sm-10 col-lg-10 col-md-10 col-sm-offset-1">
+                <h3 class="text-danger">
+                  <p>{{deleteRemark}}</p>
+                </h3>
+              </div>
+
+              <div *ngIf="showFormBlock" class="row">
+
+
+
+                <div class="form-group col-sm-10 col-lg-10 col-md-10 col-sm-offset-1" [ngClass]="{'has-error': modefyTest.controls.TestName.invalid && modefyTest.controls.TestName.dirty,'has-success': modefyTest.controls.TestName.valid && !modefyTest.controls.TestName.dirty }">
+                  <label for="name" class="col-sm-4 col-lg-4 col-md-4 control-label">Name</label>
+                  <div class="col-sm-8 col-lg-8 col-md-8">
+                    <input autocomplete="off" type="text" class="form-control input-sm" id="name" formControlName="TestName" placeholder="Department Name">
+                  </div>
+                </div>
+
+
+
+                <div class="form-group col-sm-10 col-lg-10 col-md-10 col-sm-offset-1" [ngClass]="{'has-error': modefyTest.controls.TestDescription.invalid && modefyTest.controls.TestDescription.dirty,'has-success': modefyTest.controls.TestDescription.valid && !modefyTest.controls.TestDescription.dirty }">
+                  <label for="description" class="col-sm-4 col-lg-4 col-md-4 control-label">Description</label>
+                  <div class="col-sm-8 col-lg-8 col-md-8 ">
+                    <input autocomplete="off" type="text" class="form-control input-sm" id="description" formControlName="TestDescription" placeholder="Name Description">
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+
+
+
+
+          </div>
+
+          <div class="modal-footer">
+            <button *ngIf="showAddBtn" type="submit" class="btn btn-primary" [disabled]="!add" (click)="addTests()">{{Add}}</button>
+            <button *ngIf="showUpdateBtn" type="submit" class="btn btn-info" [disabled]="!update" (click)="updateTest()">{{Update}}</button>
+            <button *ngIf="showDeleteBtn" type="button" class="btn btn-danger" data-dismiss="modal" (click)="deleteTest()">Delete</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="TestDetails" role="dialog" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Add Test Details</h4>
+        </div>
+        <form class="form-horizontal" [formGroup]="testDetails" autocomplete="off">
+          <div class="modal-body">
+            <div class="row">
+
+              <!-- <div class="form-group col-sm-10 col-lg-10 col-md-10 col-sm-offset-1" [ngClass]="{'has-error': modefyTest.controls.TestName.invalid && modefyTest.controls.TestName.dirty,'has-success': modefyTest.controls.TestName.valid && !modefyTest.controls.TestName.dirty }">
+                <label for="name" class="col-sm-4 col-lg-4 col-md-4 control-label">Name</label>
+                <div class="col-sm-8 col-lg-8 col-md-8">
+                  <input autocomplete="off" type="text" class="form-control input-sm" id="name" formControlName="TestName" placeholder="Department Name">
+                </div>
+              </div>
+
+
+
+              <div class="form-group col-sm-10 col-lg-10 col-md-10 col-sm-offset-1" [ngClass]="{'has-error': modefyTest.controls.TestDescription.invalid && modefyTest.controls.TestDescription.dirty,'has-success': modefyTest.controls.TestDescription.valid && !modefyTest.controls.TestDescription.dirty }">
+                <label for="description" class="col-sm-4 col-lg-4 col-md-4 control-label">Description</label>
+                <div class="col-sm-8 col-lg-8 col-md-8 ">
+                  <input autocomplete="off" type="text" class="form-control input-sm" id="description" formControlName="TestDescription" placeholder="Name Description">
+                </div>
+              </div> -->
+              
+              
+              <div class="form-group col-sm-6 col-md-6 col-lg-6" [ngClass]="{'has-error': testDetails.controls.gender.invalid && testDetails.controls.gender.dirty,'has-success': testDetails.controls.gender.valid && !testDetails.controls.gender.dirty }">
+                <label for="gender" class="col-sm-4 col-lg-4 col-md-4 control-label">Select Gender</label>
+                <div class="col-sm-8 col-lg-8 col-md-8">
+                    <select class="form-control" id="gender" formControlName = "gender" (change)="updateAgeGroup($event)">
+                        <option value = "" selected> Select Gender</option>                        
+                        <option *ngFor = 'let genderInDropdown of genderInDropdowns; let i =index'> {{genderInDropdown}}</option>
+                    </select>
+                </div>
+              </div>
+
+              <div class="form-group col-sm-6 col-md-6 col-lg-6" [ngClass]="{'has-error': testDetails.controls.age.invalid && testDetails.controls.age.dirty,'has-success': testDetails.controls.age.valid && !testDetails.controls.age.dirty }">
+                <label for="age" class="col-sm-4 col-lg-4 col-md-4 control-label">Select age</label>
+                <div class="col-sm-8 col-lg-8 col-md-8">
+                    <select class="form-control" id="age" formControlName = "age">
+                        <option value = "" selected> Select Age</option>
+                        <option *ngFor = "let ageList of Age_groupAfterFilter">{{ageList.age_group}}</option>
+                        <!-- <option> 6 to 12</option>
+                        <option> 13 to 19</option>
+                        <option> 20 to 39</option>
+                        <option> 40 to 59</option>
+                        <option> 60 above</option> -->
+                    </select>
+                </div>
+              </div>
+
+
+
+
+
+              <div class="form-group col-sm-6 col-md-6 col-lg-6" [ngClass]="{'has-error': testDetails.controls.lbound.invalid && testDetails.controls.lbound.dirty,'has-success': testDetails.controls.lbound.valid && !testDetails.controls.lbound.dirty }">
+                <label for="lb" class="col-sm-4 col-lg-4 col-md-4 control-label">Lower Bound</label>
+                <div class="col-sm-8 col-lg-8 col-md-8">
+                  <input autocomplete="off" pattern="[0-9]+" type="text" class="form-control" id="lb" placeholder="Lower Bound" formControlName = "lbound">
+                </div>
+              </div>
+
+
+              <div class="form-group col-sm-6 col-md-6 col-lg-6" [ngClass]="{'has-error': testDetails.controls.ubound.invalid && testDetails.controls.ubound.dirty,'has-success': testDetails.controls.ubound.valid && !testDetails.controls.ubound.dirty }">
+                  <label for="ub" class="col-sm-4 col-lg-4 col-md-4 control-label">Upper Bound</label>
+                  <div class="col-sm-8 col-lg-8 col-md-8">
+                    <input autocomplete="off" pattern="[0-9]+" type="text" class="form-control" id="ub" placeholder="Upper Bound" formControlName = "ubound">
+                  </div>
+              </div>
+
+
+              <div class="form-group col-sm-6 col-md-6 col-lg-6" [ngClass]="{'has-error': testDetails.controls.unit.invalid && testDetails.controls.unit.dirty,'has-success': testDetails.controls.unit.valid && !testDetails.controls.unit.dirty }">
+                  <label for="unit" class="col-sm-4 col-lg-4 col-md-4 control-label">Unit</label>
+                  <div class="col-sm-8 col-lg-8 col-md-8">
+                    <select class="form-control" id="unit" formControlName = "unit">
+                        <option value = "" selected> Select Unit</option>
+                        <option *ngFor = "let Unit of FormUnits">{{Unit}}</option>
+                    </select>
+                  </div>
+              </div>
+
+
+              <div class="form-group col-sm-6 col-md-6 col-lg-6" [ngClass]="{'has-error': testDetails.controls.rate.invalid && testDetails.controls.rate.dirty,'has-success': testDetails.controls.rate.valid && !testDetails.controls.rate.dirty }">
+                    <label for="rate" class="col-sm-4 col-lg-4 col-md-4 control-label">Rate</label>
+                    <div class="col-sm-8 col-lg-8 col-md-8">
+                      <input autocomplete="off" pattern="[0-9]+" type="text" class="form-control" id="rate" placeholder="Rate" formControlName = "rate">
+                    </div>
+              </div>
+
+
+            </div>
+
+
+
+          </div>
+
+          <div class="modal-footer">
+            <button *ngIf="showAddDetailsBtn" type="submit" class="btn btn-primary" [disabled]="!addDetails" (click)="addTestsDetails()">{{AddDetails}}</button>
+            <button *ngIf="showUpdateDetailsBtn" type="submit" class="btn btn-info" [disabled]="!updateDetails" (click)="updateDepartment()">{{UpdateDetails}}</button>
+            <button *ngIf="showDeleteDetailsBtn" type="button" class="btn btn-danger" data-dismiss="modal" (click)="updateDepartment()">DeleteDetails</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<section *ngIf = "showTestDetails" class="col-sm-6 col-md-6 col-lg-6" style="background-color:#fafafa; ">
+    <div style="float:left;">
+      <input type="button" class="btn btn-default" value="Close" (click)="reload()" >
+    </div>
+  <div style="float:right;">
+    <input type="button" class="btn btn-info" value="Add New" data-toggle="modal" data-target="#TestDetails" (click) = "configTestDetails()">
+  </div>
+
+  <div *ngIf = "showTest">
+      <legend>Test Details</legend>
+      <div class="table-responsive" style="overflow:auto;height:85vh;">
+          <!-- <p>{{selectedTestType}}</p><hr> -->
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th> S.N </th>
+                <th> Gender </th>
+                <th> Age </th>
+                <th> LB </th>
+                <th> UB </th>
+                <th> Unit </th>
+                <th> Rate </th>
+                <th> Action </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let testDetailData of testDetailDatas; let i = index">
+                <td>{{testDetailDatas?.length - i}}</td>
+                <td>{{testDetailData?.gender}}</td>
+                <td>{{testDetailData?.age_group}}</td>
+                <td>{{testDetailData?.lower_bound}}</td>
+                <td>{{testDetailData?.upper_bound}}</td>
+                <td>{{testDetailData?.unit}}</td>
+                <td>{{testDetailData?.rate}}</td>
+                <td>
+                  <button class="btn btn-primary" type="button" value="Edit" (click) = "editTestDetials(i)"><i class="fa fa-pencil-square-o"></i></button>
+                  <button class="btn btn-danger" type="button" value="Delete" (click) = "deleteTestDetials(i)"><i class="fa fa-trash"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- <div class="row">
+              <pre>
+                {{Age_groupAfterFilter | json}}
+              </pre>
+          </div> -->
+      </div>
+    </div>
+
+
+  <!-- <div *ngIf = "!showTest">
+    <hr><p>{{titleAction}}</p><hr>
+    <div class="size-25">
+      <form [formGroup] = "modefyTest">
+        <table>
+          <tbody style="height:100%;">
+            <tr style="vertical-align:center;">
+              <td>
+                <label for="name"
+                [ngClass]="{'error-feedback': modefyTest.controls.TestName.invalid && modefyTest.controls.TestName.dirty,
+                'no-error-feedback': modefyTest.controls.TestName.valid && !modefyTest.controls.TestName.dirty }">Name</label>
+              </td>
+              <td>
+                <input type="text" id="name" formControlName= "TestName">
+                  <div class="error-msg" 
+                      *ngIf=" modefyTest.controls.TestName.invalid && modefyTest.controls.TestName.touched">
+                      Invalid Test Name!
+                  </div>
+              </td>
+            </tr>
+            <tr style="vertical-align:center;">
+              <td>
+                <label for="description"
+                [ngClass]="{'error-feedback': modefyTest.controls.TestDescription.invalid && modefyTest.controls.TestDescription.dirty,
+                'no-error-feedback': modefyTest.controls.TestDescription.valid && !modefyTest.controls.TestDescription.dirty }">Description</label>
+              </td>
+              <td>
+                <input type="text" id="description" formControlName= "TestDescription">
+                <div class="error-msg" 
+                    *ngIf=" modefyTest.controls.TestDescription.invalid && modefyTest.controls.TestDescription.touched">
+                    Invalid Test Description!
+                </div>
+              </td>
+            </tr>
+            <tr><td></td></tr>
+            <tr>
+              <td></td>
+              <td *ngIf="addBotton" style="height:100px; vertical-align:buttom"><input class="ng-info" type="submit" value="Add" (click) = "addTests()">
+              </td><td *ngIf="!addBotton" style="height:100px; vertical-align:buttom"><input class="ng-info" type="submit" value="Update" (click) = "updateTest()">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+  </div> -->
+</section>

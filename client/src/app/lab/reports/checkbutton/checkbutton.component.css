@@ -1,0 +1,28 @@
+/* .ready_botton{
+    float: right;
+    padding: 0px;
+}
+input{
+    width:170px;
+}
+.table{
+    min-width: 100%;
+    min-height: 100%;
+}
+tbody, tr, td {
+    width: 23%;
+    font-size: 12px;
+}
+.ready_table{
+    width: 23%;
+    height: 100%;
+    overflow-x: auto;
+    overflow-y: auto;
+    margin-top: 25px;
+    margin-right:-314px; 
+    float: right;
+    background-color: #D4DAE8;
+}
+tbody>tr:hover{
+	background-color: rgb(171, 171, 171);
+} */

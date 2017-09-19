@@ -1,0 +1,20 @@
+
+<section class="col-lg-12 col-sm-12 col-md-12">
+    <app-patient-details-form (throwage) = "onThrowAge($event)" (throwgender)= "onThrowGender($event)"  [inputsetResponse]="setResponse" [inputSelectedPatient]="patientId"></app-patient-details-form>
+</section>
+    <section class="col-lg-2 col-sm-2 col-md-2">
+        <app-select-department (selectedDep)="onSelectedDep($event)"></app-select-department>
+    </section>
+    <section class="col-lg-2 col-sm-2 col-md-2">
+        <app-select-testype [inputSelectedDep]="Dep" (selectedtestype)="onSelectedtestype($event)"></app-select-testype>
+    </section>
+    <section class="col-lg-2 col-sm-2 col-md-2">
+        <app-select-test [inputSelectedtest]="testype" (dragToSelected) = "onDragToSelected($event)"></app-select-test>
+    </section>
+    <section class="col-lg-6 col-sm-6 col-md-6">
+        <app-selected-test [inputCatchAge] = "CatchAge" [inputCatchGender] = "CatchGender" [inputDropToSelectedNow]="dragToSelectedNow" (setResponse)="onsetResponse($event)"></app-selected-test>
+    </section>
+<!-- <section class="ng-20">
+    <app-search-window (selectedPatient)="onSelectedPatient($event)"></app-search-window>
+</section> -->
+

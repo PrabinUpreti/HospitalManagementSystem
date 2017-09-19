@@ -1,0 +1,25 @@
+/* div{
+    background-color: lightblue;
+    height: 38vh;
+    position: relative;
+    width: 100%;
+    overflow: auto;
+}
+td, th{
+    border-right:1px solid black;
+    border-left: 1px solid black;
+    padding: 5px;
+}
+thead{
+    border: 1px solid black;
+    text-align: left;
+}
+tfoot{
+    font-size: 12px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+tbody>tr:hover{
+    background-color: lightcoral;
+    cursor: pointer;
+} */

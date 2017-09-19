@@ -1,0 +1,209 @@
+<section class="col-lg-12" style="vertical-align:center;">
+  <div style = "float: left">
+      <ol class="breadcrumb" ngFor = "let breadcrumb of breadcrumbs">
+          
+      </ol>
+  </div>
+  <div style="float:right;">
+    <input type="button" class="btn btn-info" (click)="showModalToAdd()" value="Add Department" data-toggle="modal" data-target="#myModal">
+    <!-- (click) = "departmentToggle()" -->
+    <!-- <i style="padding: auto 15px; cursor:pointer;" class="fa fa-plus fa-lg"></i></button> -->
+  </div>
+
+  <div>
+    <legend>Department List</legend>
+    <div class="table-responsive" style="overflow:auto;height:85vh;">
+      <form>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th> S.N </th>
+              <th> Name </th>
+              <th> Description </th>
+              <th> Action </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let responseData of responseDatas; let i = index">
+              <td class="text-info">{{responseDatas?.length - i}}</td>
+              <td class="text-info" style="cursor:pointer" (click) = "insideDepartment(i)" >{{responseData?.name}}</td>
+              <td>{{responseData?.description}}</td>
+              <td>
+                <button class="btn btn-primary" type="button"><i class="fa fa-pencil-square-o" aria-hidden="true" data-toggle="modal" (click) = "editDepartment(i)" data-target="#myModal"> Edit</i></button>
+                <button class="btn btn-danger" type="button" value="Delete"><i class="fa fa-trash" aria-hidden="true" data-toggle="modal" (click) = "configDelete(i)" data-target="#myModal"> Delete</i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- <div *ngIf = "!showDepartment">
+<p>{{titleAction}}</p>
+<div class="size-25">
+<form [formGroup] = "modefyDepartment">
+<table>
+<tbody style="height:100%;">
+
+
+
+<tr style="vertical-align:center;">
+<td>
+<label for="name"
+[ngClass]="{'error-feedback': modefyDepartment.controls.DepartmentName.invalid && modefyDepartment.controls.DepartmentName.dirty,
+'no-error-feedback': modefyDepartment.controls.DepartmentName.valid && !modefyDepartment.controls.DepartmentName.dirty }">Name</label>
+</td>
+<td>
+<input type="text" id="name" formControlName= "DepartmentName">
+<div class="error-msg" 
+  *ngIf=" modefyDepartment.controls.DepartmentName.invalid && modefyDepartment.controls.DepartmentName.touched">
+  Invalid Department Name!
+</div>
+</td>
+</tr>
+
+
+
+
+<tr style="vertical-align:center;">
+<td>
+<label for="description"
+[ngClass]="{'error-feedback': modefyDepartment.controls.DepartmentDescription.invalid && modefyDepartment.controls.DepartmentDescription.dirty,
+'no-error-feedback': modefyDepartment.controls.DepartmentDescription.valid && !modefyDepartment.controls.DepartmentDescription.dirty }">Description</label>
+</td>
+<td>
+<input type="text" id="description" formControlName= "DepartmentDescription">
+<div class="error-msg" 
+*ngIf=" modefyDepartment.controls.DepartmentDescription.invalid && modefyDepartment.controls.DepartmentDescription.touched">
+Invalid Department Description!
+</div>
+</td>
+</tr>
+
+
+
+
+
+<tr style="vertical-align:center;">
+<tr><td></td></tr>
+<tr><td></td></tr>
+<tr>
+<td></td>
+<td *ngIf="addBotton" style="height:100px; vertical-align:buttom"><input class="btn btn-primary" type="submit" value="Add" (click) = "addDepartments()">
+</td><td *ngIf="!addBotton" style="height:100px; vertical-align:buttom"><input class="btn btn-primary" type="submit" value="Update" (click) = "updateDepartment()">
+</td>
+</tr>
+</tbody>
+</table>
+</form>
+</div>
+</div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog" data-backdrop="static">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">{{title}}</h4>
+        </div>
+        <form [formGroup]="modefyDepartment" autocomplete="off">
+          <div class="modal-body">
+
+            <div class="row">
+              <div *ngIf="showDeleteBlock" class="col-sm-10 col-lg-10 col-md-10 col-sm-offset-1">
+                <h3 class="text-danger">
+                  <p>{{deleteRemark}}</p>
+                </h3>
+              </div>
+
+              <div *ngIf="showFormBlock" class="row">
+
+
+
+                <div class="form-group col-sm-10 col-lg-10 col-md-10 col-sm-offset-1" [ngClass]="{'has-error': modefyDepartment.controls.DepartmentName.invalid && modefyDepartment.controls.DepartmentName.dirty,'has-success': modefyDepartment.controls.DepartmentName.valid && !modefyDepartment.controls.DepartmentName.dirty }">
+                  <label for="name" class="col-sm-4 col-lg-4 col-md-4 control-label">Name</label>
+                  <div class="col-sm-8 col-lg-8 col-md-8">
+                    <input autocomplete="off" type="text" class="form-control input-sm" id="name" formControlName="DepartmentName" placeholder="Department Name">
+                  </div>
+                </div>
+
+
+
+                <div class="form-group col-sm-10 col-lg-10 col-md-10 col-sm-offset-1" [ngClass]="{'has-error': modefyDepartment.controls.DepartmentDescription.invalid && modefyDepartment.controls.DepartmentDescription.dirty,'has-success': modefyDepartment.controls.DepartmentDescription.valid && !modefyDepartment.controls.DepartmentDescription.dirty }">
+                  <label for="description" class="col-sm-4 col-lg-4 col-md-4 control-label">Description</label>
+                  <div class="col-sm-8 col-lg-8 col-md-8 ">
+                    <input autocomplete="off" type="text" class="form-control input-sm" id="description" formControlName="DepartmentDescription" placeholder="Name Description">
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+
+
+
+
+          </div>
+
+          <div class="modal-footer">
+            <button *ngIf="showAddBtn" type="submit" class="btn btn-primary" [disabled] = "!add" (click)="addDepartments()">{{Add}}</button>
+            <button *ngIf="showUpdateBtn" type="submit" class="btn btn-info" [disabled] = "!update" (click)="updateDepartment()">{{Update}}</button>
+            <button *ngIf="showDeleteBtn" type="button" class="btn btn-danger" data-dismiss="modal" (click)="updateDepartment()">Delete</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- <div class="size-25
+">
+<pre>
+{{responseDatas  | json}}
+</pre>
+</div> -->
+</section>

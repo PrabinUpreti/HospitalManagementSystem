@@ -1,0 +1,85 @@
+
+<nav class="navbar navbar-default navbar-fixed-top">
+		<div class="">
+		  <div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+			  <span class="sr-only">Lab Software</span>
+			  <span class="icon-bar"></span>
+			  <span class="icon-bar"></span>
+			  <span class="icon-bar"></span>
+			</button>
+		  </div>
+	  
+		  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav" *ngFor=" let menulist of menulists ; let i=index " >
+				<li [ngClass] = "{'active' : setclass == i, 'dropdown' : menulist.name == 'Setting'}">
+					<a [ngClass] = "{'dropdown-toggle' : menulist.name == 'Setting'}" (click) = addClass(i) [routerLink]="[menulist?.link]"  data-toggle="dropdown" role="button" aria-expanded="true">
+						<i class="fa {{menulist.fa}}">
+							{{menulist.name}} 
+							<span [ngClass] = "{'[disable]caret' : menulist.name == 'Setting'}"></span>
+						</i>
+					</a>
+					<!-- <ul *ngIf = "menulist.name == 'Setting'" class="dropdown-menu" role="menu">
+							<li><a [routerLink] = "['/lab/modify']">Test Lab</a></li>
+							<li><a [routerLink] = "['/lab/modify']">Test Details</a></li>
+							<li class="divider"></li>
+							<li><a [routerLink] = "['/lab/modify']">Doctor</a></li>
+							<li class="divider"></li>
+							<li><a [routerLink] = "['/lab/modify']"> Patient</a></li>
+							<li class="divider"></li>
+							<li><a [routerLink] = "['/lab/modify']">Print Setting</a></li>
+							<li><a [routerLink] = "['/lab/modify']">Dashboard Setting</a></li>
+							<li class="divider"></li>
+							<li><a [routerLink] = "['/lab/modify']">Help</a></li>
+						</ul> -->
+				</li>
+				
+
+
+
+					<!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a> -->
+					<!-- <ul class="dropdown-menu" role="menu">
+						<li><a href="#">Action</a></li>
+						<li><a href="#">Another action</a></li>
+						<li><a href="#">Something else here</a></li>
+						<li class="divider"></li>
+						<li><a href="#">Separated link</a></li>
+						<li class="divider"></li>
+						<li><a href="#">One more separated link</a></li>
+					</ul> -->
+
+
+
+			  <!-- <li><a href="#">Link</a></li>
+			  <li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
+				<ul class="dropdown-menu" role="menu">
+				  <li><a href="#">Action</a></li>
+				  <li><a href="#">Another action</a></li>
+				  <li><a href="#">Something else here</a></li>
+				  <li class="divider"></li>
+				  <li><a href="#">Separated link</a></li>
+				  <li class="divider"></li>
+				  <li><a href="#">One more separated link</a></li>
+				</ul>
+			  </li> -->
+			</ul>
+			<!-- <form class="navbar-form navbar-left" role="search">
+			  <div class="form-group">
+				<input type="text" class="form-control" placeholder="Search">
+			  </div>
+			  <button type="submit" class="btn btn-default">Submit</button>
+			</form> -->
+			<!-- <ul class="nav navbar-nav navbar-right">
+			  <li><a href="#">Link</a></li>
+			</ul> -->
+		  </div>
+		</div>
+	  </nav>
+
+
+	  <!-- <div class="fixed menu-gradient ">
+			<ul class="nav-ul">
+				<li class="nav-li" *ngFor=" let menulist of menulists ; let i=index " (click) = addClass(i) [ngClass] = "{'active' : setclass == i}" [routerLink]="[menulist.link]" >{{menulist.name}}</li>
+			</ul>
+		</div><hr><hr> -->

@@ -1,0 +1,25 @@
+		<div class="size-25 full-height responsive-block" style="background-color: #d4dae8;">
+			<div>
+				<p>Search Window</p><hr>
+				<div>
+					<input class="full-width" type="search" placeholder="Search Patient Name">
+				</div><hr>
+				<p>Search List</p><hr>
+				<div class="table">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Address</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor ="let searchlist of searchlists; let i=index" (click)=setSearchedData(i)>
+								<td>{{searchlist.name}}</td>
+								<td>{{searchlist.address}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>

@@ -1,0 +1,206 @@
+/* You can add global styles to this file, and also import other style files */
+html, body {
+    margin: 0;
+    font-size: 12px;
+}
+html {
+    overflow: auto;
+}
+
+body {
+	position: relative;
+    padding: 0px;
+    background-color: lightgray;
+    cursor: default;    
+}
+hr{
+    margin: 0px;
+    padding: 0px;
+}
+label{
+}
+input, button {
+    margin: 2px;
+    background-color: whitesmoke;
+    padding: 2px;
+    border: none;
+    border: 1px;
+    border-style: groove;
+    border-radius: 0px;
+}
+select{
+    margin: 2px;
+    width: auto;
+    background-color: whitesmoke;
+    padding: 2px;
+    border-radius: 0px;
+
+}
+option{
+    max-width: 100%;
+}
+ select:focus{
+    outline: none;
+    background-color: #E8E8E8;
+} 
+ input:focus:not(.ng-danger, .ng-info, .ng-primary, .ng-success, .ng-warning),{
+    outline: none;
+    background-color: #E8E8E8;
+} 
+.table{
+    width: 100%;
+    padding: 0px 5px;
+    text-align: left
+}
+
+td{
+    position: relative;
+}
+input:not(.ng-primary, .ng-success){
+    width: 100%;
+}
+/*option{
+    width: 100%;
+}*/
+label{
+    width: 100%;
+}
+table{
+    width: 100%;
+}
+
+.full-height{
+    height: 100%;   
+}
+p{
+    margin: 0px;
+    padding: 0px;
+    height: 3vh;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+table{
+    border-collapse: collapse;
+}
+table, thead, tr, th, td{
+    padding: 0px 5px;
+}
+.padding-5{
+    width: 40%;
+    padding:0px 5px;
+}
+select{
+    margin: 0px;
+    padding: 0px;
+}
+input[type=submit],input[type = button],button[type=submit],button[type = button]{
+    border: 0px;
+    padding: 2px;
+    cursor: pointer;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+.ng-primary{
+    color: #fff;
+    background-color: #337ab7;
+    border-color: #2e6da4;   
+}
+.ng-success{
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+}
+.ng-info{
+    color: #fff;
+    background-color: #5bc0de;
+    border-color: #46b8da;
+}
+.ng-warning{
+    color: #fff;
+    background-color: #f0ad4e;
+    border-color: #eea236;
+}
+.ng-danger{
+    color: #fff;
+    background-color: #d9534f;
+    border-color: #d43f3a;
+}
+.ng-danger:hover, .ng-info:hover, .ng-primary:hover, .ng-success:hover, .ng-warning:hover{
+    filter:contrast(150%);
+}
+.inline{
+    position: relative;
+    display: inline-block;
+}
+.error-feedback{
+    color: red;
+}
+.no-error-feedback{
+    color: black;
+}
+.error-msg{
+    font-size: 10px;
+    color: red;
+}
+section{
+	display: inline-block;
+	float: left;
+	/*outline: 8px solid #ff9900;*/
+}
+.hidden{
+    visibility: hidden;
+}
+.link{
+    cursor: pointer;
+    color: blue;
+}
+
+
+
+
+
+
+body {
+    -webkit-user-select: none;
+       -moz-user-select: -moz-none;
+        -ms-user-select: none;
+            user-select: none;
+  }
+
+
+
+
+
+/* Scrollbar Styling <--OOO-->*/
+ ::-webkit-scrollbar {
+    width: 8px;
+    height: 10px;
+    background-color: transparent;
+}
+
+ 
+::-webkit-scrollbar-track {
+   /* background-color: gainsboro	;
+    -webkit-border-radius: 1px;
+    border-radius: 1px; <--OOO-->*/
+    /* -webkit-box-shadow: inset 0 0 6px rgba(220,220,220,0.3);  */
+    /* -webkit-border-radius: 10px;
+    border-radius: 10px; */
+}
+
+::-webkit-scrollbar-thumb {
+    /*-webkit-border-radius: 1px;
+    border-radius: 1px;
+    background: gray; <--OOO-->*/ 
+     /* -webkit-border-radius: 10px;
+    border-radius: 10px; */
+    background: #9f9f9f; 
+    /* -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); */
+}
+/*::-webkit-scrollbar-thumb:window-inactive {
+	 -webkit-width: 0px;
+	background: rgba(220,220,220,0.4); 
+} <--OOO-->*/
+::-webkit-scrollbar-corner {
+    background-color: transparent;
+}

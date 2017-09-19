@@ -1,0 +1,33 @@
+/* .size-25{
+	width: 100%;
+	height: 25vh;
+	position: relative;
+	float: left;
+	overflow-x: auto;
+	overflow-y: auto;
+	outline:1px solid #E8E8E8;
+	background-color: rgb(219, 214, 214) !important;
+}
+section{
+	position: relative;
+	width: 50vw;
+} */
+/* .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
+	padding: 15px ;
+	vertical-align: middle !important;
+} */
+/* .text-info{
+	cursor: pointer;
+} */
+.btn{
+	padding: 1px 6px;
+}
+.modal-title{
+	text-align: center;
+}
+.modal-header{
+	padding: 5px 15px;
+}
+.modal-footer{
+	padding: 5px 15px;
+}

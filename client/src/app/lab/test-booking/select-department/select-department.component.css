@@ -1,0 +1,28 @@
+/* .main{
+    height: 38vh;
+    position: relative;
+    width: 100%;
+    margin: 0px;
+    background-color: #45C0E8 !important;
+    outline: 0px 5px 5px 5px solid #c3c9d7;
+}
+ul{
+    position: relative;
+    margin: 0;
+    display: initial;
+    padding: 0;
+}
+li{
+    padding: 5px 10px;;
+    margin: 5px px;
+    display: block;
+    cursor: pointer;
+    font-size: 12px;
+}
+li:hover{
+    background-color: yellowgreen;
+}
+.scroll{
+    height: 35vh;
+    overflow: auto;
+} */

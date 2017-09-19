@@ -1,0 +1,65 @@
+
+.ng-lightgray{
+	background-color: lightgray;
+}
+/*.full-page{
+	max-height: auto;
+	min-height: 100%;
+}*/
+
+
+div{
+}
+
+
+
+
+
+.row{
+	max-height: auto;
+	width: auto;
+	background-color: silver
+
+}
+/*.size-50{
+	width: 50%;
+	height: 50%;
+	float: left;
+	overflow-x: auto;
+	overflow-y: auto;
+	outline:1px solid #E8E8E8;
+	background-color: #c3c9d7;
+}*/
+.size-25{
+	width: 25%;
+	height: 50%;
+	float: left;
+	overflow-x: auto;
+	overflow-y: auto;
+	outline:1px solid #E8E8E8;
+	background-color: #c3c9d7;
+}
+
+caption{
+}
+
+
+
+thead{
+	padding: 0px;
+	text-align: left;
+	border-bottom: 10px solid white;
+}
+ul{
+
+}
+li{
+	width: 100%;
+	margin: 5px 10px;
+	padding:2px 8px;
+	background-color: #d4dae8;
+	display: block;
+}
+div{
+	overflow-x: hidden !important;
+}
