@@ -11,9 +11,8 @@ import { ModifyService } from './../../modify/modify.service';
 })
 export class PatientDetailsFormComponent implements OnInit {
 
-  @Output() selectedDep = new EventEmitter<any>();
-  public throwage;
-  public throwgender;
+  @Output() throwage = new EventEmitter<any>();
+  @Output() throwgender = new EventEmitter<any>();
 
   @Input() set inputSelectedPatient(id){
     this.getPatientFromServer(id)
@@ -27,7 +26,8 @@ export class PatientDetailsFormComponent implements OnInit {
   //   {name:"Raj", position:"manager"},
   //   {name:"Upreti", position:"manager"}
   // ];
-	patientData: FormGroup;
+  patientData: FormGroup;
+  agecontrol : FormControl;
   // patientId: FormControl;
   // patient_name: FormControl;
   // patient_address: FormControl;
@@ -85,7 +85,11 @@ export class PatientDetailsFormComponent implements OnInit {
              Validators.minLength(5),
              Validators.required
            ]),
-         age: new FormControl('', Validators.required),
+         age: new FormControl('', [
+          Validators.minLength(0),
+          Validators.maxLength(3),
+          Validators.required
+          ]),
          gender: new FormControl('', Validators.required),
          // dob: new FormControl(null, Validators.required),
          year: new FormControl('', Validators.required),
@@ -105,6 +109,28 @@ export class PatientDetailsFormComponent implements OnInit {
         //  Selectedtest: new FormControl('', Validators.required),
          // referred_by: new FormControl('', Validators.required),
       });
+
+      this.agecontrol = new FormControl();
+      this.agecontrol.valueChanges
+          .subscribe(term => {
+            let ageRange = [];
+            for(let i in this.age_groupInDropdowns) ageRange.push(JSON.parse(JSON.stringify(this.age_groupInDropdowns[i])))         
+            console.log(ageRange);
+            let splitAge = [];
+            for(let x in ageRange){
+              splitAge.push(ageRange[x].split(" "));
+            }
+            console.log(splitAge);
+            let changeInNum
+            for(let y in splitAge){
+              for( let z; z <= splitAge[y].length; z++){
+                changeInNum = splitAge[y][z];
+                console.log(changeInNum);
+              }
+            }
+
+            this.throwage.emit(term);
+          });
 
       
     this.ModifyService.getDoctorList()
@@ -295,9 +321,17 @@ export class PatientDetailsFormComponent implements OnInit {
         // console.log(this.patientData.controls.Selectedtest.value);
       }
   }
-  selectAge(id){
-    this.throwage.emit(id.target.value);
-  }
+  // selectAge(id){
+  //   // this.age = new FormControl();
+  //   // this.searchField.valueChanges
+  //   //     .debounceTime(400)
+  //   //     .distinctUntilChanged()
+  //   //     .subscribe(term => {
+  //   //       this.searches.push(term);
+  //   //     });
+  //   // console.log(id);
+  //   // this.throwage.emit(id.target.value);
+  // }
   selectGender(id){
     this.throwgender.emit(id.target.value);
   }

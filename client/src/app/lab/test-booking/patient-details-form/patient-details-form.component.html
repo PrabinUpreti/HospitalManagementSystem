@@ -46,7 +46,7 @@
 							'has-success': patientData.controls.gender.valid && !patientData.controls.gender.touched }">
 							<label for="age" class="col-lg-4 control-label">Gender</label>
 							<div class="col-lg-8">
-									<select class="form-control" id="age" formControlName="gender" (change)="selectAge($event)">
+									<select class="form-control" id="age" formControlName="gender" (change)="selectGender($event)">
 									  <option value="" selected="">Select Gender</option>
 									  <option *ngFor = "let genderInDropdown of genderInDropdowns; let i =index;"> {{genderInDropdown}}</option>
 									</select>
@@ -59,16 +59,17 @@
 							'has-success': patientData.controls.age.valid && !patientData.controls.age.touched }">
 							<label for="age" class="col-lg-4 control-label">Age</label>
 							<div class="col-lg-8">
-									<select class="form-control" id="age" formControlName="age" (change)="selectGender($event)">
+									<input type="text" [formControl]="agecontrol" pattern="[0-9]+" class="form-control input-sm" id="age" formControlName="age" placeholder="Age">
+									<!-- <select class="form-control" id="age" formControlName="age" (change)="selectAge($event)">
 									  <option value='' selected="">Select Age</option>
 									  <option *ngFor = "let age_groupInDropdown of age_groupInDropdowns; let i = index;"> {{age_groupInDropdown}}</option>
-									</select>
+									</select> -->
 							</div>
 						</div>
 
 
 						
-						<div class="form-group col-sm-4 col-lg-4 col-md-4"
+						<!-- <div class="form-group col-sm-4 col-lg-4 col-md-4"
 							[ngClass]="{'has-error': patientData.controls.month.invalid && patientData.controls.month.touched || patientData.controls.day.invalid && patientData.controls.day.touched || patientData.controls.year.invalid && patientData.controls.year.touched,
 							'has-success': patientData.controls.month.valid && !patientData.controls.month.touched || patientData.controls.day.valid && !patientData.controls.day.touched || patientData.controls.year.valid && !patientData.controls.year.touched }">
 							<label for="" class="col-lg-4 control-label">DOB</label>
@@ -92,7 +93,7 @@
 										</select>
 									</div>
 							</div>
-						</div>
+						</div> -->
 
 
 						
