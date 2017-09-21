@@ -28,6 +28,7 @@ export class PatientDetailsFormComponent implements OnInit {
   // ];
   patientData: FormGroup;
   agecontrol : FormControl;
+  public testList;
   // patientId: FormControl;
   // patient_name: FormControl;
   // patient_address: FormControl;
@@ -58,6 +59,7 @@ export class PatientDetailsFormComponent implements OnInit {
   public submitButtonStatus = true;
   public patientId:any ='000001';
   public commoncodes;
+  public Notify = false;
   public notify;
   public genderInDropdowns = []
   public age_groupInDropdowns =[];
@@ -122,19 +124,51 @@ export class PatientDetailsFormComponent implements OnInit {
             }
             console.log(splitAge);
             let changeInNum
+            let intCollection=[];
             for(let y in splitAge){
-              for( let z; z <= splitAge[y].length; z++){
+              for( let z = 0; z <= splitAge[y].length-1; z++){
                 changeInNum = splitAge[y][z];
-                console.log(changeInNum);
+                if(parseInt(changeInNum)){
+                  intCollection.push(parseInt(changeInNum));
+                }
+                else{
+                  if(intCollection.length < 1 ){
+                    intCollection.push(0);
+                  }
+                  else if(splitAge[parseInt(y)].length < 3){
+                    intCollection.push(200);
+                  }
+                }
+                // console.log((changeInNum));
+                // if(changeInNum.toUpperCase() ==  )
               }
             }
+            console.log("this is int list")
+            for(let int = 0; int < intCollection.length; int+=2){
+              console.log(int);
+              if(term < 200){
+                if(term >=intCollection[int] && term <= intCollection[int+1]){
+                  if(intCollection[int] == 0){
+                    this.throwage.emit("below "+ intCollection[int+1].toString());
+                  }
+                  else if (intCollection[int+1] == 200){
+                    this.throwage.emit(intCollection[int].toString() + " above");
+                  }
+                  else if (intCollection[int] != 0 && intCollection[int+1] != 200){
+                    this.throwage.emit(intCollection[int].toString() + " to "+ intCollection[int+1]);
+                  }
+              }
+            }
+            // console.log(intCollection[int] , intCollection[int+1]);
+          }
+          this.patientData.controls.age.setValue(term);
 
-            this.throwage.emit(term);
+            // this.throwage.emit(term);
           });
 
       
-    this.ModifyService.getDoctorList()
-    .subscribe(
+      this.ModifyService.getDoctorList()
+      .subscribe(
           (response)=>{
             this.reffBys=response
             console.log(response);
@@ -142,6 +176,8 @@ export class PatientDetailsFormComponent implements OnInit {
           (error)=>{
               // this.submitButtonStatus=true
               console.log("ERROR successfully")
+              this.Notify = true;
+              this.notify = "Sorry couldn't load Doctor from server please refresh it."
           }
       );
 
@@ -150,6 +186,7 @@ export class PatientDetailsFormComponent implements OnInit {
         this.ModifyService.commoncodes() .subscribe(
           (response)=>{
             if(response.length == 0){
+              this.Notify = true;
               this.notify = "There is no any Data ";
             }
             console.log(response);
@@ -206,6 +243,8 @@ export class PatientDetailsFormComponent implements OnInit {
           },
           (error)=>{
               console.log("sorry error in server")
+              this.Notify = true;
+              this.notify = "Sorry couldn't load data from server please refresh it."
           });
         // }
 
@@ -226,39 +265,45 @@ export class PatientDetailsFormComponent implements OnInit {
       let ms = date.getMilliseconds();
       let patientId = year+"-"+month+"-"+week+"-"+day+"-"+hour+"-"+min+"-"+ms;
       this.patientData.controls.patientId.setValue(patientId);
-     if (this.patientData.valid) {
-      
-      console.log("Form Submitted!");
+      this.patientData.controls.year.setValue((year + 57) - this.patientData.controls.age.value);
+      this.patientData.controls.day.setValue(17);
+      this.patientData.controls.month.setValue("Mangsir")
+      if (this.patientData.valid) {
+        if(this.testList){
 
-      this.submitButtonStatus=false
+          this.submitButtonStatus=false;
 
-
-    let value = this.patientData.value
-      console.log(value);
-    let paramData : any = this.patientData.value;
-    this.laravelService.getData(paramData)
-      .subscribe(
-            (response)=>{
-              this.responseData = response
-              this.patientData.reset();
-              this.patientData.controls.age.setValue('');
-              this.patientData.controls.patientId.setValue(this.patientId++);
-              this.patientData.controls.gender.setValue('');
-              this.patientData.controls.year.setValue('');
-              this.patientData.controls.month.setValue('');
-              this.patientData.controls.day.setValue('');
-              this.patientData.controls.marital_status.setValue('');
-              this.patientData.controls.reff_by.setValue('');
-              this.submitButtonStatus=true
-            },
-            (error)=>{
-                this.submitButtonStatus=true
-                console.log("Stored successfully")
+          let paramData : any = this.patientData.value;
+          this.laravelService.getData(paramData)
+            .subscribe(
+                  (response)=>{
+                    this.responseData = response
+                    this.patientData.reset();
+                    this.patientData.controls.age.setValue('');
+                    this.patientData.controls.patientId.setValue(this.patientId++);
+                    this.patientData.controls.gender.setValue('');
+                    this.patientData.controls.year.setValue('');
+                    this.patientData.controls.month.setValue('');
+                    this.patientData.controls.day.setValue('');
+                    this.patientData.controls.marital_status.setValue('');
+                    this.patientData.controls.reff_by.setValue('');
+                    this.submitButtonStatus=true
+                  },
+                  (error)=>{
+                      this.submitButtonStatus=true
+                      this.Notify = true;
+                      this.notify = "Sorry error in server";
+                  }
+              )
             }
-        )
+            else{
+              this.Notify = true;
+              this.notify = "Please select test."}
 
     }
     else{
+      this.Notify = true;
+      this.notify = "Please fill the form properly."
       this.testStatus = true;
     console.log("error in client");
         for (let x in this.patientData.controls) {
@@ -334,6 +379,11 @@ export class PatientDetailsFormComponent implements OnInit {
   // }
   selectGender(id){
     this.throwgender.emit(id.target.value);
+  }
+
+  datadismis(){
+    console.log('Hide')
+    this.Notify = false;
   }
 
 }

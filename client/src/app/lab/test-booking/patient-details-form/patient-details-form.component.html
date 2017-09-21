@@ -1,6 +1,16 @@
 		<!-- <div  onload="myFunction()" class="patient-details responsive-block" style="background-color: #d4dae8;">
 			<div class="responsive-table">
 				<p>Test Booking</p><hr> -->
+				<div *ngIf = "Notify" class="container">
+					<div class="row" id="error-container">
+							 <div class="span12">  
+									 <div class="alert alert-danger">
+											<button type="button" class="close" (click) = "datadismis()">×</button>
+											 <span>{{notify}}</span>
+									 </div>
+								 </div>
+							</div>
+					</div>
 				<form style="background-color:#f5f5f5;" class="form-horizontal container-fluid" [formGroup] = "patientData" (ngSubmit) = "patientDatas()">
 
 						<legend>Patient Registration</legend>

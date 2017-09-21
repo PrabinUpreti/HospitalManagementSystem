@@ -25,26 +25,26 @@ export class TestBookingComponent implements OnInit {
   }
   public onSelectedDep(id){
     this.Dep=id
-    console.log(this.Dep);
+    // console.log(this.Dep);
   }
   onSelectedtestype(id){
     this.testype = id;
-    console.log(id);
+    // console.log(id);
   }
   onDragToSelected(id){    
     this.dragToSelectedNow = id;
-    console.log(id);
+    // console.log(id);
   }
   onsetResponse(id){
     this.setResponse = id;
-    console.log("in parent" + id);
+    // console.log("in parent" + id);
   }
   onThrowAge(id){
-    console.log(id);
+    // console.log(id);
     this.CatchAge = id;
   }
   onThrowGender(id){
-    console.log(id);
+    // console.log(id);
     this.CatchGender = id;
   }
 
