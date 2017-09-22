@@ -18,7 +18,8 @@ export class LaravelService {
 
     return this.http.post("http://server.hms.com/api/test-booking", paramData, options)
         .map(this.extractData)
-        .catch(this.handleError);
+        .catch(this.handleError)
+        // .retry(3);
   }
 
   private extractData(res: Response) {

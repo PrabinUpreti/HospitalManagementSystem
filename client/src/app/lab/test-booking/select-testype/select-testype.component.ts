@@ -19,6 +19,7 @@ export class SelectTestypeComponent implements OnInit {
   // public testType;
 
   public testypes;
+  public className;
 
 
   constructor(private modifyService: ModifyService) { }
@@ -34,11 +35,12 @@ export class SelectTestypeComponent implements OnInit {
             this.testypes = response;
           },
           (error)=>{
-              console.log("Error in server")
+              console.log("Error in server");
           }
         );
 
       this.alive =true;
+      this.className = undefined;
       // for(let i in this.testypes){
       //   if(this.testypes[i].id==id){
       //     this.testType=this.testypes[i].names
@@ -51,6 +53,7 @@ export class SelectTestypeComponent implements OnInit {
 }
 
 pushtestype(index){
+  this.className = index;
   console.log(index);
   let id = this.testypes[index].id;
   console.log('this is id = '+id);

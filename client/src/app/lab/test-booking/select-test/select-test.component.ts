@@ -14,9 +14,12 @@ export class SelectTestComponent implements OnInit {
   }
 
   @Output() dragToSelected = new EventEmitter<any>();
+  @Output() throwSelectedTest = new EventEmitter<any>();
 
   public alive = false;
-
+  public checkSelected = [];
+  public active;
+  public idForForm = [];
   testTables = [];
 
   constructor(private modifyService: ModifyService) { }
@@ -30,17 +33,37 @@ export class SelectTestComponent implements OnInit {
         .subscribe(
           (response)=>{
             console.log(response);
+            let stationResponse = [];
+            for(let x in response){
+              stationResponse.push(response[x]);
+              stationResponse[x]['checkActive'] = false;
+              console.log(stationResponse);
+            }
+            this.testTables = stationResponse;
+            
             this.testTables = response;
           },
           (error)=>{
-              console.log("Error in server")
+              console.log("Error in server");
           }
         );
   }
 
   dragTr(index){
+    let sendingData;    
+    if(!(index.checkActive)){
+      index.checkActive = true;
+      this.idForForm.push(index.id)
+      console.log(this.idForForm);
+            
+    }
+    else{
+      index.checkActive =false;
+      this.idForForm.splice(index.id , 1)
+      console.log(this.idForForm);
+    }
     console.log(index);
-    this.dragToSelected.emit(index)
+    // this.dragToSelected.emit(index)
   }
 
 }

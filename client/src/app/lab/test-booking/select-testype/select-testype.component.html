@@ -1,7 +1,7 @@
 <div [hidden]="!alive">
     <legend>Select Test Type</legend>
     <div class="list-group" style="height:60vh; overflow:auto;background-color:#f5f5f5">
-            <a class="list-group-item" *ngFor = "let testype of testypes; let i = index" (click) = pushtestype(i)>{{testype.name}}</a>
+            <a class="list-group-item" [ngClass] = "{'active': i == className}" *ngFor = "let testype of testypes; let i = index" (click) = pushtestype(i)>{{testype.name}}</a>
     </div>
     <!-- <pre>
         {{testypes | json}}

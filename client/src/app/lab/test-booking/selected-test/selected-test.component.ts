@@ -12,7 +12,7 @@ export class SelectedTestComponent implements OnInit {
   public SelectedAge;
   public SelectedGender;
   public idOfTest =[];
-  @Output() throwSelectedTest = new EventEmitter<any>();
+  // @Output() throwSelectedTest = new EventEmitter<any>();
   @Input() set inputDropToSelectedNow(id){
     this.DropHereNow(id)
   }

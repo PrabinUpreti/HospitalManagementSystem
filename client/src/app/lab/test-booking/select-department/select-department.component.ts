@@ -11,7 +11,7 @@ export class SelectDepartmentComponent implements OnInit {
   @Output() selectedDep = new EventEmitter<any>();
   public departments=[];
   public idForTestType;
-
+  public  className;
   
   constructor(private modifyService: ModifyService) { }
 
@@ -29,6 +29,7 @@ export class SelectDepartmentComponent implements OnInit {
 
 }
   pushdepartment(index){
+    this.className = index;
     console.log(index);
     this.idForTestType = this.departments[index].id;
     console.log(this.idForTestType);
