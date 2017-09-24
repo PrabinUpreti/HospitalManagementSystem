@@ -42,19 +42,21 @@ export class SelectedTestComponent implements OnInit {
     
     if(data == undefined) return 0
     this.alive = true;
-    this.aliveTable = false;
-    if(!(this.idOfTest[data.name])){
-      this.idOfTest[data.name] = data.id;
-      console.log(this.idOfTest);
+    if(this.aliveTable){
+      this.aliveTable = false;
+    }
+    if(data.checkActive){
+      // this.idOfTest[data.name] = data.id;
+      // console.log(this.idOfTest);
       let id = data.id;
       this.testName = data.name;
       this.modifyService.getTestDetails(id)
       .subscribe(
         (response)=>{
           // this.throwSelectedTest.emit(data.id);
-          console.log(response);
-          this.tempData=(response);
-          console.log(this.tempData);
+          // console.log(response);
+          this.tempData=response;
+          // console.log(this.tempData);
           // console.log('this is name = ' + this.testName)
           // // this.dataTables['name'] =this.testName;
           // this.dataTables;
@@ -68,22 +70,30 @@ export class SelectedTestComponent implements OnInit {
               
               if(AgeFromServer == AgeFromComponent && GenderFromServer == GenderFromComponent){
               // console.log("Age and Gender Found")
-              this.aliveTable = true;
-              this.dataTables = [];
-              this.dataTables.push(this.tempData[x]);
+              if(!(this.aliveTable)){
+                this.aliveTable = true;
+              }
+              let stationData = this.tempData[x];
+              stationData['name'] = data.name;
+              this.dataTables.push(stationData);
+              
               console.log(this.dataTables);
               break;
               }
-              else{ 
+              else{
                 console.log("Age and Gender Not Found");
                 this.info = "This Age or Gender is not registered by Administrator.";
-                this.aliveTable = false;
+                if(this.aliveTable){                  
+                  this.aliveTable = false;
+                }
               }
             }
             else{
               console.log('Undifined is Success');
               this.info = 'Please Input Gender and Age in above form.';
-              this.aliveTable = false;
+              if(this.aliveTable){                  
+                this.aliveTable = false;
+              }
             }
           }
         },
@@ -93,54 +103,69 @@ export class SelectedTestComponent implements OnInit {
       );
     }
     else{
-      if(!(this.idOfTest[data.name].value == data.id)){
-        this.idOfTest.splice(this.idOfTest[data.name], 1);
-        console.log(this.idOfTest);
-        let id = data.id;
-        this.testName = data.name;
-        this.modifyService.getTestDetails(id)
-        .subscribe(
-          (response)=>{
-            // this.throwSelectedTest.emit(data.id);
-            console.log(response);
-            this.tempData=response;
-            // console.log('this is name = ' + this.testName)
-            // // this.dataTables['name'] =this.testName;
-            // this.dataTables;
-            for(let x in this.tempData){
-              let AgeFromServer = this.tempData[x].age_group;
-              let GenderFromServer = this.tempData[x].gender;
-              let AgeFromComponent = this.SelectedAge;
-              let GenderFromComponent  = this.SelectedGender;
-              console.log( AgeFromComponent +"<br>"+ AgeFromServer +"<br>"+ GenderFromComponent +"<br>"+ GenderFromServer);
-              if(AgeFromComponent && GenderFromComponent){
-                
-                if(AgeFromServer == AgeFromComponent && GenderFromServer == GenderFromComponent){
-                console.log("Age and Gender Found")
-                this.aliveTable = true;
-                this.dataTables = [];
-                this.dataTables.push(this.tempData[x]);
-                console.log(this.dataTables);
-                break;
-                }
-                else{ 
-                  console.log("Age and Gender Not Found");
-                  this.info = "This Age or Gender is not registered by Administrator.";
-                  this.aliveTable = false;
-                }
-              }
-              else{
-                console.log('Undifined is Success');
-                this.info = 'Please Input Gender and Age in above form.';
-                this.aliveTable = false;
-              }
-            }
-          },
-          (error)=>{
-              console.log("Error in server")
-          }
-        );
+      for(let a in this.dataTables){
+        if(this.dataTables[a].name == data.name){
+          let stationSplice = this.dataTables[a];
+          // delete(this.dataTables[a]);
+        }
+        console.log(this.dataTables);
+        break;
       }
+      // for(let a in this.dataTables){
+      //   console.log(this.dataTables[a]);
+      // }
+      // if(!(this.idOfTest[data.name].value == data.id)){
+      //   this.idOfTest.splice(this.idOfTest[data.name], 1);
+      //   console.log(this.idOfTest);
+        // let id = data.id;
+        // this.testName = data.name;
+        // this.modifyService.getTestDetails(id)
+        // .subscribe(
+        //   (response)=>{
+        //     // this.throwSelectedTest.emit(data.id);
+        //     console.log(response);
+        //     this.tempData=response;
+        //     // console.log('this is name = ' + this.testName)
+        //     // // this.dataTables['name'] =this.testName;
+        //     // this.dataTables;
+        //     for(let x in this.tempData){
+        //       let AgeFromServer = this.tempData[x].age_group;
+        //       let GenderFromServer = this.tempData[x].gender;
+        //       let AgeFromComponent = this.SelectedAge;
+        //       let GenderFromComponent  = this.SelectedGender;
+        //       console.log( AgeFromComponent +"<br>"+ AgeFromServer +"<br>"+ GenderFromComponent +"<br>"+ GenderFromServer);
+        //       if(AgeFromComponent && GenderFromComponent){
+                
+        //         if(AgeFromServer == AgeFromComponent && GenderFromServer == GenderFromComponent){
+        //         console.log("Age and Gender Found")
+        //         this.aliveTable = true;
+        //         this.dataTables = [];
+        //         this.dataTables.push(this.tempData[x]);
+        //         console.log(this.dataTables);
+        //         break;
+        //         }
+        //         else{ 
+        //           console.log("Age and Gender Not Found");
+        //           this.info = "This Age or Gender is not registered by Administrator.";
+        //           if(this.aliveTable){                  
+        //             this.aliveTable = false;
+        //           }
+        //         }
+        //       }
+        //       else{
+        //         console.log('Undifined is Success');
+        //         this.info = 'Please Input Gender and Age in above form.';
+        //         if(this.aliveTable){                  
+        //           this.aliveTable = false;
+        //         }
+        //       }
+        //     }
+        //   },
+        //   (error)=>{
+        //       console.log("Error in server")
+        //   }
+        // );
+      // }
     }
 
 

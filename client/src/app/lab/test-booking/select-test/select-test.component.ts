@@ -55,14 +55,16 @@ export class SelectTestComponent implements OnInit {
       index.checkActive = true;
       this.idForForm.push(index.id)
       console.log(this.idForForm);
-            
+      console.log(index);
+      this.dragToSelected.emit(index)
     }
     else{
       index.checkActive =false;
       this.idForForm.splice(index.id , 1)
       console.log(this.idForForm);
+      this.dragToSelected.emit(index)
     }
-    console.log(index);
+    // console.log(index);
     // this.dragToSelected.emit(index)
   }
 
