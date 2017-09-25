@@ -116,7 +116,7 @@ export class PatientDetailsFormComponent implements OnInit {
       this.agecontrol.valueChanges
           .subscribe(term => {
             let ageRange = [];
-            for(let i in this.age_groupInDropdowns) ageRange.push(JSON.parse(JSON.stringify(this.age_groupInDropdowns[i])))         
+            for(let i in this.age_groupInDropdowns) ageRange.push(JSON.parse(JSON.stringify(this.age_groupInDropdowns[i])))
             console.log(ageRange);
             let splitAge = [];
             for(let x in ageRange){
@@ -143,6 +143,7 @@ export class PatientDetailsFormComponent implements OnInit {
                 // if(changeInNum.toUpperCase() ==  )
               }
             }
+            console.log(intCollection);
             console.log("this is int list")
             for(let int = 0; int < intCollection.length; int+=2){
               console.log(int);

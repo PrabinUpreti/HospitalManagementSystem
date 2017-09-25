@@ -1,7 +1,6 @@
 import { Component, OnInit, Input,Output,EventEmitter } from '@angular/core';
 import { ModifyService } from '../../modify/modify.service';
 
-
 @Component({
   selector: 'app-select-test',
   templateUrl: './select-test.component.html',
@@ -14,7 +13,7 @@ export class SelectTestComponent implements OnInit {
   }
 
   @Output() dragToSelected = new EventEmitter<any>();
-  @Output() throwSelectedTest = new EventEmitter<any>();
+  // @Output() throwSelectedTest = new EventEmitter<any>();
 
   public alive = false;
   public checkSelected = [];
@@ -50,20 +49,26 @@ export class SelectTestComponent implements OnInit {
   }
 
   dragTr(index){
-    let sendingData;    
+    let sendingData;
     if(!(index.checkActive)){
       index.checkActive = true;
       this.idForForm.push(index.id)
       console.log(this.idForForm);
       console.log(index);
       this.dragToSelected.emit(index)
+    // this.selectedtestcomponent.getSomeResponse(index)
+    //   .subscribe(
+    //     response =>{
+    //       console.log(response);
+    //     }
+    //   );
     }
-    else{
-      index.checkActive =false;
-      this.idForForm.splice(index.id , 1)
-      console.log(this.idForForm);
-      this.dragToSelected.emit(index)
-    }
+    // else{
+    //   index.checkActive =false;
+    //   this.idForForm.splice(index.id , 1)
+    //   console.log(this.idForForm);
+    //   this.dragToSelected.emit(index)
+    // }
     // console.log(index);
     // this.dragToSelected.emit(index)
   }

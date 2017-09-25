@@ -1,6 +1,37 @@
 import { Component, OnInit, Input,Output, EventEmitter } from '@angular/core';
 import { ModifyService } from '../../modify/modify.service';
 
+class DataTable {
+  
+    private dataTable = []
+  
+    public push(data){
+      this.dataTable.push(data)
+    }
+
+    public splice(index,remove,data){
+      if(data)
+        this.dataTable.splice(index,remove,data)
+      else
+        this.dataTable.splice(index,remove)
+    }
+  
+    public totalSum(){
+      let sum = 0
+      for(let i in this.dataTable){
+        sum = sum + parseInt(this.dataTable[i].rate)
+      }
+      return sum
+    }
+    public getDataTables(){
+      return this.dataTable
+    }
+  }
+
+
+
+
+
 @Component({
   selector: 'app-selected-test',
   templateUrl: './selected-test.component.html',
@@ -14,6 +45,7 @@ export class SelectedTestComponent implements OnInit {
   public idOfTest =[];
   // @Output() throwSelectedTest = new EventEmitter<any>();
   @Input() set inputDropToSelectedNow(id){
+    console.log(id);
     this.DropHereNow(id)
   }
   @Input() set inputCatchAge(id){
@@ -28,20 +60,34 @@ export class SelectedTestComponent implements OnInit {
   @Output() setToPatientDetials = new EventEmitter<any>();
   public alive = false;
   public aliveTable = false;
-  public dataTables=[];
+  public dataTables: DataTable;
   public tempData = [];
   public testName;
+  public tempdataname;
+  public totalPrice;
   public info = "Please Input Gender and Age in above form.";
 
   constructor(private modifyService: ModifyService) { }
 
   ngOnInit() {
+    this.dataTables = new DataTable()
   }
 
   DropHereNow(data){
-    
     if(data == undefined) return 0
     this.alive = true;
+    if(!(this.SelectedGender && this.SelectedAge)){
+      
+      if(!(this.SelectedAge) && this.SelectedGender){
+      this.aliveTable = false;
+      this.info = 'This Age is not registered by Administrator.';
+      return 0;
+      }
+      this.aliveTable = false;
+      this.info = 'Please Input Gender and Age in above form.';
+      return 0;
+    }
+    
     if(this.aliveTable){
       this.aliveTable = false;
     }
@@ -67,7 +113,6 @@ export class SelectedTestComponent implements OnInit {
             let GenderFromComponent  = this.SelectedGender;
             // console.log( AgeFromComponent +"<br>"+ AgeFromServer +"<br>"+ GenderFromComponent +"<br>"+ GenderFromServer);
             if(AgeFromComponent && GenderFromComponent){
-              
               if(AgeFromServer == AgeFromComponent && GenderFromServer == GenderFromComponent){
               // console.log("Age and Gender Found")
               if(!(this.aliveTable)){
@@ -96,6 +141,11 @@ export class SelectedTestComponent implements OnInit {
               }
             }
           }
+          let tempPrice = 0;
+          for(let price in this.dataTables){
+            tempPrice += parseInt(this.dataTables[price].rate);
+            this.totalPrice = tempPrice;
+          }
         },
         (error)=>{
             console.log("Error in server")
@@ -103,14 +153,25 @@ export class SelectedTestComponent implements OnInit {
       );
     }
     else{
-      for(let a in this.dataTables){
-        if(this.dataTables[a].name == data.name){
-          let stationSplice = this.dataTables[a];
-          // delete(this.dataTables[a]);
-        }
-        console.log(this.dataTables);
-        break;
-      }
+      // this.tempdataname = data.name;
+      // let spliceHere;
+      // spliceHere.push(JSON.parse(JSON.stringify(this.dataTables)));
+      // for(let a in spliceHere){
+      //   alert(a);
+      //   console.log(spliceHere[a].name);
+      //   console.log(spliceHere[a]);
+      //   console.log(this.tempdataname);
+      //   if(spliceHere[a].name.toUpperCase() == this.tempdataname.toUpperCase()){
+      //     spliceHere.splice(parseInt(a),1);
+      //     console.log(spliceHere);
+      //     let stationSplice = [];
+      //     stationSplice.push(spliceHere[a]);
+      //     console.log(stationSplice);
+      //     this.dataTables = stationSplice;
+      //     // delete(this.dataTables[a]);
+      //   }
+      //   console.log(this.dataTables);
+      // }
       // for(let a in this.dataTables){
       //   console.log(this.dataTables[a]);
       // }
@@ -194,7 +255,7 @@ export class SelectedTestComponent implements OnInit {
         if(AgeFromServer == AgeFromComponent && GenderFromServer == GenderFromComponent){
         console.log("Age and Gender Found")
         this.aliveTable = true;
-        this.dataTables = [];
+        this.dataTables = new DataTable;
         this.dataTables.push(this.tempData[x]);
         console.log(this.dataTables);
         break;

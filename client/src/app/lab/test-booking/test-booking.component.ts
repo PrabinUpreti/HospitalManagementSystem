@@ -33,7 +33,6 @@ export class TestBookingComponent implements OnInit {
   }
   onDragToSelected(id){    
     this.dragToSelectedNow = id;
-    // console.log(id);
   }
   onsetResponse(id){
     this.setResponse = id;

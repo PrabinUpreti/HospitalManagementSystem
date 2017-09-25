@@ -16,20 +16,20 @@
                         <!-- <th> :: Discount</th>
                         <th> :: Discount %</th>
                         <th> :: Amount</th> -->
-                        <!-- <th style="color:#a94442">Action </th> -->
+                        <th style="color:#a94442">Action </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor = "let dataTable of dataTables; let i = index">
+                    <tr *ngFor = "let dataTable of dataTables.getDataTables(); let i = index">
                         <td>{{dataTable.name}}</td>
                         <td>{{dataTable.lower_bound}}</td>
                         <td>{{dataTable.upper_bound}}</td>
                         <td>{{dataTable.unit}}</td>
-                        <td>{{dataTable.rate}}</td>
+                        <td>Rs {{dataTable.rate}} /-</td>
                         <!-- <td>{{dataTable.Discount}}</td>
                         <td>{{dataTable.discountPer}}</td>
                         <td>{{dataTable.amount}}</td> -->
-                        <!-- <td style="cursor:pointer;color:#a94442" (click)="dataTables.splice(i,1)">remove </td> -->
+                        <td style="cursor:pointer;color:#a94442" (click)="dataTables.splice(i,1)">remove </td>
                     </tr>
                 </tbody>
                 <tfoot>
@@ -38,7 +38,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td></td>
+                        <td>Rs  {{dataTables.totalSum()}} /-</td>
                         <!-- <td></td>
                         <td></td>
                         <td></td> -->
