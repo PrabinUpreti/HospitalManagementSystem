@@ -7,6 +7,7 @@ import { UsersRouting } from './lab.router';
 import { LaravelService } from './test-booking/patient-details-form/laravel.service';
 import { ReportService } from './reports/report.service';
 import { ModifyService } from './modify/modify.service';
+import { TransactionService } from './transaction/transaction.service';
 
 
 
@@ -71,6 +72,6 @@ import { PatientComponent } from './modify/patient/patient.component';
   				],
   bootstrap: [TestBookingComponent],
   exports:[TestBookingComponent],
-  providers:[LaravelService,ReportService,ModifyService]
+  providers:[LaravelService,ReportService,ModifyService,TransactionService]
 })
 export class LabModule {}

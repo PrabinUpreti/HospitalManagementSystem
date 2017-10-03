@@ -19,7 +19,7 @@ class CreatePatientsTable extends Migration
             $table->string('patient_name');
             $table->string('patient_address');
             $table->integer('age');
-            $table->integer('gender');
+            $table->string('gender');
             $table->integer('year');
             $table->string('month');
             $table->integer('day');

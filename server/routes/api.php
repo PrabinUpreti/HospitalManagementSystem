@@ -61,5 +61,6 @@ Route::resource('/test','TestController');
 Route::resource('/testdetails','TestDetailController');
 Route::resource('/doctor','DoctorListController');
 Route::resource('/commoncodes','CommonCodeController');
+Route::resource('/transaction','TransactionController');
 // Route::post('/modify','DepartmentController@postDepartment');
 // Route::get('/modify','DepartmentController@getDepartment');

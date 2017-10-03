@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { MainMenuComponent } from './menu/main-menu/main-menu.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { TestBookingComponent } from './test-booking/test-booking.component';
-// import { TransactionComponent } from './transaction/transaction.component';
+import { TransactionComponent } from './transaction/transaction.component';
 import { ReportsComponent } from './reports/reports.component';
 import { ViewTransactionComponent } from './view-transaction/view-transaction.component';
 import { FillReportComponent } from './reports/fill-report/fill-report.component';
@@ -29,7 +29,11 @@ const usersRoutes: Routes = [
       				{ path: 'test-booking', component: TestBookingComponent },
               { path: 'reports', component: ReportsComponent },
               { path: 'test', component: DashboardComponent },
-              { path: 'modify', component: ModifyComponent },
+              { path: 'modify', component: ModifyComponent },              
+      				{ path: 'add-transaction', component: TransactionComponent },
+              { path: 'view-transaction', component: ViewTransactionComponent },
+              { path: 'list', component: DashboardComponent },
+              { path: 'help', component: ModifyComponent },
 				]
 
     //    },

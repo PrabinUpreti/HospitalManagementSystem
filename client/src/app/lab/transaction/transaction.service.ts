@@ -9,16 +9,22 @@ import 'rxjs/add/observable/throw';
 @Injectable()
 export class TransactionService {
 
-constructor(private _http: Http) { }
-getbillData(id){
-      let headers =new Headers({'Content-type':'application/json'});
-      let option = new RequestOptions({headers: headers, withCredentials: true});
-      return this._http.get("http://server.hms.com/api/bill/"+id, option)
-      .map((res: Response) => {
-        return res.json();
-      })
-       .catch((error: Response | any) => {
-        return Observable.throw(error);
-    });
-}
+constructor(private PatientTest: Http) { }
+getPatientTest(id){
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers,withCredentials: true});
+    return this.PatientTest.get("http://server.hms.com/api/transaction/"+id, options)
+    .map(this.extractData)
+    .catch(this.handleError);
+    }
+
+
+  private extractData(res: Response) {
+    let response = res.json();
+    return response || {};
+  }
+
+  private handleError(error: Response | any) {
+    return Observable.throw(error);
+  }
 }
