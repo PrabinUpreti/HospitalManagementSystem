@@ -1,25 +1,16 @@
-/* div{
-    background-color: lightskyblue;
-    height: 38vh;
-    position: relative;
-    width: 100%;
-    overflow: auto;
+#error-container {
+	position: fixed;
+	z-index: 999;
+	bottom: 20px;
+	right: 10px;
+	box-shadow: 5px 5px 5px #888888;
 }
-td, th{
-    border-right:1px solid black;
-    border-left: 1px solid black;
-    padding: 5px;
+.alert {
+    padding: 15px;
+    margin-bottom: 0px;
+    border: 1px solid transparent;
+	border-radius: 4px;
 }
-thead{
-    border: 1px solid black;
-    text-align: left;
+span{
+	padding-right: 15px;
 }
-tfoot{
-    font-size: 12px;
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
-}
-tbody>tr:hover{
-    background-color: lightcoral;
-    cursor: pointer;
-} */

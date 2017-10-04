@@ -263,21 +263,33 @@ export class PatientDetailsFormComponent implements OnInit {
       let day = date.getDate();
       let hour = date.getHours();
       let min = date.getMinutes();
+      let sec = date.getSeconds();
       let ms = date.getMilliseconds();
-      let patientId = year+"-"+month+"-"+week+"-"+day+"-"+hour+"-"+min+"-"+ms;
+      let patientId = "p"+year+""+month+""+hour+""+min+""+sec+""+ms;
       this.patientData.controls.patientId.setValue(patientId);
-      this.patientData.controls.year.setValue((year + 57) - this.patientData.controls.age.value);
-      this.patientData.controls.day.setValue(17);
-      this.patientData.controls.month.setValue("Mangsir")
+      this.patientData.controls.year.setValue((year) - this.patientData.controls.age.value);
+      this.patientData.controls.day.setValue(day);
+      this.patientData.controls.month.setValue(month);
+      let testIdStoredInLocalStorage = JSON.parse(localStorage.getItem('test'))
       if (this.patientData.valid) {
-        if(this.testList){
+        if(testIdStoredInLocalStorage){
 
           this.submitButtonStatus=false;
-
           let paramData : any = this.patientData.value;
+
+
+          for(let x in this.reffBys){
+            if("Dr."+ this.reffBys[x].name == this.patientData.controls.reff_by.value){
+              paramData['reff_by'] = this.reffBys[x].id;
+            }
+          }
+          paramData['testID'] = testIdStoredInLocalStorage;
+
+          console.log(paramData);
           this.laravelService.getData(paramData)
             .subscribe(
                   (response)=>{
+                    localStorage.removeItem('test');
                     this.responseData = response
                     this.patientData.reset();
                     this.patientData.controls.age.setValue('');
@@ -381,6 +393,15 @@ export class PatientDetailsFormComponent implements OnInit {
   selectGender(id){
     this.throwgender.emit(id.target.value);
   }
+  // reffiredDoctorId(id){
+  //   for(let x in this.reffBys){
+  //     if("Dr."+this.reffBys[x].name == id.target.value){
+  //       this.patientData.controls.reff_by.setValue(this.reffBys[x].id);
+  //     }
+  //   }
+  //   // let idOfDoctor = this.reffBys[id].id;
+  //   // this.patientData.controls.reff_by.setValue(idOfDoctor);
+  // }
 
   datadismis(){
     console.log('Hide')

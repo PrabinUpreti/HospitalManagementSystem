@@ -10,13 +10,20 @@ import 'rxjs/add/observable/throw';
 export class TransactionService {
 
 constructor(private PatientTest: Http) { }
-getPatientTest(id){
-    let headers = new Headers({'Content-Type': 'application/json'});
-    let options = new RequestOptions({headers: headers,withCredentials: true});
-    return this.PatientTest.get("http://server.hms.com/api/transaction/"+id, options)
+getPatientTest(id) {
+  let headers = new Headers({ 'Content-Type': 'application/json' });
+  let options = new RequestOptions({ headers: headers, withCredentials: true });
+  return this.PatientTest.get("http://server.hms.com/api/transaction/" + id, options)
     .map(this.extractData)
     .catch(this.handleError);
-    }
+}
+getDetialsOfPatients(id) {
+  let headers = new Headers({ 'Content-Type': 'application/json' });
+  let options = new RequestOptions({ headers: headers, withCredentials: true });
+  return this.PatientTest.get("http://server.hms.com/api/transactions/" + id, options)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
 
 
   private extractData(res: Response) {

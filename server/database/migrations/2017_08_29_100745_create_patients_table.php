@@ -23,7 +23,7 @@ class CreatePatientsTable extends Migration
             $table->integer('year');
             $table->string('month');
             $table->integer('day');
-            $table->integer('marital_status');
+            $table->string('marital_status');
             $table->bigInteger('phone');
             $table->string('email')->nullable();
             $table->string('identity_number');

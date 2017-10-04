@@ -12,11 +12,13 @@ export class TransactionComponent implements OnInit {
   
   public SearchPayment : FormGroup;
   public patientDatas=[];
+  public patientDatasDetails = [];
   public commoncodes = [];
   public notify;
   public Notify = false;
   public ageGroupFromServer =[];
   public throwage;
+  public genderinPatientTable;
   ngOnInit() {
     this.SearchPayment = new FormGroup({
       Search_name:new FormControl('', Validators.required)
@@ -98,6 +100,7 @@ export class TransactionComponent implements OnInit {
     .subscribe(
       (response)=>{
         console.log(response);
+        this.genderinPatientTable = response[0].gender;
         // this.patientDatas = response;
         
         let ageRange = [];
@@ -151,9 +154,9 @@ export class TransactionComponent implements OnInit {
 
       this.patientDatas = [];
       for(let i in response){
-        if(response[i].age_group.toUpperCase() == this.throwage.toUpperCase() && response[i].gender.toUpperCase() == response[i].genderdetails.toUpperCase() ){
+        // if(response[i].age_group.toUpperCase() == this.throwage.toUpperCase() && response[i].gender.toUpperCase() == response[i].genderdetails.toUpperCase() ){
           this.patientDatas.push(response[i]);
-        }
+        // }
       }
       console.log(this.patientDatas);
 
@@ -163,7 +166,26 @@ export class TransactionComponent implements OnInit {
       });
   }
   invoice(){
-  }
+    this.patientDatasDetails = [];
+    for (let i in this.patientDatas) {
+      let idToGetTest = this.patientDatas[i].testbookings_id;
+      this.transactionservice.getDetialsOfPatients(idToGetTest)
+        .subscribe(
+        (response) => {
+          console.log(response);
+          for (let i in response) {
+            if (response[i].age_group.toUpperCase() == this.throwage.toUpperCase() && this.genderinPatientTable.toUpperCase() == response[i].genderdetails.toUpperCase()) {
+              this.patientDatasDetails.push(response[i]);
+            }
+          }
+          console.log(this.patientDatasDetails);
+        },
+        (error) => {
+          console.log("sorry error in server")
+        });
+    }
+    
+}
 
 
   datadismis(){

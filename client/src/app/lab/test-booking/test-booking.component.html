@@ -8,12 +8,12 @@
     <section class="col-lg-2 col-sm-2 col-md-2">
         <app-select-testype [inputSelectedDep]="Dep" (selectedtestype)="onSelectedtestype($event)"></app-select-testype>
     </section>
-    <section class="col-lg-2 col-sm-2 col-md-2">
-        <app-select-test [inputSelectedtest]="testype" (dragToSelected) = "onDragToSelected($event)"></app-select-test>
-    </section>
-    <section class="col-lg-6 col-sm-6 col-md-6">
+    
+        <app-select-test [inputCatchAge] = "CatchAge" [inputCatchGender] = "CatchGender" [inputSelectedtest]="testype" (dragToSelected) = "onDragToSelected($event)"></app-select-test>
+    
+    <!-- <section class="col-lg-6 col-sm-6 col-md-6">
         <app-selected-test [inputCatchAge] = "CatchAge" [inputCatchGender] = "CatchGender" [inputDropToSelectedNow]="dragToSelectedNow" (setResponse)="onsetResponse($event)"></app-selected-test>
-    </section>
+    </section> -->
 <!-- <section class="ng-20">
     <app-search-window (selectedPatient)="onSelectedPatient($event)"></app-search-window>
 </section> -->

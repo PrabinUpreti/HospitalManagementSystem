@@ -39,7 +39,7 @@
     <tbody>
     <tr *ngFor = "let patientData of patientDatas; let i = index">
         <td class="text-info">{{patientDatas.length - i}}</td>
-      <td class="text-info" style="cursor:pointer" (click)="invoice(patientData)">{{patientData?.reg_no}}</td>
+      <td class="text-info" style="cursor:pointer" (click)="invoice()">{{patientData?.reg_no}}</td>
       <td>{{patientData?.patient_name}}</td>
       <td>{{patientData?.created_at}}</td>
     </tr>
@@ -47,3 +47,4 @@
     </table>
   </div>
 </div>
+<pre>{{patientDatasDetails|json}}</pre>

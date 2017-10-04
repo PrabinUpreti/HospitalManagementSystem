@@ -1,39 +1,75 @@
-<div [hidden]="!alive">
-    <legend>Select Test</legend>
-    <div class="list-group" style="height:60vh; overflow:auto;background-color:#f5f5f5">
-            <a class="list-group-item"  *ngFor = "let testTable of testTables; let i = index" (click) = "dragTr(testTable)" [ngClass] = "{'active':testTable.checkActive}">{{testTable?.name}}</a>
-    </div>
-</div>
-<!-- <pre>{{testTables | json}}</pre> -->
-<!--     
-    <div class="main" [hidden]="!alive">
-        <table>
-            <thead>
-                <tr>
-                    <th>:: Test Name</th>
-                    <th> :: Lower Bound</th>
-                    <th> :: Upper Bound</th>
-                    <th> :: Units</th>
-                    <th> :: Rate</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor = "let testTable of testTables; let i = index" (click)="dragTr(testTable)">
-                    <td>{{testTable.testName}}</td>
-                    <td>{{testTable.LBound}}</td>
-                    <td>{{testTable.UBound}}</td>
-                    <td>{{testTable.units}}</td>
-                    <td>{{testTable.rate}}</td>
-                </tr>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td> Total</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
 
-            </tfoot>
-        </table>
-    </div> -->
+<section class="col-lg-2 col-sm-2 col-md-2">
+    <div [hidden]="!alive">
+        <legend>Select Test</legend>
+        <div class="list-group" style="height:60vh; overflow:auto;background-color:#f5f5f5">
+                <a class="list-group-item"  *ngFor = "let testTable of testTables; let i = index" (click) = "dragTr(testTable)" [ngClass] = "{'active':testTable.checkActive}">{{testTable?.name}}</a>
+        </div>
+    </div>
+</section>
+
+<section class="col-lg-6 col-sm-6 col-md-6">
+    <div [hidden]="!aliveSelected">
+        <legend>Selected Test</legend>
+            
+        <div *ngIf='!aliveSelectedTable' class="alert alert-info">
+            <strong>Info!</strong> {{info}}
+        </div>
+        <div *ngIf = 'aliveSelectedTable'  class="table-responsive" style="height:60vh; overflow:auto;background-color:#f5f5f5">
+            <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th> Test Name</th>
+                            <th> Lower Bound</th>
+                            <th> Upper Bound</th>
+                            <th> Units</th>
+                            <th> Rate</th>
+                            <!-- <th> :: Discount</th>
+                            <th> :: Discount %</th>
+                            <th> :: Amount</th> -->
+                            <th style="color:#a94442">Action </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor = "let dataTable of dataTables.getDataTables(); let i = index">
+                            <td>{{dataTable.name}}</td>
+                            <td>{{dataTable.lower_bound}}</td>
+                            <td>{{dataTable.upper_bound}}</td>
+                            <td>{{dataTable.unit}}</td>
+                            <td>Rs {{dataTable.rate}} /-</td>
+                            <!-- <td>{{dataTable.Discount}}</td>
+                            <td>{{dataTable.discountPer}}</td>
+                            <td>{{dataTable.amount}}</td> -->
+                            <!-- <td style="cursor:pointer;color:#a94442" (click)="dataTables.splice(i,1)">remove </td> -->
+                            <td style="cursor:pointer;color:#a94442" (click)="dataTablSplice(dataTable , i)">remove </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td> Total</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>Rs  {{dataTables.totalSum()}} /-</td>
+                            <!-- <td></td>
+                            <td></td>
+                            <td></td> -->
+                            <td></td>
+                    </tfoot>
+                </table>
+                <!-- <pre> {{dataTables | json}} </pre> -->
+        </div>
+    </div>
+</section>
+<section>
+    <div *ngIf="Notify" class="container">
+        <div class="row" id="error-container">
+            <div class="span12">
+                <div class="alert alert-danger">
+                    <button type="button" class="close" (click)="datadismis()">×</button>
+                    <span>{{notify}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

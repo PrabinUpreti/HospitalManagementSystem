@@ -56,9 +56,10 @@ class TransactionController extends Controller
 
         $dataFromPatient = DB::table('patients')
         ->join('testbookings', 'patients.id', '=', 'testbookings.patient_id')
-        ->join('reports', 'testbookings.id', '=', 'reports.testbooking_id')
-        ->join('test_details', 'reports.test_id', '=', 'test_details.test_id')
-        ->select( 'testbookings.id as testbook_id', 'test_details.gender as genderdetails','reports.id as reports_id','test_details.id as test_details_id','testbookings.*','reports.*','test_details.*', 'patients.*')->where('reg_no', $id)
+        // ->join('reports', 'testbookings.id', '=', 'reports.testbooking_id')
+        // ->join('test_details', 'reports.test_id', '=', 'test_details.test_id')
+        // ->select( 'testbookings.id as testbookings_id', 'test_details.gender as genderdetails','reports.id as reports_id','test_details.id as test_details_id','testbookings.*','reports.*','test_details.*', 'patients.*')->where('reg_no', $id)
+        ->select('testbookings.id as testbookings_id', 'testbookings.*', 'patients.*')->where('reg_no', $id)
         ->get();
         return $dataFromPatient;
     }
@@ -103,6 +104,16 @@ class TransactionController extends Controller
     public function destroy($id){
         // Department::find($id)->delete();
         // return($id);
+    }
+    public function getDetialsOfPatient($id){
+        $dataFromPatient = DB::table('testbookings')
+        // ->join('testbookings', 'patients.id', '=', 'testbookings.patient_id')
+        ->join('reports', 'testbookings.id', '=', 'reports.testbooking_id')
+        ->join('test_details', 'reports.test_id', '=', 'test_details.test_id')
+        ->select('test_details.gender as genderdetails','reports.id as reports_id','test_details.id as test_details_id','reports.*','test_details.*')->where('testbookings.id', $id)
+        // ->select('testbookings.id as testbookings_id', 'testbookings.*', 'patients.*')->where('reg_no', $id)
+        ->get();
+        return $dataFromPatient;
     }
 
 }

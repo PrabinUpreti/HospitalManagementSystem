@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Testbooking extends Model
 {
   protected $fillable = [
-      'patientid', 'patient_name', 'patient_address', 'age', 'gender', 'year', 'month', 'day', 'marital_status', 'phone', 'email', 'identity_card', 'reff_by', 
+    'patient_id','doctor_list_id', 
   ];
   public function patient(){
     return $this->belongsTo('Patient::class');

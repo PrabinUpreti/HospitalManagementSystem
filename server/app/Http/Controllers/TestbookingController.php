@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use App\Testbooking;
+use App\Patient;
+use App\Report;
 use Illuminate\Http\Request;
 
 class TestbookingController extends Controller
@@ -21,9 +23,10 @@ class TestbookingController extends Controller
             $email = $record['email'];
             $identity_card = $record['identity_card'];
             $reff_by = $record['reff_by'];
+            $testId = $record['testID'];
 
-        Testbooking::create([
-               "patientid" => $patientid,
+        $patient = Patient::create([
+               "reg_no" => $patientid,
                "patient_name" => $patient_name,
                "patient_address" => $patient_address,
                "age" => $age,
@@ -34,13 +37,31 @@ class TestbookingController extends Controller
                "marital_status" => $marital_status,
                "phone" => $phone,
                "email" => $email,
-               "identity_card" => $identity_card,
-               "reff_by" => $reff_by
+               "identity_number" => $identity_card,
+               "nationality" => $identity_card  
             ]);
+
+            $idForTestbooking = $patient->id;
+            $testbooking = Testbooking::create([
+                "patient_id" => $idForTestbooking,
+                "doctor_list_id" =>$reff_by,
+            ]);
+            
+            $testbooking_id = $testbooking->id;
+            foreach($testId as $testid){
+                Report::create([
+                    "testbooking_id" => $testbooking_id,
+                    "test_id" => $testid
+                ]);
+            }
+
+            //setTestBooking();
+        
 
 
     	return response()->json([
     			"status"=>"Successfully Stored"
     		]);
   }
+  
 }

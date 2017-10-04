@@ -16,6 +16,7 @@ export class SelectDepartmentComponent implements OnInit {
   constructor(private modifyService: ModifyService) { }
 
   ngOnInit() {
+    localStorage.removeItem('test');
     this.modifyService.getDepartment()
     .subscribe(
       (response)=>{
