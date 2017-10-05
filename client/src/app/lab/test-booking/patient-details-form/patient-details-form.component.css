@@ -34,7 +34,7 @@ form{
 #error-container {
 	position: fixed;
 	z-index: 999;
-	bottom: 20px;
+	bottom: 77px;
 	right: 10px;
 	box-shadow: 5px 5px 5px #888888;
 }

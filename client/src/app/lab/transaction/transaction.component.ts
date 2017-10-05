@@ -19,6 +19,12 @@ export class TransactionComponent implements OnInit {
   public ageGroupFromServer =[];
   public throwage;
   public genderinPatientTable;
+  public patientName;
+  public registeredDate;
+  public patientId;
+  public sum;
+  public activepaymentForm = false;
+  public showTable = false;
   ngOnInit() {
     this.SearchPayment = new FormGroup({
       Search_name:new FormControl('', Validators.required)
@@ -101,6 +107,9 @@ export class TransactionComponent implements OnInit {
       (response)=>{
         console.log(response);
         this.genderinPatientTable = response[0].gender;
+        this.patientName = response[0].patient_name;
+        this.patientId = response[0].reg_no;
+        this.registeredDate = response[0].created_at;
         // this.patientDatas = response;
         
         let ageRange = [];
@@ -156,8 +165,10 @@ export class TransactionComponent implements OnInit {
       for(let i in response){
         // if(response[i].age_group.toUpperCase() == this.throwage.toUpperCase() && response[i].gender.toUpperCase() == response[i].genderdetails.toUpperCase() ){
           this.patientDatas.push(response[i]);
-        // }
-      }
+          // }
+        }
+        this.showTable = true;
+        this.activepaymentForm = false;
       console.log(this.patientDatas);
 
       },
@@ -166,6 +177,7 @@ export class TransactionComponent implements OnInit {
       });
   }
   invoice(){
+    this.sum = 0;
     this.patientDatasDetails = [];
     for (let i in this.patientDatas) {
       let idToGetTest = this.patientDatas[i].testbookings_id;
@@ -178,7 +190,13 @@ export class TransactionComponent implements OnInit {
               this.patientDatasDetails.push(response[i]);
             }
           }
+          this.activepaymentForm = true;
           console.log(this.patientDatasDetails);
+          if(!(this.sum > 0)){
+            for(let x in this.patientDatasDetails){
+              this.sum = this.sum +  parseInt(this.patientDatasDetails[x].rate);
+            }
+          }
         },
         (error) => {
           console.log("sorry error in server")

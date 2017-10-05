@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { LaravelService } from './laravel.service';
 import { ModifyService } from './../../modify/modify.service';
+declare var jQuery:any;
 
 
 @Component({
@@ -13,6 +14,7 @@ export class PatientDetailsFormComponent implements OnInit {
 
   @Output() throwage = new EventEmitter<any>();
   @Output() throwgender = new EventEmitter<any>();
+  @Output() throwPatientID = new EventEmitter<any>();
 
   @Input() set inputSelectedPatient(id){
     this.getPatientFromServer(id)
@@ -64,6 +66,9 @@ export class PatientDetailsFormComponent implements OnInit {
   public genderInDropdowns = []
   public age_groupInDropdowns =[];
   public mrts = [];
+  public refresh = false;
+  public title;
+  public routeToPayment;
 
   constructor(private laravelService: LaravelService, private ModifyService: ModifyService) { }
   ngOnInit() {
@@ -256,6 +261,7 @@ export class PatientDetailsFormComponent implements OnInit {
   public responseData=null;
 
   patientDatas(){
+    this.refresh = false;
       let date = new Date();
       let year = date.getFullYear();
       let month = date.getDate()+1;
@@ -272,7 +278,7 @@ export class PatientDetailsFormComponent implements OnInit {
       this.patientData.controls.month.setValue(month);
       let testIdStoredInLocalStorage = JSON.parse(localStorage.getItem('test'))
       if (this.patientData.valid) {
-        if(testIdStoredInLocalStorage){
+        if(testIdStoredInLocalStorage && testIdStoredInLocalStorage.length > 0){
 
           this.submitButtonStatus=false;
           let paramData : any = this.patientData.value;
@@ -290,6 +296,9 @@ export class PatientDetailsFormComponent implements OnInit {
             .subscribe(
                   (response)=>{
                     localStorage.removeItem('test');
+                    this.title = "Do you want to pay?"
+                    jQuery("#myModal").modal("show");
+                    this.routeToPayment = {'link':'/lab/add-transaction/'+ response.patientId};
                     this.responseData = response
                     this.patientData.reset();
                     this.patientData.controls.age.setValue('');
@@ -402,10 +411,17 @@ export class PatientDetailsFormComponent implements OnInit {
   //   // let idOfDoctor = this.reffBys[id].id;
   //   // this.patientData.controls.reff_by.setValue(idOfDoctor);
   // }
+  // print(){
+  //   this.refresh = true;
+  //   this.title = "Do you want to pay?"
+  // }
 
   datadismis(){
     console.log('Hide')
     this.Notify = false;
+  }
+  goToPayment(){
+    jQuery("#myModal").modal("hide");
   }
 
 }

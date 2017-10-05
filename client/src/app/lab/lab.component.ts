@@ -6,16 +6,21 @@ import { Component, OnInit ,Input } from '@angular/core';
 })
 export class AppComponent implements OnInit {
 
-Value_in_transactionData(id){
-	this.gettransactionData(id)
-}
+// Value_in_transactionData(id){
+// 	this.gettransactionData(id)
+// }
+// public PatientID;
 
 constructor() { }
   ngOnInit() {
   }
   
- gettransactionData(id){
- console.log(id)
-  }
+//  gettransactionData(id){
+//  console.log(id)
+//   }
+  // public onPatientId(id){
+  //   this.PatientID = id
+  //   alert(this.PatientID);
+  // }
 }
 

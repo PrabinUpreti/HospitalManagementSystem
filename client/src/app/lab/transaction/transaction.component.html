@@ -9,7 +9,7 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-sm-6 col-md-6 col-lg-6">
+  <div class="col-sm-12 col-md-12 col-lg-12">
     <div class="panel panel-info">
       <div class="panel-heading">Search Bar</div>
       <div class="panel-body">
@@ -22,29 +22,97 @@
             <button type="submit" class="form-control btn btn-primary col-lg-12">Search</button>
           </div>
         </form>
+        <table *ngIf = "showTable" class="table table-hover">
+         
+          <thead>
+            <tr>
+              <!-- <th> S.N </th> -->
+              <th> ID </th>
+              <th> Name </th>
+              <th> Date </th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- <tr *ngFor = "let patientData of patientDatas; let i = index"> -->
+            <tr>
+              <!-- <td class="text-info">{{patientDatas.length - i}}</td> -->
+              <td class="text-info" style="cursor:pointer" (click)="invoice()">{{patientDatas[0]?.reg_no}}</td>
+              <td>{{patientDatas[0]?.patient_name}}</td>
+              <td>{{patientDatas[0]?.created_at}}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
 
-  <div class="col-sm-6 col-md-6 col-lg-6">
-    <table class="table table-hover">
-    <thead>
-        <tr>
-          <th> S.N </th>
-          <th> ID </th>
-          <th> Name </th>
-          <th> Date </th>
-        </tr>
-      </thead>
-    <tbody>
-    <tr *ngFor = "let patientData of patientDatas; let i = index">
-        <td class="text-info">{{patientDatas.length - i}}</td>
-      <td class="text-info" style="cursor:pointer" (click)="invoice()">{{patientData?.reg_no}}</td>
-      <td>{{patientData?.patient_name}}</td>
-      <td>{{patientData?.created_at}}</td>
-    </tr>
-    </tbody>
-    </table>
-  </div>
+  <!-- <div class="col-sm-6 col-md-6 col-lg-6">
+    
+  </div> -->
 </div>
-<pre>{{patientDatasDetails|json}}</pre>
+<!-- <pre>{{patientDatasDetails|json}}</pre> -->
+<div *ngIf = "activepaymentForm" class="col-sm-12">
+  
+  <div class="form-group">
+    <label class="control-label col-sm-6" for="email"> Patient ID: </label>
+    <div class="col-sm-6">
+        <p class="form-control-static">{{patientId}}</p>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label class="control-label col-sm-6" for="email"> Date: </label>
+      <div class="col-sm-6">
+        <p class="form-control-static">{{registeredDate}}</p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label col-sm-6" for="email"> Name: </label>
+      <div class="col-sm-6">
+        <p class="form-control-static">{{patientName}}</p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label col-sm-6" for="email"> Total Amount: </label>
+      <div class="col-sm-6">
+        <p class="form-control-static">Rs {{sum}} /-</p>
+      </div>
+    </div>
+    <form>
+      <div class="form-group">
+        <label class="control-label col-sm-6" for="email"> Cash: </label>
+        <div class="col-sm-2">
+          <input class="form-control" type="text">
+        </div>
+        <div class="col-sm-4"></div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-6" for="email"> Discount: </label>
+        <div class="col-sm-2">
+          <input class="form-control" type="text">
+        </div>
+        <div class="col-sm-4"></div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-6" for="email"> Discount percentage: </label>
+        <div class="col-sm-2">
+          <input class="form-control" type="text">
+        </div>
+        <div class="col-sm-4"></div>
+      </div>
+      <div>
+        <br>
+        <br>
+        
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-6" for="email"></label>
+        <div class="col-sm-2">
+          <input class="form-control btn btn-primary" type="button" value="Pay">
+        </div>
+        <div class="col-sm-4"></div>
+      </div>
+    </form>
+</div>

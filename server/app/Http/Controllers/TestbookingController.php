@@ -60,7 +60,7 @@ class TestbookingController extends Controller
 
 
     	return response()->json([
-    			"status"=>"Successfully Stored"
+    			"patientId"=>$patient->reg_no
     		]);
   }
   
