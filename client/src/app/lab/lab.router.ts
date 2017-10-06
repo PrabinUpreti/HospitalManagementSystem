@@ -29,7 +29,7 @@ const usersRoutes: Routes = [
       				{ path: 'test-booking', component: TestBookingComponent },
               { path: 'reports', component: ReportsComponent },
               { path: 'test', component: DashboardComponent },
-              { path: 'modify', component: ModifyComponent }, 
+              { path: 'modify', component: ModifyComponent },
       				{ path: 'add-transaction/:id', component: TransactionComponent },
       				{ path: 'add-transaction', component: TransactionComponent },
               { path: 'view-transaction', component: ViewTransactionComponent },
