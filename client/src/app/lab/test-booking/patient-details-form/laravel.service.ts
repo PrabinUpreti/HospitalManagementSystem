@@ -22,6 +22,17 @@ export class LaravelService {
         // .retry(3);
   }
 
+  UpdateData(allDatas){
+    let id = allDatas.idToUpdate;
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers,withCredentials: true});
+
+    return this.http.put("http://server.hms.com/api/test-booking/" + id, allDatas, options)
+        .map(this.extractData)
+        .catch(this.handleError)
+        // .retry(3);
+  }
+
   private extractData(res: Response) {
     let response = res.json();
     return response || {};

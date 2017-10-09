@@ -16,10 +16,12 @@ class CreateInvoicesTable extends Migration
         Schema::create('invoices', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('testbooking_id')->unsigned();
+            $table->string('particular');
             $table->string('cash');
             $table->string('balance');
             $table->integer('discount_amount');
             $table->string('discount_percentage');
+            $table->string('remark');
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->timestamps();

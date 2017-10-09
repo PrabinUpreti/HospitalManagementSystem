@@ -56,10 +56,13 @@ class TransactionController extends Controller
 
         $dataFromPatient = DB::table('patients')
         ->join('testbookings', 'patients.id', '=', 'testbookings.patient_id')
-        // ->join('reports', 'testbookings.id', '=', 'reports.testbooking_id')
+        // ->join('invoices', 'testbookings.id', '=', 'invoices.testbooking_id')
+        // ->join('patient_ladgers', 'invoices.id', '=', 'patient_ladgers.invoice_id')
         // ->join('test_details', 'reports.test_id', '=', 'test_details.test_id')
         // ->select( 'testbookings.id as testbookings_id', 'test_details.gender as genderdetails','reports.id as reports_id','test_details.id as test_details_id','testbookings.*','reports.*','test_details.*', 'patients.*')->where('reg_no', $id)
-        ->select('testbookings.id as testbookings_id', 'testbookings.*', 'patients.*')->where('reg_no', $id)
+        ->where('reg_no', $id)
+        ->orWhere('patient_name','like', '%'.$id.'%')
+        ->select('testbookings.id as testbookings_id', 'testbookings.*', 'patients.*')
         ->get();
         return $dataFromPatient;
     }
@@ -110,7 +113,8 @@ class TransactionController extends Controller
         // ->join('testbookings', 'patients.id', '=', 'testbookings.patient_id')
         ->join('reports', 'testbookings.id', '=', 'reports.testbooking_id')
         ->join('test_details', 'reports.test_id', '=', 'test_details.test_id')
-        ->select('test_details.gender as genderdetails','reports.id as reports_id','test_details.id as test_details_id','reports.*','test_details.*')->where('testbookings.id', $id)
+        ->select('test_details.gender as genderdetails','reports.id as reports_id','test_details.id as test_details_id','reports.*','test_details.*')
+        ->where('testbookings.patient_id', $id)
         // ->select('testbookings.id as testbookings_id', 'testbookings.*', 'patients.*')->where('reg_no', $id)
         ->get();
         return $dataFromPatient;

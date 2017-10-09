@@ -50,6 +50,7 @@ export class SelectTestComponent implements OnInit {
   }
   @Input() set inputCatchGender(id){
     this.SelectedGender = id;
+    console.log(id);
     this.filterAgeAndGender();
   }
 

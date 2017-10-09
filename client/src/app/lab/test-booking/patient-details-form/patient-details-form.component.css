@@ -47,3 +47,14 @@ form{
 span{
 	padding-right: 15px;
 }
+
+#search-container{
+	border-top: 1px solid #17a2b8;
+	position: fixed;
+	z-index: 888;
+	top: 40px;
+	bottom: 10px;
+	right: 15px;
+	background-color: white;
+	box-shadow: 5px 5px 5px #888888;
+}

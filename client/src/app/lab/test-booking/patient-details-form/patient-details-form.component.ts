@@ -2,6 +2,9 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { LaravelService } from './laravel.service';
 import { ModifyService } from './../../modify/modify.service';
+
+import {Observable} from 'rxjs/Observable';
+
 declare var jQuery:any;
 
 
@@ -69,9 +72,17 @@ export class PatientDetailsFormComponent implements OnInit {
   public refresh = false;
   public title;
   public routeToPayment;
+  public showTable = false;
+  public SearchNotify = false;
+  public searchedDatas;
+  public IsAlreadyExist = false;
+  public forFutureUsePatientToSeeExistingPatient;
+  public forFutureUsePatientToSeeExistingPatientName;
+  public DisableInput = false;
 
   constructor(private laravelService: LaravelService, private ModifyService: ModifyService) { }
   ngOnInit() {
+    
     this.currentTime = new Date();
     let year = this.currentTime.getFullYear();
       for (let i = (year+57); i >= (year+57)-100; i--) {
@@ -117,7 +128,7 @@ export class PatientDetailsFormComponent implements OnInit {
          // referred_by: new FormControl('', Validators.required),
       });
 
-      this.agecontrol = new FormControl();
+      this.agecontrol = new FormControl('');
       this.agecontrol.valueChanges
           .subscribe(term => {
             let ageRange = [];
@@ -168,9 +179,23 @@ export class PatientDetailsFormComponent implements OnInit {
             // console.log(intCollection[int] , intCollection[int+1]);
           }
           this.patientData.controls.age.setValue(term);
+          if(this.patientData.controls.gender){
+            console.log(this.patientData.value.gender);
+            this.showTable = false;
+          }
 
             // this.throwage.emit(term);
           });
+
+          
+            this.patientData.controls.patient_name.valueChanges
+            .debounceTime(300)
+            .distinctUntilChanged()
+            .subscribe(term => {
+              if(!(this.patientData.controls.patient_name.value == this.forFutureUsePatientToSeeExistingPatientName)){
+              this.searchpatient(term).subscribe();
+            }
+            });
 
       
       this.ModifyService.getDoctorList()
@@ -261,109 +286,174 @@ export class PatientDetailsFormComponent implements OnInit {
   public responseData=null;
 
   patientDatas(){
-    this.refresh = false;
-      let date = new Date();
-      let year = date.getFullYear();
-      let month = date.getDate()+1;
-      let week = date.getDay()+1;
-      let day = date.getDate();
-      let hour = date.getHours();
-      let min = date.getMinutes();
-      let sec = date.getSeconds();
-      let ms = date.getMilliseconds();
-      let patientId = "p"+year+""+month+""+hour+""+min+""+sec+""+ms;
-      this.patientData.controls.patientId.setValue(patientId);
-      this.patientData.controls.year.setValue((year) - this.patientData.controls.age.value);
-      this.patientData.controls.day.setValue(day);
-      this.patientData.controls.month.setValue(month);
-      let testIdStoredInLocalStorage = JSON.parse(localStorage.getItem('test'))
-      if (this.patientData.valid) {
-        if(testIdStoredInLocalStorage && testIdStoredInLocalStorage.length > 0){
+    if(!(this.forFutureUsePatientToSeeExistingPatient)){
+      // alert(this.forFutureUsePatientToSeeExistingPatient);
+      this.refresh = false;
+        let date = new Date();
+        let year = date.getFullYear();
+        let month = date.getDate()+1;
+        let week = date.getDay()+1;
+        let day = date.getDate();
+        let hour = date.getHours();
+        let min = date.getMinutes();
+        let sec = date.getSeconds();
+        let ms = date.getMilliseconds();
+        let patientId = "p"+year+""+month+""+hour+""+min+""+sec+""+ms;
+        this.patientData.controls.patientId.setValue(patientId);
+        this.patientData.controls.year.setValue((year) - this.patientData.controls.age.value);
+        this.patientData.controls.day.setValue(day);
+        this.patientData.controls.month.setValue(month);
+        let testIdStoredInLocalStorage = JSON.parse(localStorage.getItem('test'))
+        if (this.patientData.valid) {
+          if(testIdStoredInLocalStorage && testIdStoredInLocalStorage.length > 0){
 
-          this.submitButtonStatus=false;
-          let paramData : any = this.patientData.value;
+            this.submitButtonStatus=false;
+            let paramData : any = this.patientData.value;
 
 
-          for(let x in this.reffBys){
-            if("Dr."+ this.reffBys[x].name == this.patientData.controls.reff_by.value){
-              paramData['reff_by'] = this.reffBys[x].id;
+            for(let x in this.reffBys){
+              if("Dr."+ this.reffBys[x].name == this.patientData.controls.reff_by.value){
+                paramData['reff_by'] = this.reffBys[x].id;
+              }
             }
-          }
-          paramData['testID'] = testIdStoredInLocalStorage;
+            paramData['testID'] = testIdStoredInLocalStorage;
 
-          console.log(paramData);
-          this.laravelService.getData(paramData)
-            .subscribe(
-                  (response)=>{
-                    localStorage.removeItem('test');
-                    this.title = "Do you want to pay?"
-                    jQuery("#myModal").modal("show");
-                    this.routeToPayment = {'link':'/lab/add-transaction/'+ response.patientId};
-                    this.responseData = response
-                    this.patientData.reset();
-                    this.patientData.controls.age.setValue('');
-                    this.patientData.controls.patientId.setValue(this.patientId++);
-                    this.patientData.controls.gender.setValue('');
-                    this.patientData.controls.year.setValue('');
-                    this.patientData.controls.month.setValue('');
-                    this.patientData.controls.day.setValue('');
-                    this.patientData.controls.marital_status.setValue('');
-                    this.patientData.controls.reff_by.setValue('');
-                    this.submitButtonStatus=true
-                  },
-                  (error)=>{
+            console.log(paramData);
+            this.laravelService.getData(paramData)
+              .subscribe(
+                    (response)=>{
+                      localStorage.removeItem('test');
+                      this.title = "Do you want to pay?"
+                      jQuery("#myModal").modal("show");
+                      this.routeToPayment = {'link':'/lab/add-transaction/'+ response.patientId};
+                      this.responseData = response
+                      this.patientData.reset();
+                      this.patientData.controls.age.setValue('');
+                      this.patientData.controls.patientId.setValue(this.patientId++);
+                      this.patientData.controls.gender.setValue('');
+                      this.patientData.controls.year.setValue('');
+                      this.patientData.controls.month.setValue('');
+                      this.patientData.controls.day.setValue('');
+                      this.patientData.controls.marital_status.setValue('');
+                      this.patientData.controls.reff_by.setValue('');
                       this.submitButtonStatus=true
-                      this.Notify = true;
-                      this.notify = "Sorry error in server";
-                  }
-              )
-            }
-            else{
-              this.Notify = true;
-              this.notify = "Please select test."}
+                    },
+                    (error)=>{
+                        this.submitButtonStatus=true
+                        this.Notify = true;
+                        this.notify = "Sorry error in server";
+                    }
+                )
+              }
+              else{
+                this.Notify = true;
+                this.notify = "Please select test."}
 
-    }
-    else{
-      this.Notify = true;
-      this.notify = "Please fill the form properly."
-      this.testStatus = true;
-    console.log("error in client");
-        for (let x in this.patientData.controls) {
-          this.patientData.controls[x].markAsTouched();
-          this.patientData.controls[x].markAsDirty();
+      }
+      else{
+        
+        this.Notify = true;
+        this.notify = "Please fill the form properly."
+        this.testStatus = true;
+      console.log("error in client");
+          for (let x in this.patientData.controls) {
+            this.patientData.controls[x].markAsTouched();
+            this.patientData.controls[x].markAsDirty();
+          }
+
+          // for (let x in this.myform.controls.name.controls) {
+            
+          // }
+        
+          // this.myform.get(["name","patientId"]).markAsDirty()
+          // this.myform.get(["name","patientName"]).markAsDirty()
+
+          // let nameGroup = <FormGroup>this.myform.get("name")
+          // console.log(nameGroup.controls)
+
+          // for(let x in nameGroup.controls)
+          // {
+          //   nameGroup.controls[x].markAsDirty();
+          // }     
+
+      }
+
+
+
+      // let value = this.patientData.value
+      //   console.log(value);
+      // let paramData : any = this.patientData.value;
+      // this.laravelService.getData(paramData)
+      //   .subscribe(
+      //         (response)=>{
+      //           this.responseData = response
+      //         },
+      //         (error)=>{
+      //             console.log("sorry error in server")
+      //         }
+      //     )
+  }
+  else{
+    // alert(this.forFutureUsePatientToSeeExistingPatient);
+    let testIdStoredInLocalStorage = JSON.parse(localStorage.getItem('test'))
+    if (this.patientData.valid) {
+      if(testIdStoredInLocalStorage && testIdStoredInLocalStorage.length > 0){
+
+        this.submitButtonStatus=false;
+        let paramData : any = this.patientData.value;
+
+
+        for(let x in this.reffBys){
+          if("Dr."+ this.reffBys[x].name == this.patientData.controls.reff_by.value){
+            paramData['reff_by'] = this.reffBys[x].id;
+          }
         }
+        paramData['testID'] = testIdStoredInLocalStorage;
+        paramData['idToUpdate'] = this.forFutureUsePatientToSeeExistingPatient;
 
-        // for (let x in this.myform.controls.name.controls) {
-          
-        // }
-       
-        // this.myform.get(["name","patientId"]).markAsDirty()
-        // this.myform.get(["name","patientName"]).markAsDirty()
+        console.log(paramData);
+        this.laravelService.UpdateData(paramData)
+          .subscribe(
+                (response)=>{
+                  localStorage.removeItem('test');
+                  this.title = "Do you want to pay?"
+                  jQuery("#myModal").modal("show");
+                  this.routeToPayment = {'link':'/lab/add-transaction/'+ response.patientId};
+                  this.responseData = response
+                  this.patientData.reset();
+                  this.patientData.controls.age.setValue('');
+                  this.patientData.controls.patientId.setValue(this.patientId++);
+                  this.patientData.controls.gender.setValue('');
+                  this.patientData.controls.year.setValue('');
+                  this.patientData.controls.month.setValue('');
+                  this.patientData.controls.day.setValue('');
+                  this.patientData.controls.marital_status.setValue('');
+                  this.patientData.controls.reff_by.setValue('');
+                  this.submitButtonStatus=true
+                },
+                (error)=>{
+                    this.submitButtonStatus=true
+                    this.Notify = true;
+                    this.notify = "Sorry error in server";
+                }
+            )
+          }
+          else{
+            this.Notify = true;
+            this.notify = "Please select test."}
 
-        // let nameGroup = <FormGroup>this.myform.get("name")
-        // console.log(nameGroup.controls)
-
-        // for(let x in nameGroup.controls)
-        // {
-        //   nameGroup.controls[x].markAsDirty();
-        // }     
-
+  }
+  else{
+    this.Notify = true;
+    this.notify = "Please fill the form properly."
+    this.testStatus = true;
+  console.log("error in client");
+      for (let x in this.patientData.controls) {
+        this.patientData.controls[x].markAsTouched();
+        this.patientData.controls[x].markAsDirty();
+      }
     }
-
-
-
-    // let value = this.patientData.value
-    //   console.log(value);
-    // let paramData : any = this.patientData.value;
-    // this.laravelService.getData(paramData)
-    //   .subscribe(
-    //         (response)=>{
-    //           this.responseData = response
-    //         },
-    //         (error)=>{
-    //             console.log("sorry error in server")
-    //         }
-    //     )
+  }
 
   }
 
@@ -416,10 +506,65 @@ export class PatientDetailsFormComponent implements OnInit {
   //   this.title = "Do you want to pay?"
   // }
 
+
+  searchpatient(id):Observable<any>{
+    return new Observable(observer=>{
+      console.log(id);
+      
+      this.ModifyService.getPatient(id)
+      .subscribe(
+        response=>{
+          console.log(response);
+          if(response.length > 0){
+            this.showTable = true;
+            this.IsAlreadyExist = true;
+              this.searchedDatas = response;
+              console.log(this.searchedDatas)
+            }
+            else{
+              this.showTable = false;
+            }
+
+          },
+          error=>{
+            this.showTable = false;
+          }
+        );
+
+      observer.next();
+      observer.complete();
+    });
+  }
+  SetPatientToForm(id){
+    this.DisableInput = false;
+    this.forFutureUsePatientToSeeExistingPatient = this.searchedDatas[id].id;
+    this.forFutureUsePatientToSeeExistingPatientName = this.searchedDatas[id].patient_name;
+    this.agecontrol.setValue(this.searchedDatas[id].age);
+    this.patientData.controls.patientId.setValue(this.searchedDatas[id].reg_no);
+    this.patientData.controls.gender.setValue(this.searchedDatas[id].gender);
+    this.patientData.controls.year.setValue(this.searchedDatas[id].year);
+    this.patientData.controls.month.setValue(this.searchedDatas[id].month);
+    this.patientData.controls.day.setValue(this.searchedDatas[id].day);
+    this.patientData.controls.marital_status.setValue(this.searchedDatas[id].marital_status);
+    this.patientData.controls.patient_name.setValue(this.searchedDatas[id].patient_name);
+    this.patientData.controls.patient_address.setValue(this.searchedDatas[id].patient_address);
+    this.patientData.controls.email.setValue(this.searchedDatas[id].email);
+    this.patientData.controls.identity_card.setValue(this.searchedDatas[id].identity_number);
+    this.patientData.controls.phone.setValue(this.searchedDatas[id].phone);
+
+    console.log(this.patientData.value);
+
+  }
+
   datadismis(){
     console.log('Hide')
     this.Notify = false;
   }
+  
+  SearchBarDismiss(){
+    this.showTable = false;
+  }
+
   goToPayment(){
     jQuery("#myModal").modal("hide");
   }

@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Patient;
 
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+
 class PatientController extends Controller
 {
     
@@ -36,23 +39,23 @@ class PatientController extends Controller
           */
          public function store(Request $request)
          {     
-            $patientid = $request->input('selectedTest');
-            $age_group = $request->input('age');
-            $gender = $request->input('gender');
-            $lbound = $request->input('lbound');
-            $ubound = $request->input('ubound');
-            $unit = $request->input('unit');
-            $rate = $request->input('rate');
-               $testDetails = Patient::create([
-                    'test_id' => $testid,
-                    'age_group'=>$age_group,
-                    'gender'=>$gender,
-                    'lower_bound'=>$lbound,
-                    'upper_bound'=>$ubound,
-                    'rate'=>$rate,
-                    'unit'=>$unit,
-                 ]);
-                 return $testDetails;
+            // $patientid = $request->input('selectedTest');
+            // $age_group = $request->input('age');
+            // $gender = $request->input('gender');
+            // $lbound = $request->input('lbound');
+            // $ubound = $request->input('ubound');
+            // $unit = $request->input('unit');
+            // $rate = $request->input('rate');
+            //    $testDetails = Patient::create([
+            //         'test_id' => $testid,
+            //         'age_group'=>$age_group,
+            //         'gender'=>$gender,
+            //         'lower_bound'=>$lbound,
+            //         'upper_bound'=>$ubound,
+            //         'rate'=>$rate,
+            //         'unit'=>$unit,
+            //      ]);
+            //      return $testDetails;
          }
      
          /**
@@ -63,8 +66,10 @@ class PatientController extends Controller
           */
          public function show($id)
          {
-            // $gettestDetails = Test::find($id)->TestDetail;
-            // return $gettestDetails;
+            $Patient = DB::table('patients')
+            ->where('patient_name','like', '%'.$id.'%')
+            ->get();
+            return $Patient;
          }
      
          /**

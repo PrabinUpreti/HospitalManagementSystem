@@ -15,7 +15,9 @@ class CreatePatientLadgersTable extends Migration
     {
         Schema::create('patient_ladgers', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('patient_id')->unsigned();
             $table->integer('invoice_id')->unsigned();
+            $table->string('particular');
             $table->string('dr');
             $table->string('cr');
             $table->string('balance');

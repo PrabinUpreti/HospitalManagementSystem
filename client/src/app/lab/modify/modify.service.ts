@@ -184,6 +184,19 @@ export class ModifyService {
 
 
 
+  //THIS IS TO GET PATIENT DATA
+
+  getPatient(id){
+    let url = "http://server.hms.com/api/getPatientData/"+id;
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers,withCredentials: true});
+    return this.department.get(url, options)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
+
+
 
 
   private extractData(res: Response) {

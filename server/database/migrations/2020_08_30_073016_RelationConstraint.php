@@ -36,6 +36,7 @@ class RelationConstraint extends Migration
         });
 
         Schema::table('patient_ladgers', function($table) {
+            $table->foreign('patient_id')->references('id')->on('patients');
             $table->foreign('invoice_id')->references('id')->on('invoices');
         });
 
@@ -73,6 +74,7 @@ class RelationConstraint extends Migration
         });
 
         Schema::table('patient_ladgers', function($table) {
+            $table->dropForeign(['patient_id']);
             $table->dropForeign(['invoice_id']);
         });
         

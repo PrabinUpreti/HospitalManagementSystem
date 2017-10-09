@@ -43,6 +43,7 @@ use Illuminate\Http\Request;
 // Route::post('/test','ClientController@postdata');
 
 Route::post('/test-booking','TestbookingController@postTestBookingData');
+Route::put('/test-booking/{id}','TestbookingController@putTestBookingData');
 //Report 
 
 Route::post('/reports','ReportController@postReportData');
@@ -63,5 +64,6 @@ Route::resource('/doctor','DoctorListController');
 Route::resource('/commoncodes','CommonCodeController');
 Route::resource('/transaction','TransactionController');
 Route::get('/transactions/{id}','TransactionController@getDetialsOfPatient');
+Route::resource('/getPatientData','PatientController');
 // Route::post('/modify','DepartmentController@postDepartment');
 // Route::get('/modify','DepartmentController@getDepartment');
