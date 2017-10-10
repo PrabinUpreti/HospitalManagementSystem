@@ -14,10 +14,10 @@
       <div class="panel-heading">Search Bar</div>
       <div class="panel-body">
         <!-- <form class="form-inline" [formGroup]="SearchPayment" (ngSubmit)="searchPay()"> -->
-        <form class="form-inline">
+        <form class="form-inline" autocomplete="off">
           <div class="form-group col-lg-9">
             <label class=" col-lg-4" for="search"> Search </label>
-            <input class="form-control col-lg-8" type="text" name="search" [formControl]="searchField" placeholder="Input Patient ID (or Name)">
+            <input [readonly] = "disableme" class="form-control col-lg-8" type="text" name="search" [formControl]="searchField" placeholder="Input Patient ID (or Name)">
           </div>
           <!-- <div class="form-group col-lg-3">
             <button type="submit" class="form-control btn btn-primary col-lg-12">Search</button>
@@ -34,7 +34,7 @@
 <!-- <pre>{{patientDatasDetails|json}}</pre> -->
 <div *ngIf="showTable" class="container">
   <div class="col-sm-4" id="search-container">
-    <div class="alert">
+    <div>
       <!-- <button type="button" class="close">X</button> -->
       <a class="close" (click) = "SearchBarDismiss()">X</a>
       <strong>Searched List</strong>
@@ -101,37 +101,50 @@
     </div>
   </div>
 
-  <form class="form-horizontal"  [formGroup] = "transactionData" (ngSubmit) = "transactionDatas()">
+  <form [formGroup] = "transactionData" (ngSubmit)= "transactionDatas(transactionData.value)" autocomplete="off">
     <div class="form-group">
       <label class="control-label col-sm-6" for="email"> Cash: </label>
       <div class="col-sm-2">
-        <input class="form-control" type="text" [formControl] = "processCash">
+        <input class="form-control" type="text" formControlName = "cash">
       </div>
       <div class="col-sm-4"></div>
     </div>
+    
+    <!-- <div class="form-group">
+    </div> -->
+
     <div class="form-group">
-      <label class="control-label col-sm-6" for="email"> Discount: </label>
-      <div class="col-sm-2">
-        <input class="form-control" type="text" [formControl] = "processDiscount">
+      <div class="row">
+        <div class="col-sm-6"><label for="">Discount:</label></div>
+        <div class="col-sm-6">
+          <label class="radio-inline ">
+            <input type="radio" name="checkDiscount"  (change)="calculateTotalAmount()" formControlName = "checkDiscount" value="0" >Discount
+          </label>
+          <label class="radio-inline ">
+            <input type="radio" name="checkDiscount"  (change)="calculateTotalAmount()" formControlName = "checkDiscount" value="1">Discount percentage
+          </label>
+        </div>
+
       </div>
-      <div class="col-sm-4"></div>
-    </div>
-    <div class="form-group">
-      <label class="control-label col-sm-6" for="email"> Discount percentage: </label>
-      <div class="col-sm-2">
-        <input class="form-control" type="text" [formControl] = "processDiscountPer">
+
+      <div class="row">
+        <div class="col-sm-6"></div>
+        <div class="col-sm-2">
+          <input class="form-control" type="text" formControlName = "discountcheck">
+        </div>
+        <div class="col-sm-4"></div>
+
       </div>
-      <div class="col-sm-4"></div>
     </div>
-    <div>
+    <!-- <div>
       <br>
       <br>
 
-    </div>
+    </div> -->
     <div class="form-group">
       <label class="control-label col-sm-6" for="email"></label>
       <div class="col-sm-2">
-        <input class="form-control btn btn-primary" type="button" value="Pay">
+        <input class="form-control btn btn-primary" type="submit" value="Pay">
       </div>
       <div class="col-sm-4"></div>
     </div>

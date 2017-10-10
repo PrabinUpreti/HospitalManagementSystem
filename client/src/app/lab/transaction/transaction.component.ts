@@ -40,9 +40,13 @@ export class TransactionComponent implements OnInit , OnDestroy  {
   public SearchNotify = false;
   public Searchnotify;
   public transactionData: FormGroup;
-  public processCash : FormControl;
-  public processDiscount : FormControl;
-  public processDiscountPer : FormControl;
+  // public processCash : FormControl;
+  // public processDiscount : FormControl;
+  // public processDiscountPer : FormControl;
+  public selectedradioButton;
+  public disableme = false;
+  // public tempGlobleVar;
+  // public tempCashGlobleVar;
 
   ngOnInit() {
     // this.SearchPayment = new FormGroup({
@@ -51,97 +55,162 @@ export class TransactionComponent implements OnInit , OnDestroy  {
 
     this.transactionData = new FormGroup({
       cash: new FormControl(''),
-      discount : new FormControl(''),
-      discountPer  : new FormControl('')
+      checkDiscount: new FormControl('0'),
+      discountcheck: new FormControl(''),
+      // discount : new FormControl(''),
+      // discountPer  : new FormControl('')
     });
 
+    // console.log(this.transactionData.controls.checkDiscount.value);
+    // console.log(this.transactionData.controls.checkDiscounPert.value);
 
 
-    this.processCash = new FormControl('');
-    this.processCash.valueChanges
+
+    this.transactionData.controls.cash.valueChanges
     .subscribe(term=>{
-      if(term>0){
-        if(this.transactionData.controls.discount.value){
-          let localSum = this.sum;
-          localSum = this.sum-term;
-          this.sum = localSum;
-        }
-        else if(this.transactionData.controls.discountPer.value){
-          let localSum = this.sum;
-          localSum = this.sum-term;
-          this.sum = localSum;
-        }
-        else{
-          let localSum = this.globleSum;
-          localSum = localSum-term;
-          this.sum = localSum;
-          this.transactionData.controls.cash.setValue(term);
-        }
-      }
-      else{
-        this.sum = this.globleSum;
-      }
-    })
+        this.calculateTotalAmount();
+      });
+      this.transactionData.controls.discountcheck.valueChanges
+      .subscribe(term=>{
+          this.calculateTotalAmount();
+        });
+    //     if(this.transactionData.controls.discount.value || this.transactionData.controls.discountPer.value){
+    //       this.sum = this.tempGlobleVar-term;
+    //       this.tempCashGlobleVar = this.sum;
+    //       this.transactionData.controls.cash.setValue(term);
+    //     }
+    //     // else if(this.transactionData.controls.discountPer.value){
+    //     //   let localSum = this.sum;
+    //     //   localSum = this.sum-term;
+    //     //   this.sum = localSum;
+    //     // }
+    //     else{
+    //       let localSum = this.globleSum;
+    //       localSum = localSum-term;
+    //       this.sum = localSum;
+    //       this.tempCashGlobleVar = this.sum;
+    //       this.transactionData.controls.cash.setValue(term);
+    //     }
+    //   }
+    //   else{
+    //     if(this.transactionData.controls.discount.value || this.transactionData.controls.discountPer.value){
+    //       // let valInDiscounts = this.transactionData.controls.discount.value;
+    //       // let valInDiscountPer = this.transactionData.controls.discountPer.value;
+    //       // if(!valInDiscounts){
+    //       //   valInDiscounts = valInDiscountPer;
+    //       // }
+    //       // else{
+    //       //   valInDiscountPer = valInDiscounts;
+    //       // }
+
+    //       this.sum = this.tempGlobleVar;
+    //       this.transactionData.controls.cash.setValue('');
+    //       this.tempCashGlobleVar = undefined;
+          
+
+    //     }
+    //     else{
+    //       this.sum = this.globleSum;
+    //       this.transactionData.controls.cash.setValue('');
+    //       this.tempCashGlobleVar = undefined;
+    //     }
+    //   }
+    // });
     
-    this.processDiscount = new FormControl('');
-    this.processDiscount.valueChanges
-    .subscribe(term=>{
-      if(term>0){
-        if(this.transactionData.controls.cash.value){
-          let localSum = this.sum;
-          localSum = localSum-term;
-          this.sum = localSum;
-        }
-        else if(this.transactionData.controls.discountPer.value){
-          let localSum = this.sum;
-          localSum = this.sum-term;
-          this.sum = localSum;
-        }
-        else{
-          let localSum = this.globleSum;
-          localSum = localSum-term;
-          this.sum = localSum;
-          this.transactionData.controls.discount.setValue(term);
-        }
-      }
-      else{
-        this.sum = this.globleSum;
-      }
-    })
+    // this.processDiscount = new FormControl('');
+    // this.processDiscount.valueChanges
+    // .subscribe(term=>{
+    //   if(term>0){
+    //     if(this.selectedradioButton == 0){
+    //       // this.processDiscount.setValue('');
+    //       if(this.transactionData.controls.cash.value){
+    //         let localSum = this.tempCashGlobleVar;
+    //         let tempGlob = this.globleSum;
+    //         localSum = localSum-(tempGlob-term);
+    //         this.sum = localSum;
+    //         this.transactionData.controls.discount.setValue(term);
+    //         this.transactionData.controls.discountPer.setValue('');
+    //       }
+    //       else{
+    //         let localSum = this.globleSum;
+    //         localSum = localSum-term;
+    //         this.sum = localSum;
+    //         this.transactionData.controls.discount.setValue(term);
+    //         this.transactionData.controls.discountPer.setValue('');
+    //       }
+    //     }
+    //     else{
+    //       // this.processDiscount.setValue('');
+    //       if(this.transactionData.controls.cash.value){
+    //         let localSum = this.tempCashGlobleVar;
+    //         let tempGlob = this.globleSum;
+    //         localSum = localSum-(tempGlob-((term/100)*tempGlob));
+    //         this.sum = localSum;
+    //         this.transactionData.controls.discount.setValue('');
+    //         this.transactionData.controls.discountPer.setValue(term);
+    //       }
+    //       else{
+    //         let localSum = this.globleSum;
+    //         localSum = localSum-((term/100)*localSum);
+    //         this.sum = localSum;
+    //         this.transactionData.controls.discount.setValue('');
+    //         this.transactionData.controls.discountPer.setValue(term);
+    //       }
+    //     }
+    //   }
+    //   else{
+    //     if(this.transactionData.controls.cash.value){
+    //       this.sum = this.tempCashGlobleVar;
+          
+    //       this.transactionData.controls.discount.setValue('');
+    //       this.transactionData.controls.discountPer.setValue('');
+    //       this.tempGlobleVar = undefined;
+    //     }
+    //     else{
+    //       this.sum = this.globleSum;
+          
+    //       this.transactionData.controls.discount.setValue('');
+    //       this.transactionData.controls.discountPer.setValue('');
+    //       this.tempGlobleVar = undefined;
+    //     }
+    //   }
+    // })
 
-    this.processDiscountPer = new FormControl('');
-    this.processDiscountPer.valueChanges
-    .subscribe(term=>{
+    // this.processDiscountPer = new FormControl('');
+    // this.processDiscountPer.valueChanges
+    // .subscribe(term=>{
       
-      if(term>0){
-        if(this.transactionData.controls.cash.value){
-          let localSum = this.sum;
-          localSum = this.sum-((term/100)*this.sum);
-          this.sum = localSum;
-        }
-        else if(this.transactionData.controls.discountPer.value){
-          let localSum = this.sum;
-          localSum = this.sum-((term/100)*this.sum);
-          this.sum = localSum;
-        }
-        else{
-          let localSum = this.globleSum;
-          localSum = localSum-((term/100)*localSum);
-          this.sum = localSum;
-          this.transactionData.controls.discount.setValue(term);
-        }
-      }
-      else{
-        this.sum = this.globleSum;
-      }
-      this.sum = this.sum-((term/100)*this.sum);
-      this.transactionData.controls.discountPer.setValue(term);
-    })
+    //   if(term>0){
+    //     if(this.transactionData.controls.cash.value){
+    //       let localSum = this.sum;
+    //       localSum = this.sum-((term/100)*this.sum);
+    //       this.sum = localSum;
+    //     }
+    //     // else if(this.transactionData.controls.discountPer.value){
+    //     //   let localSum = this.sum;
+    //     //   localSum = this.sum-((term/100)*this.sum);
+    //     //   this.sum = localSum;
+    //     // }
+    //     else{
+    //       let localSum = this.globleSum;
+    //       localSum = localSum-((term/100)*localSum);
+    //       this.sum = localSum;
+    //       this.transactionData.controls.discount.setValue(term);
+    //     }
+    //   }
+    //   else{
+    //     this.sum = this.globleSum;
+    //   }
+    //   this.sum = this.sum-((term/100)*this.sum);
+    //   this.transactionData.controls.discountPer.setValue(term);
+    // });
+    
+
 
 
     this.searchField = new FormControl;
     this.searchField.valueChanges
-      .debounceTime(400)
+      .debounceTime(100)
       .distinctUntilChanged()
       .subscribe(term => {
         this.searchpayment(term).subscribe();
@@ -207,6 +276,7 @@ export class TransactionComponent implements OnInit , OnDestroy  {
           console.log(params);
           this.paramId= params['id'];
           if(this.paramId){
+            this.disableme = true;
             this.searchpayment(this.paramId).subscribe(
               success=>{
                 console.log(this.patientDatas);
@@ -231,9 +301,69 @@ export class TransactionComponent implements OnInit , OnDestroy  {
       });
 
 
+      
+    
+
+
 
      
   }
+  calculateTotalAmount(){
+    let discountAmount = (this.transactionData.controls.checkDiscount.value == 0)?this.transactionData.controls.discountcheck.value:(((this.transactionData.controls.discountcheck.value)/100)*this.globleSum);
+    this.sum = this.globleSum - (Number(this.transactionData.controls.cash.value) + Number(discountAmount));
+  }
+    // console.log(getEvent.target.value);
+    // this.selectedradioButton = getEvent.target.value;
+    // this.disableInputBoxUntilCheckBoxIsChecked =false;
+    // if(this.transactionData.controls.discount.value || this.transactionData.controls.discountPer.value){
+    //   let valInDiscounts = this.transactionData.controls.discount.value;
+    //   let valInDiscountPer = this.transactionData.controls.discountPer.value;
+    //   if(!valInDiscounts){
+    //     valInDiscounts = valInDiscountPer;
+    //   }
+    //   else{
+    //     valInDiscountPer = valInDiscounts;
+    //   }
+    //   if(this.selectedradioButton == 1){
+
+    //     if(this.transactionData.controls.cash.value){
+    //       let localSum = this.tempCashGlobleVar;
+    //       let tempGlob = this.globleSum;
+    //       localSum = localSum-(tempGlob-((valInDiscounts/100)*tempGlob));
+    //       this.sum = localSum;
+    //       this.tempGlobleVar = this.sum;
+    //       // this.transactionData.controls.discount.setValue('');
+    //       this.transactionData.controls.discountPer.setValue(valInDiscounts);
+    //     }
+    //     else{
+    //       let localSum = this.globleSum;
+    //       localSum = localSum-((valInDiscounts/100)*localSum);
+    //       this.sum = localSum;
+    //       this.tempGlobleVar = this.sum;
+    //       // this.transactionData.controls.discount.setValue('');
+    //       this.transactionData.controls.discountPer.setValue(valInDiscounts);
+    //     }
+    //   }
+    //   else{
+    //     if(this.transactionData.controls.cash.value){
+    //       let localSum = this.tempCashGlobleVar;
+    //       let tempGlob = this.globleSum;
+    //       localSum = (tempGlob-valInDiscounts)-localSum;
+    //       this.sum = localSum;
+    //       this.tempGlobleVar = this.sum;
+    //       this.transactionData.controls.discount.setValue(valInDiscounts);
+    //     }
+    //     else{
+    //       let localSum = this.globleSum;
+    //       localSum = localSum-valInDiscounts;
+    //       this.sum = localSum;
+    //       this.tempGlobleVar = this.sum;
+    //       this.transactionData.controls.discount.setValue(valInDiscounts);
+    //     }
+    //   }
+    // }
+    // this.processDiscount.setValue('');
+  // }
   // private getTestbookingID() {
   //       this.transactionreport.getbillData(1).subscribe(
   //           billData => {
@@ -324,7 +454,13 @@ export class TransactionComponent implements OnInit , OnDestroy  {
               console.log(this.patientDatas);
               // if(response[i].age_group.toUpperCase() == this.throwage.toUpperCase() && response[i].gender.toUpperCase() == response[i].genderdetails.toUpperCase() ){
               if (this.patientDatas.length > 0) {
-                if (!(response[i].id == this.patientDatas[this.patientDatas.length -1].id)) {
+                let MatchFound = false;
+                for(let y in this.patientDatas){
+                  if (response[i].id == this.patientDatas[y].id) {
+                    MatchFound = true;
+                  }
+                }
+                if(!MatchFound){
                   this.patientDatas.push(response[i]);
                 }
               }
@@ -334,6 +470,8 @@ export class TransactionComponent implements OnInit , OnDestroy  {
 
               // }
             }
+
+            
             this.showTable = true;
             this.activepaymentForm = false;
           console.log(this.patientDatas);
@@ -357,6 +495,8 @@ export class TransactionComponent implements OnInit , OnDestroy  {
 
 
   invoice(id){
+    this.transactionData.reset();
+    this.transactionData.controls.checkDiscount.setValue('0')
     this.sum = 0;
     this.patientDatasDetails = [];
     // this.sum = null;
@@ -433,6 +573,13 @@ export class TransactionComponent implements OnInit , OnDestroy  {
     // }
   }
     
+}
+
+transactionDatas(id){
+  let allData = id;
+  allData['amount'] = this.globleSum
+  console.log(allData);
+  console.log(this.patientDatasDetails)
 }
 
 
