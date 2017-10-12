@@ -65,5 +65,9 @@ Route::resource('/commoncodes','CommonCodeController');
 Route::resource('/transaction','TransactionController');
 Route::get('/transactions/{id}','TransactionController@getDetialsOfPatient');
 Route::resource('/getPatientData','PatientController');
+
+//DASHBOARD
+
+Route::get('/dashboard', 'DashboardController@getpatient');
 // Route::post('/modify','DepartmentController@postDepartment');
 // Route::get('/modify','DepartmentController@getDepartment');

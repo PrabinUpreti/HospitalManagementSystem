@@ -189,7 +189,7 @@ export class PatientDetailsFormComponent implements OnInit {
 
           
             this.patientData.controls.patient_name.valueChanges
-            .debounceTime(300)
+            .debounceTime(400)
             .distinctUntilChanged()
             .subscribe(term => {
               if(!(this.patientData.controls.patient_name.value == this.forFutureUsePatientToSeeExistingPatientName)){
@@ -317,12 +317,14 @@ export class PatientDetailsFormComponent implements OnInit {
               }
             }
             paramData['testID'] = testIdStoredInLocalStorage;
+            paramData['invoice'] = localStorage.getItem('sum');
 
             console.log(paramData);
             this.laravelService.getData(paramData)
               .subscribe(
                     (response)=>{
                       localStorage.removeItem('test');
+                      localStorage.removeItem('sum');
                       this.title = "Do you want to pay?"
                       jQuery("#myModal").modal("show");
                       this.routeToPayment = {'link':'/lab/add-transaction/'+ response.patientId};
@@ -410,6 +412,7 @@ export class PatientDetailsFormComponent implements OnInit {
         }
         paramData['testID'] = testIdStoredInLocalStorage;
         paramData['idToUpdate'] = this.forFutureUsePatientToSeeExistingPatient;
+        paramData['invoice'] = localStorage.getItem('sum');
 
         console.log(paramData);
         this.laravelService.UpdateData(paramData)

@@ -25,6 +25,15 @@ getDetialsOfPatients(id) {
     .catch(this.handleError);
 }
 
+postInvoices(param){
+  console.log(param)
+  let headers = new Headers({ 'Content-Type': 'application/json' });
+  let options = new RequestOptions({ headers: headers, withCredentials: true });
+  return this.PatientTest.post("http://server.hms.com/api/transaction", param, options)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+
 
   private extractData(res: Response) {
     let response = res.json();

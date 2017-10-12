@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 use App\Testbooking;
 use App\Patient;
 use App\Report;
+use App\Invoice;
+use App\PatientLadger;
+
 use Illuminate\Http\Request;
 
 class TestbookingController extends Controller
@@ -24,6 +27,7 @@ class TestbookingController extends Controller
             $identity_card = $record['identity_card'];
             $reff_by = $record['reff_by'];
             $testId = $record['testID'];
+            $amount = $record['invoice'];
 
         $patient = Patient::create([
                "reg_no" => $patientid,
@@ -54,6 +58,26 @@ class TestbookingController extends Controller
                     "test_id" => $testid
                 ]);
             }
+            $InvoiceId = Invoice::create([
+                "testbooking_id" => $testbooking_id,
+                "particular" => "INV-TEST-BOOKED_AMT",
+                "cash" => 0,
+                "balance" => $amount,
+                "discount_amount" => 0,
+                "discount_percentage" => 0,
+                "remark" => 'dr'
+            ]);
+
+            
+            PatientLadger::create([
+                "patient_id" => $idForTestbooking,
+                "particular" => "PL-TEST-BOOKED_AMT",
+                "invoice_id" => $InvoiceId->id,
+                "dr" => $amount,
+                "cr" => 0,
+                "balance" => $amount,
+                "remark" => 'dr'
+            ]);
 
             //setTestBooking();
         
@@ -80,6 +104,7 @@ class TestbookingController extends Controller
     $identity_card = $record['identity_card'];
     $reff_by = $record['reff_by'];
     $testId = $record['testID'];
+    $amount = $record['invoice'];
 
     Patient::find($id)->update([
        "reg_no" => $patientid,
@@ -111,6 +136,28 @@ class TestbookingController extends Controller
             "test_id" => $testid
         ]);
     }
+
+    
+    $InvoiceId = Invoice::create([
+        "testbooking_id" => $testbooking_id,
+        "particular" => "INV-TEST-BOOKED_AMT",
+        "cash" => 0,
+        "balance" => $amount,
+        "discount_amount" => 0,
+        "discount_percentage" => 0,
+        "remark" => 'dr'
+    ]);
+
+    
+    PatientLadger::create([
+        "patient_id" => $idForTestbooking,
+        "particular" => "PL-TEST-BOOKED_AMT",
+        "invoice_id" => $InvoiceId->id,
+        "dr" => $amount,
+        "cr" => 0,
+        "balance" => $amount,
+        "remark" => 'dr'
+    ]);
 
     //setTestBooking();
 

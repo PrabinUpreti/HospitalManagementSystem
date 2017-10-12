@@ -33,9 +33,9 @@ public getUrl = window.location.pathname;
   		{fa:'fa-calendar-plus-o', status:true, link:'/lab/reports', name:'reports'},
   		{fa:'fa-plus-square', status:true, link:'/lab/add-transaction', name:'add transaction'},
   		{fa:'fa-eye', status:true, link:'/lab/view-transaction', name:'view transaction'},
-  		{fa:'fa-list', status:true, link:'/lab/list', name:'list'},
+  		// {fa:'fa-list', status:true, link:'/lab/list', name:'list'},
 		{fa:'fa-cogs', status:true, link:'/lab/modify', name:'Setting'},
-		{fa:'fa-question', status:true, link:'/lab/help', name:'Help'},
+		// {fa:'fa-question', status:true, link:'/lab/help', name:'Help'},
 		  
   		// {status:true, link:'/lab/settings', name:'settings'},  		
   		// {fa:'fa-question-circle-o', status:true, link:'/lab/help', name:'help'}

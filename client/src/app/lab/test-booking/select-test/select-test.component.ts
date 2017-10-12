@@ -19,10 +19,12 @@ class DataTable {
   
     public totalSum(){
       let sum = 0
+      // localStorage.removeItem('sum');
       for(let i in this.dataTable){
         sum = sum + parseInt(this.dataTable[i].rate)
       }
-      return sum
+      localStorage.setItem('sum', String(sum));
+      return sum;
     }
     public getDataTables(){
       return this.dataTable

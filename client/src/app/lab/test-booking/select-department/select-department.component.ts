@@ -17,6 +17,7 @@ export class SelectDepartmentComponent implements OnInit {
 
   ngOnInit() {
     localStorage.removeItem('test');
+    localStorage.removeItem('sum');
     this.modifyService.getDepartment()
     .subscribe(
       (response)=>{

@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class ViewTransactionComponent implements OnInit {
 
   constructor() { }
+  public patientLists = [];
 
   ngOnInit() {
   }

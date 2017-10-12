@@ -8,6 +8,7 @@ import { LaravelService } from './test-booking/patient-details-form/laravel.serv
 import { ReportService } from './reports/report.service';
 import { ModifyService } from './modify/modify.service';
 import { TransactionService } from './transaction/transaction.service';
+import { DashboardService } from './dashboard/dashboard.service';
 
 
 
@@ -72,6 +73,12 @@ import { PatientComponent } from './modify/patient/patient.component';
   				],
   bootstrap: [TestBookingComponent],
   exports:[TestBookingComponent],
-  providers:[LaravelService,ReportService,ModifyService,TransactionService]
+  providers:[
+	  LaravelService,
+	  ReportService,
+	  ModifyService,
+	  TransactionService,
+	  DashboardService
+	]
 })
 export class LabModule {}

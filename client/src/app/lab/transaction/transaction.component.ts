@@ -580,6 +580,15 @@ transactionDatas(id){
   allData['amount'] = this.globleSum
   console.log(allData);
   console.log(this.patientDatasDetails)
+  // this.transactionservice.postInvoices(allData)
+  // .subscribe(
+  //   (response)=>{
+  //     console.log(response);
+  //   },
+  //   (error)=>{
+  //     console.log(error);
+  //   }
+  // );
 }
 
 
