@@ -2,8 +2,8 @@
   <div style="margin-bottom:10px; margin-top:5px;" class="container col-sm-12">
     <div class="container">
         <ul class="nav nav-tabs">
-            <li style="cursor:pointer" class="active"><a>Invoices</a></li>
-            <li style="cursor:pointer"><a>Patient Ledgers</a></li>
+            <li style="cursor:pointer" [ngClass] = "{'active': !activePayment}" (click)="activeInvoice(0)"><a>Invoices</a></li>
+            <li style="cursor:pointer" [ngClass] = "{'active': activePayment}" (click)="activeInvoice(1)"><a>Patient Ledgers</a></li>
         </ul>
     </div>
   </div>
@@ -19,7 +19,9 @@
       </div>
     </form>
   </div>
-  <div style="margin-bottom:10px" class="pull-right col-sm-12">
+
+  <div *ngIf = "!activePayment && activepatienttable" style="margin-bottom:10px" class="pull-right col-sm-12">
+    <caption><h2>Patient Invoices</h2></caption>
     <table class="table table-responsive table-hover table-striped">
       <thead>
         <tr>
@@ -32,13 +34,90 @@
       </thead>
       <tbody>
         <tr *ngFor="let patientList of patientLists; let i = index">
-          <td style="cursor:pointer" class="text-info">{{patientLists.length}}-i</td>
-          <td style="cursor:pointer" class="text-info">{{patientList.name}}</td>
-          <td>{{patientList.address}}</td>
+          <td style="cursor:pointer" class="text-info">{{i+1}}</td>
+          <td style="cursor:pointer" class="text-info" (click)="getPatientInvoice(patientList.id)">{{patientList.patient_name}}</td>
+          <td>{{patientList.patient_address}}</td>
           <td>{{patientList.phone}}</td>
           <td>{{patientList.created_at}}</td>
         </tr>
       </tbody>
     </table>
   </div>
+
+  <div *ngIf = "activePayment && activepatienttable" style="margin-bottom:10px" class="pull-right col-sm-12">
+    <caption><h2>Patient Ladgers</h2></caption>
+    <table class="table table-responsive table-hover table-striped">
+      <thead>
+        <tr>
+          <th>S.N</th>
+          <th>Name</th>
+          <th>Address</th>
+          <th>Phone</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let patientList of patientLists; let i = index">
+          <td style="cursor:pointer" class="text-info">{{i+1}}</td>
+          <td style="cursor:pointer" class="text-info" (click)="getPatientInvoice(patientList.id)">{{patientList.patient_name}}</td>
+          <td>{{patientList.patient_address}}</td>
+          <td>{{patientList.phone}}</td>
+          <td>{{patientList.created_at}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf = "!activePayment && !activepatienttable" style="margin-bottom:10px" class="pull-right col-sm-12">
+    <input type="botton" class="btn btn-primary" (click)="back()" value="Back">
+    <table class="table table-responsive table-hover table-striped">
+      <thead>
+        <tr>
+          <th>S.N</th>
+          <th>Particular</th>
+          <th>Cash</th>
+          <th>Amount</th>
+          <th>Discount</th>
+          <th>Discount %</th>
+          <th>Remark</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let patientLadgerAndInvoice of patientLadgerAndInvoices; let i = index">
+          <td style="cursor:pointer" class="text-info">{{i+1}}</td>
+          <td style="cursor:pointer" class="text-info" (click)="getPatientInvoice(patientList.id)">{{patientLadgerAndInvoice.particular}}</td>
+          <td>{{patientLadgerAndInvoice.cash}}</td>
+          <td>{{patientLadgerAndInvoice.phone}}</td>
+          <td>{{patientLadgerAndInvoice.crediscount_amountated_at}}</td>
+          <td>{{patientLadgerAndInvoice.crediscount_amountated_at}}</td>
+          <td>{{patientLadgerAndInvoice.crediscount_amountated_at}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf = "activePayment && !activepatienttable" style="margin-bottom:10px" class="pull-right col-sm-12">
+    <input type="botton" class="btn btn-primary" (click)="back()" value="Back">
+    <table class="table table-responsive table-hover table-striped">
+      <thead>
+        <tr>
+          <th>S.N</th>
+          <th>Name</th>
+          <th>Address</th>
+          <th>Phone</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let patientLadgerAndInvoice of patientLadgerAndInvoices; let i = index">
+          <td style="cursor:pointer" class="text-info">{{i+1}}</td>
+          <td style="cursor:pointer" class="text-info" (click)="getPatientInvoice(patientList.id)">{{patientList.patient_name}}</td>
+          <td>{{patientList.patient_address}}</td>
+          <td>{{patientList.phone}}</td>
+          <td>{{patientList.created_at}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <pre> {{ patientLadgerAndInvoices | json }}</pre>
 </div>

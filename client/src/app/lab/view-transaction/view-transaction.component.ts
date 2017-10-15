@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ViewTransactionService } from './view-transaction.service';
 
 @Component({
   selector: 'app-view-transaction',
@@ -7,10 +8,43 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ViewTransactionComponent implements OnInit {
 
-  constructor() { }
+  constructor(private transactionService:ViewTransactionService) { }
   public patientLists = [];
+  public activePayment = false;
+  public patientLadgerAndInvoices = [];
+  public activepatienttable = true;
 
   ngOnInit() {
+    this.transactionService.getpatient()
+    .subscribe(
+      (response)=>{
+        this.patientLists = response;
+      },(error)=>{
+        console.log("There is error in server");
+      })
   }
+  getPatientInvoice(id){
+    this.activepatienttable = false;
+    this.transactionService.getPatientInvoiceFromServer(id)
+    .subscribe(
+      (response)=>{
+        this.patientLadgerAndInvoices = response;
+      },
+      (error)=>{
+        console.log("Hey! There is error in server my darling");
+      })
+  }
+
+  back(){
+    this.activepatienttable = true;
+  }
+
+  
+activeInvoice(id){
+  if(id == 0)
+    this.activePayment = false;
+  else 
+    this.activePayment = true;
+}
 
 }

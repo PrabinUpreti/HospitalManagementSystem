@@ -9,6 +9,9 @@ import { ReportService } from './reports/report.service';
 import { ModifyService } from './modify/modify.service';
 import { TransactionService } from './transaction/transaction.service';
 import { DashboardService } from './dashboard/dashboard.service';
+import { ViewTransactionService } from './view-transaction/view-transaction.service';
+
+import { MyDateRangePickerModule } from 'mydaterangepicker';
 
 
 
@@ -36,6 +39,7 @@ import { ModifyTestComponent } from './modify/modify-test/modify-test.component'
 import { TestDetailsComponent } from './modify/test-details/test-details.component';
 import { DoctorComponent } from './modify/doctor/doctor.component';
 import { PatientComponent } from './modify/patient/patient.component';
+import { DoctorReportComponent } from './doctor-report/doctor-report.component';
 
 
 @NgModule({
@@ -43,9 +47,10 @@ import { PatientComponent } from './modify/patient/patient.component';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    UsersRouting
+	UsersRouting,
+	MyDateRangePickerModule
   ],
-  declarations: [  					
+  declarations: [
   					// MainMenuComponent,
   					DashboardComponent,
   					TestBookingComponent,
@@ -69,7 +74,8 @@ import { PatientComponent } from './modify/patient/patient.component';
   					ModifyTestComponent,
   					TestDetailsComponent,
   					DoctorComponent,
-  					PatientComponent
+  					PatientComponent,
+  					DoctorReportComponent
   				],
   bootstrap: [TestBookingComponent],
   exports:[TestBookingComponent],
@@ -78,7 +84,8 @@ import { PatientComponent } from './modify/patient/patient.component';
 	  ReportService,
 	  ModifyService,
 	  TransactionService,
-	  DashboardService
+	  DashboardService,
+	  ViewTransactionService
 	]
 })
 export class LabModule {}

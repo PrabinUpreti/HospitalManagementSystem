@@ -5,8 +5,6 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 @Injectable()
-
-@Injectable()
 export class TransactionService {
 
 constructor(private PatientTest: Http) { }
@@ -30,6 +28,14 @@ postInvoices(param){
   let headers = new Headers({ 'Content-Type': 'application/json' });
   let options = new RequestOptions({ headers: headers, withCredentials: true });
   return this.PatientTest.post("http://server.hms.com/api/transaction", param, options)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+
+getDetialsOfTestbooking(id){
+  let headers = new Headers({ 'Content-Type': 'application/json' });
+  let options = new RequestOptions({ headers: headers, withCredentials: true });
+  return this.PatientTest.get("http://server.hms.com/api/transactionstestbooking/" + id, options)
     .map(this.extractData)
     .catch(this.handleError);
 }

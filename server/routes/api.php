@@ -69,5 +69,12 @@ Route::resource('/getPatientData','PatientController');
 //DASHBOARD
 
 Route::get('/dashboard', 'DashboardController@getpatient');
+
+//VIEW-TRANSACTION
+
+Route::get('/view-transaction', 'ViewTransaction@getpatient');
+Route::get('/view-transaction/{id}', 'ViewTransaction@getpatientInvoicesAndledger');
+Route::get('/transactionstestbooking/{id}','TransactionController@getDetialsOfTestbooking');
+
 // Route::post('/modify','DepartmentController@postDepartment');
 // Route::get('/modify','DepartmentController@getDepartment');

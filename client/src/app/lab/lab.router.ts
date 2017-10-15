@@ -17,6 +17,7 @@ import { SelectTestComponent } from './test-booking/select-test/select-test.comp
 import { SelectedTestComponent } from './test-booking/selected-test/selected-test.component';
 import { SelectDepartmentComponent } from './test-booking/select-department/select-department.component';
 import { ModifyComponent } from './modify/modify.component';
+import { DoctorReportComponent } from './doctor-report/doctor-report.component';
 
 
 const usersRoutes: Routes = [
@@ -33,7 +34,7 @@ const usersRoutes: Routes = [
       				{ path: 'add-transaction/:id', component: TransactionComponent },
       				{ path: 'add-transaction', component: TransactionComponent },
               { path: 'view-transaction', component: ViewTransactionComponent },
-              { path: 'list', component: DashboardComponent },
+              { path: 'doctor-reports', component: DoctorReportComponent },
               { path: 'help', component: ModifyComponent },
 				]
 

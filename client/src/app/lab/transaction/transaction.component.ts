@@ -32,6 +32,7 @@ export class TransactionComponent implements OnInit , OnDestroy  {
   public patientId;
   public globleSum;
   public sum = 0;
+  public currentAmt;
   public activepaymentForm = false;
   public showTable = false;
   public routeParameter;
@@ -45,6 +46,10 @@ export class TransactionComponent implements OnInit , OnDestroy  {
   // public processDiscountPer : FormControl;
   public selectedradioButton;
   public disableme = false;
+  public isurlid = false;
+  public previousAmount = 0;
+  public activePayment = false;
+  public routedList = true;
   // public tempGlobleVar;
   // public tempCashGlobleVar;
 
@@ -74,143 +79,11 @@ export class TransactionComponent implements OnInit , OnDestroy  {
       .subscribe(term=>{
           this.calculateTotalAmount();
         });
-    //     if(this.transactionData.controls.discount.value || this.transactionData.controls.discountPer.value){
-    //       this.sum = this.tempGlobleVar-term;
-    //       this.tempCashGlobleVar = this.sum;
-    //       this.transactionData.controls.cash.setValue(term);
-    //     }
-    //     // else if(this.transactionData.controls.discountPer.value){
-    //     //   let localSum = this.sum;
-    //     //   localSum = this.sum-term;
-    //     //   this.sum = localSum;
-    //     // }
-    //     else{
-    //       let localSum = this.globleSum;
-    //       localSum = localSum-term;
-    //       this.sum = localSum;
-    //       this.tempCashGlobleVar = this.sum;
-    //       this.transactionData.controls.cash.setValue(term);
-    //     }
-    //   }
-    //   else{
-    //     if(this.transactionData.controls.discount.value || this.transactionData.controls.discountPer.value){
-    //       // let valInDiscounts = this.transactionData.controls.discount.value;
-    //       // let valInDiscountPer = this.transactionData.controls.discountPer.value;
-    //       // if(!valInDiscounts){
-    //       //   valInDiscounts = valInDiscountPer;
-    //       // }
-    //       // else{
-    //       //   valInDiscountPer = valInDiscounts;
-    //       // }
-
-    //       this.sum = this.tempGlobleVar;
-    //       this.transactionData.controls.cash.setValue('');
-    //       this.tempCashGlobleVar = undefined;
-          
-
-    //     }
-    //     else{
-    //       this.sum = this.globleSum;
-    //       this.transactionData.controls.cash.setValue('');
-    //       this.tempCashGlobleVar = undefined;
-    //     }
-    //   }
-    // });
-    
-    // this.processDiscount = new FormControl('');
-    // this.processDiscount.valueChanges
-    // .subscribe(term=>{
-    //   if(term>0){
-    //     if(this.selectedradioButton == 0){
-    //       // this.processDiscount.setValue('');
-    //       if(this.transactionData.controls.cash.value){
-    //         let localSum = this.tempCashGlobleVar;
-    //         let tempGlob = this.globleSum;
-    //         localSum = localSum-(tempGlob-term);
-    //         this.sum = localSum;
-    //         this.transactionData.controls.discount.setValue(term);
-    //         this.transactionData.controls.discountPer.setValue('');
-    //       }
-    //       else{
-    //         let localSum = this.globleSum;
-    //         localSum = localSum-term;
-    //         this.sum = localSum;
-    //         this.transactionData.controls.discount.setValue(term);
-    //         this.transactionData.controls.discountPer.setValue('');
-    //       }
-    //     }
-    //     else{
-    //       // this.processDiscount.setValue('');
-    //       if(this.transactionData.controls.cash.value){
-    //         let localSum = this.tempCashGlobleVar;
-    //         let tempGlob = this.globleSum;
-    //         localSum = localSum-(tempGlob-((term/100)*tempGlob));
-    //         this.sum = localSum;
-    //         this.transactionData.controls.discount.setValue('');
-    //         this.transactionData.controls.discountPer.setValue(term);
-    //       }
-    //       else{
-    //         let localSum = this.globleSum;
-    //         localSum = localSum-((term/100)*localSum);
-    //         this.sum = localSum;
-    //         this.transactionData.controls.discount.setValue('');
-    //         this.transactionData.controls.discountPer.setValue(term);
-    //       }
-    //     }
-    //   }
-    //   else{
-    //     if(this.transactionData.controls.cash.value){
-    //       this.sum = this.tempCashGlobleVar;
-          
-    //       this.transactionData.controls.discount.setValue('');
-    //       this.transactionData.controls.discountPer.setValue('');
-    //       this.tempGlobleVar = undefined;
-    //     }
-    //     else{
-    //       this.sum = this.globleSum;
-          
-    //       this.transactionData.controls.discount.setValue('');
-    //       this.transactionData.controls.discountPer.setValue('');
-    //       this.tempGlobleVar = undefined;
-    //     }
-    //   }
-    // })
-
-    // this.processDiscountPer = new FormControl('');
-    // this.processDiscountPer.valueChanges
-    // .subscribe(term=>{
-      
-    //   if(term>0){
-    //     if(this.transactionData.controls.cash.value){
-    //       let localSum = this.sum;
-    //       localSum = this.sum-((term/100)*this.sum);
-    //       this.sum = localSum;
-    //     }
-    //     // else if(this.transactionData.controls.discountPer.value){
-    //     //   let localSum = this.sum;
-    //     //   localSum = this.sum-((term/100)*this.sum);
-    //     //   this.sum = localSum;
-    //     // }
-    //     else{
-    //       let localSum = this.globleSum;
-    //       localSum = localSum-((term/100)*localSum);
-    //       this.sum = localSum;
-    //       this.transactionData.controls.discount.setValue(term);
-    //     }
-    //   }
-    //   else{
-    //     this.sum = this.globleSum;
-    //   }
-    //   this.sum = this.sum-((term/100)*this.sum);
-    //   this.transactionData.controls.discountPer.setValue(term);
-    // });
-    
-
 
 
     this.searchField = new FormControl;
     this.searchField.valueChanges
-      .debounceTime(100)
+      .debounceTime(400)
       .distinctUntilChanged()
       .subscribe(term => {
         this.searchpayment(term).subscribe();
@@ -227,30 +100,7 @@ export class TransactionComponent implements OnInit , OnDestroy  {
         this.commoncodes = response;
 
 
-        // for(let x in response){
-        //   if(response[x].common_code.toUpperCase() == 'GEN'){
-        //     if(this.genderInDropdowns == undefined){
-        //       this.genderInDropdowns = response[x].common_description;
-        //     }
-        //     else{
-        //       this.genderInDropdowns.push(response[x].common_description);
-        //     }
-        //   }
-        // }
-
-
-
-        // for(let x in response){
-        //   if(response[x].common_code.toUpperCase() == 'MRT'){
-        //     if(this.mrts == undefined){
-        //       this.mrts = response[x].common_description;
-        //     }
-        //     else{
-        //       this.mrts.push(response[x].common_description);
-        //     }
-        //   }
-        // }
-
+       
 
 
         // let tempData;
@@ -276,13 +126,14 @@ export class TransactionComponent implements OnInit , OnDestroy  {
           console.log(params);
           this.paramId= params['id'];
           if(this.paramId){
+            this.isurlid = true;
             this.disableme = true;
             this.searchpayment(this.paramId).subscribe(
               success=>{
                 console.log(this.patientDatas);
-                for (let i in this.patientDatas) {
-                  this.invoice(this.patientDatas[i].patient_id);
-                }                
+                // for (let i in this.patientDatas) {
+                  this.invoice(this.patientDatas[0].testbooking_id);
+                // }
             },err=>{
               console.log(this.patientDatas);
             })
@@ -312,68 +163,9 @@ export class TransactionComponent implements OnInit , OnDestroy  {
     let discountAmount = (this.transactionData.controls.checkDiscount.value == 0)?this.transactionData.controls.discountcheck.value:(((this.transactionData.controls.discountcheck.value)/100)*this.globleSum);
     this.sum = this.globleSum - (Number(this.transactionData.controls.cash.value) + Number(discountAmount));
   }
-    // console.log(getEvent.target.value);
-    // this.selectedradioButton = getEvent.target.value;
-    // this.disableInputBoxUntilCheckBoxIsChecked =false;
-    // if(this.transactionData.controls.discount.value || this.transactionData.controls.discountPer.value){
-    //   let valInDiscounts = this.transactionData.controls.discount.value;
-    //   let valInDiscountPer = this.transactionData.controls.discountPer.value;
-    //   if(!valInDiscounts){
-    //     valInDiscounts = valInDiscountPer;
-    //   }
-    //   else{
-    //     valInDiscountPer = valInDiscounts;
-    //   }
-    //   if(this.selectedradioButton == 1){
+   
 
-    //     if(this.transactionData.controls.cash.value){
-    //       let localSum = this.tempCashGlobleVar;
-    //       let tempGlob = this.globleSum;
-    //       localSum = localSum-(tempGlob-((valInDiscounts/100)*tempGlob));
-    //       this.sum = localSum;
-    //       this.tempGlobleVar = this.sum;
-    //       // this.transactionData.controls.discount.setValue('');
-    //       this.transactionData.controls.discountPer.setValue(valInDiscounts);
-    //     }
-    //     else{
-    //       let localSum = this.globleSum;
-    //       localSum = localSum-((valInDiscounts/100)*localSum);
-    //       this.sum = localSum;
-    //       this.tempGlobleVar = this.sum;
-    //       // this.transactionData.controls.discount.setValue('');
-    //       this.transactionData.controls.discountPer.setValue(valInDiscounts);
-    //     }
-    //   }
-    //   else{
-    //     if(this.transactionData.controls.cash.value){
-    //       let localSum = this.tempCashGlobleVar;
-    //       let tempGlob = this.globleSum;
-    //       localSum = (tempGlob-valInDiscounts)-localSum;
-    //       this.sum = localSum;
-    //       this.tempGlobleVar = this.sum;
-    //       this.transactionData.controls.discount.setValue(valInDiscounts);
-    //     }
-    //     else{
-    //       let localSum = this.globleSum;
-    //       localSum = localSum-valInDiscounts;
-    //       this.sum = localSum;
-    //       this.tempGlobleVar = this.sum;
-    //       this.transactionData.controls.discount.setValue(valInDiscounts);
-    //     }
-    //   }
-    // }
-    // this.processDiscount.setValue('');
-  // }
-  // private getTestbookingID() {
-  //       this.transactionreport.getbillData(1).subscribe(
-  //           billData => {
-  //           this.billData = billData 
-  //           console.log(billData);
-  //        });
-  //     }
-  // public searchPay(){
-  //   this.searchpayment().subscribe();
-  // }
+  
   public searchpayment(id):Observable<any>{
     return new Observable(observer=>{
       // let id;
@@ -386,6 +178,7 @@ export class TransactionComponent implements OnInit , OnDestroy  {
        this.transactionservice.getPatientTest(id)
       .subscribe(
         (response)=>{
+          console.log(response);
           if(response.length > 0){
             this.SearchNotify = false;
             this.sum = 0;
@@ -401,12 +194,12 @@ export class TransactionComponent implements OnInit , OnDestroy  {
             
             let ageRange = [];
             for(let i in this.ageGroupFromServer) ageRange.push(JSON.parse(JSON.stringify(this.ageGroupFromServer[i])))
-            console.log(ageRange);
+            // console.log(ageRange);
             let splitAge = [];
             for(let x in ageRange){
               splitAge.push(ageRange[x].split(" "));
             }
-            console.log(splitAge);
+            // console.log(splitAge);
             let changeInNum
             let intCollection=[];
             for(let y in splitAge){
@@ -427,10 +220,10 @@ export class TransactionComponent implements OnInit , OnDestroy  {
                 // if(changeInNum.toUpperCase() ==  )
               }
             }
-            console.log(intCollection);
+            // console.log(intCollection);
             console.log("this is int list")
             for(let int = 0; int < intCollection.length; int+=2){
-              console.log(int);
+              // console.log(int);
               let term = response[0].age;
               if(term < 200){
                 if(term >=intCollection[int] && term <= intCollection[int+1]){
@@ -447,33 +240,50 @@ export class TransactionComponent implements OnInit , OnDestroy  {
             }
             // console.log(intCollection[int] , intCollection[int+1]);
           }
-    
+
             this.patientDatas = [];
             this.showTable = true;
-            for (let i in response) {
-              console.log(this.patientDatas);
-              // if(response[i].age_group.toUpperCase() == this.throwage.toUpperCase() && response[i].gender.toUpperCase() == response[i].genderdetails.toUpperCase() ){
-              if (this.patientDatas.length > 0) {
-                let MatchFound = false;
-                for(let y in this.patientDatas){
-                  if (response[i].id == this.patientDatas[y].id) {
-                    MatchFound = true;
+            if(this.isurlid){
+              if(response.length !=1){
+                this.previousAmount = parseFloat(response[response.length - 2].balance);
+              }
+              else{
+                this.previousAmount = 0.00;
+              }
+              this.sum = response[response.length - 1].invoices_balance;
+              this.currentAmt = this.sum;
+              this.sum += this.previousAmount;
+              this.globleSum = this.sum;
+              this.patientDatas = response;
+              
+            }
+            else{
+              for (let i in response) {
+                console.log(this.patientDatas);
+                // if(response[i].age_group.toUpperCase() == this.throwage.toUpperCase() && response[i].gender.toUpperCase() == response[i].genderdetails.toUpperCase() ){
+                if (this.patientDatas.length > 0) {
+                  let MatchFound = false;
+                  for(let y in this.patientDatas){
+                    if (response[i].id == this.patientDatas[y].id) {
+                      MatchFound = true;
+                    }
+                  }
+                  if(!MatchFound){
+                    this.patientDatas.push(response[i]);
                   }
                 }
-                if(!MatchFound){
+                else {
                   this.patientDatas.push(response[i]);
                 }
-              }
-              else {
-                this.patientDatas.push(response[i]);
-              }
 
-              // }
+                // }
+              }
             }
 
             
             this.showTable = true;
             this.activepaymentForm = false;
+            this.activePayment = false;
           console.log(this.patientDatas);
         }
         else{
@@ -487,17 +297,58 @@ export class TransactionComponent implements OnInit , OnDestroy  {
   
         },
         (error)=>{
-            console.log("sorry error in server")
+            this.SearchNotify = true;
+            this.Searchnotify = "Sorry Error in Server!!!"
             observer.complete();
         });
     })
   }
 
-
-  invoice(id){
+  routedinvoice(term){
+    console.log(term)
+    let id = term.testbookings_id
+    this.activepaymentForm = false;
+    console.log(id);
     this.transactionData.reset();
     this.transactionData.controls.checkDiscount.setValue('0')
-    this.sum = 0;
+    // this.sum = 0;
+    this.patientDatasDetails = [];
+      this.transactionservice.getDetialsOfTestbooking(id)
+      .subscribe(
+      (response) => {
+        console.log(response);
+        for (let i in response) {
+          // console.log(response[i].age_group);
+          // console.log(this.throwage);
+          // console.log(this.genderinPatientTable);
+          // console.log(response[i].genderdetails);
+          
+
+          if (response[i].age_group == this.throwage && this.genderinPatientTable == response[i].genderdetails) {
+            this.patientDatasDetails.push(response[i]);
+          }
+        }
+        this.activepaymentForm = true;
+        console.log(this.patientDatasDetails);
+        // if(!(this.sum > 0)){
+        //   for(let x in this.patientDatasDetails){
+        //     this.sum = this.sum +  parseInt(this.patientDatasDetails[x].rate);
+        //     console.log(this.sum);
+        //     this.globleSum = this.sum;
+        //   }
+        // }
+      },
+      (error) => {
+        console.log("sorry error in server")
+      });
+
+
+  }
+  invoice(id){
+    console.log(id);
+    this.transactionData.reset();
+    this.transactionData.controls.checkDiscount.setValue('0')
+    // this.sum = 0;
     this.patientDatasDetails = [];
     // this.sum = null;
     let typeofInvoice = typeof id;
@@ -509,25 +360,27 @@ export class TransactionComponent implements OnInit , OnDestroy  {
       (response) => {
         console.log(response);
         for (let i in response) {
-          console.log(response[i].age_group);
-          console.log(this.throwage);
-          console.log(this.genderinPatientTable);
-          console.log(response[i].genderdetails);
+          // console.log(response[i].age_group);
+          // console.log(this.throwage);
+          // console.log(this.genderinPatientTable);
+          // console.log(response[i].genderdetails);
           
 
-          if (response[i].age_group == this.throwage && this.genderinPatientTable == response[i].genderdetails) {
+          // if (response[i].age_group == this.throwage && this.genderinPatientTable == response[i].genderdetails) {
             this.patientDatasDetails.push(response[i]);
-          }
+          // }
         }
         this.activepaymentForm = true;
         console.log(this.patientDatasDetails);
-        if(!(this.sum > 0)){
-          for(let x in this.patientDatasDetails){
-            this.sum = this.sum +  parseInt(this.patientDatasDetails[x].rate);
-            console.log(this.sum);
-            this.globleSum = this.sum;
-          }
-        }
+        // if(!(this.sum > 0)){
+        //   // for(let x in this.patientDatasDetails){
+        //     this.sum = this.sum +  parseInt(this.patientDatasDetails[0].balance);
+        //     console.log(this.sum);
+        //     this.globleSum = this.sum;
+        //   // }
+        //   // this.previousAmount=0;
+        //   // this.previousAmount = this.previousAmount+ parseInt(this.patientDatasDetails[0].invoiceBalance);
+        // }
       },
       (error) => {
         console.log("sorry error in server")
@@ -535,7 +388,8 @@ export class TransactionComponent implements OnInit , OnDestroy  {
 
     }
     else{
-      let idToGetTest = id.patient_id;
+      console.log(id)
+      let idToGetTest = id.testbooking_id;
       console.log(idToGetTest);
       this.genderinPatientTable = id.gender;
       this.patientName = id.patient_name;
@@ -547,10 +401,10 @@ export class TransactionComponent implements OnInit , OnDestroy  {
         (response) => {
           console.log(response);
           for (let i in response) {
-            console.log(response[i].age_group);
-            console.log(this.throwage);
-            console.log(this.genderinPatientTable);
-            console.log(response[i].genderdetails);
+            // console.log(response[i].age_group);
+            // console.log(this.throwage);
+            // console.log(this.genderinPatientTable);
+            // console.log(response[i].genderdetails);
             
 
             if (response[i].age_group == this.throwage && this.genderinPatientTable == response[i].genderdetails) {
@@ -559,19 +413,19 @@ export class TransactionComponent implements OnInit , OnDestroy  {
           }
           this.activepaymentForm = true;
           console.log(this.patientDatasDetails);
-          if(!(this.sum > 0)){
-            for(let x in this.patientDatasDetails){
-              this.sum = this.sum +  parseInt(this.patientDatasDetails[x].rate);
-              this.globleSum = this.sum;
-              console.log(this.sum);
-            }
-          }
+          // if(!(this.sum > 0)){
+          //   for(let x in this.patientDatasDetails){
+          //     this.sum = this.sum +  parseInt(this.patientDatasDetails[x].rate);
+          //     this.globleSum = this.sum;
+          //     console.log(this.sum);
+          //   }
+          // }
         },
         (error) => {
           console.log("sorry error in server")
         });
     // }
-  }
+      }
     
 }
 
@@ -589,6 +443,12 @@ transactionDatas(id){
   //     console.log(error);
   //   }
   // );
+}
+activeInvoice(id){
+  if(id == 0)
+    this.activePayment = false;
+  else 
+    this.activePayment = true;
 }
 
 

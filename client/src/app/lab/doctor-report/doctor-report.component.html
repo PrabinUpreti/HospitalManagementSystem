@@ -1,0 +1,48 @@
+<div class="container">
+  <div class="row pull-left">
+    <div class="col-sm-6">
+      <form class="form-horizontal" [formGroup]="myForm" novalidate (ngSubmit) = "doctorInfo()">
+
+        <div class="form-group">
+          <label class="control-label col-sm-6" for="email"> Select Age Range: </label>
+          <div class="col-sm-6">
+            <my-date-range-picker style="padding:0px; border-radius:0px; border:0px;" class="form-control" name="mydaterange" [options]="myDateRangePickerOptions"
+              formControlName="myDateRange"></my-date-range-picker>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-sm-6" for="email"> Select Doctor </label>
+          <div class="col-sm-6">
+            <select class="form-control" formControlName="selecteddoctor">
+              <option>Select Doctor</option>
+              <option *ngFor = "let doctorList of doctorlists; let i = index">Dr. {{doctorList.name}}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-sm-6" for="email"> </label>
+          <div class="col-sm-6">
+            <input type="submit" class="btn btn-primary" value="Submit">
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+
+  <div *ngIf="Notify" class="container">
+    <div class="row" id="error-container">
+      <div class="span12">
+        <div class="alert alert-danger">
+          <button type="button" class="close" (click)="datadismis()">×</button>
+          <span>{{notify}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
