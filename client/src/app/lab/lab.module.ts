@@ -10,6 +10,7 @@ import { ModifyService } from './modify/modify.service';
 import { TransactionService } from './transaction/transaction.service';
 import { DashboardService } from './dashboard/dashboard.service';
 import { ViewTransactionService } from './view-transaction/view-transaction.service';
+import { TestbookingTransactionService } from './testbooking-transaction/testbooking-transaction.service';
 
 import { MyDateRangePickerModule } from 'mydaterangepicker';
 
@@ -40,6 +41,7 @@ import { TestDetailsComponent } from './modify/test-details/test-details.compone
 import { DoctorComponent } from './modify/doctor/doctor.component';
 import { PatientComponent } from './modify/patient/patient.component';
 import { DoctorReportComponent } from './doctor-report/doctor-report.component';
+import { TestbookingTransactionComponent } from './testbooking-transaction/testbooking-transaction.component';
 
 
 @NgModule({
@@ -75,7 +77,8 @@ import { DoctorReportComponent } from './doctor-report/doctor-report.component';
   					TestDetailsComponent,
   					DoctorComponent,
   					PatientComponent,
-  					DoctorReportComponent
+  					DoctorReportComponent,
+  					TestbookingTransactionComponent
   				],
   bootstrap: [TestBookingComponent],
   exports:[TestBookingComponent],
@@ -85,7 +88,8 @@ import { DoctorReportComponent } from './doctor-report/doctor-report.component';
 	  ModifyService,
 	  TransactionService,
 	  DashboardService,
-	  ViewTransactionService
+	  ViewTransactionService,
+	  TestbookingTransactionService
 	]
 })
 export class LabModule {}

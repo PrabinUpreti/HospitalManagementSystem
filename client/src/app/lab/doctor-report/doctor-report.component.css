@@ -1,0 +1,16 @@
+#error-container {
+	position: fixed;
+	z-index: 999;
+	bottom: 77px;
+	right: 10px;
+	box-shadow: 5px 5px 5px #888888;
+}
+.alert {
+    padding: 15px;
+    margin-bottom: 0px;
+    border: 1px solid transparent;
+	border-radius: 4px;
+}
+span{
+	padding-right: 15px;
+}

@@ -421,7 +421,7 @@ export class PatientDetailsFormComponent implements OnInit {
                   localStorage.removeItem('test');
                   this.title = "Do you want to pay?"
                   jQuery("#myModal").modal("show");
-                  this.routeToPayment = {'link':'/lab/add-transaction/'+ response.patientId};
+                  this.routeToPayment = {'link':'/lab/testbooking-transaction/'+ response.patientId};
                   this.responseData = response
                   this.patientData.reset();
                   this.patientData.controls.age.setValue('');

@@ -18,6 +18,7 @@ import { SelectedTestComponent } from './test-booking/selected-test/selected-tes
 import { SelectDepartmentComponent } from './test-booking/select-department/select-department.component';
 import { ModifyComponent } from './modify/modify.component';
 import { DoctorReportComponent } from './doctor-report/doctor-report.component';
+import { TestbookingTransactionComponent } from './testbooking-transaction/testbooking-transaction.component';
 
 
 const usersRoutes: Routes = [
@@ -31,8 +32,9 @@ const usersRoutes: Routes = [
               { path: 'reports', component: ReportsComponent },
               { path: 'test', component: DashboardComponent },
               { path: 'modify', component: ModifyComponent },
-      				{ path: 'add-transaction/:id', component: TransactionComponent },
-      				{ path: 'add-transaction', component: TransactionComponent },
+      				// { path: 'add-transaction/:id', component: TransactionComponent },
+              { path: 'add-transaction', component: TransactionComponent },
+      				{ path: 'testbooking-transaction/:id', component: TestbookingTransactionComponent },              
               { path: 'view-transaction', component: ViewTransactionComponent },
               { path: 'doctor-reports', component: DoctorReportComponent },
               { path: 'help', component: ModifyComponent },
