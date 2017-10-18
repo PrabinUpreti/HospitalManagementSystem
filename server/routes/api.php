@@ -76,5 +76,10 @@ Route::get('/view-transaction', 'ViewTransaction@getpatient');
 Route::get('/view-transaction/{id}', 'ViewTransaction@getpatientInvoicesAndledger');
 Route::get('/transactionstestbooking/{id}','TransactionController@getDetialsOfTestbooking');
 
+//TEST_BOOKING
+
+Route::get('/testbooking-transaction/{id}','TestbookingTransactionController@getPatientTestbookingTest');
+Route::post('/postinvoice', 'TestbookingTransactionController@postInvoice');
+
 // Route::post('/modify','DepartmentController@postDepartment');
 // Route::get('/modify','DepartmentController@getDepartment');

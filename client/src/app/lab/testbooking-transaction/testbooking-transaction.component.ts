@@ -50,10 +50,13 @@ export class TestbookingTransactionComponent implements OnInit {
   public isurlid = false;
   public previousAmount = 0;
   public globlepreviousAmount;
+  public globleTotalAmount;
   public returnableAmt = 0;
   public activePayment = false;
   public routedList = true;
   public CheckBoxdisabled = true;
+  public drOrCr;
+  public UseForCredit = false;
 
 
   ngOnInit() {
@@ -62,6 +65,7 @@ export class TestbookingTransactionComponent implements OnInit {
       cash: new FormControl('', Validators.required),
       checkDiscount: new FormControl('0'),
       discountcheck: new FormControl(''),
+      payOld: new FormControl(''),
       credit: new FormControl('')
     });
 
@@ -75,7 +79,7 @@ export class TestbookingTransactionComponent implements OnInit {
         this.calculateTotalAmount();
       });
       
-    this.transactionData.controls.credit.valueChanges
+    this.transactionData.controls.payOld.valueChanges
     .subscribe(term=>{
         this.calculateTotalAmount();
     })
@@ -117,7 +121,7 @@ export class TestbookingTransactionComponent implements OnInit {
             console.log(params);
             this.paramId = params['id'];
             if (this.paramId) {
-              this.isurlid = true;
+              // this.isurlid = true;
               this.disableme = true;
               this.searchpayment(this.paramId).subscribe(
                 success => {
@@ -149,9 +153,11 @@ export class TestbookingTransactionComponent implements OnInit {
   calculateTotalAmount() {
     let discountAmount = (this.transactionData.controls.checkDiscount.value == 0) ? this.transactionData.controls.discountcheck.value : (((this.transactionData.controls.discountcheck.value) / 100) * this.globleSum);
     let checksum = this.globleSum - (Number(this.transactionData.controls.cash.value) + Number(discountAmount));
-    console.log(checksum);
+    // console.log(checksum);
     if(checksum < 0){
-      this.CheckBoxdisabled=false;
+      if(this.previousAmount !=0){
+        this.CheckBoxdisabled=false;
+      }      
       this.sum = 0
       this.returnableAmt = -(checksum);
       // if(this.transactionData.controls.credit.value)
@@ -170,9 +176,9 @@ export class TestbookingTransactionComponent implements OnInit {
       this.globlepreviousAmount = this.previousAmount;
     }
     let checkprevious = (checksum < 0)?this.globlepreviousAmount -  (-checksum) : this.globlepreviousAmount;
-    console.log("checkprevious "+checkprevious);
-    console.log("checksum "+ checksum)
-    if(this.transactionData.controls.credit.value){
+    // console.log("checkprevious "+checkprevious);
+    // console.log("checksum "+ checksum)
+    if(this.transactionData.controls.payOld.value){
       if(checkprevious < 0){
         this.previousAmount = 0;
         this.returnableAmt = -(checkprevious);
@@ -186,6 +192,14 @@ export class TestbookingTransactionComponent implements OnInit {
       // this.returnableAmt = -(checksum);
       this.previousAmount = this.globlepreviousAmount;
     }
+    if(this.previousAmount == 0 && this.sum == 0 && this.returnableAmt > 0){
+      this.UseForCredit = true;
+    }
+    else{
+      this.UseForCredit = false;
+    }
+
+    this.totalAmt = this.sum + this.previousAmount;
     
     
     // if(this.transactionData.controls.credit.value){
@@ -232,6 +246,10 @@ export class TestbookingTransactionComponent implements OnInit {
             this.patientAddress = response[0].patient_address;
             this.registeredDate = response[0].created_at;
 
+
+
+
+
             let ageRange = [];
             for (let i in this.ageGroupFromServer) ageRange.push(JSON.parse(JSON.stringify(this.ageGroupFromServer[i])))
             let splitAge = [];
@@ -274,19 +292,52 @@ export class TestbookingTransactionComponent implements OnInit {
               }
             }
 
+
+
             this.patientDatas = [];
             this.showTable = true;
-              if (response.length != 1) {
-                this.previousAmount = Number(response[response.length - 2].balance);
-              }
+              if (response.length > 1) {
+                if(response[response.length - 1].remark == "dr"){
+                  this.previousAmount = Number(response[response.length - 1].balance);
+                  this.drOrCr = response[response.length - 1].remark;
+                  // if(response[response.length - 2].remark){
+                  //   if(response[response.length - 2].remark == "cr"){
+                  //     this.previousAmount == 0;
+                  //     this.drOrCr ="";
+                  //   }
+                  // }
+                  }
+                  else if(response[response.length-1].remark == null){
+                    this.previousAmount = 0;
+                    this.drOrCr = ""
+                  }
+                  else{
+                    this.previousAmount = Number(response[response.length - 1].balance);
+                    this.drOrCr = response[response.length - 1].remark;
+                  }
+                }
               else {
                 this.previousAmount = 0.00;
+                this.drOrCr = ""
               }
               this.sum = Number(response[response.length - 1].invoices_balance);
               // this.currentAmt = this.sum;
-              this.totalAmt = this.sum + this.previousAmount;
+              this.totalAmt = this.previousAmount;
+              this.globleTotalAmount = this.sum;
               this.globleSum = this.sum;
               this.patientDatas = response;
+              this.activepaymentForm = true;
+              if(this.drOrCr == "dr"){
+                this.previousAmount = this.previousAmount - this.sum;
+                if(this.previousAmount < 0){
+                  this.previousAmount = 0;
+                  this.drOrCr = ""
+                }
+              }
+              // else if(this.drOrCr == "cr"){
+              //   this.previousAmount = this.previousAmount  this.sum;
+              // }
+              
 
             // else {
             //   for (let i in response) {
@@ -310,7 +361,7 @@ export class TestbookingTransactionComponent implements OnInit {
 
 
             this.showTable = true;
-            this.activepaymentForm = false;
+            // this.activepaymentForm = false;
             this.activePayment = false;
             console.log(this.patientDatas);
           }
@@ -370,29 +421,98 @@ export class TestbookingTransactionComponent implements OnInit {
     let typeofInvoice = typeof id;
     console.log(typeofInvoice);
     console.log(id);
-      this.testbookingtransactionservice.getDetialsOfPatientsTestbooking(id)
-        .subscribe(
-        (response) => {
-          console.log(response);
-          for (let i in response) {
+      // this.testbookingtransactionservice.getDetialsOfPatientsTestbooking(id)
+      //   .subscribe(
+      //   (response) => {
+      //     console.log(response);
+      //     for (let i in response) {
 
 
-            this.patientDatasDetails.push(response[i]);
-          }
-          this.activepaymentForm = true;
-          console.log(this.patientDatasDetails);
-        },
-        (error) => {
-          console.log("sorry error in server")
-        });
+      //       this.patientDatasDetails.push(response[i]);
+      //     }
+      //     this.activepaymentForm = true;
+      //     console.log(this.patientDatasDetails);
+      //   },
+      //   (error) => {
+      //     console.log("sorry error in server")
+      //   });
 
   }
 
   transactionDatas(id) {
-    let allData = id;
-    allData['amount'] = this.globleSum
-    console.log(allData);
-    console.log(this.patientDatasDetails)
+    // let allData = id;
+    // allData['amount'] = this.globleSum
+    // console.log(allData);
+    // console.log(this.transactionData.value);
+    // console.log(this.patientDatas[this.patientDatas.length-1].testbooking_id);
+    let param = this.transactionData.value;
+    param['TestBookingId'] = this.patientDatas[this.patientDatas.length - 1].testbooking_id;
+    param['InvoiceAmount'] = this.sum;
+    param['DiscountAmount'] = 0;
+    param['DiscountPer'] = 0;
+    param['MoneyBack'] = 0;
+    param['patientId'] = this.patientDatas[0].patient_id;
+    param['pl_balance'] = this.totalAmt;
+    if(this.transactionData.controls.discountcheck.value){
+      if(this.transactionData.controls.checkDiscount.value == 1){
+        param['DiscountPer'] = this.transactionData.controls.discountcheck.value
+      }
+      else{
+        param['DiscountAmount'] = this.transactionData.controls.discountcheck.value;
+      }
+
+    }
+    if(this.returnableAmt > 0 && (this.transactionData.controls.payOld.value == false || this.transactionData.controls.payOld.value == null) && this.previousAmount > 0){
+      param['invoiceRemark'] = "dr";
+      param['MoneyBack'] = this.returnableAmt;
+    }
+    else if(this.returnableAmt == 0 && this.transactionData.controls.payOld.value == true && this.previousAmount == 0 ){
+      param['invoiceRemark'] = null;
+    }
+    else if(this.returnableAmt > 0 && this.transactionData.controls.payOld.value == true && this.previousAmount == 0){
+      param['invoiceRemark'] = "cr";
+      if(this.transactionData.controls.credit.value == null || this.transactionData.controls.credit.value == false){
+      param['invoiceRemark'] = null;
+      param['MoneyBack'] = this.returnableAmt;
+      }
+    }
+    else if(this.returnableAmt == 0 && (this.transactionData.controls.payOld.value == false || this.transactionData.controls.payOld.value == null) && this.previousAmount == 0){
+      param['invoiceRemark'] = null;
+    }
+    else if(this.returnableAmt == 0 && this.transactionData.controls.payOld.value == true && this.previousAmount >0){
+      param['invoiceRemark'] = "dr";
+    }
+    else if(this.returnableAmt > 0 && (this.transactionData.controls.payOld.value == false || this.transactionData.controls.payOld.value == null) && this.previousAmount == 0 && this.sum == 0){
+      if(this.transactionData.controls.credit.value == true){
+        param['invoiceRemark'] = "cr";
+      }
+      else{
+        param['invoiceRemark'] = null;
+        param['MoneyBack'] = this.returnableAmt;
+      }
+    }
+    else if(this.sum ==0 && this.returnableAmt ==0 && this.previousAmount > 0 &&(this.transactionData.controls.payOld.value == false || this.transactionData.controls.payOld.value == null)){
+      param['invoiceRemark'] = "dr";      
+    }
+    else{
+      return alert("SORRY, ERROR WHILE CHECKING DEBIT CRIDIT");
+    }
+    if(this.sum ==0 && this.returnableAmt > 0 && this.previousAmount == 0 && this.transactionData.controls.credit.value == true){
+      param['pl_balance'] = this.returnableAmt;
+    }
+    
+
+    
+    console.log(param)
+    this.testbookingtransactionservice.setpatienttransaction(param)
+    .subscribe((response)=>{
+      console.log(response)
+    },
+    (error)=>{
+      
+    })
+    
+
   }
   activeInvoice(id) {
     if (id == 0)

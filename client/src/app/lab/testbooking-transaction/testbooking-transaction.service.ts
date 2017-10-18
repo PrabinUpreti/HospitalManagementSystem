@@ -12,7 +12,7 @@ export class TestbookingTransactionService {
   getPatientTestbookingTest(id) {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers, withCredentials: true });
-    return this.PatientTest.get("http://server.hms.com/api/transaction/" + id, options)
+    return this.PatientTest.get("http://server.hms.com/api/testbooking-transaction/" + id, options)
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -21,6 +21,14 @@ export class TestbookingTransactionService {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers, withCredentials: true });
     return this.PatientTest.get("http://server.hms.com/api/transactionstestbooking/" + id, options)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  setpatienttransaction(term){
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers, withCredentials: true });
+    return this.PatientTest.post("http://server.hms.com/api/postinvoice", term, options)
       .map(this.extractData)
       .catch(this.handleError);
   }

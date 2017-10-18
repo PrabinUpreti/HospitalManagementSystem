@@ -31,7 +31,7 @@ import { PatientDetailsFormComponent } from './test-booking/patient-details-form
 import { SearchWindowComponent } from './test-booking/search-window/search-window.component';
 import { SelectTestypeComponent } from './test-booking/select-testype/select-testype.component';
 import { SelectTestComponent } from './test-booking/select-test/select-test.component';
-import { SelectedTestComponent } from './test-booking/selected-test/selected-test.component';
+// import { SelectedTestComponent } from './test-booking/selected-test/selected-test.component';
 import { SelectDepartmentComponent } from './test-booking/select-department/select-department.component';
 import { ModifyComponent } from './modify/modify.component';
 import { ModifyDepComponent } from './modify/modify-dep/modify-dep.component';
@@ -42,6 +42,7 @@ import { DoctorComponent } from './modify/doctor/doctor.component';
 import { PatientComponent } from './modify/patient/patient.component';
 import { DoctorReportComponent } from './doctor-report/doctor-report.component';
 import { TestbookingTransactionComponent } from './testbooking-transaction/testbooking-transaction.component';
+import { RedirectJunctionComponent } from './redirect-junction/redirect-junction.component';
 
 
 @NgModule({
@@ -68,7 +69,7 @@ import { TestbookingTransactionComponent } from './testbooking-transaction/testb
   					SearchWindowComponent,
   					SelectTestypeComponent,
   					SelectTestComponent,
-  					SelectedTestComponent,
+  					// SelectedTestComponent,
   					SelectDepartmentComponent,
   					ModifyComponent,
   					ModifyDepComponent,
@@ -78,7 +79,8 @@ import { TestbookingTransactionComponent } from './testbooking-transaction/testb
   					DoctorComponent,
   					PatientComponent,
   					DoctorReportComponent,
-  					TestbookingTransactionComponent
+  					TestbookingTransactionComponent,
+  					RedirectJunctionComponent
   				],
   bootstrap: [TestBookingComponent],
   exports:[TestBookingComponent],

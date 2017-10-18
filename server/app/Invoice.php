@@ -8,6 +8,6 @@ class Invoice extends Model
 {
     //
   protected $fillable = [
-    'testbooking_id','particular', 'cash','balance', 'discount_amount','discount_percentage', 'remark'
+    'testbooking_id','particular', 'cash','balance', 'discount_amount','discount_percentage', 'remark','backed_money'
   ];
 }

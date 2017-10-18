@@ -14,11 +14,12 @@ import { PatientDetailsFormComponent } from './test-booking/patient-details-form
 import { SearchWindowComponent } from './test-booking/search-window/search-window.component';
 import { SelectTestypeComponent } from './test-booking/select-testype/select-testype.component';
 import { SelectTestComponent } from './test-booking/select-test/select-test.component';
-import { SelectedTestComponent } from './test-booking/selected-test/selected-test.component';
+// import { SelectedTestComponent } from './test-booking/selected-test/selected-test.component';
 import { SelectDepartmentComponent } from './test-booking/select-department/select-department.component';
 import { ModifyComponent } from './modify/modify.component';
 import { DoctorReportComponent } from './doctor-report/doctor-report.component';
 import { TestbookingTransactionComponent } from './testbooking-transaction/testbooking-transaction.component';
+import { RedirectJunctionComponent } from './redirect-junction/redirect-junction.component';
 
 
 const usersRoutes: Routes = [
@@ -38,6 +39,7 @@ const usersRoutes: Routes = [
               { path: 'view-transaction', component: ViewTransactionComponent },
               { path: 'doctor-reports', component: DoctorReportComponent },
               { path: 'help', component: ModifyComponent },
+              { path: 'redirecting', component:RedirectJunctionComponent}
 				]
 
     //    },

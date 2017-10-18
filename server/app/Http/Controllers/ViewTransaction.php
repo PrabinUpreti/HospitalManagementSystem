@@ -21,6 +21,7 @@ class ViewTransaction extends Controller
         ->leftJoin('invoices','invoices.id', '=', 'patient_ladgers.invoice_id')
         ->where('patient_ladgers.patient_id', '=', $id)
         // ->orderBy('created_at', 'desc')
+        ->select('invoices.id as invoices_id', 'invoices.remark as invoices_remark','invoices.particular as invoices_particular','invoices.balance as invoices_balance', 'invoices.*', 'patient_ladgers.*')
         ->get();
         return $invoicesAndLedger;
     }

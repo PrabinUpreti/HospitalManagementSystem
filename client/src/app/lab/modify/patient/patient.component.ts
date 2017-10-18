@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class PatientComponent implements OnInit {
 
   constructor() { }
-
+  public responseDatas = [];
   ngOnInit() {
   }
 

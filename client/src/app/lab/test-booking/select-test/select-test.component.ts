@@ -132,6 +132,7 @@ export class SelectTestComponent implements OnInit {
   }
 
   dragTr(data){
+    
     console.log(data)
     let sendingData;
      
@@ -163,12 +164,13 @@ export class SelectTestComponent implements OnInit {
     }
     else{
       if(!(data.checkActive)){
+        data.checkActive = true;
         let id = data.id;
         this.testName = data.name;
         this.modifyService.getTestDetails(id)
         .subscribe(
           (response)=>{
-            if(response.length){
+            if(response.length > 0){
               this.tempData=response;
               for(let x in this.tempData){
                 let AgeFromServer = this.tempData[x].age_group;
@@ -184,7 +186,7 @@ export class SelectTestComponent implements OnInit {
                   let stationData = this.tempData[x];
                   stationData['name'] = data.name;
                   this.dataTables.push(stationData);
-                  data.checkActive = true;
+                  // data.checkActive = true;
                   this.checkSelected.push(data.id);
                   localStorage.setItem('test', JSON.stringify(this.checkSelected));
                   console.log(this.checkSelected);
@@ -193,15 +195,17 @@ export class SelectTestComponent implements OnInit {
                   break;
                   }
                   else{
-                    console.log("Age and Gender Not Found");
-                    this.Notify = true;
-                    this.notify = "This Age or Gender is not registered by Administrator.";
+                    // console.log("Age and Gender Not Found");
+                    // this.Notify = true;
+                    // this.notify = "This Age or Gender is not registered by Administrator.";
+                    // data.checkActive = false;
                   }
                 }
                 else{
                   console.log('Undifined is Success');
                   this.Notify = true;
                   this.notify = 'Please Input Gender and Age in above form.';
+                  data.checkActive = false;
                 
                 }
               }
@@ -209,10 +213,12 @@ export class SelectTestComponent implements OnInit {
             else{
               this.Notify = true;
               this.notify = 'Sorry There is nothing in Database!';
+              data.checkActive = false;
             }
           },
           (error)=>{
               console.log("Error in server")
+              data.checkActive = false;
           }
         );
       }

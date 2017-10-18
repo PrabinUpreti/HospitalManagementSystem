@@ -9,10 +9,9 @@
   </div>
 </div>
 
-<div *ngIf="showTable && routedList" class="container">
+<!-- <div *ngIf="showTable && routedList" class="container">
     <div class="col-sm-4" id="search-container">
       <div>
-        <!-- <button type="button" class="close">X</button> -->
         <a class="close" (click) = "SearchBarDismiss()">X</a>
         <strong>Searched List of routed</strong>
       </div>
@@ -21,7 +20,6 @@
   
           <thead>
             <tr>
-              <!-- <th> S.N </th> -->
               <th> ID </th>
               <th> Name </th>
               <th> Date </th>
@@ -29,20 +27,17 @@
           </thead>
           <tbody>
             <tr *ngFor="let patientData of patientDatas; let i = index">
-              <!-- <tr> -->
-              <!-- <td class="text-info">{{patientDatas.length - i}}</td> -->
               <td class="text-info" style="cursor:pointer"(click)="activePayment = true" (click)="routedinvoice(patientData)">{{patientData?.reg_no}}</td>
               <td>{{patientData?.patient_name}}</td>
               <td>{{patientData?.created_at}}</td>
             </tr>
           </tbody>
         </table>
-        <!-- <pre> {{patientDatas | json}} </pre> -->
         <a *ngIf = "SearchNotify" class="text-danger"> <strong>{{Searchnotify}}</strong> </a>
       </div>
       
     </div>
-  </div>
+  </div> -->
 
 
 
@@ -54,7 +49,7 @@
 
 
 
-<div *ngIf = "activepaymentForm" class="col-sm-8 pull-left">
+<!-- <div *ngIf = "activepaymentForm" class="col-sm-8 pull-left">
   <div style="margin-bottom:20px; margin-top:5px;" class="container col-sm-12">
     <div class="container">
       <ul class="nav nav-tabs">
@@ -63,7 +58,7 @@
       </ul>
     </div>
   </div>
-</div>
+</div> -->
 <div *ngIf="activepaymentForm && !activePayment" class="col-sm-8">
 
   <div class="form-group">
@@ -95,9 +90,9 @@
   </div>
 
   <div class="form-group">
-      <label class="control-label col-sm-6" for="email"> Current Amount: </label>
+      <label class="control-label col-sm-6" for="email"> Sub Total Amount: </label>
       <div class="col-sm-6">
-        <p class="form-control-static">Rs {{sum}} /-</p>
+        <p class="form-control-static">Rs {{sum}} /- &nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-eye" aria-hidden="true"></i></p>
       </div>
     </div>
 
@@ -106,16 +101,11 @@
   <div class="form-group">
     <label class="control-label col-sm-6" for="email"> Previous Amount: </label>
     <div class="col-sm-6">
-      <p class="form-control-static">Rs {{previousAmount}} /-</p>
+      <p class="form-control-static" [ngClass] = "{'text-danger': drOrCr == 'dr','text-success':drOrCr == 'cr'}">Rs {{previousAmount}} /- {{drOrCr | uppercase}}</p>
     </div>
   </div>
 
-  <div class="form-group">
-      <label class="control-label col-sm-6" for="email"> Total Amount: </label>
-      <div class="col-sm-6">
-        <p class="form-control-static">Rs {{totalAmt}} /-</p>
-      </div>
-    </div>
+  
 
     <!-- <div class="form-group">
       <label class="control-label col-sm-6" for="email"> </label>
@@ -127,13 +117,72 @@
     </div> -->
 
   <form [formGroup] = "transactionData" (ngSubmit)= "transactionDatas(transactionData.value)" autocomplete="off">
+
+
+
+    <div class="form-group">
+
+      
+      <div class="row">
+        <div class="col-sm-6"><label for="">Discount:</label></div>
+        <div class="col-sm-6">
+          <label class="radio-inline ">
+            <input type="radio" name="checkDiscount"  (change)="calculateTotalAmount()" formControlName = "checkDiscount" value="0" >Discount
+          </label>
+          <label class="radio-inline ">
+            <input type="radio" name="checkDiscount"  (change)="calculateTotalAmount()" formControlName = "checkDiscount" value="1">Discount percentage
+          </label>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6"></div>
+        <div class="col-sm-2">
+          <input class="form-control" type="text" formControlName = "discountcheck">
+        </div>
+        <div class="col-sm-4"></div>
+
+      </div>
+    </div>
+
+
+
+    <div class="form-group">
+        <label class="control-label col-sm-6" for="email"> Total Amount: </label>
+        <div class="col-sm-6">
+          <p class="form-control-static">Rs {{totalAmt}} /-</p>
+        </div>
+      </div>
+
+
+
+
     <div class="form-group">
       <label class="control-label col-sm-6" for="email"> Cash: </label>
       <div class="col-sm-2">
         <input class="form-control" type="text" formControlName = "cash">
-        <label *ngIf = !CheckBoxdisabled class="checkbox-inline">
-          <input type="checkbox" value="" formControlName = "credit">Credit
-        </label>
+        <span>
+          <label *ngIf = !CheckBoxdisabled class="checkbox-inline">
+            <input type="checkbox" value="" formControlName = "payOld">pay Previous
+          </label>
+        </span>
+        <span>
+          <label *ngIf = UseForCredit class="checkbox-inline">
+            <input type="checkbox" value="" formControlName = "credit">Credit
+          </label>
+        </span>
+      </div>
+      <div class="col-sm-4"></div>
+    </div>
+
+
+
+
+    <div class="form-group">
+      <label class="control-label col-sm-6" for="email"><h3> Returnable Money: </h3></label>
+      <div class="col-sm-2">
+        <h3><p class="form-control-static">Rs {{returnableAmt}} /- </p></h3>
       </div>
       <div class="col-sm-4"></div>
     </div>
@@ -170,29 +219,6 @@
     <!-- <div class="form-group">
     </div> -->
 
-    <div class="form-group">
-      <div class="row">
-        <div class="col-sm-6"><label for="">Discount:</label></div>
-        <div class="col-sm-6">
-          <label class="radio-inline ">
-            <input type="radio" name="checkDiscount"  (change)="calculateTotalAmount()" formControlName = "checkDiscount" value="0" >Discount
-          </label>
-          <label class="radio-inline ">
-            <input type="radio" name="checkDiscount"  (change)="calculateTotalAmount()" formControlName = "checkDiscount" value="1">Discount percentage
-          </label>
-        </div>
-
-      </div>
-
-      <div class="row">
-        <div class="col-sm-6"></div>
-        <div class="col-sm-2">
-          <input class="form-control" type="text" formControlName = "discountcheck">
-        </div>
-        <div class="col-sm-4"></div>
-
-      </div>
-    </div>
     <!-- <div>
       <br>
       <br>
@@ -206,18 +232,11 @@
       <div class="col-sm-4"></div>
     </div>
 
-    <div class="form-group">
-      <label class="control-label col-sm-6" for="email"> Returnable Money: </label>
-      <div class="col-sm-2">
-        <p class="form-control-static">Rs {{returnableAmt}} /-</p>
-      </div>
-      <div class="col-sm-4"></div>
-    </div>
 
   </form>
 </div>
 
-
+<!-- 
 <div *ngIf = "activePayment">
 <div class="form-group">
     <label class="control-label col-sm-6" for="email"> Patient ID: </label>
@@ -261,7 +280,7 @@
       <p class="form-control-static">Rs {{sum}} /-</p>
     </div>
   </div>
-</div>
+</div> -->
 
 
 

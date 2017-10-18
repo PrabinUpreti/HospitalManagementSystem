@@ -13,6 +13,7 @@ export class ViewTransactionComponent implements OnInit {
   public activePayment = false;
   public patientLadgerAndInvoices = [];
   public activepatienttable = true;
+  public patientName;
 
   ngOnInit() {
     this.transactionService.getpatient()
@@ -29,6 +30,7 @@ export class ViewTransactionComponent implements OnInit {
     .subscribe(
       (response)=>{
         this.patientLadgerAndInvoices = response;
+        console.log(response);
       },
       (error)=>{
         console.log("Hey! There is error in server my darling");

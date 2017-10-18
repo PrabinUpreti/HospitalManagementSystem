@@ -95,6 +95,9 @@ class TestbookingController extends Controller
     }
 
   public function putTestBookingData(Request $request, $id){
+    $checkData;
+
+
     $record = $request -> all();
     $patientid = $record['patientId'];
     $patient_name = $record['patient_name'];
@@ -148,10 +151,47 @@ class TestbookingController extends Controller
         ->where('patient_ladgers.patient_id', $idForTestbooking)
         ->select('invoices.id as invoices_id','invoices.balance as invoices_balance','invoices.remark as invoices_remark','invoices.particular as invoices_particular','invoices.*', 'patient_ladgers.*')
         ->get();
-        if(sizeof($getInvoices) > 0){
+        if(sizeof($getInvoices) >= 1){
             $id = $getInvoices[sizeof($getInvoices)-1];
             // var_dump($id);
-            if($id->balance){
+            if($id->balance > 0 && $id->remark =="dr"){
+                $updatebalance = $id->balance + $amount;
+                $updateInvoice_balance = $amount;
+                $invoice_Particular = "INV-UPDATED-AMT";
+                $cash = 0;
+                $total = $amount;
+                $invoice_remark = "dr";
+                $remark = "dr";
+                $dr = $amount;
+                $cr = 0;
+                $checkData = 1;
+            }
+            else if($id->balance > 0 && $id->remark =="cr"){
+                $testUpdateBalance = $amount - $id->balance;
+                if($testUpdateBalance < 0){
+                    $updatebalance = -($testUpdateBalance);
+                    $invoice_remark = "cr";
+                    $remark = "cr";
+                }
+                else if($testUpdateBalance > 0){
+                    $updatebalance = ($testUpdateBalance);
+                    $invoice_remark = "dr";
+                    $remark = "dr";
+                }
+                else{
+                    $updatebalance = ($testUpdateBalance);
+                    $invoice_remark = null;
+                    $remark = null;
+                }
+                $updateInvoice_balance = $amount;
+                $invoice_Particular = "INV-UPDATED-AMT";
+                $cash = 0;
+                $total = $amount;
+                $dr = $amount;
+                $cr = 0;
+                $checkData = 1;
+            }
+            else{
                 $updatebalance = $id->balance + $amount;
                 $updateInvoice_balance = $amount;
                 $invoice_Particular = "INV-UPDATED-AMT";

@@ -10,7 +10,7 @@ import { ModifyService } from './../modify/modify.service';
 })
 export class DoctorReportComponent implements OnInit {
 
-  private myDateRangePickerOptions: IMyDrpOptions = {
+  public myDateRangePickerOptions: IMyDrpOptions = {
     // other options...
     dateFormat: 'yyyy-mm-dd',
     firstDayOfWeek:'su',
@@ -25,7 +25,7 @@ export class DoctorReportComponent implements OnInit {
     editableDateRangeField:false,
     openSelectorOnInputClick:true,
   };
-  private myForm: FormGroup;
+  public myForm: FormGroup;
   public doctorlists;
   public Notify = false;
   public notify;
@@ -78,7 +78,11 @@ export class DoctorReportComponent implements OnInit {
 
 
     doctorInfo(){
-      console.log(this.myForm.value)
+
+      console.log(this.myForm.controls.selecteddoctor.value);
+      console.log(this.myForm);
+      console.log(this.myForm.controls.myDateRange.value.formatted);
+      console.log(this.myForm.controls.myDateRange.value.formatted.split(' - '))
     }
 
 

@@ -16,6 +16,8 @@ export class ModifyComponent implements OnInit {
  public active2: boolean = false;
  public active3: boolean = false;
  public active4: boolean = false;
+ public active5: boolean = false;
+ public active6: boolean = false;
  public activeTestType: boolean = false;
  public activeTest: boolean = false;
  public passToTestType;
@@ -35,7 +37,8 @@ export class ModifyComponent implements OnInit {
     this.active1 = true;
     this.active2 = false;
     this.active3 = false;
-    this.active4 = false;
+    this.active5 = false;
+    this.active6 = false;
     this.activeTestType = false;
     this.activeTest = false;
   }

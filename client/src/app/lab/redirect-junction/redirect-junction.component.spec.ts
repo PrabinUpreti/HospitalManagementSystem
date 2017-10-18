@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SelectedTestComponent } from './selected-test.component';
+import { RedirectJunctionComponent } from './redirect-junction.component';
 
-describe('SelectedTestComponent', () => {
-  let component: SelectedTestComponent;
-  let fixture: ComponentFixture<SelectedTestComponent>;
+describe('RedirectJunctionComponent', () => {
+  let component: RedirectJunctionComponent;
+  let fixture: ComponentFixture<RedirectJunctionComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SelectedTestComponent ]
+      declarations: [ RedirectJunctionComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SelectedTestComponent);
+    fixture = TestBed.createComponent(RedirectJunctionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

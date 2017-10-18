@@ -4,6 +4,7 @@ import { LaravelService } from './laravel.service';
 import { ModifyService } from './../../modify/modify.service';
 
 import {Observable} from 'rxjs/Observable';
+import { Router } from '@angular/router';
 
 declare var jQuery:any;
 
@@ -80,7 +81,7 @@ export class PatientDetailsFormComponent implements OnInit {
   public forFutureUsePatientToSeeExistingPatientName;
   public DisableInput = false;
 
-  constructor(private laravelService: LaravelService, private ModifyService: ModifyService) { }
+  constructor(private laravelService: LaravelService, private ModifyService: ModifyService, private router:Router) { }
   ngOnInit() {
     
     this.currentTime = new Date();
@@ -327,7 +328,7 @@ export class PatientDetailsFormComponent implements OnInit {
                       localStorage.removeItem('sum');
                       this.title = "Do you want to pay?"
                       jQuery("#myModal").modal("show");
-                      this.routeToPayment = {'link':'/lab/add-transaction/'+ response.patientId};
+                      this.routeToPayment = {'link':'/lab/testbooking-transaction/'+ response.patientId};
                       this.responseData = response
                       this.patientData.reset();
                       this.patientData.controls.age.setValue('');
@@ -504,15 +505,16 @@ export class PatientDetailsFormComponent implements OnInit {
   //   // let idOfDoctor = this.reffBys[id].id;
   //   // this.patientData.controls.reff_by.setValue(idOfDoctor);
   // }
-  // print(){
-  //   this.refresh = true;
-  //   this.title = "Do you want to pay?"
-  // }
+  print(){
+    this.refresh = true;
+    this.title = "Do you want to pay?"
+  }
 
 
   searchpatient(id):Observable<any>{
     return new Observable(observer=>{
       console.log(id);
+      if(id){
       
       this.ModifyService.getPatient(id)
       .subscribe(
@@ -536,7 +538,12 @@ export class PatientDetailsFormComponent implements OnInit {
 
       observer.next();
       observer.complete();
+      }
+      else{
+        this.showTable = false;
+      }
     });
+    
   }
   SetPatientToForm(id){
     this.DisableInput = false;
@@ -570,6 +577,9 @@ export class PatientDetailsFormComponent implements OnInit {
 
   goToPayment(){
     jQuery("#myModal").modal("hide");
+  }
+  refreshAndRedirect(){
+    this.router.navigate(['/lab/redirecting']);
   }
 
 }

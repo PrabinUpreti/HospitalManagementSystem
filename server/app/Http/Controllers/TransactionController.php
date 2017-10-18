@@ -60,7 +60,8 @@ class TransactionController extends Controller
             'balance'=>$invoiceBalance,
             'discount_amount'=>$discountAmount,
             'discount_percentage'=>$discountPer,
-            'remark'=>$invoiceremark
+            'remark'=>$invoiceremark,
+            'backed_money'=>0
         ]);
         $invoiceId = $storedInInvoice->id;
 
@@ -105,10 +106,10 @@ class TransactionController extends Controller
 
         //RUNABLE CODE
 
-        $patientId = DB::table('patients')
-        ->where('reg_no', $id)
-        ->select('patients.id')
-        ->first()->id;
+        // $patientId = DB::table('patients')
+        // ->where('reg_no', $id)
+        // ->select('patients.id')
+        // ->first()->id;
         // return $patientId;
 
         // return DB::select("select pt.*, tst.*, pled.*, inv.* from patients pt
@@ -191,13 +192,13 @@ class TransactionController extends Controller
 
 
             
-            $testLastData =DB::table('invoices')
-                ->leftJoin('patient_ladgers', 'patient_ladgers.invoice_id', '=', 'invoices.id')
-                ->leftJoin('patients', 'patients.id', '=', 'patient_ladgers.patient_id')
-                ->where('patient_ladgers.patient_id', $patientId)
-                ->select('invoices.id as invoices_id','invoices.balance as invoices_balance','invoices.remark as invoices_remark','invoices.particular as invoices_particular','invoices.*', 'patient_ladgers.*', 'patients.*')
-                ->get();
-                return $testLastData;
+            // $testLastData =DB::table('invoices')
+            //     ->leftJoin('patient_ladgers', 'patient_ladgers.invoice_id', '=', 'invoices.id')
+            //     ->leftJoin('patients', 'patients.id', '=', 'patient_ladgers.patient_id')
+            //     ->where('patient_ladgers.patient_id', $patientId)
+            //     ->select('invoices.id as invoices_id','invoices.balance as invoices_balance','invoices.remark as invoices_remark','invoices.particular as invoices_particular','invoices.*', 'patient_ladgers.*', 'patients.*')
+            //     ->get();
+            //     return $testLastData;
 
 
       
@@ -248,26 +249,26 @@ class TransactionController extends Controller
             // return response()->json($patientID);
             
 
-            // $dataFromPatient = DB::table('patients')
+            $dataFromPatient = DB::table('patients')
             // ->join('testbookings', 'patients.id', '=', 'testbookings.patient_id')
-            // // ->leftJoin('invoices', 'testbookings.id', '=', 'invoices.testbooking_id')
-            // // ->leftJoin('patient_ladgers', function ($join){
-            // //     $join->on('patients.id', '=', 'patient_ladgers.patient_id');
-            // //     $join->orderBy('patient_ladgers.created_at', 'desc');
-            // //     $join->first();
-            // // })
-            // // ->first()
-            // // ->get();
-            // //
-            // // ->join('test_details', 'reports.test_id', '=', 'test_details.test_id')
-            // // ->select( 'testbookings.id as testbookings_id', 'test_details.gender as genderdetails','reports.id as reports_id','test_details.id as test_details_id','testbookings.*','reports.*','test_details.*', 'patients.*')->where('reg_no', $id)
-            // ->where('reg_no', $id)
-            // ->orWhere('patient_name','like', '%'.$id.'%')
-            // ->select('testbookings.id as testbookings_id','testbookings.*', 'patients.*')
-            // // ->orderBy('patient_ladgers.created_at', 'desc')
+            // ->leftJoin('invoices', 'testbookings.id', '=', 'invoices.testbooking_id')
+            // ->leftJoin('patient_ladgers', function ($join){
+            //     $join->on('patients.id', '=', 'patient_ladgers.patient_id');
+            //     $join->orderBy('patient_ladgers.created_at', 'desc');
+            //     $join->first();
+            // })
+            // ->first()
             // ->get();
+            //
+            // ->join('test_details', 'reports.test_id', '=', 'test_details.test_id')
+            // ->select( 'testbookings.id as testbookings_id', 'test_details.gender as genderdetails','reports.id as reports_id','test_details.id as test_details_id','testbookings.*','reports.*','test_details.*', 'patients.*')->where('reg_no', $id)
+            ->where('reg_no', $id)
+            ->orWhere('patient_name','like', '%'.$id.'%')
+            ->select('patients.*')
+            // ->orderBy('patient_ladgers.created_at', 'desc')
+            ->get();
     
-            // return $dataFromPatient;
+            return $dataFromPatient;
 
         // $dataFromPatient = DB::table('patients')
         // ->join('testbookings', 'patients.id', '=', 'testbookings.patient_id')
@@ -328,21 +329,33 @@ class TransactionController extends Controller
         // return($id);
     }
     public function getDetialsOfPatient($id){
+
+
+        $PatientDetialsTransaction = DB::table('invoices')
+        ->leftJoin('patient_ladgers', 'patient_ladgers.invoice_id', '=', 'invoices.id')
+        ->leftJoin('patients', 'patients.id', '=', 'patient_ladgers.patient_id')
+        ->where('patient_ladgers.patient_id', $id)
+        ->select('invoices.id as invoices_id','invoices.balance as invoices_balance','invoices.remark as invoices_remark','invoices.particular as invoices_particular','invoices.*', 'patient_ladgers.*', 'patients.*')
+        ->get();
+        return $PatientDetialsTransaction;
+
+
+
         // $dataFromPatient = DB::table('patients')
 
-        $patientId = DB::table('patients')
-        ->join('testbookings', 'testbookings.patient_id', '=', 'patients.id')
-        ->where('testbookings.id', $id)
-        // ->select('testbookings.patient_id')
-        ->get();
-        $result = $patientId[0]->patient_id;
+        // $patientId = DB::table('patients')
+        // ->join('testbookings', 'testbookings.patient_id', '=', 'patients.id')
+        // ->where('testbookings.id', $id)
+        // // ->select('testbookings.patient_id')
+        // ->get();
+        // $result = $patientId[0]->patient_id;
 
-        return DB::select("select pt.*, tst.*, pled.*, inv.balance invoiceBalance from patients pt
-        INNER join testbookings tst on tst.patient_id = pt.id
-        left join (select MAX(id) id, patient_id from patient_ladgers where patient_ladgers.patient_id = {$result} group by patient_id ,id ) a on a.patient_id = pt.id
-        left join patient_ladgers pled on pled.id = a.id
-        left join invoices inv on inv.id = pled.invoice_id
-        where pt.id = {$result}");
+        // return DB::select("select pt.*, tst.*, pled.*, inv.balance invoiceBalance from patients pt
+        // INNER join testbookings tst on tst.patient_id = pt.id
+        // left join (select MAX(id) id, patient_id from patient_ladgers where patient_ladgers.patient_id = {$result} group by patient_id ,id ) a on a.patient_id = pt.id
+        // left join patient_ladgers pled on pled.id = a.id
+        // left join invoices inv on inv.id = pled.invoice_id
+        // where pt.id = {$result}");
         // // ->join('testbookings', 'patients.id', '=', 'testbookings.patient_id')
         // ->join('reports', 'testbookings.id', '=', 'reports.testbooking_id')
         // ->join('test_details', 'reports.test_id', '=', 'test_details.test_id')
@@ -350,7 +363,7 @@ class TransactionController extends Controller
         // ->select('test_details.gender as genderdetails','reports.id as reports_id','test_details.id as test_details_id','reports.*','test_details.*')
         // // ->select('testbookings.id as testbookings_id', 'testbookings.*', 'patients.*')->where('reg_no', $id)
         // ->get();
-        return $patientId;
+        // return $patientId;
     }
 
     public function getDetialsOfTestbooking($id){

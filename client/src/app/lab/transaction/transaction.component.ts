@@ -41,15 +41,17 @@ export class TransactionComponent implements OnInit , OnDestroy  {
   public SearchNotify = false;
   public Searchnotify;
   public transactionData: FormGroup;
+  public drOrCr;
   // public processCash : FormControl;
   // public processDiscount : FormControl;
   // public processDiscountPer : FormControl;
   public selectedradioButton;
   public disableme = false;
-  public isurlid = false;
+  // public isurlid = false;
   public previousAmount = 0;
   public activePayment = false;
   public routedList = true;
+  public UseForCredit = false;
   // public tempGlobleVar;
   // public tempCashGlobleVar;
 
@@ -62,7 +64,7 @@ export class TransactionComponent implements OnInit , OnDestroy  {
       cash: new FormControl(''),
       checkDiscount: new FormControl('0'),
       discountcheck: new FormControl(''),
-      // discount : new FormControl(''),
+      credit : new FormControl(''),
       // discountPer  : new FormControl('')
     });
 
@@ -121,25 +123,25 @@ export class TransactionComponent implements OnInit , OnDestroy  {
         }
 
 
-        this.routeParameter = this.route.params
-        .subscribe(params => {
-          console.log(params);
-          this.paramId= params['id'];
-          if(this.paramId){
-            this.isurlid = true;
-            this.disableme = true;
-            this.searchpayment(this.paramId).subscribe(
-              success=>{
-                console.log(this.patientDatas);
-                // for (let i in this.patientDatas) {
-                  this.invoice(this.patientDatas[0].testbooking_id);
-                // }
-            },err=>{
-              console.log(this.patientDatas);
-            })
+        // this.routeParameter = this.route.params
+        // .subscribe(params => {
+        //   console.log(params);
+        //   this.paramId= params['id'];
+        //   if(this.paramId){
+        //     this.isurlid = true;
+        //     this.disableme = true;
+        //     this.searchpayment(this.paramId).subscribe(
+        //       success=>{
+        //         console.log(this.patientDatas);
+        //         // for (let i in this.patientDatas) {
+        //           this.invoice(this.patientDatas[0].testbooking_id);
+        //         // }
+        //     },err=>{
+        //       console.log(this.patientDatas);
+        //     })
             
-          }
-        });
+        //   }
+        // });
 
 
         
@@ -166,232 +168,229 @@ export class TransactionComponent implements OnInit , OnDestroy  {
    
 
   
-  public searchpayment(id):Observable<any>{
-    return new Observable(observer=>{
-      // let id;
-      // if(this.paramId){
-      //   id = this.paramId;
-      // }
-      // else{
-      //   id = this.SearchPayment.controls.Search_name.value;
-      // }
-       this.transactionservice.getPatientTest(id)
-      .subscribe(
-        (response)=>{
-          console.log(response);
-          if(response.length > 0){
-            this.SearchNotify = false;
-            this.sum = 0;
-            console.log(response);
-            // for( let x in response){
-              
-            // }
-            this.genderinPatientTable = response[0].gender;
-            this.patientName = response[0].patient_name;
-            this.patientId = response[0].reg_no;
-            this.registeredDate = response[0].created_at;
-            // this.patientDatas = response;
-            
-            let ageRange = [];
-            for(let i in this.ageGroupFromServer) ageRange.push(JSON.parse(JSON.stringify(this.ageGroupFromServer[i])))
-            // console.log(ageRange);
-            let splitAge = [];
-            for(let x in ageRange){
-              splitAge.push(ageRange[x].split(" "));
-            }
-            // console.log(splitAge);
-            let changeInNum
-            let intCollection=[];
-            for(let y in splitAge){
-              for( let z = 0; z <= splitAge[y].length-1; z++){
-                changeInNum = splitAge[y][z];
-                if(parseInt(changeInNum)){
-                  intCollection.push(parseInt(changeInNum));
-                }
-                else{
-                  if(intCollection.length < 1 ){
-                    intCollection.push(0);
-                  }
-                  else if(splitAge[parseInt(y)].length < 3){
-                    intCollection.push(200);
-                  }
-                }
-                // console.log((changeInNum));
-                // if(changeInNum.toUpperCase() ==  )
-              }
-            }
-            // console.log(intCollection);
-            console.log("this is int list")
-            for(let int = 0; int < intCollection.length; int+=2){
-              // console.log(int);
-              let term = response[0].age;
-              if(term < 200){
-                if(term >=intCollection[int] && term <= intCollection[int+1]){
-                  if(intCollection[int] == 0){
-                    this.throwage="below "+ intCollection[int+1].toString();
-                  }
-                  else if (intCollection[int+1] == 200){
-                    this.throwage = intCollection[int].toString() + " above";
-                  }
-                  else if (intCollection[int] != 0 && intCollection[int+1] != 200){
-                    this.throwage = intCollection[int].toString() + " to "+ intCollection[int+1];
-                  }
-              }
-            }
-            // console.log(intCollection[int] , intCollection[int+1]);
-          }
-
-            this.patientDatas = [];
-            this.showTable = true;
-            if(this.isurlid){
-              if(response.length !=1){
-                this.previousAmount = parseFloat(response[response.length - 2].balance);
-              }
-              else{
-                this.previousAmount = 0.00;
-              }
-              this.sum = response[response.length - 1].invoices_balance;
-              this.currentAmt = this.sum;
-              this.sum += this.previousAmount;
-              this.globleSum = this.sum;
+  public searchpayment(id): Observable<any> {
+    return new Observable(observer => {
+      if (id) {
+        this.transactionservice.getPatientTest(id)
+          .subscribe(
+          (response) => {
+            if (response.length > 0) {
+              console.log(response);
+              this.patientDatas = [];
               this.patientDatas = response;
-              
-            }
-            else{
-              for (let i in response) {
-                console.log(this.patientDatas);
-                // if(response[i].age_group.toUpperCase() == this.throwage.toUpperCase() && response[i].gender.toUpperCase() == response[i].genderdetails.toUpperCase() ){
-                if (this.patientDatas.length > 0) {
-                  let MatchFound = false;
-                  for(let y in this.patientDatas){
-                    if (response[i].id == this.patientDatas[y].id) {
-                      MatchFound = true;
+              // if(response.length > 0){
+              //   this.SearchNotify = false;
+              //   this.sum = 0;
+              //   console.log(response);
+              //   this.genderinPatientTable = response[0].gender;
+              //   this.patientName = response[0].patient_name;
+              //   this.patientId = response[0].reg_no;
+              //   this.registeredDate = response[0].created_at;
+              //   // this.patientDatas = response;
+
+              let ageRange = [];
+              for (let i in this.ageGroupFromServer) ageRange.push(JSON.parse(JSON.stringify(this.ageGroupFromServer[i])))
+              // console.log(ageRange);
+              let splitAge = [];
+              for (let x in ageRange) {
+                splitAge.push(ageRange[x].split(" "));
+              }
+              // console.log(splitAge);
+              let changeInNum
+              let intCollection = [];
+              for (let y in splitAge) {
+                for (let z = 0; z <= splitAge[y].length - 1; z++) {
+                  changeInNum = splitAge[y][z];
+                  if (parseInt(changeInNum)) {
+                    intCollection.push(parseInt(changeInNum));
+                  }
+                  else {
+                    if (intCollection.length < 1) {
+                      intCollection.push(0);
+                    }
+                    else if (splitAge[parseInt(y)].length < 3) {
+                      intCollection.push(200);
                     }
                   }
-                  if(!MatchFound){
-                    this.patientDatas.push(response[i]);
+                  // console.log((changeInNum));
+                  // if(changeInNum.toUpperCase() ==  )
+                }
+              }
+              // console.log(intCollection);
+              console.log("this is int list")
+              for (let int = 0; int < intCollection.length; int += 2) {
+                // console.log(int);
+                let term = response[0].age;
+                if (term < 200) {
+                  if (term >= intCollection[int] && term <= intCollection[int + 1]) {
+                    if (intCollection[int] == 0) {
+                      this.throwage = "below " + intCollection[int + 1].toString();
+                    }
+                    else if (intCollection[int + 1] == 200) {
+                      this.throwage = intCollection[int].toString() + " above";
+                    }
+                    else if (intCollection[int] != 0 && intCollection[int + 1] != 200) {
+                      this.throwage = intCollection[int].toString() + " to " + intCollection[int + 1];
+                    }
                   }
                 }
-                else {
-                  this.patientDatas.push(response[i]);
-                }
-
-                // }
+                // console.log(intCollection[int] , intCollection[int+1]);
               }
+
+
+              this.showTable = true;
+              // if(this.isurlid){
+              //   if(response.length !=1){
+              //     this.previousAmount = parseFloat(response[response.length - 2].balance);
+              //   }
+              //   else{
+              //     this.previousAmount = 0.00;
+              //   }
+              //   this.sum = response[response.length - 1].invoices_balance;
+              //   this.currentAmt = this.sum;
+              //   this.sum += this.previousAmount;
+              //   this.globleSum = this.sum;
+              //   this.patientDatas = response;
+
+              // }
+              // else{
+              //   for (let i in response) {
+              //     console.log(this.patientDatas);
+              //     // if(response[i].age_group.toUpperCase() == this.throwage.toUpperCase() && response[i].gender.toUpperCase() == response[i].genderdetails.toUpperCase() ){
+              //     if (this.patientDatas.length > 0) {
+              //       let MatchFound = false;
+              //       for(let y in this.patientDatas){
+              //         if (response[i].id == this.patientDatas[y].id) {
+              //           MatchFound = true;
+              //         }
+              //       }
+              //       if(!MatchFound){
+              //         this.patientDatas.push(response[i]);
+              //       }
+              //     }
+              //     else {
+              //       this.patientDatas.push(response[i]);
+              //     }
+
+              //     // }
+              //   }
+              // }
+
+
+              this.showTable = true;
+              //   this.activepaymentForm = false;
+              //   this.activePayment = false;
+              // console.log(this.patientDatas);
+              // }
+              // else{
+              //   this.SearchNotify = true;
+              //   this.Searchnotify = "Sorry, No Data Are Found!!!"
+              // }
+
+
+              observer.next();
+              observer.complete();
             }
 
-            
-            this.showTable = true;
-            this.activepaymentForm = false;
-            this.activePayment = false;
-          console.log(this.patientDatas);
-        }
-        else{
-          this.SearchNotify = true;
-          this.Searchnotify = "Sorry, No Data Are Found!!!"
-        }
-
-  
-        observer.next();
-        observer.complete();
-  
-        },
-        (error)=>{
+          },
+          (error) => {
             this.SearchNotify = true;
             this.Searchnotify = "Sorry Error in Server!!!"
             observer.complete();
-        });
-    })
+          });
+      }
+    });
   }
+  // }
 
-  routedinvoice(term){
-    console.log(term)
-    let id = term.testbookings_id
-    this.activepaymentForm = false;
-    console.log(id);
-    this.transactionData.reset();
-    this.transactionData.controls.checkDiscount.setValue('0')
-    // this.sum = 0;
-    this.patientDatasDetails = [];
-      this.transactionservice.getDetialsOfTestbooking(id)
-      .subscribe(
-      (response) => {
-        console.log(response);
-        for (let i in response) {
-          // console.log(response[i].age_group);
-          // console.log(this.throwage);
-          // console.log(this.genderinPatientTable);
-          // console.log(response[i].genderdetails);
+  // routedinvoice(term){
+  //   console.log(term)
+  //   let id = term.testbookings_id
+  //   this.activepaymentForm = false;
+  //   console.log(id);
+  //   this.transactionData.reset();
+  //   this.transactionData.controls.checkDiscount.setValue('0')
+  //   // this.sum = 0;
+  //   this.patientDatasDetails = [];
+  //     this.transactionservice.getDetialsOfTestbooking(id)
+  //     .subscribe(
+  //     (response) => {
+  //       console.log(response);
+  //       for (let i in response) {
+  //         // console.log(response[i].age_group);
+  //         // console.log(this.throwage);
+  //         // console.log(this.genderinPatientTable);
+  //         // console.log(response[i].genderdetails);
           
 
-          if (response[i].age_group == this.throwage && this.genderinPatientTable == response[i].genderdetails) {
-            this.patientDatasDetails.push(response[i]);
-          }
-        }
-        this.activepaymentForm = true;
-        console.log(this.patientDatasDetails);
-        // if(!(this.sum > 0)){
-        //   for(let x in this.patientDatasDetails){
-        //     this.sum = this.sum +  parseInt(this.patientDatasDetails[x].rate);
-        //     console.log(this.sum);
-        //     this.globleSum = this.sum;
-        //   }
-        // }
-      },
-      (error) => {
-        console.log("sorry error in server")
-      });
+  //         if (response[i].age_group == this.throwage && this.genderinPatientTable == response[i].genderdetails) {
+  //           this.patientDatasDetails.push(response[i]);
+  //         }
+  //       }
+  //       this.activepaymentForm = true;
+  //       console.log(this.patientDatasDetails);
+  //       // if(!(this.sum > 0)){
+  //       //   for(let x in this.patientDatasDetails){
+  //       //     this.sum = this.sum +  parseInt(this.patientDatasDetails[x].rate);
+  //       //     console.log(this.sum);
+  //       //     this.globleSum = this.sum;
+  //       //   }
+  //       // }
+  //     },
+  //     (error) => {
+  //       console.log("sorry error in server")
+  //     });
 
 
-  }
+  // }
   invoice(id){
     console.log(id);
     this.transactionData.reset();
-    this.transactionData.controls.checkDiscount.setValue('0')
+    // this.transactionData.controls.checkDiscount.setValue('0')
     // this.sum = 0;
     this.patientDatasDetails = [];
-    // this.sum = null;
-    let typeofInvoice = typeof id;
-    console.log(typeofInvoice);
-    console.log(id);
-    if(typeofInvoice == 'number'){
-      this.transactionservice.getDetialsOfPatients(id)
-      .subscribe(
-      (response) => {
-        console.log(response);
-        for (let i in response) {
-          // console.log(response[i].age_group);
-          // console.log(this.throwage);
-          // console.log(this.genderinPatientTable);
-          // console.log(response[i].genderdetails);
+    // // this.sum = null;
+    // let typeofInvoice = typeof id;
+    // console.log(typeofInvoice);
+    // console.log(id);
+    // if(typeofInvoice == 'number'){
+      // this.transactionservice.getDetialsOfPatients(id)
+      // .subscribe(
+      // (response) => {
+      //   console.log(response);
+    //     for (let i in response) {
+    //       console.log(response[i].age_group);
+    //       console.log(this.throwage);
+    //       console.log(this.genderinPatientTable);
+    //       console.log(response[i].genderdetails);
           
 
-          // if (response[i].age_group == this.throwage && this.genderinPatientTable == response[i].genderdetails) {
-            this.patientDatasDetails.push(response[i]);
-          // }
-        }
+    //       // if (response[i].age_group == this.throwage && this.genderinPatientTable == response[i].genderdetails) {
+    //         this.patientDatasDetails.push(response[i]);
+    //       // }
+    //     }
         this.activepaymentForm = true;
-        console.log(this.patientDatasDetails);
-        // if(!(this.sum > 0)){
-        //   // for(let x in this.patientDatasDetails){
-        //     this.sum = this.sum +  parseInt(this.patientDatasDetails[0].balance);
-        //     console.log(this.sum);
-        //     this.globleSum = this.sum;
-        //   // }
-        //   // this.previousAmount=0;
-        //   // this.previousAmount = this.previousAmount+ parseInt(this.patientDatasDetails[0].invoiceBalance);
-        // }
-      },
-      (error) => {
-        console.log("sorry error in server")
-      });
+    //     console.log(this.patientDatasDetails);
+    //     // if(!(this.sum > 0)){
+    //     //   // for(let x in this.patientDatasDetails){
+    //     //     this.sum = this.sum +  parseInt(this.patientDatasDetails[0].balance);
+    //     //     console.log(this.sum);
+    //     //     this.globleSum = this.sum;
+    //     //   // }
+    //     //   // this.previousAmount=0;
+    //     //   // this.previousAmount = this.previousAmount+ parseInt(this.patientDatasDetails[0].invoiceBalance);
+    //     // }
+    //   },
+    //   (error) => {
+    //     console.log("sorry error in server")
+    //   });
 
-    }
-    else{
+    // }
+    // else{
       console.log(id)
-      let idToGetTest = id.testbooking_id;
+      let idToGetTest = id.id;
       console.log(idToGetTest);
-      this.genderinPatientTable = id.gender;
+      // this.genderinPatientTable = id.gender;
       this.patientName = id.patient_name;
       this.patientId = id.reg_no;
       this.registeredDate = id.created_at;
@@ -400,19 +399,27 @@ export class TransactionComponent implements OnInit , OnDestroy  {
         .subscribe(
         (response) => {
           console.log(response);
-          for (let i in response) {
+          console.log(response.length)
+          if(response.length > 0){
+            this.registeredDate = response[response.length - 1].created_at;
+            this.sum = response[response.length - 1].balance;
+            this.globleSum = this.sum;
+            this.drOrCr = response[response.length - 1].remark
+            // console.log(this.sum)
+          }
+          // for (let i in response) {
             // console.log(response[i].age_group);
             // console.log(this.throwage);
             // console.log(this.genderinPatientTable);
             // console.log(response[i].genderdetails);
             
 
-            if (response[i].age_group == this.throwage && this.genderinPatientTable == response[i].genderdetails) {
-              this.patientDatasDetails.push(response[i]);
-            }
-          }
+            // if (response[i].age_group == this.throwage && this.genderinPatientTable == response[i].genderdetails) {
+            //   this.patientDatasDetails.push(response[i]);
+            // }
+          // }
           this.activepaymentForm = true;
-          console.log(this.patientDatasDetails);
+          // console.log(this.patientDatasDetails);
           // if(!(this.sum > 0)){
           //   for(let x in this.patientDatasDetails){
           //     this.sum = this.sum +  parseInt(this.patientDatasDetails[x].rate);
@@ -427,7 +434,7 @@ export class TransactionComponent implements OnInit , OnDestroy  {
     // }
       }
     
-}
+// }
 
 transactionDatas(id){
   let allData = id;
@@ -461,7 +468,7 @@ activeInvoice(id){
   }
 
   ngOnDestroy(){
-    this.routeParameter.unsubscribe();
+    // this.routeParameter.unsubscribe();
   }
 }
 
