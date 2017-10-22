@@ -11,6 +11,7 @@ import { TransactionService } from './transaction/transaction.service';
 import { DashboardService } from './dashboard/dashboard.service';
 import { ViewTransactionService } from './view-transaction/view-transaction.service';
 import { TestbookingTransactionService } from './testbooking-transaction/testbooking-transaction.service';
+import { DoctorReportService } from './doctor-report/doctor-report.service';
 
 import { MyDateRangePickerModule } from 'mydaterangepicker';
 
@@ -91,7 +92,8 @@ import { RedirectJunctionComponent } from './redirect-junction/redirect-junction
 	  TransactionService,
 	  DashboardService,
 	  ViewTransactionService,
-	  TestbookingTransactionService
+	  TestbookingTransactionService,
+	  DoctorReportService
 	]
 })
 export class LabModule {}

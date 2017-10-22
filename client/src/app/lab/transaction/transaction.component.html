@@ -132,20 +132,20 @@
      <div class="form-group">
 
       
-      <div class="row">
+      <div class="row" *ngIf = "drOrCr =='dr'">
         <div class="col-sm-6"><label for="">Discount:</label></div>
         <div class="col-sm-6">
           <label class="radio-inline ">
-            <input type="radio" name="checkDiscount"  (change)="calculateTotalAmount()" formControlName = "checkDiscount" value="0" >Discount
+            <input type="radio" name="checkDiscount"  (change)="calculateTotalAmount()" formControlName = "checkDiscount" value='0' >Discount
           </label>
           <label class="radio-inline ">
-            <input type="radio" name="checkDiscount"  (change)="calculateTotalAmount()" formControlName = "checkDiscount" value="1">Discount percentage
+            <input type="radio" name="checkDiscount"  (change)="calculateTotalAmount()" formControlName = "checkDiscount" value='1' >Discount percentage
           </label>
         </div>
 
       </div>
 
-      <div class="row">
+      <div class="row" *ngIf = "drOrCr =='dr'">
         <div class="col-sm-6"></div>
         <div class="col-sm-2">
           <input class="form-control" type="text" formControlName = "discountcheck">
@@ -170,7 +170,7 @@
     <div class="form-group">
       <label class="control-label col-sm-6" for="email"> Cash: </label>
       <div class="col-sm-2">
-        <input class="form-control" type="text" formControlName = "cash">
+        <input class="form-control" type="text" (change)="calculateTotalAmount()"  formControlName = "cash">
         <span>
           <label *ngIf = UseForCredit class="checkbox-inline">
             <input type="checkbox" value="" formControlName = "credit">Credit

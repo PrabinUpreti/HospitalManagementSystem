@@ -67,8 +67,9 @@ class DoctorListController extends Controller
       */
      public function show($id)
      {
-        //  $gettest = TestType::find($id)->Test;
-        //  return $gettest;
+         return response()->Json([
+             'status'=>'i am inside'
+         ]);
      }
  
      /**

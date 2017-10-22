@@ -157,7 +157,7 @@ export class ModifyService {
 
   getDoctorList(){
     let headers = new Headers({'Content-Type': 'application/json'});
-    let options = new RequestOptions({headers: headers,withCredentials: true});
+    let options = new RequestOptions({headers: headers,withCredentials: false});
     return this.department.get("http://server.hms.com/api/doctor", options)
     .map(this.extractData)
     .catch(this.handleError);    

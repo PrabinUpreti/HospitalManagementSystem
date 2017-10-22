@@ -39,19 +39,20 @@ class TransactionController extends Controller
     */
     public function store(Request $request){
                 
-        $testBookingId = $request->input('');
-        $invoiceParticular = $request->input('');
+        $testBookingId = $request->input('testbookingid');
+        $invoiceParticular = $request->input('invoiceParticular');
         $cash = $request->input('cash');
-        $invoiceBalance = $request->input('');
-        $discountAmount = $request->input('');
-        $discountPer = $request->input('');
-        $invoiceremark = $request->input('');
-        $patientId = $request->input('');
-        $dR = $request->input('');
-        $cR = $request->input('');
-        $balance = $request->input('');
-        $remark = $request->input('');
-        $particuler = $request->input('');
+        $invoiceBalance = $request->input('invoiceBalance');
+        $discountAmount = $request->input('discountAmt');
+        $discountPer = $request->input('discountPer');
+        $invoiceremark = $request->input('remark');
+        $patientId = $request->input('patientId');
+        $dR = $request->input('dr');
+        $cR = $request->input('cash');
+        $balance = $request->input('balance');
+        $remark = $request->input('remark');
+        $particuler = $request->input('particular');
+        $backedMoney = $request->input('backedMoney');
 
         $storedInInvoice = Invoice::create([
             'testbooking_id'=>$testBookingId,
@@ -61,7 +62,7 @@ class TransactionController extends Controller
             'discount_amount'=>$discountAmount,
             'discount_percentage'=>$discountPer,
             'remark'=>$invoiceremark,
-            'backed_money'=>0
+            'backed_money'=>$backedMoney
         ]);
         $invoiceId = $storedInInvoice->id;
 

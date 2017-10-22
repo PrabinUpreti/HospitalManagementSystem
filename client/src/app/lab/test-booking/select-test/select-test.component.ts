@@ -166,6 +166,7 @@ export class SelectTestComponent implements OnInit {
       if(!(data.checkActive)){
         data.checkActive = true;
         let id = data.id;
+        let checkData = false;
         this.testName = data.name;
         this.modifyService.getTestDetails(id)
         .subscribe(
@@ -182,6 +183,7 @@ export class SelectTestComponent implements OnInit {
                   // if(!(this.aliveSelectedTable)){
                     this.aliveSelected = true;
                     this.aliveSelectedTable = true;
+                    checkData = true;
                   // }
                   let stationData = this.tempData[x];
                   stationData['name'] = data.name;
@@ -208,6 +210,12 @@ export class SelectTestComponent implements OnInit {
                   data.checkActive = false;
                 
                 }
+              }
+              if(!checkData){
+                console.log("Age and Gender Not Found");
+                this.Notify = true;
+                this.notify = "This Age or Gender is not registered by Administrator.";
+                data.checkActive = false;
               }
             }
             else{

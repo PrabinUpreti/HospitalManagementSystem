@@ -35,7 +35,7 @@ const usersRoutes: Routes = [
               { path: 'modify', component: ModifyComponent },
       				// { path: 'add-transaction/:id', component: TransactionComponent },
               { path: 'add-transaction', component: TransactionComponent },
-      				{ path: 'testbooking-transaction/:id', component: TestbookingTransactionComponent },              
+      				{ path: 'testbooking-transaction/:id', component: TestbookingTransactionComponent },
               { path: 'view-transaction', component: ViewTransactionComponent },
               { path: 'doctor-reports', component: DoctorReportComponent },
               { path: 'help', component: ModifyComponent },
