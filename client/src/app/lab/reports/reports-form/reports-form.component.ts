@@ -9,8 +9,8 @@ export class ReportsFormComponent implements OnInit {
   @Input() set inputgetReportvalue(id){
     this.getpatientData(id)
   }
-  @Input() set inputpatientData(id){
-    this.getpatients(id)
+  @Input() set inputpatientData(patients){
+    this.getpatients(patients)
   }
   public test;
   patientData = new FormGroup({
@@ -33,23 +33,22 @@ private alive =false
   ngOnInit() {
   }
   getpatientData(id){
-     console.log(id)
+     // console.log(id)
 }
  getpatients(patients){
-   this.test = patients.datas;
-   console.log(this.test)
-   if(this.test[0] == undefined) return 0
-   this.alive =true;
-   this.patientData.controls.patient_ID.setValue(this.test[0].id);
-   this.patientData.controls.patient_name.setValue(this.test[0].patient_name);
-   this.patientData.controls.patient_address.setValue(this.test[0].patient_address);
-   this.patientData.controls.patient_age.setValue(this.test[0].age);
-   this.patientData.controls.patient_gender.setValue(this.test[0].gender);
-   this.patientData.controls.patient_marital.setValue(this.test[0].marital_status);
-   this.patientData.controls.patient_phone.setValue(this.test[0].phone);
-   this.patientData.controls.patient_email.setValue(this.test[0].email);
-   this.patientData.controls.patient_reffered.setValue(this.test[0].doctor_name);
-   this.patientData.controls.patient_nationality.setValue(this.test[0].nationality);
+   console.log(patients)
+   if(patients === undefined) return 0
+  //  this.alive =true;
+   this.patientData.controls.patient_ID.setValue(patients[0].patients_id);
+   this.patientData.controls.patient_name.setValue(patients[0].patient_name);
+   this.patientData.controls.patient_address.setValue(patients[0].patient_address);
+   this.patientData.controls.patient_age.setValue(patients[0].age);
+   this.patientData.controls.patient_gender.setValue(patients[0].gender);
+   this.patientData.controls.patient_marital.setValue(patients[0].marital_status);
+   this.patientData.controls.patient_phone.setValue(patients[0].phone);
+   this.patientData.controls.patient_email.setValue(patients[0].email);
+   this.patientData.controls.patient_reffered.setValue(patients[0].doctor_name);
+   this.patientData.controls.patient_nationality.setValue(patients[0].nationality);
 
   }
 }

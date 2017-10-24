@@ -22,8 +22,10 @@ export class SearchreportsComponent implements OnInit {
   private responseData=null;
   constructor(private laravelservice: ReportService){}
    ngOnInit() {
+
     this.laravelservice.getReport().subscribe(
       patients => { this.patients = patients
+        console.log(' my first data',this.patients)
         for(var i = 0 ; i < patients.datas.length; i++){
            var flag = false;
               var j = 0;

@@ -12,8 +12,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(CommonCodes::class);
-        // $this->call(RefferedBy::class);
+        $this->call(Menu::class);
         // $this->call(SelectAge::class);
-        // $this->call(SelectGender::class);        
+        $this->call(User::class);
     }
 }

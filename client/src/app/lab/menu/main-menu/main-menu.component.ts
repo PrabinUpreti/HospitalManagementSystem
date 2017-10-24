@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 // import { SearchService } from './search.service';
 // import { Subject } from 'rxjs/Subject';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-main-menu',
@@ -10,10 +11,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainMenuComponent implements OnInit {
 
-  constructor() { }
-
-  // results: Object;
-  // searchTerm$ = new Subject<string>();
+constructor(private router:Router) { }
 
   // constructor(private searchService: SearchService) {
   //   this.searchService.search(this.searchTerm$)
@@ -24,22 +22,31 @@ export class MainMenuComponent implements OnInit {
 
 setclass = 0;
 public getUrl = window.location.pathname;
-
+private menulists=[];
   ngOnInit() {
+	  console.log('I am console first')
+	this.menulists = JSON.parse(localStorage.getItem('SelectMenuIten'));
+	console.log('I am Menu',this.menulists)
   }
-  menulists = [
-  		{fa:'fa-tachometer', status:true, link:'/lab/dashboard', name:'Dashboard'},
-  		{fa:'fa-bed', status:true, link:'/lab/test-booking', name:'test booking'},
-  		{fa:'fa-calendar-plus-o', status:true, link:'/lab/reports', name:'patient Reports'},
-  		{fa:'fa-plus-square', status:true, link:'/lab/add-transaction', name:'add transaction'},
-  		{fa:'fa-eye', status:true, link:'/lab/view-transaction', name:'view transaction'},
-  		{fa:'fa-list', status:true, link:'/lab/doctor-reports', name:'Doctor Reports'},
-		{fa:'fa-cogs', status:true, link:'/lab/modify', name:'Setting'},
-		// {fa:'fa-question', status:true, link:'/lab/help', name:'Help'},
+  Logout_btn(){	
+	   localStorage.removeItem("SelectMenuIten")
+	   localStorage.removeItem("access_token")
+	   localStorage.removeItem("keyTime") 
+	   this.router.navigate(['/']);
+  }
+//   menulists = [
+//   		{fa:'fa-tachometer', status:true, link:'/lab/dashboard', name:'Dashboard'},
+//   		{fa:'fa-bed', status:true, link:'/lab/test-booking', name:'test booking'},
+//   		{fa:'fa-calendar-plus-o', status:true, link:'/lab/reports', name:'reports'},
+//   		{fa:'fa-plus-square', status:true, link:'/lab/add-transaction', name:'add transaction'},
+//   		{fa:'fa-eye', status:true, link:'/lab/view-transaction', name:'view transaction'},
+//   		{fa:'fa-list', status:true, link:'/lab/user', name:'User'},
+// 	     	{fa:'fa-cogs', status:true, link:'/lab/modify', name:'Setting'},
+// 		    {fa:'fa-question', status:true, link:'/lab/help', name:'Help'},
 		  
-  		// {status:true, link:'/lab/settings', name:'settings'},  		
-  		// {fa:'fa-question-circle-o', status:true, link:'/lab/help', name:'help'}
-  ]
+//   		// {status:true, link:'/lab/settings', name:'settings'},  		
+//   		// {fa:'fa-question-circle-o', status:true, link:'/lab/help', name:'help'}
+//   ]
 
 
 

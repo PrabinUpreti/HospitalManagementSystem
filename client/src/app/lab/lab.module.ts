@@ -6,8 +6,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UsersRouting } from './lab.router';
 import { LaravelService } from './test-booking/patient-details-form/laravel.service';
 import { ReportService } from './reports/report.service';
+// import { ViewTransansactionService} from './view-transaction/view-transansaction.service';
 import { ModifyService } from './modify/modify.service';
-import { TransactionService } from './transaction/transaction.service';
+import {TransactionService } from './transaction/transaction.service';
 import { DashboardService } from './dashboard/dashboard.service';
 import { ViewTransactionService } from './view-transaction/view-transaction.service';
 import { TestbookingTransactionService } from './testbooking-transaction/testbooking-transaction.service';
@@ -41,9 +42,22 @@ import { ModifyTestComponent } from './modify/modify-test/modify-test.component'
 import { TestDetailsComponent } from './modify/test-details/test-details.component';
 import { DoctorComponent } from './modify/doctor/doctor.component';
 import { PatientComponent } from './modify/patient/patient.component';
-import { DoctorReportComponent } from './doctor-report/doctor-report.component';
-import { TestbookingTransactionComponent } from './testbooking-transaction/testbooking-transaction.component';
+// import { BillComponent } from './transaction/bill/bill.component';
+// import { InvoiceComponent } from './view-transaction/invoice/invoice.component';
+import { LabComponent} from './lab.component';
+// import { PatientInfoComponent } from './view-transaction/patient-info/patient-info.component';
+// import { PaymentComponent } from './view-transaction/payment/payment.component';
+// import { MainMenuComponent } from './menu/main-menu/main-menu.component';
+import { UserService } from '../auth/user.service';
+import { UserComponent } from './user/user.component';
+import { UsertableComponent } from './user/usertable/usertable.component';
+import { AddUserComponent } from './user/add-user/add-user.component';
+import { SelectRoleComponent } from './user/select-role/select-role.component';
+// import { SessionComponent } from './reports/session/session.component';
+import { UserroleService } from './user/userrole.service';
+import { TestbookingTransactionComponent } from './testbooking-transaction/testbooking-transaction.component'
 import { RedirectJunctionComponent } from './redirect-junction/redirect-junction.component';
+import { DoctorReportComponent } from './doctor-report/doctor-report.component';
 
 
 @NgModule({
@@ -64,7 +78,8 @@ import { RedirectJunctionComponent } from './redirect-junction/redirect-junction
 					  FillReportComponent,
 					  ReportsFormComponent,
   					CheckbuttonComponent,
-  					// ComponentComponent,
+                    // BillComponent,
+                    // MainMenuComponent,
   					SearchreportsComponent,
   					PatientDetailsFormComponent,
   					SearchWindowComponent,
@@ -79,21 +94,32 @@ import { RedirectJunctionComponent } from './redirect-junction/redirect-junction
   					TestDetailsComponent,
   					DoctorComponent,
   					PatientComponent,
-  					DoctorReportComponent,
-  					TestbookingTransactionComponent,
-  					RedirectJunctionComponent
+  					// InvoiceComponent,
+					// LabComponent,
+					// PatientInfoComponent,
+					// PaymentComponent,
+					UserComponent,
+					UsertableComponent,
+					AddUserComponent,
+					SelectRoleComponent,
+					// SessionComponent,
+					TestbookingTransactionComponent,
+					RedirectJunctionComponent,
+					DoctorReportComponent
   				],
-  bootstrap: [TestBookingComponent],
+  bootstrap:[LabComponent],
   exports:[TestBookingComponent],
   providers:[
 	  LaravelService,
-	  ReportService,
-	  ModifyService,
-	  TransactionService,
-	  DashboardService,
-	  ViewTransactionService,
-	  TestbookingTransactionService,
-	  DoctorReportService
+	ReportService,
+	UserroleService,
+	// ViewTransansactionService,
+	ModifyService,
+	TestbookingTransactionService,
+	DashboardService,
+	ViewTransactionService,
+	DoctorReportService,
+	TransactionService
 	]
 })
 export class LabModule {}

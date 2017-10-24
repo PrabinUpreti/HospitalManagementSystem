@@ -9,13 +9,23 @@ import 'rxjs/add/observable/throw';
 @Injectable()
 export class DoctorReportService {
 
-  constructor(private http:Http) { }
+  constructor(private http_:Http) { }
 
+
+  
+  //   console.log(param)
+  //   let headers = new Headers({'Content-Type': 'application/json'});
+  //   let options = new RequestOptions({headers: headers, withCredentials: true});
+  //   return this.http.get("http://server.hms.com/api/doctor/"+param, options)
+  //   .map(this.extractData)
+  //   .catch(this.handleError);
+  // }
 
   getDoctorTestbookingTransaction(param){
+    let url = "http://server.hms.com/api/getPatientData/"+param;
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
-    return this.http.get("http://server.hms.com/api/doctor/"+ param, options)
+    return this.http_.get(url, options)
     .map(this.extractData)
     .catch(this.handleError);
   }

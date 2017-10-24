@@ -13,8 +13,8 @@ import { MainMenuComponent } from './lab/menu/main-menu/main-menu.component';
 import { TransactionComponent } from './lab/transaction/transaction.component';
 // import { ReportsComponent } from './reports/reports.component';
 // import { ViewTransactionComponent } from './view-transaction/view-transaction.component';
-// import { FillReportComponent } from './reports/fill-report/fill-report.component';
-// import { CheckbuttonComponent } from './reports/checkbutton/checkbutton.component';
+// import { LoginComponent } from './lab/auth/login/login.component';
+import { LabComponent } from './lab/lab.component';
 // import { SearchreportsComponent } from './reports/searchreports/searchreports.component';
 // import { PatientDetailsFormComponent } from './lab/test-booking/patient-details-form/patient-details-form.component';
 // import { SearchWindowComponent } from './test-booking/search-window/search-window.component';
@@ -22,14 +22,18 @@ import { TransactionComponent } from './lab/transaction/transaction.component';
 // import { SelectTestComponent } from './test-booking/select-test/select-test.component';
 // import { SelectedTestComponent } from './test-booking/selected-test/selected-test.component';
 // import { SelectDepartmentComponent } from './test-booking/select-department/select-department.component';
-// import { ComponentComponent } from './component/component.component';
+import { LoginComponent } from './auth/login/login.component';
+import { LoginService } from './auth/login.service';
+import { UserService } from './auth/user.service';
+import { AuthuserGuard } from './auth/authuser.guard';
+// import { LaravelService } from './laravel.service';
 
 @NgModule({
   declarations: [
     AppComponent,
+    LabComponent,
     MainMenuComponent,
-    // DashboardComponent,
-    // TestBookingComponent,
+    LoginComponent,
     TransactionComponent,
     // ReportsComponent,
     // ViewTransactionComponent,
@@ -52,7 +56,7 @@ import { TransactionComponent } from './lab/transaction/transaction.component';
     HttpModule,
     LabModule
   ],
-  providers: [],
+  providers: [LoginService,UserService,AuthuserGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

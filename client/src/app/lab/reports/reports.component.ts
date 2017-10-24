@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
@@ -7,14 +7,22 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class ReportsComponent implements OnInit {
 
-@Output()  ValuetransactionData = new EventEmitter<any>();
-
+  @Output() valuetransactionData = new EventEmitter<any>();
+  private timevalue;  
   private state;
   private value;
   private patientData;
-  public  data;
-
-  constructor() { }
+  private billId;
+  private Menulists=[];
+  constructor(private router:Router) {
+    this.Menulists= JSON.parse(localStorage.getItem('SelectMenuIten'));
+    console.log(this.Menulists)
+    for(let x in this.Menulists){
+      if(this.Menulists[x].link !== this.router.url){
+        //  this.router.navigate(['**'])
+      }
+    }
+   }
   ngOnInit() {
   }
   OnreadyBtn(id){
@@ -30,8 +38,7 @@ export class ReportsComponent implements OnInit {
     this.patientData=patients
   }
   OntransactionData(id){
-    this.data = id;
-    this.ValuetransactionData.emit(this.data);
-    console.log(this.data);
+    this.valuetransactionData.emit(id);
+    console.log(id)
   }
 }

@@ -21,6 +21,10 @@ class RelationConstraint extends Migration
             $table->foreign('test_type_id')->references('id')->on('test_types');
         });
 
+        Schema::table('access_menus', function($table) {
+            $table->foreign('menu_id')->references('id')->on('menus');
+            $table->foreign('user_id')->references('id')->on('users');
+        });
         Schema::table('test_details', function($table) {
             $table->foreign('test_id')->references('id')->on('tests');
         });
@@ -59,6 +63,11 @@ class RelationConstraint extends Migration
         });
         Schema::table('tests', function($table) {
             $table->dropForeign(['test_type_id']);
+        });
+
+        Schema::table('access_menus', function($table) {
+            $table->dropForeign(['menu_id']);
+            $table->dropForeign(['uesr_id']);
         });
 
         Schema::table('test_details', function($table) {

@@ -6,7 +6,6 @@
             <table class="table">
                 <thead>
                        <tr>
-                            <th>S.No</th>
                             <th>Test Name</th>
                             <th>Unit</th>
                             <th>Lower Bound</th>
@@ -16,11 +15,6 @@
                 </thead>
                 <tbody formArrayName="reports" >
                       <tr *ngFor="let data of resultData.controls.reports.controls; let i = index">
-                           <td [formGroupName]="i">
-                                <div class="col-lg-12 unclickable" >
-                                     <input type="button" class="form-control input-sm"  formControlName="id">
-                                 </div>
-                           </td>
                             <td [formGroupName]="i">
                                 <div class="col-lg-12">
                                      <input type="button" class="form-control input-sm"  formControlName="test_name">
@@ -54,13 +48,15 @@
                      <button class="btn btn-primary btn-xs btn-block" [disabled] = "!submitButtonStatus" value="{{submitButtonStatus?'save':'Saving....'}}">Save</button>
                  </div>  
                 <div class=" col-sm-1 col-lg-1 col-md-1">
-                    <button type="button" class="btn btn-primary btn-xs btn-block" data-toggle="modal" data-target="#myModel">Print</button>
+                    <button type="button"  class="btn btn-primary btn-xs btn-block"  data-toggle="modal" (click)="print()" data-target="#myModel">Print</button>
                 </div>
-                  <div class="modal fade" id="myModel" role="dialog">
+
+                
+                  <div class="modal fade" id="myModel"  role="dialog" >
                      <div class="modal-dialog modal-sm">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <button type="button" class="close"  data-dismiss="modal">&times;</button>
                                   <h4 class="modal-title">
                                     Payment
                                  </h4>
@@ -69,7 +65,7 @@
                                <p>Do you want pay?</p>
                           </div>
                            <div class="modal-footer">
-                              <button type="button" class="btn btn-primary" (click)=getMethod() >Ok</button>                  
+                              <button  type="button" class="btn btn-primary" data-dismiss="modal" (click)=getMethod()>Ok</button>
                               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                           </div>
                         </div>
@@ -80,4 +76,57 @@
            </div>
         </div>
     </div>
+ <div [hidden]="status==false"> 
+     <div id="printSection">
+         <header>
+                <div>
+                    <div class="header-report">
+                        <h2>Hetauda Hospital</h2>
+                        <h5>Hetauda Hospital, Makawanpur,Hetauda-10</h5>
+                        <h5>Phone Number:057-252000</h5>
+                    </div>
+                </div>
+        </header>
+        <body>
+            <div>
+                <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Test</th>
+                                    <th>Result</th>
+                                    <th>Normal Range</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>@mdo</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>@TwBootstrap</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">3</th>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                    <td>@fat</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">4</th>
+                                    <td colspan="2">Larry the Bird</td>
+                                    <td>@twitter</td>
+                                </tr>
+                       </tbody>
+                 </table>
+            </div>
+        </body> 
+    </div>
+</div>   
+   
 

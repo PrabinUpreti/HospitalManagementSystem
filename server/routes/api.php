@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,9 +13,10 @@ use Illuminate\Http\Request;
 |
 */
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+      return $request->user();
+});
 
 
 // Route::post("connect",function (Request $request){
@@ -83,3 +84,14 @@ Route::post('/postinvoice', 'TestbookingTransactionController@postInvoice');
 
 // Route::post('/modify','DepartmentController@postDepartment');
 // Route::get('/modify','DepartmentController@getDepartment');
+
+//User
+
+Route::get('/menu','MenuController@Menucontroller');
+Route::get('/user','UserContoller@userdata');
+Route::post('/adduser','UserContoller@Adduserdata');
+Route::post('/edituser/{id}','UserContoller@EditUser');
+Route::post('/deleteuser/{id}','UserContoller@DeleteUser');
+Route::post('/access_menu','Access_menu_Controller@Access_Menu');
+Route::get('/menubar/{id}','Access_menu_Controller@Menubar');
+

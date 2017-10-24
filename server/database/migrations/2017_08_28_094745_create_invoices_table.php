@@ -22,7 +22,7 @@ class CreateInvoicesTable extends Migration
             $table->integer('discount_amount');
             $table->string('discount_percentage');
             // $table->string('total');
-            $table->string('backed_money');
+            $table->string('backed_money')->nullable();
             $table->string('remark')->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();

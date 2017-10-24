@@ -8,6 +8,7 @@ import { ReportsComponent } from './reports/reports.component';
 import { ViewTransactionComponent } from './view-transaction/view-transaction.component';
 import { FillReportComponent } from './reports/fill-report/fill-report.component';
 import { CheckbuttonComponent } from './reports/checkbutton/checkbutton.component';
+import { TestbookingTransactionComponent } from './testbooking-transaction/testbooking-transaction.component'
 // import { ComponentComponent } from './component/component.component';
 import { SearchreportsComponent } from './reports/searchreports/searchreports.component';
 import { PatientDetailsFormComponent } from './test-booking/patient-details-form/patient-details-form.component';
@@ -17,28 +18,31 @@ import { SelectTestComponent } from './test-booking/select-test/select-test.comp
 // import { SelectedTestComponent } from './test-booking/selected-test/selected-test.component';
 import { SelectDepartmentComponent } from './test-booking/select-department/select-department.component';
 import { ModifyComponent } from './modify/modify.component';
-import { DoctorReportComponent } from './doctor-report/doctor-report.component';
-import { TestbookingTransactionComponent } from './testbooking-transaction/testbooking-transaction.component';
+import { LabComponent } from './lab.component'
+import { AuthuserGuard } from './../auth/authuser.guard';
+import { UserComponent } from './user/user.component'
+// import { SessionComponent } from './session/session.component';
 import { RedirectJunctionComponent } from './redirect-junction/redirect-junction.component';
+import { DoctorReportComponent } from './doctor-report/doctor-report.component';
 
 
 const usersRoutes: Routes = [
-  { path: 'lab',
-    // children: [
-    //   { path: 'home',
-
-      	children: [
-      				{ path: '', component: DashboardComponent },
+    { path: 'lab', component: LabComponent,
+      canActivate:[AuthuserGuard],
+    	children: [
+              { path: 'dashboard', component: DashboardComponent},
       				{ path: 'test-booking', component: TestBookingComponent },
+              { path: 'view-transaction', component:ViewTransactionComponent},
               { path: 'reports', component: ReportsComponent },
               { path: 'test', component: DashboardComponent },
               { path: 'modify', component: ModifyComponent },
       				// { path: 'add-transaction/:id', component: TransactionComponent },
               { path: 'add-transaction', component: TransactionComponent },
       				{ path: 'testbooking-transaction/:id', component: TestbookingTransactionComponent },
-              { path: 'view-transaction', component: ViewTransactionComponent },
-              { path: 'doctor-reports', component: DoctorReportComponent },
-              { path: 'help', component: ModifyComponent },
+              // { path: 'view-transaction/:id', component:ViewTransactionComponent},
+              { path: 'user', component: UserComponent },
+              { path: 'doctor-report', component: DoctorReportComponent },
+              // {path: '**', component: PageNotFoundComponent} 
               { path: 'redirecting', component:RedirectJunctionComponent}
 				]
 

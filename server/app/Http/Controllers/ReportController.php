@@ -14,10 +14,11 @@ class ReportController extends Controller
        public function postReportData(Request $request){   
                       $answers = $request->input('reports');
                       for($i=0; $i < count($answers); $i++){
-                         DB::table('reports')
-                           ->where('id',$answers[$i]['id'])
-                           ->update(['result'=>$answers[$i]['result']]);
-                      }
+                         $Report_update=DB::table('reports')
+                            ->where('id',$answers[$i]['id'])
+                            ->update(['result'=>$answers[$i]['result']]);
+                            // return response()->json(['Report_update'=>$Report_update]); 
+                       }
                   }
     public function ReportData(){
         $datas =patient::join('testbookings','patients.id','=','testbookings.patient_id')
@@ -37,7 +38,7 @@ class ReportController extends Controller
                           ->join('doctor_lists','doctor_lists.id','=','testbookings.doctor_list_id')
                           ->orderBy('reports.testbooking_id', 'asc')
                           ->where('testbooking_id', $id)
-                          ->select('patients.*','reports.*','reports.id as reports_id','test_details.*','tests.name as test_name','doctor_lists.name as doctor_name')
+                          ->select('patients.*','patients.id as patients_id','patients.gender as patient_gender','departments.name as department_name','test_types.name as test_type_name','reports.id as report_id','reports.*','reports.id as reports_id','test_details.*','tests.name as test_name','doctor_lists.name as doctor_name')
                           ->get();
                           return response()->json(['datas'=>$datas]);
     }
