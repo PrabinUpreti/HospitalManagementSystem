@@ -170,5 +170,28 @@ class CommonCodes extends Seeder
             'common_code' => "unit",
             'common_description' => "NV",
         ]);
+
+
+        
+        DB::table('common_codes')->insert([
+            'common_code' => "pfx",
+            'common_description' => "Dr",
+        ]);
+        DB::table('common_codes')->insert([
+            'common_code' => "pfx",
+            'common_description' => "Nurse",
+        ]);
+        DB::table('common_codes')->insert([
+            'common_code' => "pfx",
+            'common_description' => "Mr",
+        ]);
+        DB::table('common_codes')->insert([
+            'common_code' => "pfx",
+            'common_description' => "Miss",
+        ]);        
+        DB::table('common_codes')->insert([
+            'common_code' => "pfx",
+            'common_description' => "Proff",
+        ]);
     }
 }

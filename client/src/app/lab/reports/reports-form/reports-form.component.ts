@@ -39,7 +39,7 @@ private alive =false
    console.log(patients)
    if(patients === undefined) return 0
   //  this.alive =true;
-   this.patientData.controls.patient_ID.setValue(patients[0].patients_id);
+   this.patientData.controls.patient_ID.setValue(patients[0].reg_no);
    this.patientData.controls.patient_name.setValue(patients[0].patient_name);
    this.patientData.controls.patient_address.setValue(patients[0].patient_address);
    this.patientData.controls.patient_age.setValue(patients[0].age);
@@ -49,6 +49,5 @@ private alive =false
    this.patientData.controls.patient_email.setValue(patients[0].email);
    this.patientData.controls.patient_reffered.setValue(patients[0].doctor_name);
    this.patientData.controls.patient_nationality.setValue(patients[0].nationality);
-
   }
 }

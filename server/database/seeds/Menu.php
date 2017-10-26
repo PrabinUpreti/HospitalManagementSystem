@@ -12,36 +12,44 @@ class Menu extends Seeder
     public function run()
     {
         DB::table('menus')->insert([
+            'fa'=>'fa-tachometer',
             'name'=>'Dashboard',
             'link'=>'/lab/dashboard'
         ]);
         DB::table('menus')->insert([
+            'fa'=>'fa-bed',
             'name'=>'test booking',
             'link'=>'/lab/test-booking'
         ]);
         DB::table('menus')->insert([
+            'fa'=>'fa-calendar-plus-o',
             'name'=>'reports ',
             'link'=>'/lab/reports'
         ]);
         DB::table('menus')->insert([
+            'fa'=>'fa-plus-square',
             'name'=>'add transaction',
             'link'=>'/lab/add-transaction'
         ]);
         DB::table('menus')->insert([
+            'fa'=>'fa-eye',
             'name'=>'view transaction',
             'link'=>'/lab/view-transaction'
         ]);
         DB::table('menus')->insert([
+            'fa'=>'fa-stethoscope',
+            'name'=>'Doctor Report',
+            'link'=>'/lab/doctor-report'
+        ]);
+        DB::table('menus')->insert([
+            'fa'=>'fa-user',
             'name'=>'User',
             'link'=>'/lab/user'
         ]);
         DB::table('menus')->insert([
+            'fa'=>'fa-cogs',
             'name'=>'Setting',
             'link'=>'/lab/modify'
-        ]);
-        DB::table('menus')->insert([
-            'name'=>'Doctor Report',
-            'link'=>'/lab/doctor-report'
         ]);
     }
 }

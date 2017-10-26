@@ -22,7 +22,7 @@ constructor(private router:Router) { }
 
 setclass = 0;
 public getUrl = window.location.pathname;
-private menulists=[];
+public menulists=[];
   ngOnInit() {
 	  console.log('I am console first')
 	this.menulists = JSON.parse(localStorage.getItem('SelectMenuIten'));

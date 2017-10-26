@@ -210,6 +210,9 @@ export class PatientDetailsFormComponent implements OnInit {
               console.log("ERROR successfully")
               this.Notify = true;
               this.notify = "Sorry couldn't load Doctor from server please refresh it."
+              setTimeout(function () {
+                this.Notify = false;
+              }.bind(this), 3000);
           }
       );
 
@@ -220,6 +223,9 @@ export class PatientDetailsFormComponent implements OnInit {
             if(response.length == 0){
               this.Notify = true;
               this.notify = "There is no any Data ";
+              setTimeout(function () {
+                this.Notify = false;
+              }.bind(this), 3000);
             }
             console.log(response);
             this.commoncodes = response;
@@ -277,6 +283,9 @@ export class PatientDetailsFormComponent implements OnInit {
               console.log("sorry error in server")
               this.Notify = true;
               this.notify = "Sorry couldn't load data from server please refresh it."
+              setTimeout(function () {
+                this.Notify = false;
+              }.bind(this), 3000);
           });
         // }
 
@@ -313,8 +322,10 @@ export class PatientDetailsFormComponent implements OnInit {
 
 
             for(let x in this.reffBys){
-              if("Dr."+ this.reffBys[x].name == this.patientData.controls.reff_by.value){
+              let y = this.patientData.controls.reff_by.value.split(".");
+              if(this.reffBys[x].name.toUpperCase() == y[1].toUpperCase()){
                 paramData['reff_by'] = this.reffBys[x].id;
+                break;
               }
             }
             paramData['testID'] = testIdStoredInLocalStorage;
@@ -345,18 +356,27 @@ export class PatientDetailsFormComponent implements OnInit {
                         this.submitButtonStatus=true
                         this.Notify = true;
                         this.notify = "Sorry error in server";
+                        setTimeout(function () {
+                          this.Notify = false;
+                        }.bind(this), 3000);
                     }
                 )
               }
               else{
                 this.Notify = true;
-                this.notify = "Please select test."}
+                this.notify = "Please select test."
+                setTimeout(function () {
+                  this.Notify = false;
+                }.bind(this), 3000);}
 
       }
       else{
         
         this.Notify = true;
         this.notify = "Please fill the form properly."
+        setTimeout(function () {
+          this.Notify = false;
+        }.bind(this), 3000);
         this.testStatus = true;
       console.log("error in client");
           for (let x in this.patientData.controls) {
@@ -407,8 +427,10 @@ export class PatientDetailsFormComponent implements OnInit {
 
 
         for(let x in this.reffBys){
-          if("Dr."+ this.reffBys[x].name == this.patientData.controls.reff_by.value){
+          let y = this.patientData.controls.reff_by.value.split(".");
+          if(this.reffBys[x].name.toUpperCase() == y[1].toUpperCase()){
             paramData['reff_by'] = this.reffBys[x].id;
+            break;
           }
         }
         paramData['testID'] = testIdStoredInLocalStorage;
@@ -439,19 +461,28 @@ export class PatientDetailsFormComponent implements OnInit {
                     this.submitButtonStatus=true
                     this.Notify = true;
                     this.notify = "Sorry error in server";
+                    setTimeout(function () {
+                      this.Notify = false;
+                    }.bind(this), 3000);
                 }
             )
           }
           else{
             this.Notify = true;
-            this.notify = "Please select test."}
+            this.notify = "Please select test."
+            setTimeout(function () {
+              this.Notify = false;
+            }.bind(this), 3000);}
 
   }
-  else{
-    this.Notify = true;
-    this.notify = "Please fill the form properly."
-    this.testStatus = true;
-  console.log("error in client");
+    else {
+      this.Notify = true;
+      this.notify = "Please fill the form properly."
+      setTimeout(function () {
+        this.Notify = false;
+      }.bind(this), 3000);
+      this.testStatus = true;
+      console.log("error in client");
       for (let x in this.patientData.controls) {
         this.patientData.controls[x].markAsTouched();
         this.patientData.controls[x].markAsDirty();

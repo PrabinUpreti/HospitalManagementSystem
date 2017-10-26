@@ -16,7 +16,7 @@
 					<a [ngClass] = "{'dropdown-toggle' : menulist.name == 'Setting'}" (click) = addClass(i) [routerLink]="[menulist?.link]"  data-toggle="dropdown" role="button" aria-expanded="true">
 						<i class="fa {{menulist.fa}}">
 							{{menulist.name}} 
-							<span [ngClass] = "{'[disable]caret' : menulist.name == 'Setting'}"></span>
+							<!-- <span [ngClass] = "{'[disable]caret' : menulist.name == 'Setting'}"></span> -->
 						</i>
 					</a>
 					<!-- <ul *ngIf = "menulist.name == 'Setting'" class="dropdown-menu" role="menu">
@@ -64,7 +64,7 @@
 				</ul>
 			  </li> -->
 			</ul>
-			<button type="button" class="btn btn-primary pull-right" (click)="Logout_btn()">Log Out</button>
+			<button type="button" style="background-color:transparent; color:#fff" class="btn pull-right" (click)="Logout_btn()"><i class="fa fa-sign-out" aria-hidden="true"> Log Out </i></button>
 		</div>
 		</div>
 	  </nav>

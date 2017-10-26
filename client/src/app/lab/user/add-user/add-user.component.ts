@@ -7,11 +7,11 @@ import { FormBuilder, FormArray, FormGroup, Validators} from '@angular/forms';
         styleUrls: ['./add-user.component.css']
       })
     export class AddUserComponent implements OnInit {    
-    private menus=[];
+    public menus=[];
     public SelectMenu=[];
     public Info=[];
-    private MenuArray = [];
-    private addUser: FormGroup;
+    public MenuArray = [];
+    public addUser: FormGroup;
     constructor(private userService: UserroleService, private fb:FormBuilder) {
 
  }
@@ -19,8 +19,8 @@ import { FormBuilder, FormArray, FormGroup, Validators} from '@angular/forms';
     get menuLists(): FormArray {
         return this.addUser.get('menuLists') as FormArray;
     };
-    private responseData = null;
-    private SelectedMenuItem=[];
+    public responseData = null;
+    public SelectedMenuItem=[];
       ngOnInit() {
           this.userService.getReport().subscribe(
             menus => {

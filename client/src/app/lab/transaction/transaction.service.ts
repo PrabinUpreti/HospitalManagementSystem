@@ -13,14 +13,16 @@ getPatientTest(id) {
   let options = new RequestOptions({ headers: headers, withCredentials: true });
   return this.PatientTest.get("http://server.hms.com/api/transaction/" + id, options)
     .map(this.extractData)
-    .catch(this.handleError);
+    .catch(this.handleError)
+    .retry(10);
 }
 getDetialsOfPatients(id) {
   let headers = new Headers({ 'Content-Type': 'application/json' });
   let options = new RequestOptions({ headers: headers, withCredentials: true });
   return this.PatientTest.get("http://server.hms.com/api/transactions/" + id, options)
     .map(this.extractData)
-    .catch(this.handleError);
+    .catch(this.handleError)
+    .retry(10);
 }
 
 postInvoices(param){
@@ -29,7 +31,8 @@ postInvoices(param){
   let options = new RequestOptions({ headers: headers, withCredentials: true });
   return this.PatientTest.post("http://server.hms.com/api/transaction", param, options)
     .map(this.extractData)
-    .catch(this.handleError);
+    .catch(this.handleError)
+    .retry(10);
 }
 
 getDetialsOfTestbooking(id){
@@ -37,7 +40,8 @@ getDetialsOfTestbooking(id){
   let options = new RequestOptions({ headers: headers, withCredentials: true });
   return this.PatientTest.get("http://server.hms.com/api/transactionstestbooking/" + id, options)
     .map(this.extractData)
-    .catch(this.handleError);
+    .catch(this.handleError)
+    .retry(10);
 }
 
 

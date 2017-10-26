@@ -18,6 +18,7 @@ export class DashboardService {
     return this.http.get("http://server.hms.com/api/dashboard", options)
         .map(this.extractData)
         .catch(this.handleError)
+        .retry(10);
 
   }
 

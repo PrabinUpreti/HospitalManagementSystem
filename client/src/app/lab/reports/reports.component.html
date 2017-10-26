@@ -1,7 +1,7 @@
 
 <section class="col-lg-3" style="float:right;">
     <app-checkbutton (readyBtn)="OnreadyBtn($event)" (notreadyBtn)="OnnotreadyBtn($event)"></app-checkbutton>
-    <app-searchreports [inputreadyReport]="state" (selectReport)="OnselectReport($event)" (getReportvalue)="OngetReportvalue($event)" ></app-searchreports>
+    <app-searchreports [inputreadyReport]="state" (getReportvalue)="OngetReportvalue($event)" ></app-searchreports>
 </section>
 <section class="col-lg-9">
     <app-reports-form [inputgetReportvalue]="value"   [inputpatientData]="patientData"></app-reports-form>

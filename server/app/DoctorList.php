@@ -17,7 +17,7 @@ class DoctorList extends Model
     protected $dates = ['deleted_at'];
     
     protected $fillable = [
-        'name', 'address','phone','registration_no','email','department'
+        'name', 'address','phone','registration_no','email','department','gender','day','month','year','prefix','commission'
     ];
     // public function TestType()
     // {

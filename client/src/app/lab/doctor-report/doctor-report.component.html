@@ -16,7 +16,7 @@
           <div class="col-sm-6">
             <select class="form-control" formControlName="selecteddoctor">
               <option selected>Select Doctor</option>
-              <option *ngFor = "let doctorList of doctorlists; let i = index" value="{{i}}">Dr. {{doctorList.name}}</option>
+              <option *ngFor = "let doctorList of doctorlists; let i = index" value="{{i}}">{{doctorList.prefix}}. {{doctorList.name}}</option>
             </select>
           </div>
         </div>
@@ -32,6 +32,39 @@
     </div>
   </div>
 
+  <div *ngIf="showTable" style="margin-bottom:10px;" class="pull-right col-sm-12">
+    <!-- <input  style="margin-top: 50px auto;" type="button" class="btn btn-primary center-block" (click)="back()" value="Home"> -->
+    <div  style=" height:80vh; overflow:auto;" >
+      <table class="table table-responsive table-hover table-striped">
+        <thead>
+          <tr>
+            <th>S.N</th>
+            <!-- <th>Invoice Id</th> -->
+            <th>Particular</th>
+            <th>Cash</th>
+            <th>Balance</th>
+            <th>Discount</th>
+            <th>Discount %</th>
+            <th>Remark</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let doctorData of doctorDatas; let i = index">
+            <td class="text-info">{{i+1}}</td>
+            <!-- <td>{{doctorData.invoice_id}}</td> -->
+            <td>{{doctorData.particular}}</td>
+            <td>Rs {{doctorData.cash}} /-</td>
+            <td>Rs {{doctorData.balance}} /-</td>
+            <td>Rs {{doctorData.discount_amount}} /-</td>
+            <td>Rs {{doctorData.discount_percentage}} /-</td>
+            <td>Rs {{doctorData.balance}} /-</td>
+            <td>{{doctorData.remark ? doctorData.remark : 'Null'}}</td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+  </div>
+
 
   <div *ngIf="Notify" class="container">
     <div class="row" id="error-container">
@@ -43,6 +76,5 @@
       </div>
     </div>
   </div>
-
-
 </div>
+<!-- <pre> {{ doctorDatas | json }}</pre> -->

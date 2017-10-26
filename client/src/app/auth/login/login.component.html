@@ -38,7 +38,7 @@
                  <div class="panel-title text-center">Login</div>
           </div>     
           <div class="panel-body" >
-              <form  [formGroup]="loginForm" (ngSubmit)="submitForm()" name="form"  id="form" class="form-horizontal" enctype="multipart/form-data" method="POST">
+              <form  [formGroup]="loginForm" (ngSubmit)="submitForm()" name="form"  id="form" class="form-horizontal">
                   <div class="input-group">
                       <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                       <input id="user" type="text" class="form-control" [formControl]="loginForm.controls['email']" name="user" value="" placeholder="User">                                        

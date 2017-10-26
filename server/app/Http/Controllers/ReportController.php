@@ -16,9 +16,11 @@ class ReportController extends Controller
                       for($i=0; $i < count($answers); $i++){
                          $Report_update=DB::table('reports')
                             ->where('id',$answers[$i]['id'])
-                            ->update(['result'=>$answers[$i]['result']]);
-                            // return response()->json(['Report_update'=>$Report_update]); 
+                            ->update(['result'=>$answers[$i]['result']]); 
                        }
+                       return response()->Json([
+                           'status'=>'Report Submitted Successfully !'
+                       ]);
                   }
     public function ReportData(){
         $datas =patient::join('testbookings','patients.id','=','testbookings.patient_id')

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { TransactionService } from './transaction.service';
 import { ModifyService } from './../modify/modify.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute,Router } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -16,7 +16,7 @@ import 'rxjs/Rx';
   styleUrls: ['./transaction.component.css']
 })
 export class TransactionComponent implements OnInit, OnDestroy {
-  constructor(private transactionservice: TransactionService, private ModifyService: ModifyService, private route: ActivatedRoute) { }
+  constructor(private transactionservice: TransactionService, private ModifyService: ModifyService, private router:Router) { }
 
   public SearchPayment: FormGroup;
   public patientDatas = [];
@@ -24,6 +24,8 @@ export class TransactionComponent implements OnInit, OnDestroy {
   public commoncodes = [];
   public notify;
   public Notify = false;
+  public Pay = "Pay";
+  public pay = false;
   public ageGroupFromServer = [];
   public throwage;
   public genderinPatientTable;
@@ -62,9 +64,12 @@ export class TransactionComponent implements OnInit, OnDestroy {
     // })
 
     this.transactionData = new FormGroup({
-      cash: new FormControl(''),
+      cash: new FormControl('',[
+        Validators.pattern("^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$"),
+      //  Validators.maxLength(6)
+      ]),
       checkDiscount: new FormControl('0'),
-      discountcheck: new FormControl(''),
+      discountcheck: new FormControl('',Validators.pattern("^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$")),
       credit: new FormControl(''),
       // discountPer  : new FormControl('')
     });
@@ -408,6 +413,9 @@ export class TransactionComponent implements OnInit, OnDestroy {
   // }
 
   transactionDatas(id) {
+    if(this.transactionData.valid && this.transactionData.controls.cash.value){
+      this.pay = true;
+      this.Pay = "Paying..."
     let allData = id;
     // allData['invoiceBalance'] = this.globleSum
     allData['patientId'] = this.idToGetTest;
@@ -465,12 +473,30 @@ export class TransactionComponent implements OnInit, OnDestroy {
     .subscribe(
       (response)=>{
         console.log(response);
+        
+        this.notify="SuccessFully payed !"
+        this.Notify = true;
+        this.notifyDismiss()
+        this.router.navigate(['/lab/test-booking']);
       },
       (error)=>{
         console.log(error);
+        this.pay = false;
+        this.Pay = "Pay"
+        this.notify="Sorry Error in Server !"
+        this.Notify = true;
+        this.notifyDismiss()
       }
     );
   }
+  else{
+    this.notify="Enter input field properly !"
+    this.Notify = true;
+    this.notifyDismiss()
+    this.transactionData.controls.cash.markAsDirty();
+    this.transactionData.controls.discountcheck.markAsDirty();
+  }
+}
   activeInvoice(id) {
     if (id == 0)
       this.activePayment = false;
@@ -489,6 +515,12 @@ export class TransactionComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     // this.routeParameter.unsubscribe();
+  }
+
+  notifyDismiss(){
+    setTimeout(function () {
+      this.Notify = false;
+    }.bind(this), 3000);  
   }
 }
 

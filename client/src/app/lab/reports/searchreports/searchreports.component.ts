@@ -19,7 +19,7 @@ export class SearchreportsComponent implements OnInit {
   notreadylists=[];
   check;
   state;
-  private responseData=null;
+  public responseData=null;
   constructor(private laravelservice: ReportService){}
    ngOnInit() {
 
@@ -51,7 +51,7 @@ export class SearchreportsComponent implements OnInit {
          }
     })
 } 
-  private getReady(id){
+  public getReady(id){
        this.state=id
      if(id = this.state){
         this.check=true

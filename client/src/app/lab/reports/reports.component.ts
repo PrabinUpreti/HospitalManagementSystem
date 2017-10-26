@@ -8,12 +8,12 @@ import { Router } from '@angular/router';
 export class ReportsComponent implements OnInit {
 
   @Output() valuetransactionData = new EventEmitter<any>();
-  private timevalue;  
-  private state;
-  private value;
-  private patientData;
-  private billId;
-  private Menulists=[];
+  public timevalue;  
+  public state;
+  public value;
+  public patientData;
+  public billId;
+  public Menulists=[];
   constructor(private router:Router) {
     this.Menulists= JSON.parse(localStorage.getItem('SelectMenuIten'));
     console.log(this.Menulists)

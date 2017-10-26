@@ -14,7 +14,8 @@ export class TestbookingTransactionService {
     let options = new RequestOptions({ headers: headers, withCredentials: true });
     return this.PatientTest.get("http://server.hms.com/api/testbooking-transaction/" + id, options)
       .map(this.extractData)
-      .catch(this.handleError);
+      .catch(this.handleError)
+      .retry(10);
   }
 
   getDetialsOfPatientsTestbooking(id){
@@ -22,7 +23,8 @@ export class TestbookingTransactionService {
     let options = new RequestOptions({ headers: headers, withCredentials: true });
     return this.PatientTest.get("http://server.hms.com/api/transactionstestbooking/" + id, options)
       .map(this.extractData)
-      .catch(this.handleError);
+      .catch(this.handleError)
+      .retry(10);
   }
 
   setpatienttransaction(term){
@@ -30,7 +32,8 @@ export class TestbookingTransactionService {
     let options = new RequestOptions({ headers: headers, withCredentials: true });
     return this.PatientTest.post("http://server.hms.com/api/postinvoice", term, options)
       .map(this.extractData)
-      .catch(this.handleError);
+      .catch(this.handleError)
+      .retry(10);
   }
 
 

@@ -7,8 +7,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
-private Menulists=[];
-private UserData;
+public Menulists=[];
+public UserData;
   constructor(private router:Router) {
     this.Menulists= JSON.parse(localStorage.getItem('SelectMenuIten'));
     console.log(this.Menulists)

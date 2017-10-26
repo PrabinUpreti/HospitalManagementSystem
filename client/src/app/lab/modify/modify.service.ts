@@ -21,7 +21,8 @@ export class ModifyService {
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.department.post("http://server.hms.com/api/modify", departmentData, options)
     .map(this.extractData)
-    .catch(this.handleError);
+    .catch(this.handleError)
+    .retry(10);
   }
   getDepartment(){
     
@@ -29,7 +30,8 @@ export class ModifyService {
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.department.get("http://server.hms.com/api/modify", options)
     .map(this.extractData)
-    .catch(this.handleError);
+    .catch(this.handleError)
+    .retry(10);
   }
 
   updateDepartment(finalData){
@@ -39,7 +41,8 @@ export class ModifyService {
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.department.put(url, finalData, options)
     .map(this.extractData)
-    .catch(this.handleError);
+    .catch(this.handleError)
+    .retry(10);
   }
   
   deleteDepartment(id){
@@ -48,7 +51,8 @@ export class ModifyService {
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.department.delete(url, options)
     .map(this.extractData)
-    .catch(this.handleError);
+    .catch(this.handleError)
+    .retry(10);
   }
 
 
@@ -62,7 +66,8 @@ export class ModifyService {
     let options = new RequestOptions({headers: headers, withCredentials: true});
     return this.TestType.post("http://server.hms.com/api/testtype", TestTypeData, options)
     .map(this.extractData)
-    .catch(this.handleError);
+    .catch(this.handleError)
+    .retry(10);
   }
   getTestType(id){
     let url = "http://server.hms.com/api/testtype/"+id;
@@ -70,7 +75,8 @@ export class ModifyService {
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.TestType.get(url, options)
     .map(this.extractData)
-    .catch(this.handleError);
+    .catch(this.handleError)
+    .retry(10);
   }
 
   updateTestType(finalData){
@@ -81,7 +87,8 @@ export class ModifyService {
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.TestType.put(url, finalData, options)
     .map(this.extractData)
-    .catch(this.handleError);
+    .catch(this.handleError)
+    .retry(10);
   }
   
   deleteTestType(id){
@@ -90,7 +97,8 @@ export class ModifyService {
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.TestType.delete(url, options)
     .map(this.extractData)
-    .catch(this.handleError);
+    .catch(this.handleError)
+    .retry(10);
   }
 
 
@@ -105,7 +113,8 @@ export class ModifyService {
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.Test.post("http://server.hms.com/api/test", TestData, options)
     .map(this.extractData)
-    .catch(this.handleError);
+    .catch(this.handleError)
+    .retry(10);
   }
   getTest(id){
     console.log("This is Id" + id);
@@ -114,7 +123,8 @@ export class ModifyService {
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.Test.get(url, options)
     .map(this.extractData)
-    .catch(this.handleError);
+    .catch(this.handleError)
+    .retry(10);
   }
 
   updateTest(finalData){
@@ -124,7 +134,8 @@ export class ModifyService {
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.Test.put(url, finalData, options)
     .map(this.extractData)
-    .catch(this.handleError);
+    .catch(this.handleError)
+    .retry(10);
   }
   
   deleteTest(id){
@@ -133,7 +144,8 @@ export class ModifyService {
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.Test.delete(url, options)
     .map(this.extractData)
-    .catch(this.handleError);
+    .catch(this.handleError)
+    .retry(10);
   }
 
 
@@ -143,7 +155,8 @@ export class ModifyService {
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.Test.post(url,testDetails,options)
     .map(this.extractData)
-    .catch(this.handleError);
+    .catch(this.handleError)
+    .retry(10);
   }
   getTestDetails(id){
     console.log(id);
@@ -152,7 +165,8 @@ export class ModifyService {
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.Test.get(url,options)
     .map(this.extractData)
-    .catch(this.handleError);    
+    .catch(this.handleError)
+    .retry(10);    
   }
 
   getDoctorList(){
@@ -160,7 +174,8 @@ export class ModifyService {
     let options = new RequestOptions({headers: headers,withCredentials: false});
     return this.department.get("http://server.hms.com/api/doctor", options)
     .map(this.extractData)
-    .catch(this.handleError);    
+    .catch(this.handleError)
+    .retry(10);    
   }
 
   putDoctor(id){
@@ -169,7 +184,8 @@ export class ModifyService {
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.department.post("http://server.hms.com/api/doctor",id, options)
     .map(this.extractData)
-    .catch(this.handleError);     
+    .catch(this.handleError)
+    .retry(10);     
   }
 
 
@@ -179,7 +195,8 @@ export class ModifyService {
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.department.get(url, options)
     .map(this.extractData)
-    .catch(this.handleError);     
+    .catch(this.handleError)
+    .retry(10);
   }
 
 
@@ -192,7 +209,8 @@ export class ModifyService {
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.department.get(url, options)
     .map(this.extractData)
-    .catch(this.handleError);
+    .catch(this.handleError)
+    .retry(10);
   }
 
 

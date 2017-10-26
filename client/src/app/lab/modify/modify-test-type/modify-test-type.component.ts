@@ -124,7 +124,9 @@ export class ModifyTestTypeComponent implements OnInit {
       .subscribe(
         (response)=>{
           this.modefyTestType.reset();
-          jQuery("#TestTypeModal").modal("hide");
+          // jQuery("#TestTypeModal").modal("hide");
+          this.Add = "Add"
+          this.add = true;
           this.responseDatas.splice(0,0,response)
         },
         (error)=>{

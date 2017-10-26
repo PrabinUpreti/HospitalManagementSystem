@@ -22,7 +22,7 @@
 						<div class="form-group col-sm-4 col-lg-4 col-md-4"
 							[ngClass]="{'has-error': patientData.controls.patient_name.invalid && patientData.controls.patient_name.dirty,
 							'has-success': patientData.controls.patient_name.valid && !patientData.controls.patient_name.dirty }">
-							<label for="name" class="col-lg-4 control-label">Patient Name</label>
+							<label for="name" class="col-lg-4 control-label">Patient Name*</label>
 							<div class="col-lg-8">
 								<input [readonly]= "DisableInput" type="text" class="form-control input-sm" id="name" formControlName="patient_name" placeholder="Patient Name">
 							</div>
@@ -33,7 +33,7 @@
 						<div class="form-group col-sm-4 col-lg-4 col-md-4"
 							[ngClass]="{'has-error': patientData.controls.patient_address.invalid && patientData.controls.patient_address.dirty,
 							'has-success': patientData.controls.patient_address.valid && !patientData.controls.patient_address.dirty }">
-							<label for="address" class="col-lg-4 control-label">Patient Address</label>
+							<label for="address" class="col-lg-4 control-label">Patient Address*</label>
 							<div class="col-lg-8">
 								<input type="text" [readonly]= "DisableInput" class="form-control input-sm" id="address" formControlName="patient_address" placeholder="Patient Address">
 							</div>
@@ -44,7 +44,7 @@
 						<div class="form-group col-sm-4 col-lg-4 col-md-4"
 							[ngClass]="{'has-error': patientData.controls.identity_card.invalid && patientData.controls.identity_card.dirty,
 							'has-success': patientData.controls.identity_card.valid && !patientData.controls.identity_card.dirty }">
-							<label for="nationality" class="col-lg-4 control-label">Nationality</label>
+							<label for="nationality" class="col-lg-4 control-label">Nationality*</label>
 							<div class="col-lg-8">
 								<input [readonly]= "DisableInput" type="text" class="form-control input-sm" id="nationality" formControlName="identity_card" placeholder="Nationality">
 							</div>
@@ -54,7 +54,7 @@
 						<div class="form-group col-sm-4 col-lg-4 col-md-4"
 							[ngClass]="{'has-error': patientData.controls.gender.invalid && patientData.controls.gender.touched,
 							'has-success': patientData.controls.gender.valid && !patientData.controls.gender.touched }">
-							<label for="age" class="col-lg-4 control-label">Gender</label>
+							<label for="age" class="col-lg-4 control-label">Gender*</label>
 							<div class="col-lg-8">
 									<select class="form-control" id="age" formControlName="gender" (change)="selectGender($event)">
 									  <option value="" selected="">Select Gender</option>
@@ -67,7 +67,7 @@
 						<div class="form-group col-sm-4 col-lg-4 col-md-4"
 							[ngClass]="{'has-error': patientData.controls.age.invalid && patientData.controls.age.touched,
 							'has-success': patientData.controls.age.valid && !patientData.controls.age.touched }">
-							<label for="age" class="col-lg-4 control-label">Age</label>
+							<label for="age" class="col-lg-4 control-label">Age*</label>
 							<div class="col-lg-8">
 									<input [readonly]= "DisableInput" type="text" [formControl]="agecontrol" pattern="[0-9]+" class="form-control input-sm" id="age" formControlName="age" placeholder="Age">
 									<!-- <select class="form-control" id="age" formControlName="age" (change)="selectAge($event)">
@@ -110,7 +110,7 @@
 						<div class="form-group col-sm-4 col-lg-4 col-md-4"
 							[ngClass]="{'has-error': patientData.controls.marital_status.invalid && patientData.controls.marital_status.touched,
 							'has-success': patientData.controls.marital_status.valid && !patientData.controls.marital_status.touched }">
-							<label for="maritalStatus" class="col-lg-4 control-label">Marital Status</label>
+							<label for="maritalStatus" class="col-lg-4 control-label">Marital Status*</label>
 							<div class="col-lg-8">
 									<select class="form-control" id="maritalStatus"  formControlName="marital_status">
 									  <option value="" selected="">Select One</option>
@@ -124,7 +124,7 @@
 						<div class="form-group col-sm-4 col-lg-4 col-md-4"
 							[ngClass]="{'has-error': patientData.controls.phone.invalid && patientData.controls.phone.dirty,
 							'has-success': patientData.controls.phone.valid && !patientData.controls.phone.dirty }">
-							<label for="phone" class="col-lg-4 control-label">Phone</label>
+							<label for="phone" class="col-lg-4 control-label">Phone*</label>
 							<div class="col-lg-8">
 								<input type="text" pattern="[0-9]+" class="form-control input-sm" id="phone" formControlName="phone" placeholder="Phone">
 							</div>
@@ -146,11 +146,11 @@
 						<div class="form-group col-sm-4 col-lg-4 col-md-4"
 							[ngClass]="{'has-error': patientData.controls.reff_by.invalid && patientData.controls.reff_by.touched,
 							'has-success': patientData.controls.reff_by.valid && !patientData.controls.reff_by.touched }">
-							<label for="reffiredBy" class="col-lg-4 control-label">Reffired By</label>
+							<label for="reffiredBy" class="col-lg-4 control-label">Referred By*</label>
 							<div class="col-lg-8">
 									<select class="form-control" id="reffiredBy"  formControlName="reff_by">
 									  <option value="" selected="">Sellect Reffired Doctor</option>
-									  <option *ngFor = "let reffBy of reffBys; let i = index">Dr.{{reffBy.name}}</option>
+									  <option *ngFor = "let reffBy of reffBys; let i = index">{{reffBy.prefix}}.{{reffBy.name}}</option>
 									</select>
 							</div>
 						</div>

@@ -67,6 +67,9 @@ Route::resource('/transaction','TransactionController');
 Route::get('/transactions/{id}','TransactionController@getDetialsOfPatient');
 Route::resource('/getPatientData','PatientController');
 
+
+Route::post('/getDoctorReportDatas','DoctorListController@getDoctorReportDatas');
+
 //DASHBOARD
 
 Route::get('/dashboard', 'DashboardController@getpatient');

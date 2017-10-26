@@ -31,7 +31,7 @@ login(data: any): Observable<any>{
         let postData={
                 grant_type: "password",
                 client_id: 2,
-                client_secret:"hcDyQGvc9wXO8y8CAuUwZyJJTUKf4n5TBHvNA2nx",
+                client_secret:"YwvPmvAvSxjlhF3fRlq9GjiQnPZAJWEyeNPiP8t1",
                 username: user_email ,
                 password: user_password,
             }

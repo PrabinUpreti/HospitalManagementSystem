@@ -93,7 +93,7 @@ export class ModifyDepComponent implements OnInit {
       .subscribe(
         (response)=>{
           this.modefyDepartment.reset();
-          jQuery("#myModal").modal("hide");
+          // jQuery("#myModal").modal("hide");
           this.add = true;
           this.Add = "Add";
           this.responseDatas.splice(0,0,response);

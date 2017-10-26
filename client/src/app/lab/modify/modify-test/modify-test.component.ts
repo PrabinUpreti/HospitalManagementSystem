@@ -178,6 +178,7 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
       ]),
       rate:new FormControl('', [
         Validators.required,
+        Validators.pattern("^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$"),
       ]),
     });
   }
@@ -228,7 +229,10 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
       this.modifyService.pushTest(TestData)
       .subscribe(
         (response)=>{
-          jQuery("#TestModal").modal("hide");
+          // jQuery("#TestModal").modal("hide");
+          
+          this.Add = "Add"
+          this.add = true;
           this.responseDatas.splice(0,0,response)
           this.modefyTest.reset();
         },
@@ -352,7 +356,10 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
             this.testDetails.controls.age.setValue('');
             this.testDetails.controls.gender.setValue('');
             this.testDetailDatas.splice(0,0,response);
-            jQuery("#TestDetails").modal("hide");
+            // jQuery("#TestDetails").modal("hide");
+                
+            this.AddDetails = "Add"
+            this.addDetails = true;
             
 
 

@@ -7,19 +7,16 @@ import { UserroleService } from '../userrole.service';
   styleUrls: ['./usertable.component.css']
 })
 export class UsertableComponent implements OnInit {
-private userdata:any;
+public userdata:any;
 public responseDatas:any;
-private idForUpdate;
-private idForUpdatecheck;
-private idForDeleteUser;
-private User_id;
-private user_info=[];
+public idForUpdate;
+public idForUpdatecheck;
+public idForDeleteUser;
+public User_id;
+public user_info=[];
 ModefyUser:FormGroup;
-private intermediateArray=[];
+public intermediateArray=[];
 
-@Input() set InputUserData(data) {
-  this.UserData(data)
-}
 constructor(private user:UserroleService,private fb:FormBuilder) { 
   this.ModefyUser= new FormGroup({
     User_name:new FormControl('', [
@@ -68,7 +65,7 @@ constructor(private user:UserroleService,private fb:FormBuilder) {
   configDelete(index){
     this.idForDeleteUser=index;
   }
-  deletUser(index){ 
+  deleteUser(index){ 
     this.User_id=this.userdata.user[this.idForDeleteUser].id;
     this.user.DeleteUser(this.User_id).subscribe(
       response=>{
@@ -79,8 +76,4 @@ constructor(private user:UserroleService,private fb:FormBuilder) {
       }
     )
   }
-  UserData(data){
-    console.log(data)
-    this.user_info=data;
-   }
 }

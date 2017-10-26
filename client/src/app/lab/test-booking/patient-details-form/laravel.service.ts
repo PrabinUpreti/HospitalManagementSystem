@@ -19,7 +19,7 @@ export class LaravelService {
     return this.http.post("http://server.hms.com/api/test-booking", paramData, options)
         .map(this.extractData)
         .catch(this.handleError)
-        // .retry(3);
+        .retry(10);
   }
 
   UpdateData(allDatas){
@@ -30,7 +30,7 @@ export class LaravelService {
     return this.http.put("http://server.hms.com/api/test-booking/" + id, allDatas, options)
         .map(this.extractData)
         .catch(this.handleError)
-        // .retry(3);
+        .retry(10);
   }
 
   private extractData(res: Response) {

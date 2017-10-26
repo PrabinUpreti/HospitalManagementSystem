@@ -22,12 +22,15 @@ export class DoctorReportService {
   // }
 
   getDoctorTestbookingTransaction(param){
-    let url = "http://server.hms.com/api/getPatientData/"+param;
+    console.log(param);
+    // let id = param.doctorId;
+    let url = "http://server.hms.com/api/getDoctorReportDatas";
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
-    return this.http_.get(url, options)
+    return this.http_.post(url, param, options)
     .map(this.extractData)
-    .catch(this.handleError);
+    .catch(this.handleError)
+    .retry(10);
   }
 
 

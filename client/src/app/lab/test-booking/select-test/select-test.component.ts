@@ -21,7 +21,7 @@ class DataTable {
       let sum = 0
       // localStorage.removeItem('sum');
       for(let i in this.dataTable){
-        sum = sum + parseInt(this.dataTable[i].rate)
+        sum = sum + parseFloat(this.dataTable[i].rate)
       }
       localStorage.setItem('sum', String(sum));
       return sum;
@@ -155,11 +155,17 @@ export class SelectTestComponent implements OnInit {
         this.aliveSelectedTable = false;     
         this.Notify = true;
         this.notify = 'This Age is not registered by Administrator.';
+        setTimeout(function () {
+          this.Notify = false;
+        }.bind(this), 3000);
         return 0;
       }
       this.aliveSelectedTable = false;
       this.Notify = true;
       this.notify = 'Please Input Gender and Age in above form.';
+      setTimeout(function () {
+        this.Notify = false;
+      }.bind(this), 3000);
       return 0;
     }
     else{
@@ -207,6 +213,9 @@ export class SelectTestComponent implements OnInit {
                   console.log('Undifined is Success');
                   this.Notify = true;
                   this.notify = 'Please Input Gender and Age in above form.';
+                  setTimeout(function () {
+                    this.Notify = false;
+                  }.bind(this), 3000);
                   data.checkActive = false;
                 
                 }
@@ -215,12 +224,18 @@ export class SelectTestComponent implements OnInit {
                 console.log("Age and Gender Not Found");
                 this.Notify = true;
                 this.notify = "This Age or Gender is not registered by Administrator.";
+                setTimeout(function () {
+                  this.Notify = false;
+                }.bind(this), 3000);
                 data.checkActive = false;
               }
             }
             else{
               this.Notify = true;
               this.notify = 'Sorry There is nothing in Database!';
+              setTimeout(function () {
+                this.Notify = false;
+              }.bind(this), 3000);
               data.checkActive = false;
             }
           },
@@ -253,6 +268,9 @@ export class SelectTestComponent implements OnInit {
     if((this.SelectedGender && this.SelectedAge)){
       this.Notify = true;
       this.notify = "All the selected data are cleared!"
+      setTimeout(function () {
+        this.Notify = false;
+      }.bind(this), 3000);
     }
     for(let x in this.testTables){
       this.testTables[x].checkActive = false;

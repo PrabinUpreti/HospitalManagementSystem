@@ -17,11 +17,15 @@ export class FillReportComponent implements OnInit {
     @Output() patientData = new EventEmitter<any>();
     @Output() transactionData = new EventEmitter<any>();
     patients = [];
-    private submitButtonStatus = true;
-    private alive = false;
+    // public submitButtonStatus = true;
+    public alive = false;
     public UserInformation=[];
     public globalPatient;
-    private status = false;
+    public status = false;
+    public Save = "Save";
+    public save = false;
+    public Notify = false;
+    public notify;
   
 
     constructor(private reportservice: ReportService, private fb: FormBuilder, private route: ActivatedRoute, private router: Router) { }
@@ -35,26 +39,35 @@ export class FillReportComponent implements OnInit {
     });
     ngOnInit() {
     }
-    private responseData = null;
+    public responseData = null;
     addReport() {
         if (this.resultData.valid) {
+            this.Save = "Saving..."
+            this.save=true;
             console.log("Form Submitted");
-            this.submitButtonStatus = false
+            // this.submitButtonStatus = false
             let paramData: any = this.resultData.value;
             this.reportservice.getData(paramData).
                 subscribe(
                 (response) => {
-                    this.responseData = response
-                    console.log(this.responseData)
-                    this.submitButtonStatus = true;
+                    this.Save = "Save";
+                    this.save = false;
+                    console.log(response)
+                    this.notify = response.status;
+                    this.Notify = true;
+                    
+                    setTimeout(function() {
+                        this.Notify = false;
+                    }.bind(this), 3000);
                 },
                 (error) => {
-                  
+                    this.Save = "Save";
+                    this.save = false;
                }
            )
         }
     }
-    private getReportvalue(id) {
+    public getReportvalue(id) {
         let toArray=[];
         this.UserInformation=[];
         for(let i in this.reports)this.reports.removeAt(parseInt(i))
@@ -64,7 +77,7 @@ export class FillReportComponent implements OnInit {
             patients => {
             this.patients = patients
                 this.globalPatient = patients.datas;
-                console.log(this.patients)
+                console.log('I ma PatientData',this.patients)
                 for(let i = 0; i < patients.datas.length; i++){
                        var age_below =patients.datas[i].age_group.match(/below/g);
                           var age_above =patients.datas[i].age_group.match(/above/g);
@@ -92,13 +105,14 @@ export class FillReportComponent implements OnInit {
                  } 
                  console.log(toArray)
                    for(let i = 0; i < toArray.length; i++){          
-                             if(toArray[i][0] < patients.datas[i].age && toArray[i][1] >= patients.datas[i].age){
+                             if(toArray[i][0] <= patients.datas[i].age && toArray[i][1] >= patients.datas[i].age){
                                   if(patients.datas[i].patient_gender === patients.datas[i].gender){
                                           this.UserInformation.push(patients.datas[i]);
+                                          console.log('i ma new data',patients.datas[i])
                                           control.push(this.reportresult(patients.datas[i].result, patients.datas[i].reports_id, patients.datas[i].test_name,patients.datas[i].upper_bound,patients.datas[i].lower_bound,patients.datas[i].unit,patients.datas[i].testbooking_id))
                                          
-                                   }
-                             } 
+                                    }
+                              } 
                   this.patientData.emit(this.UserInformation)
                      } 
               });
@@ -117,10 +131,10 @@ export class FillReportComponent implements OnInit {
     getMethod(){
         console.log('i ma global variable',this.globalPatient)
     for(let i = 0; i < this.globalPatient.length;i++){
-         this.test=this.globalPatient[0].testbooking_id;
+         this.test=this.globalPatient[0].reg_no;
       }
-      let testbooking_id = this.test;
-      this.router.navigate(['lab/view-transaction',testbooking_id]);
+      let reg_no = this.test;
+      this.router.navigate(['lab/testbooking-transaction',reg_no]);
    }
    print(): void{
        console.log('I am In');
@@ -140,5 +154,10 @@ export class FillReportComponent implements OnInit {
           </html>`
        );
        popupWin.document.close();
+   }
+
+   datadismis(){
+    console.log('Hide')
+    this.Notify = false;
    }
 }

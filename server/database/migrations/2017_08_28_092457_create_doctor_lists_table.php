@@ -19,6 +19,12 @@ class CreateDoctorListsTable extends Migration
             $table->string('address');
             $table->string('phone');
             $table->string('registration_no');
+            $table->string('gender');
+            $table->string('day');
+            $table->string('month');
+            $table->string('year');
+            $table->string('prefix');
+            $table->string('commission');
             $table->string('email')->nullable();
             $table->string('department');
             $table->string('created_by')->nullable();

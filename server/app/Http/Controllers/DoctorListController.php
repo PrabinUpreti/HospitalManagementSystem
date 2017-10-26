@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\DoctorList;
 
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+
+use Carbon\Carbon;
+
 class DoctorListController extends Controller
 {
     /**
@@ -48,11 +53,19 @@ class DoctorListController extends Controller
         $year = $request->input('year');
         $phone = $request->input('phone');
         $email = $request->input('email');
+        $prefix = $request->input('prefix');
+        $commission = $request->input('commission');
            $doctor = DoctorList::create([
                 'name' => $name,
                 'address'=>$address,
                 'phone'=>$phone,
                 'registration_no'=>$nationality,
+                'gender'=>$gender,
+                'day'=>$day,
+                'month'=>$month,
+                'year'=>$year,
+                'prefix'=>$prefix,
+                'commission'=>$commission,
                 'email'=>$email,
                 'department'=>$marital_status,
              ]);
@@ -67,9 +80,7 @@ class DoctorListController extends Controller
       */
      public function show($id)
      {
-         return response()->Json([
-             'status'=>'i am inside'
-         ]);
+         //
      }
  
      /**
@@ -114,5 +125,26 @@ class DoctorListController extends Controller
      {
         // Test::find($id)->delete();
         // return($id);
+     }
+
+     public function getDoctorReportDatas(Request $request){
+        $doctorId = $request->input('doctorId');
+        $endDate = $request->input('endDate');
+        $startDate = $request->input('startDate');
+        // $starttime = DateTime::createFromFormat("YYYY-MM-DD", $startDate);
+        // $endtime = DateTime::createFromFormat("YYYY-MM-DD", $endDate);
+        // $setStartDate = $starttime->getTimestamp();
+        // $setEndDate = $endtime->getTimestamp();
+        $setStartDate = Carbon::createFromFormat('Y-m-d', $startDate)->timestamp;
+        $setEndDate = Carbon::createFromFormat("Y-m-d", $endDate)->timestamp;
+
+
+        $result = DB::table('invoices')
+        ->leftJoin('testbookings', 'testbookings.id', '=', 'invoices.testbooking_id')
+        ->whereBetween('invoices.created_at', [$startDate, $endDate])
+        ->where('testbookings.doctor_list_id', '=', $doctorId)
+        ->select('invoices.*')
+        ->get();
+         return $result;
      }
 }

@@ -13,13 +13,13 @@ export class ModifyComponent implements OnInit {
  public showDoctor = false;
  public showPatient = false;
  public active1: boolean = true;
- public active2: boolean = false;
+//  public active2: boolean = false;
  public active3: boolean = false;
  public active4: boolean = false;
  public active5: boolean = false;
  public active6: boolean = false;
- public activeTestType: boolean = false;
- public activeTest: boolean = false;
+//  public activeTestType: boolean = false;
+//  public activeTest: boolean = false;
  public passToTestType;
  public passToTest;
   constructor() { }
@@ -35,12 +35,12 @@ export class ModifyComponent implements OnInit {
     this.showDoctor = false;
     this.showPatient = false;
     this.active1 = true;
-    this.active2 = false;
+    // this.active2 = false;
     this.active3 = false;
     this.active5 = false;
-    this.active6 = false;
-    this.activeTestType = false;
-    this.activeTest = false;
+    this.active4 = false;
+    // this.activeTestType = false;
+    // this.activeTest = false;
   }
 
 //   showTestDetailsFun(){
@@ -65,11 +65,11 @@ showDoctorFun(){
   this.showDoctor = true;
   this.showPatient = false;
   this.active1 = false;
-  this.active2 = false;
+  // this.active2 = false;
   this.active3 = true;
   this.active4 = false;
-  this.activeTestType = false;
-  this.activeTest = false;
+  // this.activeTestType = false;
+  // this.activeTest = false;
 }
 showPatientFun(){
   this.showDepartment = false;
@@ -79,11 +79,11 @@ showPatientFun(){
   this.showDoctor = false;
   this.showPatient = true;
   this.active1 = false;
-  this.active2 = false;
+  // this.active2 = false;
   this.active3 = false;
   this.active4 = true;
-  this.activeTestType = false;
-  this.activeTest = false;
+  // this.activeTestType = false;
+  // this.activeTest = false;
 }
 
 showTestFun(){
@@ -91,11 +91,11 @@ showTestFun(){
   this.showTestType = false;
   this.showTest = true;
   this.active1 = true;
-  this.active2 = false;
+  // this.active2 = false;
   this.active3 = false;
   this.active4 = false;  
-  this.activeTestType = false;
-  this.activeTest = true;
+  // this.activeTestType = false;
+  // this.activeTest = true;
 }
 
   onHideDepartment(id){
@@ -103,11 +103,11 @@ showTestFun(){
     this.showTestType = true;
     this.showTest = false;
     this.active1 = true;
-    this.active2 = false;
+    // this.active2 = false;
     this.active3 = false;
     this.active4 = false;
-    this.activeTestType = true;
-    this.activeTest = false;
+    // this.activeTestType = true;
+    // this.activeTest = false;
     this.passToTestType = id;
   }
   onHideTestType(id){    
@@ -115,11 +115,11 @@ showTestFun(){
     this.showTestType = false;
     this.showTest = true;
     this.active1 = true;
-    this.active2 = false;
+    // this.active2 = false;
     this.active3 = false;
     this.active4 = false;
-    this.activeTestType = false;
-    this.activeTest = true;
+    // this.activeTestType = false;
+    // this.activeTest = true;
     this.passToTest = id;
   }
   onReloadDepartment(id){

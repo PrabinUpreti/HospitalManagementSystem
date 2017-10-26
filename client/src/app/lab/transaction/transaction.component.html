@@ -147,8 +147,9 @@
 
       <div class="row" *ngIf = "drOrCr =='dr'">
         <div class="col-sm-6"></div>
-        <div class="col-sm-2">
-          <input class="form-control" type="text" formControlName = "discountcheck">
+        <div class="col-sm-2"  [ngClass]="{'has-error': transactionData.controls.discountcheck.invalid && transactionData.controls.discountcheck.dirty,
+        'has-success':transactionData.controls.discountcheck.valid && !transactionData.controls.discountcheck.dirty}">
+          <input class="form-control" type="text" formControlName = "discountcheck" maxlength="6">
         </div>
         <div class="col-sm-4"></div>
 
@@ -169,11 +170,12 @@
 
     <div class="form-group">
       <label class="control-label col-sm-6" for="email"> Cash: </label>
-      <div class="col-sm-2">
-        <input class="form-control" type="text" (change)="calculateTotalAmount()"  formControlName = "cash">
+      <div class="col-sm-2" [ngClass]="{'has-error': transactionData.controls.cash.invalid && transactionData.controls.cash.dirty,
+            'has-success':transactionData.controls.cash.valid && !transactionData.controls.cash.dirty}">
+        <input class="form-control" type="text" (change)="calculateTotalAmount()" formControlName="cash" maxlength="6">
         <span>
-          <label *ngIf = UseForCredit class="checkbox-inline">
-            <input type="checkbox" value="" formControlName = "credit">Credit
+          <label *ngIf=UseForCredit class="checkbox-inline">
+            <input type="checkbox" value="" formControlName="credit">Credit
           </label>
         </span>
       </div>
@@ -186,7 +188,7 @@
     <div class="form-group">
       <label class="control-label col-sm-6" for="email"><h3> Returnable Money: </h3></label>
       <div class="col-sm-2">
-        <h3><p class="form-control-static">Rs {{returnableAmt}} /- </p></h3>
+        <h5><p class="form-control-static">Rs {{returnableAmt}} /- </p></h5>
       </div>
       <div class="col-sm-4"></div>
     </div>
@@ -231,7 +233,7 @@
     <div class="form-group">
       <label class="control-label col-sm-6" for="email"></label>
       <div class="col-sm-2">
-        <input class="form-control btn btn-primary" type="submit" value="Pay">
+        <button class="btn btn-primary" type="submit" [disabled]="pay">{{Pay}}</button>
       </div>
       <div class="col-sm-4"></div>
     </div>

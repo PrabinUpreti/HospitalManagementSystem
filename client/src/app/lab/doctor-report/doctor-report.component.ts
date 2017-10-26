@@ -30,6 +30,8 @@ export class DoctorReportComponent implements OnInit {
   public doctorlists;
   public Notify = false;
   public notify;
+  public doctorDatas=[];
+  public showTable = false;
 
   constructor(private formBuilder: FormBuilder,private ModifyService: ModifyService, private DoctorReport: DoctorReportService) { }
 
@@ -79,7 +81,7 @@ export class DoctorReportComponent implements OnInit {
 
 
     doctorInfo(){
-      let param = [];
+      let param={};
       console.log(this.myForm.controls.selecteddoctor.value);
       console.log(this.doctorlists[this.myForm.controls.selecteddoctor.value].id);
       console.log(this.myForm);
@@ -88,11 +90,14 @@ export class DoctorReportComponent implements OnInit {
       param['doctorId'] = this.doctorlists[this.myForm.controls.selecteddoctor.value].id;
       param['startDate'] = dateRange[0];
       param['endDate'] = dateRange[1];
-      console.log(param);
+      // console.log(JSON.stringify(param));
       this.DoctorReport.getDoctorTestbookingTransaction(param)
       .subscribe(
         (response)=>{
-          console.log(response);
+          this.doctorDatas=[];
+          this.doctorDatas = response;
+          console.log(this.doctorDatas);
+          this.showTable = true;
         },
         (error)=>{
           console.log(error);
