@@ -52,7 +52,7 @@ export class ModifyService {
     return this.department.delete(url, options)
     .map(this.extractData)
     .catch(this.handleError)
-    .retry(10);
+    .retry(3);
   }
 
 
@@ -98,7 +98,7 @@ export class ModifyService {
     return this.TestType.delete(url, options)
     .map(this.extractData)
     .catch(this.handleError)
-    .retry(10);
+    .retry(3);
   }
 
 
@@ -145,7 +145,7 @@ export class ModifyService {
     return this.Test.delete(url, options)
     .map(this.extractData)
     .catch(this.handleError)
-    .retry(10);
+    .retry(3);
   }
 
 
@@ -167,6 +167,27 @@ export class ModifyService {
     .map(this.extractData)
     .catch(this.handleError)
     .retry(10);    
+  }
+
+  testDetailsEdit(testDetails){
+    console.log(testDetails)
+    let url = "http://server.hms.com/api/testdetails/"+testDetails.id;
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers,withCredentials: true});
+    return this.Test.put(url,testDetails,options)
+    .map(this.extractData)
+    .catch(this.handleError)
+    .retry(10);    
+  }
+
+  deleteTestDetials(id){
+    let url = "http://server.hms.com/api/testdetails/"+id;
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers,withCredentials: true});
+    return this.TestType.delete(url, options)
+    .map(this.extractData)
+    .catch(this.handleError)
+    .retry(3);
   }
 
   getDoctorList(){
@@ -211,6 +232,61 @@ export class ModifyService {
     .map(this.extractData)
     .catch(this.handleError)
     .retry(10);
+  }
+
+  getAllPatient(){
+    let url = "http://server.hms.com/api/getPatientData";
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers,withCredentials: true});
+    return this.department.get(url, options)
+    .map(this.extractData)
+    .catch(this.handleError)
+    .retry(10);
+  }
+
+  deletePatient(id){
+    let url = "http://server.hms.com/api/getPatientData/"+id;
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers,withCredentials: true});
+    return this.department.delete(url, options)
+    .map(this.extractData)
+    .catch(this.handleError)
+    .retry(10);
+  }
+
+  updatePatient(param){
+    console.log(param)
+    let id = param.id;
+    let url = "http://server.hms.com/api/getPatientData/"+id;
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers,withCredentials: true});
+    return this.department.put(url, param, options)
+    .map(this.extractData)
+    .catch(this.handleError)
+    .retry(10);
+  }
+
+  editDoctor(param){
+    console.log(param)
+    let id = param.editableId;
+    let url = "http://server.hms.com/api/doctor/"+id;
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers,withCredentials: true});
+    return this.department.put(url, param, options)
+    .map(this.extractData)
+    .catch(this.handleError)
+    .retry(10);
+  }
+
+  deleteDoctor(id){
+    console.log(id)
+    let url = "http://server.hms.com/api/doctor/"+id;
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers,withCredentials: true});
+    return this.department.delete(url, options)
+    .map(this.extractData)
+    .catch(this.handleError)
+    .retry(3);    
   }
 
 

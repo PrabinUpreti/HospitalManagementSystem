@@ -594,6 +594,8 @@ export class PatientDetailsFormComponent implements OnInit {
     this.patientData.controls.phone.setValue(this.searchedDatas[id].phone);
 
     console.log(this.patientData.value);
+    this.throwgender.emit(this.searchedDatas[id].gender);
+
 
   }
 

@@ -24,7 +24,7 @@
         ngOnInit(){
          
         }
-        public submitForm(Data:any):void{
+        public submitForm():void{
             var e_username = this.loginForm.controls.email.value;
             var e_password = this.loginForm.controls.password.value;
             let postData = this.loginForm.value;

@@ -12,6 +12,7 @@ export class ModifyTestTypeComponent implements OnInit {
   public ServeId;
   public selectedDepartment;
   @Output() reloadDepartment = new EventEmitter<any>();
+  @Output() backToDepartment = new EventEmitter<any>();
   @Output() hideTestType = new EventEmitter<any>();
   @Input() set processTestType(id){
     this.ServeId = id[0].id;
@@ -21,7 +22,7 @@ export class ModifyTestTypeComponent implements OnInit {
   }
   constructor(private modifyService: ModifyService) { }
 
-  public notify:string;
+  
   public showDeleteBlock:boolean;
   public showFormBlock:boolean;
   public showAddBtn:boolean;
@@ -38,6 +39,8 @@ export class ModifyTestTypeComponent implements OnInit {
   public showTestType =true;
   public title:string ="Add Test Type";
   // public titleAction:string = "Test Type List";
+  public Notify = false;
+  public notify;
   public addBotton = true;
   // public functions = "modefyTestTypes";
   public idForUpdate;
@@ -55,10 +58,14 @@ export class ModifyTestTypeComponent implements OnInit {
     if(this.responseDatas == undefined){
       this.modifyService.getTestType(id) .subscribe(
         (response)=>{
+          console.log(response)
           this.responseDatas = response;
         },
         (error)=>{
             console.log("sorry error in server")
+            this.notify = "sorry error in server !";
+            this.Notify = true;
+            this.notifyDismiss();
         });
       }
 
@@ -128,9 +135,15 @@ export class ModifyTestTypeComponent implements OnInit {
           this.Add = "Add"
           this.add = true;
           this.responseDatas.splice(0,0,response)
+          this.notify = "Successfully Added !";
+          this.Notify = true;
+          this.notifyDismiss();
         },
         (error)=>{
             console.log("sorry error in server")
+            this.notify = "sorry error in server !";
+            this.Notify = true;
+            this.notifyDismiss();
         });
     // this.showTestType=true;
     this.title = "Add TestType";
@@ -140,8 +153,10 @@ export class ModifyTestTypeComponent implements OnInit {
       for(let x in this.modefyTestType.controls ){
         this.modefyTestType.controls[x].markAsTouched();
         this.modefyTestType.controls[x].markAsDirty();
+        this.notify = "Fill form properly !";
+        this.Notify = true;
+        this.notifyDismiss();
       }
-      console.log("Opps Something wrong in client");
     }
   }
 
@@ -177,12 +192,18 @@ export class ModifyTestTypeComponent implements OnInit {
               this.responseDatas[x].name = response.name;
               this.responseDatas[x].description =response.description;
             }
-            jQuery("#TestTypeModal").modal("hide");
+            jQuery("#TestTypeModal").modal("hide");            
+            this.notify = "Successfully Updated !";
+            this.Notify = true;
+            this.notifyDismiss();
           }
           // this.responseDatas.push(response)
         },
         (error)=>{
             console.log("sorry error in server")
+            this.notify = "sorry error in server !";
+            this.Notify = true;
+            this.notifyDismiss();
         }
       )
       this.modefyTestType.reset();
@@ -201,32 +222,38 @@ export class ModifyTestTypeComponent implements OnInit {
       for(let x in this.modefyTestType.controls ){
         this.modefyTestType.controls[x].markAsTouched();
         this.modefyTestType.controls[x].markAsDirty();
+        this.notify = "Fill form properly !";
+        this.Notify = true;
+        this.notifyDismiss();
       }
-      console.log("Opps Something wrong in client");
     }
   }
   configDelete(index){
+    this.idForClientDelete = index;
     this.showAddBtn = false;
-    this.showDeleteBtn = false;
+    this.showDeleteBtn = true;
     this.showUpdateBtn = false;
     this.showFormBlock = false;
     this.showDeleteBlock = true;
     this.title = "Delete Test Type";
-    this.deleteRemark = "Sorry You Cannot Delete this Right Now!"
+    this.deleteRemark = "Are you sure you want to delete "+this.responseDatas[index].name +" ?";
   }
-  deleteTestType(index){
-    this.idForClientDelete = index;
-    this.idForDelete = this.responseDatas[index].id;
+  deleteTestType(){
+    this.idForDelete = this.responseDatas[this.idForClientDelete].id;
 
     this.modifyService.deleteTestType(this.idForDelete)
     .subscribe(
       (response)=>{
-        if(response == this.idForDelete){
           this.responseDatas.splice(this.idForClientDelete,1);
-        }
+          jQuery("#TestTypeModal").modal("hide");
+          this.notify = "Successfully Deleted !";
+          this.Notify = true;
+          this.notifyDismiss();
       },
       (error)=>{
-        console.log("opps some thing wrong in server");
+        this.notify = "sorry You canot Delete "+this.responseDatas[this.idForClientDelete].name;
+        this.Notify = true;
+        this.notifyDismiss();
       }
     )
   }
@@ -241,4 +268,17 @@ export class ModifyTestTypeComponent implements OnInit {
     console.log(packedData);
     this.hideTestType.emit(packedData);
   }
+
+  
+  notifyDismiss(){
+    setTimeout(function () {
+      this.Notify = false;
+    }.bind(this), 3000);  
+  }
+
+  componentBack(){
+    this.backToDepartment.emit(1);
+  }
+
+
 }

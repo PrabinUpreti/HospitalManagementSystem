@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+
 @Component({
   selector: 'app-modify',
   templateUrl: './modify.component.html',
@@ -127,4 +128,30 @@ showTestFun(){
     // this.showTestType = false;
     // this.showTest = false;
   }
+  
+  BackToDepartment(){
+    this.showDepartment = true;
+    this.showTestType = false;
+    this.showTest = false;
+    this.showTestDetails = false;
+    this.showDoctor = false;
+    this.showPatient = false;
+    this.active1 = true;
+    // this.active2 = false;
+    this.active3 = false;
+    this.active5 = false;
+    this.active4 = false;
+    // this.activeTestType = false;
+    // this.activeTest = false;
+  }
+  ShowTestType(){
+    this.showDepartment = false;
+    this.showTestType = true;
+    this.showTest = false;
+    this.active1 = true;
+    // this.active2 = false;
+    this.active3 = false;
+    this.active4 = false;    
+  }
+
 }

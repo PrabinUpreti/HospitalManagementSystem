@@ -25,7 +25,7 @@
           <tbody>
             <tr *ngFor="let doctorData of doctorDatas; let i = index">
               <td class="text-info">{{i+1}}</td>
-              <td class="text-info" style="cursor:pointer">{{doctorData?.prefix}}. {{doctorData?.name}}</td>
+              <td>{{doctorData?.prefix}}. {{doctorData?.name}}</td>
               <td>{{doctorData?.address}}</td>
               <td>{{doctorData?.registration_no}}</td>
               <td>{{doctorData?.gender}}</td>
@@ -35,11 +35,11 @@
               <td>{{doctorData?.commission}} %</td>
               <td>{{doctorData?.email}}</td>
               <td>
-                <button class="btn btn-primary" type="button">
-                  <i class="fa fa-pencil-square-o" aria-hidden="true" data-toggle="modal" (click)="editDepartment(i)" data-target="#myModal"></i>
+                <button (click)="editDoctor(i)" class="btn btn-primary" type="button">
+                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                 </button>
-                <button class="btn btn-danger" type="button" value="Delete">&nbsp;
-                  <i class="fa fa-trash" aria-hidden="true" data-toggle="modal" (click)="configDelete(i)" data-target="#myModal">&nbsp; </i>
+                <button (click)="configDelete(i)" class="btn btn-danger" type="button">
+                  <i class="fa fa-trash" aria-hidden="true"></i>&nbsp;
                 </button>
               </td>
             </tr>
@@ -59,7 +59,7 @@
     <input type="button" class="btn btn-info" (click)="backFromForm()" value="Back">
   </div>
   <div>
-    <legend>Doctor Registration</legend>
+    <legend>{{title}}</legend>
     <form class="form-horizontal" [formGroup]="DoctorForm" (ngSubmit)="DoctorForms()" autocomplete="off">
 
       <div class="row">
@@ -73,7 +73,7 @@
             <div class="col-lg-4 col-sm-4 col-md-4" style="padding:0px;">
               <select class="form-control" formControlName="prefix">
                 <option value="" selected="">Prefix</option>
-                <option *ngFor=" let prefix of prefixes"> {{prefix}}</option>
+                <option *ngFor=" let prefix of prefixes" value="{{prefix}}"> {{prefix}}</option>
               </select>
             </div>
             <div class="col-lg-8 col-sm-8 col-md-8" style="padding:0px;">
@@ -109,7 +109,7 @@
           <div class="col-lg-8">
             <select class="form-control" id="age" formControlName="gender">
               <option value="" selected="">Select Gender</option>
-              <option *ngFor = "let genderInDropdown of genderInDropdowns; let i =index;"> {{genderInDropdown}}</option>
+              <option *ngFor = "let genderInDropdown of genderInDropdowns" value="{{genderInDropdown}}"> {{genderInDropdown}}</option>
             </select>
           </div>
         </div>
@@ -122,7 +122,7 @@
           <div class="col-lg-8">
             <select class="form-control" id="maritalStatus" formControlName="marital_status">
               <option value="" selected="">Select One</option>
-              <option *ngFor = "let mrt of mrts; let i = index" > {{mrt}}</option>
+              <option *ngFor = "let mrt of mrts"  value="{{mrt}}"> {{mrt}}</option>
             </select>
           </div>
         </div>
@@ -136,19 +136,19 @@
             <div class="col-lg-4 col-sm-4 col-md-4" style="padding:0px;">
               <select class="form-control" formControlName="month">
                 <option value="" selected="">Month</option>
-                <option *ngFor=" let month of months"> {{month}}</option>
+                <option *ngFor=" let month of months" value="{{month}}"> {{month}}</option>
               </select>
             </div>
             <div class="col-lg-4 col-sm-4 col-md-4" style="padding:0px;">
               <select class="form-control" formControlName="day">
                 <option value="" selected="" style="padding:0px;">Day</option>
-                <option *ngFor=" let day of days"> {{day}}</option>
+                <option *ngFor=" let day of days" value="{{day}}"> {{day}}</option>
               </select>
             </div>
             <div class="col-lg-4 col-sm-4 col-md-4" style="padding:0px;">
               <select class="form-control" formControlName="year">
                 <option value="" selected="">Year</option>
-                <option *ngFor=" let year of years"> {{year}}</option>
+                <option *ngFor=" let year of years" value="{{year}}"> {{year}}</option>
               </select>
             </div>
           </div>
@@ -208,16 +208,16 @@
 
 
 
-  
-  <div *ngIf = "Notify" class="container">
-      <div class="row" id="error-container">
-           <div class="span12">
-               <div class="alert alert-info">
-                  <!-- <button type="button" class="close" (click) = "datadismis()">×</button> -->
-                   <span>{{notify}}</span>
-               </div>
-             </div>
-          </div>
-      </div>
 
 </section>
+
+<div *ngIf="Notify" class="container">
+  <div class="row" id="error-container">
+    <div class="span12">
+      <div class="alert alert-info">
+        <!-- <button type="button" class="close" (click) = "datadismis()">×</button> -->
+        <span>{{notify}}</span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -11,6 +11,7 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
   public ServeId;
   public selectedTestType;
   @Output() reloadDepartment = new EventEmitter<any>();
+  @Output() backToTestType = new EventEmitter<any>();
   @Input() set processTest(id){
     this.ServeId = id[0].id;
     this.selectedTestType = id[0].name;
@@ -19,7 +20,6 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
   }
   constructor(private modifyService: ModifyService) { }
   
-  public notify:string;
   public showDeleteBlock:boolean;
   public showFormBlock:boolean;
   public showAddBtn:boolean;
@@ -39,6 +39,8 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
   public UpdateDetails:string = "Update"
   public fullTestSection = true;
   public showTestDetails = false;
+  public idForEditTestdetials;
+  public activeRow;
 
   public addTest = false;
   public showTest = true;
@@ -46,6 +48,8 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
   public titleAction:string = "Test List";
   public addBotton = true;
   // public functions = "modefyTestTypes";
+  public Notify = false;
+  public notify;
   public idForUpdate;
   public idForClientUpdate;
   public idForClientDelete;
@@ -59,6 +63,7 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
   public commoncodes = [];
   public tempAgeGroup = [];
   public FormUnits = [];
+  public disableFieldInEditMood = false;
   // public TestTypeLists = [];
 
   public modefyTest: FormGroup;
@@ -73,19 +78,26 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
         (response)=>{
           if(response.length == 0){
             this.notify = "There is no any Data ";
+            this.Notify = true;
+            this.notifyDismiss();
           }
           console.log(response);
           this.responseDatas = response;
         },
         (error)=>{
             console.log("sorry error in server")
+            this.notify = "sorry error in server !";
+            this.Notify = true;
+            this.notifyDismiss();
         });
       }
       // if(this.genderInDropdowns == undefined){
         this.modifyService.commoncodes() .subscribe(
           (response)=>{
-            if(response.length == 0){
-              this.notify = "There is no any Data ";
+            if(response.length == 0){              
+            this.notify = "There is no any Data ";
+            this.Notify = true;
+            this.notifyDismiss();
             }
             console.log(response);
             this.commoncodes = response;
@@ -141,6 +153,9 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
           },
           (error)=>{
               console.log("sorry error in server")
+              this.notify = "sorry error in server !";
+              this.Notify = true;
+              this.notifyDismiss();
           });
         // }
 
@@ -169,9 +184,11 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
       ]),
       lbound:new FormControl('', [
         Validators.required,
+        Validators.pattern("^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$"),
       ]),
       ubound:new FormControl('', [
         Validators.required,
+        Validators.pattern("^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$"),
       ]),
       unit:new FormControl('', [
         Validators.required,
@@ -235,9 +252,15 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
           this.add = true;
           this.responseDatas.splice(0,0,response)
           this.modefyTest.reset();
+          this.notify = "Successfully Added !";
+          this.Notify = true;
+          this.notifyDismiss();
         },
         (error)=>{
             console.log("sorry error in server")
+            this.notify = "sorry error in server !";
+            this.Notify = true;
+            this.notifyDismiss();
         });
     // this.showTest=true;
     // this.title = "Add Test";
@@ -247,8 +270,10 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
       for(let x in this.modefyTest.controls ){
         this.modefyTest.controls[x].markAsTouched();
         this.modefyTest.controls[x].markAsDirty();
+        this.notify = "Fill form properly !";
+        this.Notify = true;
+        this.notifyDismiss();
       }
-      console.log("Opps Something wrong in client");
     }
   }
 
@@ -284,11 +309,17 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
               this.responseDatas[x].description =response.description;
             }
             jQuery("#TestModal").modal("hide");
+            this.notify = "Successfully Updated !";
+            this.Notify = true;
+            this.notifyDismiss();
           }
           // this.responseDatas.push(response)
         },
         (error)=>{
             console.log("sorry error in server")
+            this.notify = "sorry error in server !";
+            this.Notify = true;
+            this.notifyDismiss();
         }
       )
         // this.modefyTest.reset();
@@ -300,94 +331,317 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
       for(let x in this.modefyTest.controls ){
         this.modefyTest.controls[x].markAsTouched();
         this.modefyTest.controls[x].markAsDirty();
+        this.notify = "Fill form properly !";
+        this.Notify = true;
+        this.notifyDismiss();
       }
-      console.log("Opps Something wrong in client");
     }
   }
+
+
+
+
+
+
+
+
+
   configDelete(index){
+    this.idForClientDelete = index;
     this.showAddBtn = false;
-    this.showDeleteBtn = false;
+    this.showDeleteBtn = true;
     this.showUpdateBtn = false;
     this.showFormBlock = false;
     this.showDeleteBlock = true;
     this.title = "Delete Test";
-    this.deleteRemark = "Sorry! You Cannot Delete this item!"
+    this.deleteRemark = "Are you sure you want to delete "+this.responseDatas[index].name+" ?"
   }
-  deleteTest(index){
-    this.idForClientDelete = index;
-    this.idForDelete = this.responseDatas[index].id;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  deleteTest(){
+    this.idForDelete = this.responseDatas[this.idForClientDelete].id;
 
     this.modifyService.deleteTest(this.idForDelete)
     .subscribe(
       (response)=>{
-        if(response == this.idForDelete){
           this.responseDatas.splice(this.idForClientDelete,1);
-        }
+          this.notify = "Successfully Deleted !";
+          this.Notify = true;
+          this.notifyDismiss();
       },
       (error)=>{
-        console.log("opps some thing wrong in server");
+        this.notify = "Sorry you cannot delete "+ this.responseDatas[this.idForClientDelete].name;
+        this.Notify = true;
+        this.notifyDismiss();
       }
     )
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  configDeleteTestDetials(index){
+    let eventCheck = confirm("Are you sure you want to delete ?");
+    if(eventCheck){
+      this.modifyService.deleteTestDetials(this.testDetailDatas[index].id)
+      .subscribe(
+        (response)=>{
+            this.testDetailDatas.splice(index,1);
+            this.notify = "Successfully Deleted !";
+            this.Notify = true;
+            this.notifyDismiss();
+        },
+        (error)=>{
+          this.notify = "Sorry you cannot delete it";
+          this.Notify = true;
+          this.notifyDismiss();
+        }
+      )
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  editTestDetials(index){
+    this.disableFieldInEditMood = true;
+    this.idForEditTestdetials = index;
+    this.addDetails = true;
+    this.AddDetails = "Update";
+    this.showAddDetailsBtn = true;
+    this.testDetails.controls.gender.setValue(this.testDetailDatas[index].gender);
+    this.testDetails.controls.age.setValue(this.testDetailDatas[index].age_group);
+    this.testDetails.controls.lbound.setValue(this.testDetailDatas[index].lower_bound);
+    this.testDetails.controls.ubound.setValue(this.testDetailDatas[index].upper_bound);
+    this.testDetails.controls.rate.setValue(this.testDetailDatas[index].rate);
+    this.testDetails.controls.unit.setValue(this.testDetailDatas[index].unit);
+  }
+
+
+
+
+
+
+
   reload(){
     this.showTestDetails = false;
     this.fullTestSection = true;
     // let packedData = 1;
     // this.reloadDepartment.emit(packedData);
   }
+
+
+
+
+
+
+
   
     configTestDetails(){
+      this.disableFieldInEditMood = false;
       this.addDetails = true;
       this.AddDetails = "Add";
       this.showAddDetailsBtn = true;
+      this.testDetails.reset();
+      this.testDetails.controls.unit.setValue('');
+      this.testDetails.controls.age.setValue('');
+      this.testDetails.controls.gender.setValue('');
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     addTestsDetails(){
       if(this.testDetails.valid){
-        this.AddDetails = "Adding..."
+
+
+
+        if(!this.disableFieldInEditMood){
+          this.AddDetails = "Adding..."
+          this.addDetails = false;
+          let TestDetails = this.testDetails.value;
+          TestDetails['selectedTest']=this.idToSaveTestDetails;
+          console.log(TestDetails);
+          this.modifyService.testDetails(TestDetails)
+          .subscribe(
+
+
+
+            (response)=>{
+              this.testDetails.reset();
+              this.testDetails.controls.unit.setValue('');
+              this.testDetails.controls.age.setValue('');
+              this.testDetails.controls.gender.setValue('');
+              this.testDetailDatas.splice(0,0,response);
+              this.notify = "Successfully Added !";
+              this.Notify = true;
+              this.notifyDismiss();
+              // jQuery("#TestDetails").modal("hide");
+                  
+              this.AddDetails = "Add"
+              this.addDetails = true;
+            },
+
+
+
+
+            (error)=>{
+                console.log("sorry error in server")
+                this.notify = "sorry error in server !";
+                this.Notify = true;
+                this.notifyDismiss();
+            });
+
+
+
+
+        }
+
+
+
+
+        else{
+        this.AddDetails = "Updating..."
         this.addDetails = false;
         let TestDetails = this.testDetails.value;
+        TestDetails['id']=this.testDetailDatas[this.idForEditTestdetials].id;
         TestDetails['selectedTest']=this.idToSaveTestDetails;
         console.log(TestDetails);
-        this.modifyService.testDetails(TestDetails)
+        this.modifyService.testDetailsEdit(TestDetails)
         .subscribe(
+
+
+
           (response)=>{
+            console.log(response)
+            if (response.length > 0) {
             this.testDetails.reset();
             this.testDetails.controls.unit.setValue('');
             this.testDetails.controls.age.setValue('');
             this.testDetails.controls.gender.setValue('');
-            this.testDetailDatas.splice(0,0,response);
-            // jQuery("#TestDetails").modal("hide");
-                
-            this.AddDetails = "Add"
-            this.addDetails = true;
+            // this.testDetailDatas.splice(this.idForEditTestdetials,1,response);
+            this.notify = "Successfully Added !";
+            this.Notify = true;
+            this.notifyDismiss();
+            jQuery("#TestDetails").modal("hide");
+            
             
 
+              for (let x in this.testDetailDatas) {
 
-            // for(let x in this.age_groupInDropdown){
-            //   console.log("this is x = "+x)
-            //   let ageDropdownData = this.age_groupInDropdown[x].age_group;
-            //   let seperateData = this.testDetailDatas[x].age_group;
-            //   if(ageDropdownData == seperateData){
-            //     this.age_groupInDropdown.splice(parseInt(x) , 1);
-            //   }
-            //   console.log("after splicing "+this.age_groupInDropdown[x].age_group)
-            // }
+
+
+                if (this.testDetailDatas[x].id == this.testDetailDatas[this.idForEditTestdetials].id) {
+                  this.testDetailDatas[x].age = response[0].age;
+                  this.testDetailDatas[x].gender = response[0].gender;
+                  this.testDetailDatas[x].lower_bound = response[0].lbound;
+                  this.testDetailDatas[x].upper_bound = response[0].ubound;
+                  this.testDetailDatas[x].unit = response[0].unit;
+                  this.testDetailDatas[x].rate = response[0].rate;
+                  break;
+                }
+
+
+
+              }
+
+
+
+
+              this.Notify = true;
+              this.notify = "SuccessFully Edited";
+              this.notifyDismiss();
+              this.AddDetails = "Add"
+              this.addDetails = true;
+
+
+
+            }          
+
           },
           (error)=>{
               console.log("sorry error in server")
-          });
+              this.notify = "sorry error in server !";
+              this.Notify = true;
+              this.notifyDismiss();
+          });          
+        }
       }
       else{
         console.log("invalid");
         for(let x in this.testDetails.controls ){
           this.testDetails.controls[x].markAsTouched();
           this.testDetails.controls[x].markAsDirty();
+          this.notify = "Fill form properly !";
+          this.Notify = true;
+          this.notifyDismiss();
         }
       }
     }
+
+
+
+
+
+
+
   
   
     testDetailsForm(id){
+      this.activeRow = id;
       this.testDetails.reset();
       this.testDetails.controls.unit.setValue('');
       this.testDetails.controls.age.setValue('');
@@ -403,14 +657,31 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
         this.modifyService.getTestDetails(testDetailsid) .subscribe(
           (response)=>{
             if(response.length == 0){
-              this.notify = "There is no any Data ";
+              this.notify = "There is no any Data !";
+              this.Notify = true;
+              this.notifyDismiss();
             }
             this.testDetailDatas = response;
           },
           (error)=>{
               console.log("sorry error in server")
+              this.notify = "sorry error in server !";
+              this.Notify = true;
+              this.notifyDismiss();
           });
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
     public updateAgeGroup(event){
           let dropDown = []
@@ -459,9 +730,32 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
 
 
 
+    notifyDismiss() {
+      setTimeout(function () {
+        this.Notify = false;
+      }.bind(this), 3000);
+    }
+
+
+
+
+
+
+
 
     ngOnDestroy(){
       this.getTestWatchMan.unsubscribe();
       console.log('get test watchman has been unsubscribed')      
     }
+
+
+
+
+  componentBack(){
+    this.backToTestType.emit(1)
+  }
+
+
+
+
 }

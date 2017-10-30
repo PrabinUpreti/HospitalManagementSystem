@@ -10,3 +10,21 @@
 .modal-footer{
 	padding: 5px 15px;
 }
+
+#error-container {
+	position: fixed;
+	z-index: 999;
+	bottom: 20px;
+	right: 10px;
+	box-shadow: 5px 5px 5px #888888;
+}
+.alert {
+    padding: 15px;
+    margin-bottom: 0px;
+    border: 1px solid transparent;
+	border-radius: 4px;
+}
+span{
+	padding-right: 15px;
+	
+}

@@ -14,7 +14,7 @@
                         </tr>    
                 </thead>
                 <tbody formArrayName="reports" >
-                      <tr *ngFor="let data of resultData.controls.reports.controls; let i = index">
+                      <tr *ngFor="let data of resultData['controls'].reports['controls']; let i = index">
                             <!-- <tr *ngFor="let data of resultData.controls.reports.controls.value; let i = index"> -->
                             <td [formGroupName]="i">
                                 <div class="col-lg-12">
@@ -44,6 +44,7 @@
                       </tr>
                 </tbody>
             </table>
+            <pre>{{resultData.controls.reports.value | json }}</pre>
             <div class="save_buttom">
                  <div class=" col-sm-1 col-lg-1 col-md-1">
                      <button class="btn btn-primary btn-xs btn-block" [disabled] = "save">{{Save}}</button>

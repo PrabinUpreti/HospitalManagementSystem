@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\TestType;
 use App\Department;
 
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+
 class TestTypeController extends Controller
 {
 
@@ -100,8 +103,9 @@ class TestTypeController extends Controller
       */
      public function destroy($id)
      {
-        TestType::find($id)->delete();
-        return($id);
+        return DB::table('test_types')
+        ->where('id','=', $id)
+        ->delete();
      }
 
 }

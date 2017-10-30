@@ -32,6 +32,7 @@ class CreatePatientsTable extends Migration
             $table->string('updated_by')->nullable();
             // $table->string('reff_by');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

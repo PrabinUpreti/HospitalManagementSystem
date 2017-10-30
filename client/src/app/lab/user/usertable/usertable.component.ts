@@ -65,7 +65,7 @@ constructor(private user:UserroleService,private fb:FormBuilder) {
   configDelete(index){
     this.idForDeleteUser=index;
   }
-  deleteUser(index){ 
+  deleteUser(){ 
     this.User_id=this.userdata.user[this.idForDeleteUser].id;
     this.user.DeleteUser(this.User_id).subscribe(
       response=>{

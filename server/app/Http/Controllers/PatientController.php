@@ -18,7 +18,7 @@ class PatientController extends Controller
          */
          public function index()
          {
-            //  echo("hello i am in server");
+             return DB::table('patients')->get();
          }
      
          /**
@@ -93,6 +93,36 @@ class PatientController extends Controller
          public function update(Request $request, $id)
          {
              //
+         $name =   $request->input('name');
+         $address =   $request->input('address');
+         $nationality =   $request->input('nationality');
+         $gender =   $request->input('gender');
+         $age =   $request->input('age');
+         $mrts =   $request->input('marital_status');
+         $phone =   $request->input('phone');
+         $email =   $request->input('email');
+         $response = DB::table('patients')
+         ->where('id','=',$id)
+         ->update([
+             'patient_name'=>$name,
+             'patient_address'=>$address,
+             'nationality'=>$nationality,
+             'gender'=>$gender,
+             'age'=>$age,
+             'marital_status'=>$mrts,
+             'phone'=>$phone,
+             'email'=>$email,
+         ]);
+        return response()->Json(array([
+            'patient_name'=>$name,
+            'patient_address'=>$address,
+            'nationality'=>$nationality,
+            'gender'=>$gender,
+            'age'=>$age,
+            'marital_status'=>$mrts,
+            'phone'=>$phone,
+            'email'=>$email,            
+        ]));
          }
      
          /**

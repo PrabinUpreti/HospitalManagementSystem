@@ -25,9 +25,9 @@
           </thead>
           <tbody>
             <tr *ngFor="let responseData of responseDatas; let i = index">
-              <td class="text-info">{{responseDatas?.length - i}}</td>
+              <td class="text-info">{{i + 1}}</td>
               <td class="text-info" style="cursor:pointer" (click) = "insideDepartment(i)" >{{responseData?.name}}</td>
-              <td>{{responseData?.description}}</td>
+              <td class="text-info" style="cursor:pointer" (click) = "insideDepartment(i)" >{{responseData?.description}}</td>
               <td>
                 <button class="btn btn-primary" type="button"><i class="fa fa-pencil-square-o" aria-hidden="true" data-toggle="modal" (click) = "editDepartment(i)" data-target="#myModal"> Edit</i></button>
                 <button class="btn btn-danger" type="button" value="Delete"><i class="fa fa-trash" aria-hidden="true" data-toggle="modal" (click) = "configDelete(i)" data-target="#myModal"> Delete</i></button>
@@ -132,9 +132,9 @@ Invalid Department Description!
 
             <div class="row">
               <div *ngIf="showDeleteBlock" class="col-sm-10 col-lg-10 col-md-10 col-sm-offset-1">
-                <h3 class="text-danger">
+                <h4 class="text-danger">
                   <p>{{deleteRemark}}</p>
-                </h3>
+                </h4>
               </div>
 
               <div *ngIf="showFormBlock" class="row">
@@ -169,12 +169,24 @@ Invalid Department Description!
           <div class="modal-footer">
             <button *ngIf="showAddBtn" type="submit" class="btn btn-primary" [disabled] = "!add" (click)="addDepartments()">{{Add}}</button>
             <button *ngIf="showUpdateBtn" type="submit" class="btn btn-info" [disabled] = "!update" (click)="updateDepartment()">{{Update}}</button>
-            <button *ngIf="showDeleteBtn" type="button" class="btn btn-danger" data-dismiss="modal" (click)="updateDepartment()">Delete</button>
+            <button *ngIf="showDeleteBtn" type="button" class="btn btn-danger" data-dismiss="modal" (click)="deleteDepartment()">Delete</button>
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           </div>
         </form>
       </div>
 
+    </div>
+  </div>
+
+  
+  <div *ngIf="Notify" class="container">
+    <div class="row" id="error-container">
+      <div class="span12">
+        <div class="alert alert-info">
+          <!-- <button type="button" class="close" (click) = "datadismis()">×</button> -->
+          <span>{{notify}}</span>
+        </div>
+      </div>
     </div>
   </div>
 

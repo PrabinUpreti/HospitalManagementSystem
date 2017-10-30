@@ -12,8 +12,8 @@
     </section>
     <section class="col-lg-10 col-md-10 col-sm-10">
         <app-modify-dep *ngIf="showDepartment" (hideDepartment)="onHideDepartment($event)"></app-modify-dep>
-        <app-modify-test-type *ngIf="showTestType" [processTestType]="passToTestType" (reloadDepartment)="onReloadDepartment($event)"  (hideTestType)="onHideTestType($event)"></app-modify-test-type>
-        <app-modify-test *ngIf="showTest" (reloadDepartment)="onReloadDepartment($event)" [processTest]="passToTest"></app-modify-test>
+        <app-modify-test-type *ngIf="showTestType" [processTestType]="passToTestType" (reloadDepartment)="onReloadDepartment($event)"  (hideTestType)="onHideTestType($event)" (backToDepartment)="showDepartmentFun()"></app-modify-test-type>
+        <app-modify-test *ngIf="showTest" (reloadDepartment)="onReloadDepartment($event)" [processTest]="passToTest"(backToTestType)="ShowTestType()" ></app-modify-test>
         <!-- <app-test-details *ngIf = "showTestDetails"></app-test-details> -->
         <app-doctor *ngIf = "showDoctor"></app-doctor>
         <app-patient *ngIf = "showPatient"></app-patient>

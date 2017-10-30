@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 use App\Department;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+
 class DepartmentController extends Controller
 {
     // public function postDepartment(Request $request){
@@ -119,8 +122,9 @@ class DepartmentController extends Controller
       * @return \Illuminate\Http\Response
       */
      public function destroy($id){
-         Department::find($id)->delete();
-         return($id);
+         return DB::table('departments')
+         ->where('id','=', $id)
+         ->delete();
      }
 
 

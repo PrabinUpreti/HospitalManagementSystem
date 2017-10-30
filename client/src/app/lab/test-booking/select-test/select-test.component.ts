@@ -266,11 +266,11 @@ export class SelectTestComponent implements OnInit {
     this.checkSelected = [];
     localStorage.removeItem('test');
     if((this.SelectedGender && this.SelectedAge)){
-      this.Notify = true;
-      this.notify = "All the selected data are cleared!"
-      setTimeout(function () {
-        this.Notify = false;
-      }.bind(this), 3000);
+      // this.Notify = true;
+      // this.notify = "All the selected data are cleared!"
+      // setTimeout(function () {
+      //   this.Notify = false;
+      // }.bind(this), 3000);
     }
     for(let x in this.testTables){
       this.testTables[x].checkActive = false;

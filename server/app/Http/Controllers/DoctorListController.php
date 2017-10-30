@@ -103,16 +103,48 @@ class DoctorListController extends Controller
       */
      public function update(Request $request, $id)
      {
-    //     $name =   $request->input('TestName');
-    //     $description =   $request->input('TestDescription');
-    //     Test::where('id',$id)->update(array(
-    //        'name' =>  $name,
-    //        'description' =>  $description
-    //        ));
-    //    return response()->json([
-    //        'name' => $name,
-    //        'description' => $description
-    //    ]);
+        $name = $request->input('doctor_name');
+        $address = $request->input('doctor_address');
+        $nationality = $request->input('identity_card');
+        $gender = $request->input('gender');
+        $marital_status = $request->input('marital_status');
+        $month = $request->input('month');
+        $day = $request->input('day');
+        $year = $request->input('year');
+        $phone = $request->input('phone');
+        $email = $request->input('email');
+        $prefix = $request->input('prefix');
+        $commission = $request->input('commission');
+        $updatedatas = DB::table('doctor_lists')
+        ->where('id','=', $id)
+        ->update([
+            'name' => $name,
+            'address'=>$address,
+            'phone'=>$phone,
+            'registration_no'=>$nationality,
+            'gender'=>$gender,
+            'day'=>$day,
+            'month'=>$month,
+            'year'=>$year,
+            'prefix'=>$prefix,
+            'commission'=>$commission,
+            'email'=>$email,
+            'department'=>$marital_status,
+        ]);
+        return response()->Json(array([
+            'name' => $name,
+            'address'=>$address,
+            'phone'=>$phone,
+            'registration_no'=>$nationality,
+            'gender'=>$gender,
+            'day'=>$day,
+            'month'=>$month,
+            'year'=>$year,
+            'prefix'=>$prefix,
+            'commission'=>$commission,
+            'email'=>$email,
+            'department'=>$marital_status,
+        ]));
      }
  
      /**
@@ -123,8 +155,9 @@ class DoctorListController extends Controller
       */
      public function destroy($id)
      {
-        // Test::find($id)->delete();
-        // return($id);
+        return  DB::table('doctor_lists')
+        ->where('id','=', $id)
+        ->delete();
      }
 
      public function getDoctorReportDatas(Request $request){

@@ -24,6 +24,8 @@ export class ModifyDepComponent implements OnInit {
   public Update:string = "Update";
   public title:string ="Add Department";
   // public titleAction:string = "Department List";
+  public Notify = false;
+  public notify;
   public addBotton = true;
   public functions = "modefyDepartments";
   public idForUpdate;
@@ -44,10 +46,13 @@ export class ModifyDepComponent implements OnInit {
     if(this.responseDatas == undefined){
       this.modifyService.getDepartment() .subscribe(
         (response)=>{
+          console.log(response);
           this.responseDatas = response;
         },
         (error)=>{
-            console.log("sorry error in server")
+          this.notify = "sorry error in server !";
+          this.Notify = true;
+          this.notifyDismiss();
         });
       }
     this.modefyDepartment = new FormGroup({
@@ -97,11 +102,17 @@ export class ModifyDepComponent implements OnInit {
           this.add = true;
           this.Add = "Add";
           this.responseDatas.splice(0,0,response);
+          this.notify = "Successfully Added !";
+          this.Notify = true;
+          this.notifyDismiss();
         },
         (error)=>{
             this.add = true;
             this.Add = "Add";
             console.log("sorry error in server")
+            this.notify = "sorry error in server !";
+            this.Notify = true;
+            this.notifyDismiss();
         }
     )
     // this.showDepartment=true;
@@ -112,8 +123,10 @@ export class ModifyDepComponent implements OnInit {
       for(let x in this.modefyDepartment.controls ){
         this.modefyDepartment.controls[x].markAsTouched();
         this.modefyDepartment.controls[x].markAsDirty();
+        this.notify = "Fill Form Properly !";
+        this.Notify = true;
+        this.notifyDismiss();
       }
-      console.log("Opps Something wrong in client");
     }
   }
 
@@ -151,6 +164,9 @@ export class ModifyDepComponent implements OnInit {
           this.update = true;
           this.Update = "Update";
           // this.responseDatas.push(response)
+          this.notify = "Successfully Updated !";
+          this.Notify = true;
+          this.notifyDismiss();
         },
         (error)=>{
             this.update = true;
@@ -173,32 +189,40 @@ export class ModifyDepComponent implements OnInit {
       for(let x in this.modefyDepartment.controls ){
         this.modefyDepartment.controls[x].markAsTouched();
         this.modefyDepartment.controls[x].markAsDirty();
+        this.notify = "Fill Form Properly !";
+        this.Notify = true;
+        this.notifyDismiss();
       }
-      console.log("Opps Something wrong in client");
     }
   }
   configDelete(index){
+    console.log(index);
+    this.idForClientDelete = index;
     this.showAddBtn = false;
     this.showDeleteBtn = true;
     this.showUpdateBtn = false;
     this.showFormBlock = false;
     this.showDeleteBlock = true;
     this.title = "Delete Department";
-    this.deleteRemark = "Sorry You Cannot Delete. Hey Use This Software sincerely. "
+    this.deleteRemark = "Are you Sure You want to delete " +this.responseDatas[index].name+ "?"
   }
-  deleteDepartment(index){
-    this.idForClientDelete = index;
-    this.idForDelete = this.responseDatas[index].id;
+  deleteDepartment(){
+    this.idForDelete = this.responseDatas[this.idForClientDelete].id;
 
     this.modifyService.deleteDepartment(this.idForDelete)
     .subscribe(
       (response)=>{
-        if(response == this.idForDelete){
+          jQuery("#myModal").modal("hide");
           this.responseDatas.splice(this.idForClientDelete,1);
-        }
+          this.notify = "Successfully Deleted !";
+          this.Notify = true;
+          this.notifyDismiss();
       },
       (error)=>{
         console.log("opps some thing wrong in server");
+        this.notify = "sorry You cannot Delete " + this.responseDatas[this.idForClientDelete].name;
+        this.Notify = true;
+        this.notifyDismiss();
       }
     )
   }
@@ -210,6 +234,12 @@ export class ModifyDepComponent implements OnInit {
     packedData.push(id);
     console.log(packedData);
     this.hideDepartment.emit(packedData);
+  }
+
+  notifyDismiss(){
+    setTimeout(function () {
+      this.Notify = false;
+    }.bind(this), 3000);  
   }
 
 }
