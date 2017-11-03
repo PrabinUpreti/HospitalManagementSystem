@@ -55,6 +55,10 @@ export class TransactionComponent implements OnInit, OnDestroy {
   public returnableAmt = 0;
   public totalAmt;
   public idToGetTest;
+  public tempDrOrCr;
+  public discountedAmount;
+  public globleParam;
+  public patientAddress;
   // public tempGlobleVar;
   // public tempCashGlobleVar;
 
@@ -71,6 +75,7 @@ export class TransactionComponent implements OnInit, OnDestroy {
       checkDiscount: new FormControl('0'),
       discountcheck: new FormControl('',Validators.pattern("^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$")),
       credit: new FormControl(''),
+      backedMoney:new FormControl(''),
       // discountPer  : new FormControl('')
     });
 
@@ -170,19 +175,34 @@ export class TransactionComponent implements OnInit, OnDestroy {
   calculateTotalAmount() {
     let discountAmount = (this.transactionData.controls.checkDiscount.value == 0) ? this.transactionData.controls.discountcheck.value : (((this.transactionData.controls.discountcheck.value) / 100) * this.globleSum);
     let checksum = this.globleSum - (Number(this.transactionData.controls.cash.value) + Number(discountAmount));
-    if (this.drOrCr == "cr" || this.drOrCr == null) {
+    this.discountedAmount = discountAmount;
+    if (this.drOrCr == "cr") {
       this.sum = this.globleSum;
+    }
+    else if(!this.drOrCr){
+      this.returnableAmt = -checksum;
     }
     else {
       if (checksum < 0) {
         this.UseForCredit = true;
         this.sum = 0
         this.returnableAmt = -(checksum);
+        this.tempDrOrCr = 'cr'
+        this.totalAmt = -(checksum)
       }
-      else {
+      else if(checksum > 0) {
         this.sum = checksum;
         this.returnableAmt = 0;
         this.UseForCredit = false;
+        this.totalAmt = checksum;
+        this.tempDrOrCr = 'dr'
+      }
+      else{
+        this.sum = checksum;
+        this.returnableAmt = 0;
+        this.UseForCredit = false;
+        this.totalAmt = checksum;
+        this.tempDrOrCr = '';
       }
     }
   }
@@ -368,6 +388,7 @@ export class TransactionComponent implements OnInit, OnDestroy {
     this.patientName = id.patient_name;
     this.patientId = id.reg_no;
     this.registeredDate = id.created_at;
+    this.patientAddress = id.patient_address;
     // for (let i in this.patientDatas) {
     this.transactionservice.getDetialsOfPatients(this.idToGetTest)
       .subscribe(
@@ -376,10 +397,12 @@ export class TransactionComponent implements OnInit, OnDestroy {
         console.log(response.length)
         if (response.length > 0) {
           this.drOrCr = response[response.length - 1].remark
+          this.tempDrOrCr = this.drOrCr;
           this.transactionData.controls.checkDiscount.setValue('0')
           this.registeredDate = response[response.length - 1].created_at;
           this.sum = response[response.length - 1].balance;
           this.globleSum = this.sum;
+          this.totalAmt = this.sum;
           this.returnableAmt = 0;
           // console.log(this.sum)
         }
@@ -430,43 +453,71 @@ export class TransactionComponent implements OnInit, OnDestroy {
     allData['cash'] = 0;
     allData['balance'] = 0;
 
-    if(this.transactionData.controls.cash.value){
-      allData['cash'] = this.transactionData.controls.cash.value;
-    }
-    if(this.returnableAmt > 0 && !(this.transactionData.controls.credit.value)){
-      allData['backedMoney'] = this.returnableAmt;
-    }
-
-    if (this.drOrCr == "cr") {
-      allData['remark'] = "cr";
+    if(this.tempDrOrCr =='cr'){
       if(this.transactionData.controls.cash.value){
-        allData['balance'] = Number(this.transactionData.controls.cash.value) + Number(this.sum);
+        allData['cash'] = this.transactionData.controls.cash.value;
+      }
+      
+      if(this.transactionData.controls.credit.value){
+        allData['remark']="cr"
+        allData['balance'] = this.totalAmt;
+        // param['']
+      }
+      else if(this.transactionData.controls.backedMoney.value){
+        allData['remark']=null;
+        allData['backedMoney'] = this.totalAmt;
+        allData['balance'] =0;
+      }
+      else{
+        this.notify="Select Credit or Return Back !"
+        this.Notify = true;
+        this.notifyDismiss()
+        this.pay = false;
+        this.Pay = "Pay"
+        return 0;
       }
     }
-    else {
-      if (this.transactionData.controls.credit.value) {
-        allData['remark'] = "cr";
-        allData['balance'] = this.returnableAmt;
-      }
-      else {
-        if (this.sum == 0) {
-          allData['remark'] = null;
-        }
-        else {
+    else if(this.tempDrOrCr == 'dr'){
           allData['remark'] = "dr";
           allData['balance'] = this.sum;
           allData['invoiceBalance'] = this.sum;
-        }
-      }
-      if(this.transactionData.controls.discountcheck.value){
-        if(this.transactionData.controls.checkDiscount.value == 0){
-          allData['discountAmt'] = this.transactionData.controls.discountcheck.value;
-        }
-        else{
-          allData['discountPer'] = this.transactionData.controls.discountcheck.value;
-        }
-      }
     }
+    else{
+      allData['remark'] = null;
+    }
+
+    // if (this.drOrCr == "cr") {
+    //   if(this.transactionData.controls.cash.value){
+    //     allData['remark'] = "cr";
+    //     allData['balance'] = Number(this.transactionData.controls.cash.value) + Number(this.sum);
+    //   }
+    // }
+    // else if(this.drOrCr == "dr") {
+    //   if (this.transactionData.controls.credit.value) {
+    //     allData['remark'] = "cr";
+    //     allData['balance'] = this.returnableAmt;
+    //   }
+    //   else {
+    //     if (this.sum == 0) {
+    //       allData['remark'] = null;
+    //     }
+    //     else {
+    //       allData['remark'] = "dr";
+    //       allData['balance'] = this.sum;
+    //       allData['invoiceBalance'] = this.sum;
+    //       allData['balance'] = this.sum;
+    //     }
+    //   }
+    // }
+        if(this.transactionData.controls.discountcheck.value){
+          if(this.transactionData.controls.checkDiscount.value == 0){
+            allData['discountAmt'] = this.transactionData.controls.discountcheck.value;
+          }
+          else{
+            allData['discountPer'] = this.transactionData.controls.discountcheck.value;
+          }
+        }
+        this.globleParam = allData;
     console.log(allData);
     console.log(this.patientDatasDetails)
     this.transactionservice.postInvoices(allData)
@@ -477,7 +528,8 @@ export class TransactionComponent implements OnInit, OnDestroy {
         this.notify="SuccessFully payed !"
         this.Notify = true;
         this.notifyDismiss()
-        this.router.navigate(['/lab/test-booking']);
+        this.testbookingTransaction("testbookingTransaction");
+        this.router.navigate(['/lab/redirecting/'+"fromaddtransaction"]);
       },
       (error)=>{
         console.log(error);
@@ -522,5 +574,40 @@ export class TransactionComponent implements OnInit, OnDestroy {
       this.Notify = false;
     }.bind(this), 3000);  
   }
+
+
+
+  testbookingTransaction(id){
+    var printContent = document.getElementById(id).innerHTML;
+    var restorePage = document.body.innerHTML;
+    
+    var newWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto,menubar=no,titlebar=no,location=no,fullscreen=yes')
+    newWin.document.body.innerHTML = printContent;
+    // newWin.window.print();
+    
+    newWin.document.write(`
+    <html>
+        <head>
+        <style type="text/css">
+        table{
+          border:0px;
+          border-style: dotted;
+          width: 100%;
+        }
+        td{
+          padding: 5px;
+          text-align: left;
+        }
+      </style>
+        </head>
+              <body onload="window.print();window.close()">${printContent}
+        </body>
+    </html>`
+ );
+    newWin.document.close()
+    // document.body.innerHTML = restorePage;
+  }
+
+
 }
 

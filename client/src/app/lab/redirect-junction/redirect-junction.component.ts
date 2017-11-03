@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-redirect-junction',
@@ -8,10 +8,38 @@ import { Router } from '@angular/router';
 })
 export class RedirectJunctionComponent implements OnInit {
 
-  constructor(private router:Router) { }
+  constructor(private router:Router,private route: ActivatedRoute,) { }
+  public routeParameter;
+  public paramId;
 
   ngOnInit() {
+
+    this.routeParameter = this.route.params
+    .subscribe(params => {
+      console.log(params);
+      this.paramId = params['id'];
+      if(this.paramId == 'fromtestbooking'){
+        this.nevigateToTestbooking();
+      }
+      if(this.paramId == 'fromreport'){
+        this.nevigateToReport();
+      }
+      if(this.paramId == 'fromaddtransaction'){
+        this.nevigateToAddTransaction();
+      }
+    });
+
+  }
+
+  nevigateToTestbooking(){
     this.router.navigate(['/lab/test-booking']);
+  }
+  nevigateToReport(){
+    this.router.navigate(['/lab/reports']);
+  }
+  nevigateToAddTransaction(){
+    console.log('look')
+    this.router.navigate(['/lab/add-transaction']);
   }
 
 }

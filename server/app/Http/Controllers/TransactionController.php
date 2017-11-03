@@ -62,7 +62,6 @@ class TransactionController extends Controller
             'discount_amount'=>$discountAmount,
             'discount_percentage'=>$discountPer,
             'remark'=>$invoiceremark,
-            'backed_money'=>$backedMoney
         ]);
         $invoiceId = $storedInInvoice->id;
 
@@ -72,6 +71,7 @@ class TransactionController extends Controller
             'particular'=>$particuler,
             'dr'=>$dR,
             'cr'=>$cR,
+            'backed_money'=>$backedMoney,
             'balance'=>$balance,
             'remark'=>$remark,
         ]);

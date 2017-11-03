@@ -71,7 +71,7 @@
           <label for="name" class="col-lg-4 control-label"> Name*</label>
           <div class="col-lg-8">
             <div class="col-lg-4 col-sm-4 col-md-4" style="padding:0px;">
-              <select class="form-control" formControlName="prefix">
+              <select style="font-size:9px;" class="form-control" formControlName="prefix">
                 <option value="" selected="">Prefix</option>
                 <option *ngFor=" let prefix of prefixes" value="{{prefix}}"> {{prefix}}</option>
               </select>
@@ -134,19 +134,19 @@
           <label for="" class="col-lg-4 control-label">DOB*</label>
           <div class="col-lg-8">
             <div class="col-lg-4 col-sm-4 col-md-4" style="padding:0px;">
-              <select class="form-control" formControlName="month">
+              <select style="font-size:9px;" class="form-control" formControlName="month">
                 <option value="" selected="">Month</option>
                 <option *ngFor=" let month of months" value="{{month}}"> {{month}}</option>
               </select>
             </div>
             <div class="col-lg-4 col-sm-4 col-md-4" style="padding:0px;">
-              <select class="form-control" formControlName="day">
+              <select style="font-size:9px;" class="form-control" formControlName="day">
                 <option value="" selected="" style="padding:0px;">Day</option>
                 <option *ngFor=" let day of days" value="{{day}}"> {{day}}</option>
               </select>
             </div>
             <div class="col-lg-4 col-sm-4 col-md-4" style="padding:0px;">
-              <select class="form-control" formControlName="year">
+              <select style="font-size:9px;" class="form-control" formControlName="year">
                 <option value="" selected="">Year</option>
                 <option *ngFor=" let year of years" value="{{year}}"> {{year}}</option>
               </select>

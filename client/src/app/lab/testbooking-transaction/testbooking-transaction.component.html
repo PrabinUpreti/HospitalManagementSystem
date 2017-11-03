@@ -2,7 +2,7 @@
   <div class="row" id="error-container">
     <div class="span12">
       <div class="alert alert-danger">
-        <button type="button" class="close" (click)="datadismis()">×</button>
+        <!-- <button type="button" class="close" (click)="datadismis()">×</button> -->
         <span>{{notify}}</span>
       </div>
     </div>
@@ -92,7 +92,7 @@
   <div class="form-group">
       <label class="control-label col-sm-6" for="email"> Sub Total Amount: </label>
       <div class="col-sm-6">
-        <p class="form-control-static">Rs {{sum}} /- &nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-eye" aria-hidden="true"></i></p>
+        <p class="form-control-static">Rs {{sum}} /- &nbsp;&nbsp;&nbsp;&nbsp; <i style="cursor:pointer;" (click)="showTestList()" class="fa fa-eye" aria-hidden="true"></i></p>
       </div>
     </div>
 
@@ -102,6 +102,13 @@
     <label class="control-label col-sm-6" for="email"> Previous Amount: </label>
     <div class="col-sm-6">
       <p class="form-control-static" [ngClass] = "{'text-danger': drOrCr == 'dr','text-success':drOrCr == 'cr'}">Rs {{previousAmount}} /- {{drOrCr | uppercase}}</p>
+    </div>
+  </div>
+
+  <div *ngIf="ShowDiscount" class="form-group">
+    <label class="control-label col-sm-6" for="email"> Discount Amount: </label>
+    <div class="col-sm-6">
+      <p class="form-control-static">Rs {{discountedAmount?discountedAmount: 0}} /-</p>
     </div>
   </div>
 
@@ -120,7 +127,7 @@
 
 
 
-    <div class="form-group">
+    <div *ngIf="ShowDiscount" class="form-group">
 
       
       <div class="row">
@@ -152,7 +159,12 @@
     <div class="form-group">
         <label class="control-label col-sm-6" for="email"> Total Amount: </label>
         <div class="col-sm-6">
-          <p class="form-control-static">Rs {{totalAmt}} /-</p>
+          <p class="form-control-static"  [ngClass] = "{'text-danger': drCrInTotal == 'dr','text-success':drCrInTotal == 'cr'}">
+            Rs {{totalAmt}} /- {{drCrInTotal | uppercase}} &nbsp;&nbsp;&nbsp;&nbsp;
+            <label *ngIf="!transactionData.controls.credit.value && drCrInTotal == 'cr'"  class="checkbox-inline">
+                  <input type="checkbox" name="backedMoney"  (change)="calculateTotalAmount()" formControlName = "backedMoney" value="1"/>Return Back
+            </label>
+          </p>
         </div>
       </div>
 
@@ -164,14 +176,14 @@
       <div class="col-sm-2" [ngClass]="{'has-error': transactionData.controls.cash.invalid && transactionData.controls.cash.dirty,
       'has-success':transactionData.controls.cash.valid && !transactionData.controls.cash.dirty}">
         <input class="form-control" type="text" formControlName = "cash" maxlength="6">
-        <span>
+        <!-- <span>
           <label *ngIf = !CheckBoxdisabled class="checkbox-inline">
             <input type="checkbox" value="" formControlName = "payOld">pay Previous
           </label>
-        </span>
+        </span> -->
         <span>
-          <label *ngIf = UseForCredit class="checkbox-inline">
-            <input type="checkbox" value="" formControlName = "credit">Credit
+          <label *ngIf = "UseForCredit" class="checkbox-inline">
+            <input (click)="transactionData.controls.backedMoney.setValue(0)" type="checkbox" value="" formControlName = "credit">Credit
           </label>
         </span>
       </div>
@@ -181,13 +193,13 @@
 
 
 
-    <div class="form-group">
+    <!-- <div class="form-group">
       <label class="control-label col-sm-6" for="email"><h3> Returnable Money: </h3></label>
       <div class="col-sm-2">
         <h3><p class="form-control-static">Rs {{returnableAmt}} /- </p></h3>
       </div>
       <div class="col-sm-4"></div>
-    </div>
+    </div> -->
 
     <!-- <div class="form-group">
       <label class="control-label col-sm-6" for="email"> Cash[Previous Amount]: </label>
@@ -238,52 +250,55 @@
   </form>
 </div>
 
-<!-- 
-<div *ngIf = "activePayment">
-<div class="form-group">
-    <label class="control-label col-sm-6" for="email"> Patient ID: </label>
-    <div class="col-sm-6">
-      <p class="form-control-static">{{patientId}}</p>
-    </div>
-  </div>
+<!-- <div id="testbookingTransaction" class="cont" -->
 
-  <div class="form-group">
-    <label class="control-label col-sm-6" for="email"> Date: </label>
-    <div class="col-sm-6">
-      <p class="form-control-static">{{registeredDate}}</p>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="control-label col-sm-6" for="email"> Name: </label>
-    <div class="col-sm-6">
-      <p class="form-control-static">{{patientName}}</p>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="control-label col-sm-6" for="email"> Current Amount: </label>
-    <div class="col-sm-6">
-      <p class="form-control-static">Rs {{ currentAmt }} /-</p>
-    </div>
-  </div>
-
-  
-  <div class="form-group">
-    <label class="control-label col-sm-6" for="email"> Previous Amount: </label>
-    <div class="col-sm-6">
-      <p class="form-control-static">Rs {{previousAmount}} /-</p>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="control-label col-sm-6" for="email"> Total Amount: </label>
-    <div class="col-sm-6">
-      <p class="form-control-static">Rs {{sum}} /-</p>
-    </div>
-  </div>
-</div> -->
-
-
-
-<!-- <pre>{{ patientDatas | json }}</pre> -->
+    <div  id = "testbookingTransaction" style="padding: 0px; display: none;">
+        <div style="font-size: 15px; padding: 50px;">
+          <div style="font-size: 30px; text-align: center">Hetauda Hospital</div>
+          <div style="text-align: center">Hetauda,Makwanpur</div>
+          <div style="float: right">Date: {{registeredDate}}</div>
+          <div style="float: left">Patient Name: {{patientName}}</div><br>
+          <div style="float: left">Patient Address: {{patientAddress}}</div>
+        </div><hr>
+        <div style="padding: 10px;">
+          <table *ngIf="globleParam">
+            <tr>
+              <td>Sub Total Amount</td>
+              <!-- <td>===> </td> -->
+              <td>Rs {{globleSum}} /-</td>
+            </tr>
+            <tr>
+              <td>Previous Amount</td>
+              <!-- <td></td> -->
+              <td>Rs {{globlepreviousAmount}} /- {{drOrCr | uppercase}}</td>
+            </tr>
+            <tr>
+              <td>Discount Amount</td>
+              <td>Rs {{globleParam.DiscountAmount}} /-</td>
+            </tr>
+            <tr>
+              <td>Discount Percentage</td>
+              <td>{{globleParam.DiscountPer}} %</td>
+            </tr>
+            <tr>
+              <td>Total Amount</td>
+              <!-- <td>===> </td> -->
+              <td>Rs {{totalAmt}} /-</td>
+            </tr>
+            <tr>
+              <td>Cash</td>
+              <!-- <td>===> </td> -->
+              <td>Rs {{globleParam.cash}} /-</td>
+            </tr>
+            <tr>
+              <td>Balance</td>
+              <td>{{globleParam.pl_balance}} {{globleParam.invoiceRemark | uppercase}}/-</td>
+            </tr>
+            <tr>
+              <td>Returned Amount</td>
+              <!-- <td>===> </td> -->
+              <td>Rs {{globleParam.MoneyBack}} /-</td>
+            </tr>
+          </table>
+        </div>
+      </div>

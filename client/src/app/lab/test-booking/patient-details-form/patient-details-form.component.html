@@ -5,7 +5,6 @@
 					<div class="row" id="error-container">
 							 <div class="span12">  
 									 <div class="alert alert-danger">
-											<button type="button" class="close" (click) = "datadismis()">×</button>
 											 <span>{{notify}}</span>
 									 </div>
 								 </div>
@@ -146,7 +145,7 @@
 						<div class="form-group col-sm-4 col-lg-4 col-md-4"
 							[ngClass]="{'has-error': patientData.controls.reff_by.invalid && patientData.controls.reff_by.touched,
 							'has-success': patientData.controls.reff_by.valid && !patientData.controls.reff_by.touched }">
-							<label for="reffiredBy" class="col-lg-4 control-label">Referred By*</label>
+							<label for="reffiredBy" class="col-lg-4 control-label">Reffired By*</label>
 							<div class="col-lg-8">
 									<select class="form-control" id="reffiredBy"  formControlName="reff_by">
 									  <option value="" selected="">Sellect Reffired Doctor</option>

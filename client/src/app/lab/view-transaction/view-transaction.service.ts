@@ -17,10 +17,34 @@ export class ViewTransactionService {
       .map(this.extractData)
       .catch(this.handleError);
   }
+
+  getpatientFromDate(param){
+    console.log(param)
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers, withCredentials: true });
+    return this.http.post("http://server.hms.com/api/view-transaction", param, options)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
   getPatientInvoiceFromServer(id){
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers, withCredentials: true });
-    return this.http.get("http://server.hms.com/api/view-transaction/"+id, options)
+    return this.http.get("http://server.hms.com/api/view-transactionInv/"+id, options)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+  getPatientLedgerFromServer(id){
+  let headers = new Headers({ 'Content-Type': 'application/json' });
+  let options = new RequestOptions({ headers: headers, withCredentials: true });
+  return this.http.get("http://server.hms.com/api/view-transactionPl/"+id, options)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
+  getAllPatientLedgerFromServer(id){
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers, withCredentials: true });
+    return this.http.get("http://server.hms.com/api/view-transactionAllPl/"+id, options)
       .map(this.extractData)
       .catch(this.handleError);
   }

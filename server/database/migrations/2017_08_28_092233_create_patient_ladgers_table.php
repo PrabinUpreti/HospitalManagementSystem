@@ -21,6 +21,7 @@ class CreatePatientLadgersTable extends Migration
             $table->string('dr');
             $table->string('cr');
             $table->string('balance');
+            $table->string('backed_money')->default(0);
             $table->string('remark')->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();

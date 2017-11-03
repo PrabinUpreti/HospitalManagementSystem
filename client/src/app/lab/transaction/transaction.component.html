@@ -109,21 +109,21 @@
       <div class="col-sm-6">
         <p class="form-control-static">Rs {{ currentAmt }} /-</p>
       </div>
-    </div>
+    </div>-->
 
  
 
-  <div class="form-group">
-    <label class="control-label col-sm-6" for="email"> Previous Amount: </label>
-    <div class="col-sm-6">
-      <p class="form-control-static">Rs {{previousAmount}} /-</p>
-    </div>
-  </div> -->
-
-  <div class="form-group">
-      <label class="control-label col-sm-6" for="email"> Total Amount: </label>
+    <div class="form-group">
+      <label class="control-label col-sm-6" for="email"> Your Amount: </label>
       <div class="col-sm-6">
-        <p class="form-control-static" [ngClass] = "{'text-success':drOrCr == 'cr', 'text-danger':drOrCr == 'dr'}">Rs {{sum}} /-  {{drOrCr | uppercase}}</p>
+        <p class="form-control-static" [ngClass] = "{'text-success':drOrCr == 'cr', 'text-danger':drOrCr == 'dr'}">Rs {{globleSum}} /-  {{drOrCr | uppercase}}</p>
+      </div>
+    </div>
+
+  <div *ngIf = "drOrCr =='dr'" class="form-group">
+      <label class="control-label col-sm-6" for="email"> Discount Amount: </label>
+      <div class="col-sm-6">
+        <p class="form-control-static">Rs {{discountedAmount?discountedAmount:0}} /-</p>
       </div>
     </div>
 
@@ -165,6 +165,17 @@
         </div>
       </div> -->
 
+      <div class="form-group">
+          <label class="control-label col-sm-6" for="email"> Total Amount: </label>
+          <div class="col-sm-6">
+            <p class="form-control-static" [ngClass] = "{'text-success':tempDrOrCr == 'cr', 'text-danger':tempDrOrCr == 'dr'}">Rs {{totalAmt}} /-  {{tempDrOrCr | uppercase}}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <label *ngIf="!transactionData.controls.credit.value && tempDrOrCr == 'cr'" class="checkbox-inline">
+                  <input type="checkbox" name="backedMoney" (change)="calculateTotalAmount()" formControlName="backedMoney" value="1" />Return Back
+                </label></p>
+          </div>
+        </div>
+
 
 
 
@@ -175,7 +186,7 @@
         <input class="form-control" type="text" (change)="calculateTotalAmount()" formControlName="cash" maxlength="6">
         <span>
           <label *ngIf=UseForCredit class="checkbox-inline">
-            <input type="checkbox" value="" formControlName="credit">Credit
+            <input (click)="transactionData.controls.backedMoney.setValue(0)" type="checkbox" value="" formControlName="credit">Credit
           </label>
         </span>
       </div>
@@ -183,15 +194,18 @@
     </div>
 
 
+   
 
 
-    <div class="form-group">
+
+
+    <!-- <div class="form-group">
       <label class="control-label col-sm-6" for="email"><h3> Returnable Money: </h3></label>
       <div class="col-sm-2">
         <h5><p class="form-control-static">Rs {{returnableAmt}} /- </p></h5>
       </div>
       <div class="col-sm-4"></div>
-    </div>
+    </div> -->
 
     <!-- <div class="form-group">
       <label class="control-label col-sm-6" for="email"> Cash[Previous Amount]: </label>
@@ -287,3 +301,48 @@
 
 
 <!-- <pre>{{ patientDatas | json }}</pre> -->
+
+
+
+<div  id = "testbookingTransaction" style="padding: 0px; display: none;">
+    <div style="font-size: 15px; padding: 50px;">
+      <div style="font-size: 30px; text-align: center">Hetauda Hospital</div>
+      <div style="text-align: center">Hetauda,Makwanpur</div>
+      <div style="float: right">Date: {{registeredDate}}</div>
+      <div style="float: left">Patient Name: {{patientName}}</div><br>
+      <div style="float: left">Patient Address: {{patientAddress}}</div>
+    </div><hr>
+    <div style="padding: 10px;">
+      <table *ngIf="globleParam">
+        <tr>
+          <td>Your Amount</td>
+          <td>Rs {{globleSum}} /-</td>
+        </tr>
+        <tr>
+          <td>Discount Amount</td>
+          <td>Rs {{globleParam.discountAmt}} /-</td>
+        </tr>
+        <tr>
+          <td>Discount Percentage</td>
+          <td>{{globleParam.discountPer}} %</td>
+        </tr>
+        <tr>
+          <td>Total Amount</td>
+          <td>Rs {{totalAmt}} /-</td>
+        </tr>
+        <tr>
+          <td>Cash</td>
+          <!-- <td>===> </td> -->
+          <td>Rs {{globleParam.cash}} /-</td>
+        </tr>
+        <tr>
+          <td>Balance</td>
+          <td>Rs {{globleParam.balance}} {{globleParam.remark | uppercase}}/-</td>
+        </tr>
+        <tr>
+          <td>Returned Amount</td>
+          <td>Rs {{globleParam.backedMoney}} /-</td>
+        </tr>
+      </table>
+    </div>
+  </div>

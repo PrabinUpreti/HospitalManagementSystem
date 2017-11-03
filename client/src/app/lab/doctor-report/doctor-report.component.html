@@ -4,7 +4,7 @@
       <form class="form-horizontal" [formGroup]="myForm" novalidate (ngSubmit) = "doctorInfo()">
 
         <div class="form-group">
-          <label class="control-label col-sm-6" for="email"> Select Age Range: </label>
+          <label class="control-label col-sm-6" for="email"> Select Date Range: </label>
           <div class="col-sm-6">
             <my-date-range-picker style="padding:0px; border-radius:0px; border:0px;" class="form-control" name="mydaterange" [options]="myDateRangePickerOptions"
               formControlName="myDateRange"></my-date-range-picker>
@@ -31,6 +31,7 @@
       </form>
     </div>
   </div>
+  <h1 *ngIf = "commission" class="pull-right">Commission :- &nbsp;&nbsp;&nbsp; <span>Rs {{commission}} /-</span></h1>
 
   <div *ngIf="showTable" style="margin-bottom:10px;" class="pull-right col-sm-12">
     <!-- <input  style="margin-top: 50px auto;" type="button" class="btn btn-primary center-block" (click)="back()" value="Home"> -->
@@ -41,11 +42,11 @@
             <th>S.N</th>
             <!-- <th>Invoice Id</th> -->
             <th>Particular</th>
-            <th>Cash</th>
             <th>Balance</th>
-            <th>Discount</th>
+            <th>Date</th>
+            <!-- <th>Discount</th>
             <th>Discount %</th>
-            <th>Remark</th>
+            <th>Remark</th> -->
           </tr>
         </thead>
         <tbody>
@@ -53,12 +54,12 @@
             <td class="text-info">{{i+1}}</td>
             <!-- <td>{{doctorData.invoice_id}}</td> -->
             <td>{{doctorData.particular}}</td>
-            <td>Rs {{doctorData.cash}} /-</td>
-            <td>Rs {{doctorData.balance}} /-</td>
-            <td>Rs {{doctorData.discount_amount}} /-</td>
+            <td>Rs {{doctorData.dr}} /-</td>
+            <td>{{doctorData.created_at}}</td>
+            <!-- <td>Rs {{doctorData.discount_amount}} /-</td>
             <td>Rs {{doctorData.discount_percentage}} /-</td>
             <td>Rs {{doctorData.balance}} /-</td>
-            <td>{{doctorData.remark ? doctorData.remark : 'Null'}}</td>
+            <td>{{doctorData.remark ? doctorData.remark : 'Null'}}</td> -->
           </tr>
         </tbody>
       </table>

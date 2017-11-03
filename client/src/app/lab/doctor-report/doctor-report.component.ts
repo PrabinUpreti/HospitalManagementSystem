@@ -17,8 +17,8 @@ export class DoctorReportComponent implements OnInit {
     firstDayOfWeek:'su',
     sunHighlight:false,
     disableHeaderButtons:false,
-    selectorHeight:'500px',
-    selectorWidth:'500px',
+    // selectorHeight:'500px',
+    // selectorWidth:'500px',
     height:'34px',
     width:'auto',
     // selectorWidth:'100%',
@@ -32,6 +32,7 @@ export class DoctorReportComponent implements OnInit {
   public notify;
   public doctorDatas=[];
   public showTable = false;
+  public commission = 0;
 
   constructor(private formBuilder: FormBuilder,private ModifyService: ModifyService, private DoctorReport: DoctorReportService) { }
 
@@ -81,28 +82,38 @@ export class DoctorReportComponent implements OnInit {
 
 
     doctorInfo(){
+      let tempcommission = 0;
+      this.commission = 0;
       let param={};
-      console.log(this.myForm.controls.selecteddoctor.value);
-      console.log(this.doctorlists[this.myForm.controls.selecteddoctor.value].id);
-      console.log(this.myForm);
-      console.log(this.myForm.controls.myDateRange.value.formatted);
-      let dateRange = this.myForm.controls.myDateRange.value.formatted.split(' - ');
-      param['doctorId'] = this.doctorlists[this.myForm.controls.selecteddoctor.value].id;
-      param['startDate'] = dateRange[0];
-      param['endDate'] = dateRange[1];
-      // console.log(JSON.stringify(param));
-      this.DoctorReport.getDoctorTestbookingTransaction(param)
-      .subscribe(
-        (response)=>{
-          this.doctorDatas=[];
-          this.doctorDatas = response;
-          console.log(this.doctorDatas);
-          this.showTable = true;
-        },
-        (error)=>{
-          console.log(error);
-        }
-      );
+      if(this.myForm.controls.myDateRange.value && this.myForm.controls.selecteddoctor.value){
+        let dateRange = this.myForm.controls.myDateRange.value.formatted.split(' - ');
+        param['doctorId'] = this.doctorlists[this.myForm.controls.selecteddoctor.value].id;
+        param['startDate'] = dateRange[0];
+        param['endDate'] = dateRange[1];
+        // console.log(JSON.stringify(param));
+        this.DoctorReport.getDoctorTestbookingTransaction(param)
+        .subscribe(
+          (response)=>{
+            this.doctorDatas=[];
+            this.doctorDatas = response;
+            console.log(this.doctorDatas);
+            this.showTable = true;
+            for(let x in response){
+              tempcommission += Number(response[x].dr);
+            }
+            let totcommission = ((response[0].commission)/100)*tempcommission;
+            this.commission = totcommission;
+          },
+          (error)=>{
+            console.log(error);
+          }
+        );
+      }
+      else{
+        this.showTable = false;
+        this.Notify = true;
+        this.notify = "invalid"
+      }
     }
 
 

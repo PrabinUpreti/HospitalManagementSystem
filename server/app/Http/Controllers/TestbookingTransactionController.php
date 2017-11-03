@@ -42,30 +42,34 @@ class TestbookingTransactionController extends Controller
         $cR = $request->input('cash');
         $balance = $request->input('pl_balance');
         $remark = $request->input('invoiceRemark');
-        // $particuler = $request->input('');
-        // $total = $request->input('');
+        $invParticuler = $request->input('inv_particular');
+        $plParticuler = $request->input('pl_particular');
         $BackedMoney = $request->input('MoneyBack');
-
-        $storedInInvoice = Invoice::create([
-            'testbooking_id'=>$testbooking,
-            'particular'=>"INV-BOOKED-TR-AMT",
+        $storedInInvoice = $request->input('updateInvoiceId');
+        // return $BackedMoney;
+        
+        DB::table('invoices')
+            ->where('id', '=', $storedInInvoice)
+            ->update([
+            // 'testbooking_id'=>$testbooking,
+            'particular'=>$invParticuler,
             'cash'=>$cash,
             'balance'=>$invoiceBalance,
             'discount_amount'=>$discountAmount,
             'discount_percentage'=>$discountPer,
             'remark'=>$invoiceremark,
             // 'total'=>$total,
-            'backed_money'=>$BackedMoney
         ]);
 
-        $invoiceId = $storedInInvoice->id;
+        // $invoiceId = $storedInInvoice->id;
 
         $storedInPatientLadger = PatientLadger::create([
             'patient_id'=>$patientId,
-            'invoice_id'=>$invoiceId,
-            'particular'=>"PL-BOOKED-TR-AMT",
+            'invoice_id'=>$storedInInvoice,
+            'particular'=>$plParticuler,
             'dr'=>$dR,
             'cr'=>$cR,
+            'backed_money'=>$BackedMoney,
             'balance'=>$balance,
             'remark'=>$remark,
         ]);

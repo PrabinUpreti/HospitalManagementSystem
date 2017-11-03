@@ -25,5 +25,10 @@ class Access_menu_Controller extends Controller{
          ->get();
          return response()->json(['menubar'=> $menubar]);
       }
+
+      public function EditMenu(Request $request){
+        $menusList=$request->all();
+        return response()->json(['menusList'=> $menusList]);
+ }
   }
 

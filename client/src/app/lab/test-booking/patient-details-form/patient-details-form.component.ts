@@ -612,7 +612,7 @@ export class PatientDetailsFormComponent implements OnInit {
     jQuery("#myModal").modal("hide");
   }
   refreshAndRedirect(){
-    this.router.navigate(['/lab/redirecting']);
+    this.router.navigate(['/lab/redirecting/'+"fromtestbooking"]);
   }
 
 }

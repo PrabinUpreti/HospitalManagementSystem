@@ -1,5 +1,19 @@
 <section *ngIf="showTable" class="col-lg-12" style="vertical-align:center;">
   <div>
+
+    <form class="form-horizontal" [formGroup]="myForm" (ngSubmit)="getPatientByDate()">
+    
+      <div class="form-group">
+        <!-- <label class="control-label col-sm-6" for="email"></label> -->
+        <div class="col-sm-1">
+          <my-date-range-picker style="padding:0px; border-radius:0px; border:0px;" class="form-control" name="mydaterange" [options]="myDateRangePickerOptions"
+            placeholder="Search By Date" formControlName="myDateRange"></my-date-range-picker>
+          <button class="btn btn-info" type="submit">Search</button>
+        </div>
+      </div>
+    </form>
+
+
     <legend>Patient List</legend>
     <div class="table-responsive" style="overflow:auto;height:100vh;">
       <form>
@@ -13,7 +27,7 @@
               <th> Gender </th>
               <th> Age </th>
               <th> Nationality </th>
-              <th> Phone </th>              
+              <th> Phone </th>
               <th> M.S </th>
               <th> E-mail </th>
               <th> Date </th>
@@ -23,7 +37,7 @@
           <tbody>
             <tr *ngFor="let responseData of responseDatas; let i = index">
               <td class="text-info">{{i+1}}</td>
-              <td (click) = "insideDepartment(i)" >{{responseData?.patient_name}}</td>
+              <td (click)="insideDepartment(i)">{{responseData?.patient_name}}</td>
               <td>{{responseData?.reg_no}}</td>
               <td>{{responseData?.patient_address}}</td>
               <td>{{responseData?.gender}}</td>
@@ -34,7 +48,9 @@
               <td>{{responseData?.email}}</td>
               <td>{{responseData?.created_at}}</td>
               <td>
-                <button (click) = "editPatient(i)" class="btn btn-primary" type="button"><i style="font-size:12px;" class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                <button (click)="editPatient(i)" class="btn btn-primary" type="button">
+                  <i style="font-size:12px;" class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                </button>
                 <!-- <button class="btn btn-danger" type="button" value="Delete"><i style="font-size:12px;" class="fa fa-trash" aria-hidden="true" data-toggle="modal" (click) = "configDelete(i)" data-target="#myModal"></i></button> -->
               </td>
             </tr>
@@ -47,96 +63,96 @@
 
 <section *ngIf="!showTable" class="col-lg-12" style="vertical-align:center;">
   <div>
-      <legend>Edit Patient</legend>
+    <legend>Edit Patient</legend>
     <form class="form-horizontal" [formGroup]="patientGroup" (ngSubmit)="updatePatient()" autocomplete="off">
-        <div class="row">
-          <div class="form-group col-sm-6 col-md-6 col-lg-6" [ngClass]="{'has-error': patientGroup.controls.name.invalid && patientGroup.controls.name.dirty,'has-success': patientGroup.controls.name.valid && !patientGroup.controls.name.dirty }">
-            <label for="gender" class="col-sm-4 col-lg-4 col-md-4 control-label">Name* </label>
-            <div class="col-sm-8 col-lg-8 col-md-8">
-              <input type="text" class="form-control" formControlName = "name" placeholder="Patient Name">
-            </div>
+      <div class="row">
+        <div class="form-group col-sm-6 col-md-6 col-lg-6" [ngClass]="{'has-error': patientGroup.controls.name.invalid && patientGroup.controls.name.dirty,'has-success': patientGroup.controls.name.valid && !patientGroup.controls.name.dirty }">
+          <label for="gender" class="col-sm-4 col-lg-4 col-md-4 control-label">Name* </label>
+          <div class="col-sm-8 col-lg-8 col-md-8">
+            <input type="text" class="form-control" formControlName="name" placeholder="Patient Name">
           </div>
-
-          <div class="form-group col-sm-6 col-md-6 col-lg-6" [ngClass]="{'has-error': patientGroup.controls.address.invalid && patientGroup.controls.address.dirty,'has-success': patientGroup.controls.address.valid && !patientGroup.controls.address.dirty }">
-            <label for="address" class="col-sm-4 col-lg-4 col-md-4 control-label">Address* </label>
-            <div class="col-sm-8 col-lg-8 col-md-8">
-              <input type="text" class="form-control" formControlName = "address" placeholder="Patient Address">
-            </div>
-          </div>
-
-
-          <div class="form-group col-sm-6 col-md-6 col-lg-6" [ngClass]="{'has-error': patientGroup.controls.nationality.invalid && patientGroup.controls.nationality.dirty,'has-success': patientGroup.controls.nationality.valid && !patientGroup.controls.nationality.dirty }">
-            <label for="nationality" class="col-sm-4 col-lg-4 col-md-4 control-label">Nationality* </label>
-            <div class="col-sm-8 col-lg-8 col-md-8">
-              <input type="text" class="form-control" id="nationality" placeholder="Nationality" formControlName="nationality">
-            </div>
-          </div>
-
-
-          <div class="form-group col-sm-6 col-md-6 col-lg-6" [ngClass]="{'has-error': patientGroup.controls.gender.invalid && patientGroup.controls.gender.touched,'has-success': patientGroup.controls.gender.valid && !patientGroup.controls.gender.touched }">
-            <label for="gender" class="col-sm-4 col-lg-4 col-md-4 control-label">Gender* </label>
-            <div class="col-sm-8 col-lg-8 col-md-8">
-                <select class="form-control" id="gender" formControlName="gender">
-                  <option value="" selected> Select Gender</option>
-                  <option *ngFor="let genderindrop of genderindrops" value="{{genderindrop}}">{{genderindrop}}</option>
-                </select>
-            </div>
-          </div>
-
-
-          <div class="form-group col-sm-6 col-md-6 col-lg-6" [ngClass]="{'has-error': patientGroup.controls.age.invalid && patientGroup.controls.age.dirty,'has-success': patientGroup.controls.age.valid && !patientGroup.controls.age.dirty }">
-            <label for="age" class="col-sm-4 col-lg-4 col-md-4 control-label">Age* </label>
-            <div class="col-sm-8 col-lg-8 col-md-8">
-              <input autocomplete="off" type="text" class="form-control" id="age" placeholder="Age" formControlName="age">
-            </div>
-          </div>
-
-
-          <div class="form-group col-sm-6 col-md-6 col-lg-6" [ngClass]="{'has-error': patientGroup.controls.marital_status.invalid && patientGroup.controls.marital_status.touched,'has-success': patientGroup.controls.marital_status.valid && !patientGroup.controls.marital_status.touched }">
-            <label for="marital_status" class="col-sm-4 col-lg-4 col-md-4 control-label">Marital Status* </label>
-            <div class="col-sm-8 col-lg-8 col-md-8">
-              <select class="form-control" id="marital_status" formControlName="marital_status">
-                <option value="" selected> Marital Status</option>
-                <option *ngFor="let mrt of mrts" value="{{mrt}}">{{mrt}}</option>
-              </select>
-            </div>
-          </div>
-
-          
-          <div class="form-group col-sm-6 col-md-6 col-lg-6" [ngClass]="{'has-error': patientGroup.controls.phone.invalid && patientGroup.controls.phone.dirty,'has-success': patientGroup.controls.phone.valid && !patientGroup.controls.phone.dirty }">
-              <label for="phone" class="col-sm-4 col-lg-4 col-md-4 control-label">Phone* </label>
-              <div class="col-sm-8 col-lg-8 col-md-8">
-                <input type="text" pattern="[0-9]+"class="form-control" formControlName = "phone" placeholder="Phone">
-              </div>
-            </div>
-  
-            
-            <div class="form-group col-sm-6 col-md-6 col-lg-6" [ngClass]="{'has-error': patientGroup.controls.email.invalid && patientGroup.controls.email.dirty,'has-success': patientGroup.controls.email.valid && !patientGroup.controls.email.dirty }">
-              <label for="email" class="col-sm-4 col-lg-4 col-md-4 control-label">E-mail </label>
-              <div class="col-sm-8 col-lg-8 col-md-8">
-                <input type="text" class="form-control" id="email" placeholder="email" formControlName="email">
-              </div>
-            </div>
-
-            <div class="col-sm-2 col-md-2 col-lg-2 col-sm-offset-5 col-md-offset-5 col-lg-offset-5">
-              <input type="button" class="btn btn-default" (click)="showTable = true" value="Cancel">
-              <input class="btn btn-primary" type="submit" [disabled]="update" value="{{Update}}">
-            </div>
-
         </div>
+
+        <div class="form-group col-sm-6 col-md-6 col-lg-6" [ngClass]="{'has-error': patientGroup.controls.address.invalid && patientGroup.controls.address.dirty,'has-success': patientGroup.controls.address.valid && !patientGroup.controls.address.dirty }">
+          <label for="address" class="col-sm-4 col-lg-4 col-md-4 control-label">Address* </label>
+          <div class="col-sm-8 col-lg-8 col-md-8">
+            <input type="text" class="form-control" formControlName="address" placeholder="Patient Address">
+          </div>
+        </div>
+
+
+        <div class="form-group col-sm-6 col-md-6 col-lg-6" [ngClass]="{'has-error': patientGroup.controls.nationality.invalid && patientGroup.controls.nationality.dirty,'has-success': patientGroup.controls.nationality.valid && !patientGroup.controls.nationality.dirty }">
+          <label for="nationality" class="col-sm-4 col-lg-4 col-md-4 control-label">Nationality* </label>
+          <div class="col-sm-8 col-lg-8 col-md-8">
+            <input type="text" class="form-control" id="nationality" placeholder="Nationality" formControlName="nationality">
+          </div>
+        </div>
+
+
+        <div class="form-group col-sm-6 col-md-6 col-lg-6" [ngClass]="{'has-error': patientGroup.controls.gender.invalid && patientGroup.controls.gender.touched,'has-success': patientGroup.controls.gender.valid && !patientGroup.controls.gender.touched }">
+          <label for="gender" class="col-sm-4 col-lg-4 col-md-4 control-label">Gender* </label>
+          <div class="col-sm-8 col-lg-8 col-md-8">
+            <select class="form-control" id="gender" formControlName="gender">
+              <option value="" selected> Select Gender</option>
+              <option *ngFor="let genderindrop of genderindrops" value="{{genderindrop}}">{{genderindrop}}</option>
+            </select>
+          </div>
+        </div>
+
+
+        <div class="form-group col-sm-6 col-md-6 col-lg-6" [ngClass]="{'has-error': patientGroup.controls.age.invalid && patientGroup.controls.age.dirty,'has-success': patientGroup.controls.age.valid && !patientGroup.controls.age.dirty }">
+          <label for="age" class="col-sm-4 col-lg-4 col-md-4 control-label">Age* </label>
+          <div class="col-sm-8 col-lg-8 col-md-8">
+            <input autocomplete="off" type="text" class="form-control" id="age" placeholder="Age" formControlName="age">
+          </div>
+        </div>
+
+
+        <div class="form-group col-sm-6 col-md-6 col-lg-6" [ngClass]="{'has-error': patientGroup.controls.marital_status.invalid && patientGroup.controls.marital_status.touched,'has-success': patientGroup.controls.marital_status.valid && !patientGroup.controls.marital_status.touched }">
+          <label for="marital_status" class="col-sm-4 col-lg-4 col-md-4 control-label">Marital Status* </label>
+          <div class="col-sm-8 col-lg-8 col-md-8">
+            <select class="form-control" id="marital_status" formControlName="marital_status">
+              <option value="" selected> Marital Status</option>
+              <option *ngFor="let mrt of mrts" value="{{mrt}}">{{mrt}}</option>
+            </select>
+          </div>
+        </div>
+
+
+        <div class="form-group col-sm-6 col-md-6 col-lg-6" [ngClass]="{'has-error': patientGroup.controls.phone.invalid && patientGroup.controls.phone.dirty,'has-success': patientGroup.controls.phone.valid && !patientGroup.controls.phone.dirty }">
+          <label for="phone" class="col-sm-4 col-lg-4 col-md-4 control-label">Phone* </label>
+          <div class="col-sm-8 col-lg-8 col-md-8">
+            <input type="text" pattern="[0-9]+" class="form-control" formControlName="phone" placeholder="Phone">
+          </div>
+        </div>
+
+
+        <div class="form-group col-sm-6 col-md-6 col-lg-6" [ngClass]="{'has-error': patientGroup.controls.email.invalid && patientGroup.controls.email.dirty,'has-success': patientGroup.controls.email.valid && !patientGroup.controls.email.dirty }">
+          <label for="email" class="col-sm-4 col-lg-4 col-md-4 control-label">E-mail </label>
+          <div class="col-sm-8 col-lg-8 col-md-8">
+            <input type="text" class="form-control" id="email" placeholder="email" formControlName="email">
+          </div>
+        </div>
+
+        <div class="col-sm-2 col-md-2 col-lg-2 col-sm-offset-5 col-md-offset-5 col-lg-offset-5">
+          <input type="button" class="btn btn-default" (click)="showTable = true" value="Cancel">
+          <input class="btn btn-primary" type="submit" [disabled]="update" value="{{Update}}">
+        </div>
+
+      </div>
 
     </form>
   </div>
 </section>
 
 
-  <div *ngIf="Notify" class="container">
-    <div class="row" id="error-container">
-      <div class="span12">
-        <div class="alert alert-info">
-          <!-- <button type="button" class="close" (click) = "datadismis()">×</button> -->
-          <span>{{notify}}</span>
-        </div>
+<div *ngIf="Notify" class="container">
+  <div class="row" id="error-container">
+    <div class="span12">
+      <div class="alert alert-info">
+        <!-- <button type="button" class="close" (click) = "datadismis()">×</button> -->
+        <span>{{notify}}</span>
       </div>
     </div>
   </div>
+</div>

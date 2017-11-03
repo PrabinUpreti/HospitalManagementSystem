@@ -164,6 +164,7 @@ class DoctorListController extends Controller
         $doctorId = $request->input('doctorId');
         $endDate = $request->input('endDate');
         $startDate = $request->input('startDate');
+        // return var_dump($startDate);
         // $starttime = DateTime::createFromFormat("YYYY-MM-DD", $startDate);
         // $endtime = DateTime::createFromFormat("YYYY-MM-DD", $endDate);
         // $setStartDate = $starttime->getTimestamp();
@@ -174,9 +175,11 @@ class DoctorListController extends Controller
 
         $result = DB::table('invoices')
         ->leftJoin('testbookings', 'testbookings.id', '=', 'invoices.testbooking_id')
+        ->leftJoin('patient_ladgers', 'patient_ladgers.invoice_id','=','invoices.id')
+        ->leftJoin('doctor_lists', 'doctor_lists.id','=', 'testbookings.doctor_list_id')
         ->whereBetween('invoices.created_at', [$startDate, $endDate])
         ->where('testbookings.doctor_list_id', '=', $doctorId)
-        ->select('invoices.*')
+        ->select('patient_ladgers.*','doctor_lists.*')
         ->get();
          return $result;
      }

@@ -244,6 +244,16 @@ export class ModifyService {
     .retry(10);
   }
 
+  getpatientFromDate(param){
+    let url = "http://server.hms.com/api/getpatientFromDate";
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers,withCredentials: true});
+    return this.department.post(url, param, options)
+    .map(this.extractData)
+    .catch(this.handleError)
+    .retry(10);
+  }
+
   deletePatient(id){
     let url = "http://server.hms.com/api/getPatientData/"+id;
     let headers = new Headers({'Content-Type': 'application/json'});

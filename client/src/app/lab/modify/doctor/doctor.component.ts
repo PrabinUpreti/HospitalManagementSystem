@@ -194,9 +194,18 @@ export class DoctorComponent implements OnInit {
 
   }
   configAddDoctor(){
+    this.DoctorForm.reset();
+    this.DoctorForm.controls.prefix.setValue('')    
+    this.DoctorForm.controls.gender.setValue('')
+    this.DoctorForm.controls.marital_status.setValue('')
+    this.DoctorForm.controls.month.setValue('')
+    this.DoctorForm.controls.day.setValue('')
+    this.DoctorForm.controls.year.setValue('')
     this.showList = false;
     this.showForm = true;
     this.title = "Doctor Registration";
+    this.submit = false;
+    this.Submit = "Submit"
   }
   backFromForm(){
     this.showForm = false;
@@ -227,6 +236,7 @@ export class DoctorComponent implements OnInit {
             this.backFromForm()
             this.Notify = true;
             this.notify = "SuccessFully Submited";
+            this.DoctorForm.reset();
             this.notifyDismiss();
             this.submit = false;
             this.Submit = "Submit";

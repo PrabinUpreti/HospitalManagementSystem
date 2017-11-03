@@ -1,9 +1,26 @@
 <div class="container">
-  <div style="margin-bottom:10px; margin-top:5px;" class="container col-sm-12">
+  
+  <button *ngIf="!activepatienttable" style="margin-top: 5px auto;" type="button" class="btn btn-primary" (click)="back()"><i class="fa fa-home"  style="font-size:30px;"aria-hidden="true"></i></button>
+  
+  <form class="form-horizontal" [formGroup]="myForm" (ngSubmit)="getPatientByDate()">
+
+      <div class="form-group">
+          <!-- <label class="control-label col-sm-6" for="email"></label> -->
+          <div class="col-sm-1">
+              <my-date-range-picker *ngIf="activepatienttable" style="padding:0px; border-radius:0px; border:0px;" class="form-control" name="mydaterange" [options]="myDateRangePickerOptions" placeholder="Search By Date" formControlName="myDateRange"></my-date-range-picker>
+              <button  *ngIf="activepatienttable" class="btn btn-info" type="submit">Search</button>
+          </div>
+        </div>
+
+        
+    <span></span>
+  </form>
+  <div *ngIf = "!activepatienttable" style="margin-bottom:0px; margin-top:5px;" class="container col-sm-12">
     <div class="container">
         <ul class="nav nav-tabs">
-            <li style="cursor:pointer" [ngClass] = "{'active': !activePayment}" (click)="activeInvoice(0)"><a>Invoices</a></li>
-            <li style="cursor:pointer" [ngClass] = "{'active': activePayment}" (click)="activeInvoice(1)"><a>Patient Ledgers</a></li>
+            <li *ngIf = "activePayment && !patientAllLedgersChk" style="cursor:pointer" [ngClass] = "{'active': !activePayment}" (click)="activeInvoice(0)"><a>Invoices</a></li>
+            <li *ngIf = "activePayment &&  !patientAllLedgersChk" [ngClass] = "{'active': activePayment}"><a>Detail Ledgers</a></li>
+            <li *ngIf = "activePayment && patientAllLedgersChk" [ngClass] = "{'active': activePayment}"><a>Patient Ledgers</a></li>
             <li class="pull-right"><a>{{patientName}}</a></li>
         </ul>
     </div>
@@ -21,9 +38,9 @@
     </form>
   </div> -->
 
-  <div *ngIf = "!activePayment && activepatienttable" style="margin-bottom:10px;" class="pull-right col-sm-12">
-    <caption class="col-sm-12" ><h4 style="text-align:center;"><b>PATIENT INVOICES</b></h4></caption>
-    <!-- <div style=" height:80vh; overflow:auto;" > -->
+  <div *ngIf = "!activePayment && activepatienttable" class="pull-right col-sm-12">
+    <caption class="col-sm-12" ><h4 style="text-align:center; margin:0px;"><b>PATIENT LIST</b></h4></caption>
+    <!-- <div style=" height:80vh;" > -->
       <table class="table table-responsive table-hover table-striped">
         <thead>
           <tr>
@@ -32,24 +49,28 @@
             <th>Address</th>
             <th>Phone</th>
             <th>Date</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let patientList of patientLists; let i = index">
-            <td style="cursor:pointer" class="text-info">{{i+1}}</td>
-            <td style="cursor:pointer" class="text-info" (click) = "patientName = patientList.patient_name" (click)="getPatientInvoice(patientList.id)">{{patientList.patient_name}}</td>
-            <td style="cursor:pointer" class="text-info" (click) = "patientName = patientList.patient_name" (click)="getPatientInvoice(patientList.id)">{{patientList.patient_address}}</td>
-            <td style="cursor:pointer" class="text-info" (click) = "patientName = patientList.patient_name" (click)="getPatientInvoice(patientList.id)">{{patientList.phone}}</td>
-            <td style="cursor:pointer" class="text-info" (click) = "patientName = patientList.patient_name" (click)="getPatientInvoice(patientList.id)">{{patientList.created_at}}</td>
+            <td >{{i+1}}</td>
+            <td >{{patientList.patient_name}}</td>
+            <td >{{patientList.patient_address}}</td>
+            <td >{{patientList.phone}}</td>
+            <td >{{patientList.created_at}}</td>
+            <td>
+              <button class="btn btn-success" (click) = "patientName = patientList.patient_name" (click)="getPatientInvoice(patientList.id)"><i class="fa fa-eye" aria-hidden="true">&nbsp; Invoice</i></button>
+              <button class="btn btn-info"(click) = "patientName = patientList.patient_name" (click)="getAllPatientLedger(patientList.id)"><i class="fa fa-eye" aria-hidden="true">&nbsp; Ledger</i></button>
+            </td>
           </tr>
         </tbody>
       </table>
     <!-- </div> -->
   </div>
 
-  <div *ngIf = "activePayment && activepatienttable" style="margin-bottom:10px;" class="pull-right col-sm-12">
+  <!-- <div *ngIf = "activePayment && activepatienttable" style="margin-bottom:10px;" class="pull-right col-sm-12">
     <caption class="col-sm-12"><h4 style="text-align:center;"><b>PATIENT LADGERS</b></h4></caption>
-    <!-- <div  style=" height:80vh; overflow:auto;" > -->
       <table class="table table-responsive table-hover table-striped">
         <thead>
           <tr>
@@ -70,11 +91,9 @@
           </tr>
         </tbody>
       </table>
-    <!-- </div> -->
-  </div>
+  </div> -->
 
   <div *ngIf = "!activePayment && !activepatienttable" style="margin-bottom:10px;" class="pull-right col-sm-12">
-    <button style="margin-top: 5px auto;" type="button" class="btn btn-primary" (click)="back()"><i class="fa fa-home"  style="font-size:30px;"aria-hidden="true"></i></button>
     <div  style=" height:80vh; overflow:auto;">
       <table class="table table-responsive table-hover table-striped">
         <thead>
@@ -90,23 +109,23 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let patientLadgerAndInvoice of patientLadgerAndInvoices; let i = index">
-            <td class="text-info">{{i+1}}</td>
-            <td>{{patientLadgerAndInvoice.invoices_id}}</td>
-            <td>{{patientLadgerAndInvoice.invoices_particular}}</td>
-            <td>Rs {{patientLadgerAndInvoice.cash}} /-</td>
-            <td>Rs {{patientLadgerAndInvoice.invoices_balance}} /-</td>
-            <td>Rs {{patientLadgerAndInvoice.discount_amount}} /-</td>
-            <td>{{patientLadgerAndInvoice.discount_percentage}} %</td>
-            <td>{{patientLadgerAndInvoice.invoices_remark ? patientLadgerAndInvoice.invoices_remark : 'Null'}}</td>
+          <tr *ngFor="let patientInvoice of patientInvoices; let i = index">
+            <td class="text-info" style="cursor:pointer;" (click)="getLedger(i)">{{i+1}}</td>
+            <td class="text-info" style="cursor:pointer;" (click)="getLedger(i)">{{patientInvoice.id}}</td>
+            <td class="text-info" style="cursor:pointer;" (click)="getLedger(i)">{{patientInvoice.particular}}</td>
+            <td class="text-info" style="cursor:pointer;" (click)="getLedger(i)">Rs {{patientInvoice.cash}} /-</td>
+            <td class="text-info" style="cursor:pointer;" (click)="getLedger(i)">Rs {{patientInvoice.balance}} /-</td>
+            <td class="text-info" style="cursor:pointer;" (click)="getLedger(i)">Rs {{patientInvoice.discount_amount}} /-</td>
+            <td class="text-info" style="cursor:pointer;" (click)="getLedger(i)">{{patientInvoice.discount_percentage}} %</td>
+            <td class="text-info" style="cursor:pointer;" (click)="getLedger(i)">{{patientInvoice.remark ? patientInvoice.remark : 'Null'}}</td>
           </tr>
         </tbody>
       </table>
   </div>
   </div>
 
-  <div *ngIf = "activePayment && !activepatienttable" style="margin-bottom:10px;" class="pull-right col-sm-12">
-    <button style="margin-top: 5px auto;" type="button" class="btn btn-primary" (click)="back()"><i class="fa fa-home"  style="font-size:30px;"aria-hidden="true"></i></button>
+  <div *ngIf = "activePayment && !activepatienttable && !patientAllLedgersChk" style="margin-bottom:10px;" class="pull-right col-sm-12">
+    <!-- <button style="margin-top: 5px auto;" type="button" class="btn btn-primary" (click)="back()"><i class="fa fa-home"  style="font-size:30px;"aria-hidden="true"></i></button> -->
     <div  style=" height:80vh; overflow:auto;" >
       <table class="table table-responsive table-hover table-striped">
         <thead>
@@ -122,15 +141,47 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let patientLadgerAndInvoice of patientLadgerAndInvoices; let i = index">
+          <tr *ngFor="let patientLedger of patientLedgers; let i = index">
             <td class="text-info">{{i+1}}</td>
-            <td>{{patientLadgerAndInvoice.invoice_id}}</td>
-            <td>{{patientLadgerAndInvoice.particular}}</td>
-            <td>Rs {{patientLadgerAndInvoice.dr}} /-</td>
-            <td>Rs {{patientLadgerAndInvoice.cr}} /-</td>
-            <td>Rs {{patientLadgerAndInvoice.backed_money ? patientLadgerAndInvoice.backed_money : 0 }} /-</td>
-            <td>Rs {{patientLadgerAndInvoice.balance}} /-</td>
-            <td>{{patientLadgerAndInvoice.remark ? patientLadgerAndInvoice.remark : 'Null'}}</td>
+            <td>{{patientLedger.invoice_id}}</td>
+            <td>{{patientLedger.particular}}</td>
+            <td>Rs {{patientLedger.dr}} /-</td>
+            <td>Rs {{patientLedger.cr}} /-</td>
+            <td>Rs {{patientLedger.backed_money ? patientLedger.backed_money : 0 }} /-</td>
+            <td>Rs {{patientLedger.balance}} /-</td>
+            <td>{{patientLedger.remark ? patientLedger.remark : 'Null'}}</td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+  </div>
+  
+  <div *ngIf = "activePayment && !activepatienttable && patientAllLedgersChk" style="margin-bottom:10px;" class="pull-right col-sm-12">
+    <!-- <button style="margin-top: 5px auto;" type="button" class="btn btn-primary" (click)="back()"><i class="fa fa-home"  style="font-size:30px;"aria-hidden="true"></i></button> -->
+    <div  style=" height:80vh; overflow:auto;" >
+      <table class="table table-responsive table-hover table-striped">
+        <thead>
+          <tr>
+            <th>S.N</th>
+            <th>Invoice Id</th>
+            <th>Particular</th>
+            <th>Dr</th>
+            <th>Cr</th>
+            <th>Back Money</th>
+            <th>Balance</th>
+            <th>Remark</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let patientAllLedger of patientAllLedgers; let i = index">
+            <td class="text-info">{{i+1}}</td>
+            <td>{{patientAllLedger.invoice_id}}</td>
+            <td>{{patientAllLedger.particular}}</td>
+            <td>Rs {{patientAllLedger.dr}} /-</td>
+            <td>Rs {{patientAllLedger.cr}} /-</td>
+            <td>Rs {{patientAllLedger.backed_money ? patientAllLedger.backed_money : 0 }} /-</td>
+            <td>Rs {{patientAllLedger.balance}} /-</td>
+            <td>{{patientAllLedger.remark ? patientAllLedger.remark : 'Null'}}</td>
           </tr>
         </tbody>
       </table>

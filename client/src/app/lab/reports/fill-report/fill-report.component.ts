@@ -134,7 +134,7 @@ export class FillReportComponent implements OnInit {
          this.test=this.globalPatient[0].reg_no;
       }
       let reg_no = this.test;
-      this.router.navigate(['lab/testbooking-transaction',reg_no]);
+      this.router.navigate(['lab/report-transaction',reg_no]);
    }
    print(): void{
        console.log('I am In');

@@ -58,6 +58,7 @@ import { UserroleService } from './user/userrole.service';
 import { TestbookingTransactionComponent } from './testbooking-transaction/testbooking-transaction.component'
 import { RedirectJunctionComponent } from './redirect-junction/redirect-junction.component';
 import { DoctorReportComponent } from './doctor-report/doctor-report.component';
+import { ReportTransactionComponent } from './report-transaction/report-transaction.component';
 
 
 @NgModule({
@@ -105,7 +106,8 @@ import { DoctorReportComponent } from './doctor-report/doctor-report.component';
 					// SessionComponent,
 					TestbookingTransactionComponent,
 					RedirectJunctionComponent,
-					DoctorReportComponent
+					DoctorReportComponent,
+					ReportTransactionComponent
   				],
   bootstrap:[LabComponent],
   exports:[TestBookingComponent],

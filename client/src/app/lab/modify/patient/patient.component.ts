@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup,FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ModifyService } from './../../modify/modify.service';
+import {IMyDrpOptions} from 'mydaterangepicker';
 declare var jQuery:any;
 
 @Component({
@@ -10,11 +11,31 @@ declare var jQuery:any;
 })
 export class PatientComponent implements OnInit {
 
+  
+  public myDateRangePickerOptions: IMyDrpOptions = {
+    // other options...
+    dateFormat: 'yyyy-mm-dd',
+    firstDayOfWeek:'su',
+    sunHighlight:false,
+    disableHeaderButtons:false,
+    // selectorHeight:'500px',
+    // selectorWidth:'500px',
+    // height:'34px',
+    // width:'auto',
+    // selectorWidth:'100%',
+    // componentDisabled:true,
+    editableDateRangeField:false,
+    openSelectorOnInputClick:true,
+  };
+
+
+
   constructor(
-    private ModifyService: ModifyService,
+    private ModifyService: ModifyService,private formBuilder: FormBuilder
   ) { }
   public responseDatas = [];
   public patientGroup:FormGroup;
+  public myForm: FormGroup;
   public showTable = true;
   public Update = "Update";
   public update = false;
@@ -24,6 +45,14 @@ export class PatientComponent implements OnInit {
   public notify;
   public idForUpdate;
   ngOnInit() {
+
+    
+    this.myForm = this.formBuilder.group({
+      myDateRange: ['', Validators.required],
+      selecteddoctor:new FormControl('')
+    });
+
+
     this.patientGroup = new FormGroup({
       name:new FormControl('',Validators.required),
       address:new FormControl('',Validators.required),
@@ -95,6 +124,72 @@ export class PatientComponent implements OnInit {
               this.notifyDismiss();
           });
   }
+
+  getPatientByDate(){
+    let param={};
+    console.log(this.myForm.controls.myDateRange.value)
+    if(this.myForm.controls.myDateRange.value){
+      let dateRange = this.myForm.controls.myDateRange.value.formatted.split(' - ');
+      param['startDate'] = dateRange[0];
+      param['endDate'] = dateRange[1];
+      console.log(param);
+      this.ModifyService.getpatientFromDate(param)
+      .subscribe(
+        (response)=>{
+          if(response.length>0){
+            console.log(response)
+            this.responseDatas = response;
+          }
+          else{
+            alert("No datas")
+            this.Notify = true;
+            this.notify = "No Data in Database !"
+            this.notifyDismiss();
+          }
+        },(error)=>{
+          
+        this.Notify = true;
+        this.notify = "Sorry error in server !"
+        this.notifyDismiss();
+        })
+      }
+      else{
+        this.ModifyService.getAllPatient()
+        .subscribe(
+          response=>{
+            console.log(response);
+            if(response.length > 0){
+                this.responseDatas = response;
+                console.log(this.responseDatas)
+              }
+              else{
+              }
+    
+            },
+            error=>{
+            }
+          );
+      }
+  }
+
+  setDateRange(): void {
+    // Set date range (today) using the setValue function
+    let date = new Date();
+    this.myForm.setValue({myDateRange: {
+        beginDate: {
+            year: date.getFullYear(),
+            month: date.getMonth() + 1,
+            day: date.getDate()
+        },
+        endDate: {
+            year: date.getFullYear(),
+            month: date.getMonth() + 1,
+            day: date.getDate()
+        }
+    }});
+}
+
+
 
   editPatient(index){
     this.showTable =false;

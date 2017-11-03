@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
-import { TestbookingTransactionService } from './testbooking-transaction.service';
+import { TestbookingTransactionService } from './../testbooking-transaction/testbooking-transaction.service';
 import { ModifyService } from './../modify/modify.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -13,11 +13,11 @@ import 'rxjs/Rx';
 
 
 @Component({
-  selector: 'app-testbooking-transaction',
-  templateUrl: './testbooking-transaction.component.html',
-  styleUrls: ['./testbooking-transaction.component.css']
+  selector: 'app-report-transaction',
+  templateUrl: './report-transaction.component.html',
+  styleUrls: ['./report-transaction.component.css']
 })
-export class TestbookingTransactionComponent implements OnInit {
+export class ReportTransactionComponent implements OnInit {
 
   constructor(
     private testbookingtransactionservice: TestbookingTransactionService,
@@ -69,7 +69,7 @@ export class TestbookingTransactionComponent implements OnInit {
   public drCrInTotal;
   public TEMPGlobletotalAmt;
   public ShowDiscount = true;
-  public globleParam;
+  public SumFromReport;
 
 
   ngOnInit() {
@@ -235,19 +235,14 @@ export class TestbookingTransactionComponent implements OnInit {
       // if(this.returnableAmt>0){
       //   this.totalAmt+= this.returnableAmt;
       // }
-      if(this.sum != 0){
-      let temptotalAmt = Number(this.sum) - Number(this.previousAmount);
-      console.log(this.sum,"pa", this.previousAmount,'temp', this.TEMPGlobletotalAmt)
+      let temptotalAmt = this.sum - this.previousAmount;
+      console.log(this.sum, this.previousAmount, this.TEMPGlobletotalAmt)
       console.log(temptotalAmt)
-      console.log(this.returnableAmt)
-      console.log(this.globleTotalAmount)
-      // console.log(this.returnableAmt)
-      // if(temptotalAmt){
-      if(temptotalAmt < 0){
+      if(temptotalAmt <= 0){
         this.drCrInTotal = "cr"
         this.UseForCredit = true;
-        // this.ShowDiscount = false;
-        this.totalAmt = -temptotalAmt;
+        this.ShowDiscount = false;
+        this.totalAmt = Number(this.TEMPGlobletotalAmt)+Number(this.transactionData.controls.cash.value);
       }
       else if(temptotalAmt > 0){
         this.drCrInTotal = "dr"
@@ -255,20 +250,10 @@ export class TestbookingTransactionComponent implements OnInit {
       }
       else{
         this.drCrInTotal = "";
-        this.totalAmt = -temptotalAmt;
       }
-    // }
-    // else{
-    //   this.drCrInTotal = "cr"
-    //   this.UseForCredit = true;
-    //   this.totalAmt = this.returnableAmt;
-    // }
-  }
-  else{
-    this.totalAmt = this.globlepreviousAmount + (-checksum);
-    this.drCrInTotal = "cr";
-    this.UseForCredit = true;
-  }
+    }
+    if(this.SumFromReport){
+      this.totalAmt = this.previousAmount;
     }
     
     
@@ -370,7 +355,7 @@ export class TestbookingTransactionComponent implements OnInit {
             this.patientDatas = [];
             this.showTable = true;
             if (response.length > 2) {
-              // if(response[response.length - 1].dr != 0){
+              if(response[response.length - 1].dr != 0){
                 if(response[response.length - 2].remark == "dr"){
                   this.previousAmount = Number(response[response.length - 2].balance);
                   this.drOrCr = response[response.length - 2].remark;
@@ -389,9 +374,9 @@ export class TestbookingTransactionComponent implements OnInit {
                     this.previousAmount = Number(response[response.length - 2].balance);
                     this.drOrCr = response[response.length - 2].remark;
                   }
-                // }
                 }
                 else if(response.length > 1){
+                  this.SumFromReport = response[response.length-2].dr;
 
                 if(response[response.length - 1].remark == "dr"){
                   this.previousAmount = Number(response[response.length - 1].balance);
@@ -412,16 +397,17 @@ export class TestbookingTransactionComponent implements OnInit {
                     this.drOrCr = response[response.length - 1].remark;
                   }
                 }
-              else {
+                }
+              else if(response.length < 2) {
                 this.previousAmount = 0.00;
                 this.drOrCr = ""
               }
-              if(response[response.length - 1].invoices_particular != "INV-CREATED-TR-AMT"){
-                this.sum = Number(response[response.length - 1].invoices_balance);
-              }
-              else{
-                this.sum = 0;
-              }
+              // if(response[response.length - 1].invoices_particular != "INV-CREATED-TR-AMT"){
+              //   this.sum = Number(response[response.length - 1].invoices_balance);
+              // }
+              // else{
+              //   this.sum = 0;
+              // }
               // this.currentAmt = this.sum;
               // this.totalAmt = this.previousAmount;
               // if(this.drOrCr == "dr" || !(this.drOrCr)){
@@ -570,9 +556,9 @@ export class TestbookingTransactionComponent implements OnInit {
       param['DiscountPer'] = 0;
       param['MoneyBack'] = 0;
       param['patientId'] = this.patientDatas[0].patient_id;
+      param['inv_particular'] = "INV-CREATED-REPORT-TR"
+      param['pl_particular'] = "PL-CREATED-REPORT-TR"
       // param['pl_balance'] = this.totalAmt;
-      param['inv_particular'] = "INV-CREATED-TEST-BOOKED-TR"
-      param['pl_particular'] = "PL-CREATED-TEST-BOOKED-TR"
       param['updateInvoiceId'] = this.idForInvoiceUpdate;
 
 
@@ -680,16 +666,13 @@ export class TestbookingTransactionComponent implements OnInit {
 
       
       console.log(param)
-      this.globleParam = param;
       this.testbookingtransactionservice.setpatienttransaction(param)
       .subscribe((response)=>{
         console.log(response)
         this.notify="SuccessFully payed !"
         this.Notify = true;
         this.notifyDismiss()
-        
-        this.testbookingTransaction("testbookingTransaction");
-        this.router.navigate(['/lab/test-booking']);
+        this.router.navigate(['/lab/reports']);
       },
       (error)=>{
         this.pay = false;
@@ -740,36 +723,6 @@ export class TestbookingTransactionComponent implements OnInit {
     setTimeout(function () {
       this.Notify = false;
     }.bind(this), 3000);  
-  }
-  testbookingTransaction(id){
-    var printContent = document.getElementById(id).innerHTML;
-    var restorePage = document.body.innerHTML;
-    
-    var newWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto,menubar=no,titlebar=no,location=no,fullscreen=yes')
-    newWin.document.body.innerHTML = printContent;
-    // newWin.window.print();
-    
-    newWin.document.write(`
-    <html>
-        <head>
-        <style type="text/css">
-        table{
-          border:0px;
-          border-style: dotted;
-          width: 100%;
-        }
-        td{
-          padding: 5px;
-          text-align: left;
-        }
-      </style>
-        </head>
-              <body onload="window.print();window.close()">${printContent}
-        </body>
-    </html>`
- );
-    newWin.document.close()
-    // document.body.innerHTML = restorePage;
   }
 
 

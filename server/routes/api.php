@@ -66,7 +66,7 @@ Route::resource('/commoncodes','CommonCodeController');
 Route::resource('/transaction','TransactionController');
 Route::get('/transactions/{id}','TransactionController@getDetialsOfPatient');
 Route::resource('/getPatientData','PatientController');
-
+Route::post('/getpatientFromDate','PatientController@getpatientFromDate');
 
 Route::post('/getDoctorReportDatas','DoctorListController@getDoctorReportDatas');
 
@@ -77,7 +77,10 @@ Route::get('/dashboard', 'DashboardController@getpatient');
 //VIEW-TRANSACTION
 
 Route::get('/view-transaction', 'ViewTransaction@getpatient');
-Route::get('/view-transaction/{id}', 'ViewTransaction@getpatientInvoicesAndledger');
+Route::post('/view-transaction', 'ViewTransaction@getpatientFromDate');
+Route::get('/view-transactionInv/{id}', 'ViewTransaction@getpatientInvoices');
+Route::get('/view-transactionPl/{id}', 'ViewTransaction@getpatientInvoiceledgers');
+Route::get('/view-transactionAllPl/{id}', 'ViewTransaction@getpatientInvoiceAllledgers');
 Route::get('/transactionstestbooking/{id}','TransactionController@getDetialsOfTestbooking');
 
 //TEST_BOOKING
@@ -97,4 +100,5 @@ Route::post('/edituser/{id}','UserContoller@EditUser');
 Route::post('/deleteuser/{id}','UserContoller@DeleteUser');
 Route::post('/access_menu','Access_menu_Controller@Access_Menu');
 Route::get('/menubar/{id}','Access_menu_Controller@Menubar');
+Route::post('/editmenu','Access_menu_Controller@EditMenu');
 

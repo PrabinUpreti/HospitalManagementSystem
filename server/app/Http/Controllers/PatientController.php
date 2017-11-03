@@ -18,7 +18,7 @@ class PatientController extends Controller
          */
          public function index()
          {
-             return DB::table('patients')->get();
+             return DB::table('patients')->orderBy('created_at', 'desc')->take(15)->get();
          }
      
          /**
@@ -135,4 +135,15 @@ class PatientController extends Controller
          {
              //
          }
+
+         public function getpatientFromDate(Request $request){
+
+            $startDate = $request->input('startDate');
+            $endDate = $request->input('endDate');
+
+            $patient = DB::table('patients')
+            ->whereBetween('patients.created_at', [$startDate, $endDate])
+            ->get();
+            return $patient;
+        }
 }

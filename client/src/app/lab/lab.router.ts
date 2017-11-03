@@ -24,6 +24,7 @@ import { UserComponent } from './user/user.component'
 // import { SessionComponent } from './session/session.component';
 import { RedirectJunctionComponent } from './redirect-junction/redirect-junction.component';
 import { DoctorReportComponent } from './doctor-report/doctor-report.component';
+import { ReportTransactionComponent } from './report-transaction/report-transaction.component';
 
 
 const usersRoutes: Routes = [
@@ -36,14 +37,14 @@ const usersRoutes: Routes = [
               { path: 'reports', component: ReportsComponent },
               { path: 'test', component: DashboardComponent },
               { path: 'modify', component: ModifyComponent },
-      				// { path: 'add-transaction/:id', component: TransactionComponent },
+      				{ path: 'report-transaction/:id', component: ReportTransactionComponent },
               { path: 'add-transaction', component: TransactionComponent },
       				{ path: 'testbooking-transaction/:id', component: TestbookingTransactionComponent },
               // { path: 'view-transaction/:id', component:ViewTransactionComponent},
               { path: 'user', component: UserComponent },
               { path: 'doctor-report', component: DoctorReportComponent },
               // {path: '**', component: PageNotFoundComponent} 
-              { path: 'redirecting', component:RedirectJunctionComponent}
+              { path: 'redirecting/:id', component:RedirectJunctionComponent}
 				]
 
     //    },
