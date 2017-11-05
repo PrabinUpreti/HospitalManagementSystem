@@ -157,18 +157,18 @@
 
 
 
-					<div class="row">
+					<div style="margin-top:10px;" class="row">
 						<div class="form-group">
-							<div class=" col-sm-4 col-md-4 col-lg-4 col-sm-offset-4  col-md-offset-4  col-lg-offset-4">
-								<div class=" col-sm-4 col-lg-4 col-md-4">
-									<button type="reset" class="btn btn-default btn-xs btn-block">Reset</button>
+							<div class=" col-sm-2 col-md-2 col-lg-2 col-sm-offset-5  col-md-offset-5  col-lg-offset-5">
+								<div class=" col-sm-6 col-lg-6 col-md-6">
+									<button type="reset" class="btn btn-default btn-block">Reset</button>
 								</div>
-								<div class=" col-sm-4 col-lg-4 col-md-4">
-									<button type="submit" [disabled]="!submitButtonStatus" class="btn btn-primary btn-xs btn-block">{{submitButtonStatus?'save':'Saving....'}}</button>
+								<div class=" col-sm-6 col-lg-6 col-md-6">
+									<button type="submit" [disabled]="!submitButtonStatus" class="btn btn-primary btn-block">{{submitButtonStatus?'save':'Saving....'}}</button>
 								</div>
-								<div class=" col-sm-4 col-lg-4 col-md-4">
+								<!-- <div class=" col-sm-4 col-lg-4 col-md-4">
 									<button type="button" class="btn btn-info btn-xs btn-block" (click)="print()">Print</button>
-								</div>
+								</div> -->
 							</div>
 						</div>
 					</div>
@@ -210,10 +210,10 @@
 					<div class="col-sm-4" id="search-container">
 						<div class="alert">
 							<!-- <button type="button" class="close">X</button> -->
-							<a class="close" (click) = "SearchBarDismiss()">X</a>
+							<a class="close" (click) = "SearchBarDismiss()">x</a>
 							<strong>Search Bar</strong>
 						</div>
-						<div>
+						<div style="height:80vh;overflow:auto;">
 							<table class="table table-hover">
 				
 								<thead>
@@ -227,8 +227,8 @@
 								<tbody>
 									<tr *ngFor="let searchedData of searchedDatas; let i = index">
 										<td class="text-info" style="cursor:pointer" (click)="SetPatientToForm(i)">{{searchedData?.reg_no}}</td>
-										<td>{{searchedData?.patient_name}}</td>
-										<td>{{searchedData?.created_at}}</td>
+										<td class="text-info" style="cursor:pointer" (click)="SetPatientToForm(i)">{{searchedData?.patient_name}}</td>
+										<td class="text-info" style="cursor:pointer" (click)="SetPatientToForm(i)">{{searchedData?.created_at}}</td>
 									</tr>
 								</tbody>
 							</table>

@@ -14,6 +14,10 @@ export class ReportsComponent implements OnInit {
   public patientData;
   public billId;
   public Menulists=[];
+  public inputdate;
+  // public timeid;
+  public valueId;
+  public reponse_report;
   constructor(private router:Router) {
     this.Menulists= JSON.parse(localStorage.getItem('SelectMenuIten'));
     console.log(this.Menulists)
@@ -31,8 +35,9 @@ export class ReportsComponent implements OnInit {
   OnnotreadyBtn(id){
     this.state=id
   }
-  OngetReportvalue(id){
+  OngetReportvalue(id,time){
     this.value=id
+    // this.timeid=time
   }
   OnpatientData(patients){
     this.patientData=patients
@@ -40,5 +45,13 @@ export class ReportsComponent implements OnInit {
   OntransactionData(id){
     this.valuetransactionData.emit(id);
     console.log(id)
+  }
+  OnDaterange(date){
+    this.inputdate=date;
+    console.log('new date range',this.inputdate)
+  }
+  Reponse_report(data){
+   this.reponse_report=data;
+   console.log('I am Response',this.reponse_report)
   }
 }

@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 export class UserComponent implements OnInit {
 public Menulists=[];
 public UserData;
+public menu;
   constructor(private router:Router) {
     this.Menulists= JSON.parse(localStorage.getItem('SelectMenuIten'));
     console.log(this.Menulists)
@@ -22,6 +23,8 @@ public UserData;
   }
   OnUserData(Data){
     this.UserData=Data;
-
+  }
+  OnMenus(menus){
+  this.menu=menus;
   }
 }

@@ -38,7 +38,7 @@
                  <div class="panel-title text-center">Login</div>
           </div>     
           <div class="panel-body" >
-              <form  [formGroup]="loginForm" (ngSubmit)="submitForm()" name="form"  id="form" class="form-horizontal">
+              <form  [formGroup]="loginForm" (ngSubmit)="submitForm()" name="form"  id="form" class="form-horizontal" enctype="multipart/form-data" method="POST">
                   <div class="input-group">
                       <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                       <input id="user" type="text" class="form-control" [formControl]="loginForm.controls['email']" name="user" value="" placeholder="User">                                        
@@ -49,7 +49,7 @@
                   </div>                                                                  
                   <div class="form-group">
                       <div class="col-sm-12 controls">
-                          <button type="submit"  class="btn btn-primary pull-right"><i class="glyphicon glyphicon-log-in"></i> Login</button>                          
+                          <button type="submit"  class="btn btn-primary pull-right" [disabled]="login"><i class="glyphicon glyphicon-log-in">{{Login}}</i></button>                          
                       </div>
                   </div>
               </form>     
@@ -57,4 +57,14 @@
       </div>  
   </div>
 </div>
+
+<div *ngIf = "Notify" class="container">
+    <div class="row" id="error-container">
+             <div class="span12">
+                     <div class="alert alert-info">
+                             <span>{{notify}}</span>
+                     </div>
+                 </div>
+            </div>
+    </div>
 

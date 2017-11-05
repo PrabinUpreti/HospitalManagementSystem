@@ -27,8 +27,16 @@ class Access_menu_Controller extends Controller{
       }
 
       public function EditMenu(Request $request){
-        $menusList=$request->all();
-        return response()->json(['menusList'=> $menusList]);
+         $menuList=$request->all();
+         $deleteId=$menuList[0]['user_id'];   
+         $delete_menu = Access_menu::where('user_id',$deleteId)->delete();
+         for($i=0;$i<count($menuList);$i++){
+              $menus = Access_menu::create([
+                    'menu_id'=>$menuList[$i]['id'],
+                    'user_id'=>$menuList[$i]['user_id']
+             ]);
+          }
+          return response()->json(['successfully Updated User!']);
  }
   }
 

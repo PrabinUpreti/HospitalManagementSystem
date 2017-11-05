@@ -2,29 +2,35 @@ import { Injectable } from '@angular/core';
 
 import {Http, Response ,Headers, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
+import { Router } from '@angular/router';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
+import  { ENV } from "../../env";
 
 @Injectable()
 export class DoctorReportService {
 
-  constructor(private http_:Http) { }
+  constructor(private http_:Http, private router:Router) { }
 
 
   
   //   console.log(param)
   //   let headers = new Headers({'Content-Type': 'application/json'});
   //   let options = new RequestOptions({headers: headers, withCredentials: true});
-  //   return this.http.get("http://server.hms.com/api/doctor/"+param, options)
+  //   return this.http.get(ENV.Request_URL+"/api/doctor/"+param, options)
   //   .map(this.extractData)
   //   .catch(this.handleError);
   // }
 
   getDoctorTestbookingTransaction(param){
+    let checkSection = ENV.setSection()
+    if(checkSection == "sessionExpired"){
+      this.router.navigate(['/']);            
+    }
     console.log(param);
     // let id = param.doctorId;
-    let url = "http://server.hms.com/api/getDoctorReportDatas";
+    let url = ENV.Request_URL+"/api/getDoctorReportDatas";
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.http_.post(url, param, options)

@@ -9,6 +9,7 @@ import { Observable } from 'rxjs/Observable';
 import { BrowserModule } from '@angular/platform-browser';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import 'rxjs/Rx';
+import { ENV } from "../../env";
 
 
 
@@ -70,9 +71,32 @@ export class TestbookingTransactionComponent implements OnInit {
   public TEMPGlobletotalAmt;
   public ShowDiscount = true;
   public globleParam;
+  public printDrOrCr;
+
+
+
+  public hospitalName;
+  public panNumber;
+  public hospitalAddress;
+  public hospitalRegNo;
+  public hospitalNumber;
+  public PrintedDate;
 
 
   ngOnInit() {
+
+
+    this.hospitalName = ENV.hospital;
+    this.panNumber = ENV.pan_Numner;
+    this.hospitalAddress = ENV.address;
+    this.hospitalRegNo = ENV.RegNo;
+    this.hospitalNumber = ENV.phone_number;
+    let date = new Date();
+    let year= date.getFullYear();
+    let month= date.getMonth();
+    let day= date.getDate();
+    this.PrintedDate = year+'-'+month+'-'+day;
+
 
     this.transactionData = new FormGroup({
       cash: new FormControl('', Validators.pattern("^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$")),
@@ -240,7 +264,6 @@ export class TestbookingTransactionComponent implements OnInit {
       console.log(this.sum,"pa", this.previousAmount,'temp', this.TEMPGlobletotalAmt)
       console.log(temptotalAmt)
       console.log(this.returnableAmt)
-      console.log(this.globleTotalAmount)
       // console.log(this.returnableAmt)
       // if(temptotalAmt){
       if(temptotalAmt < 0){
@@ -269,7 +292,12 @@ export class TestbookingTransactionComponent implements OnInit {
     this.drCrInTotal = "cr";
     this.UseForCredit = true;
   }
+}
+    if(!this.globleTotalAmount){
+      this.globleTotalAmount = this.totalAmt;
+      this.printDrOrCr = this.drCrInTotal;
     }
+    console.log("I HAVE THESE VALUES:",this.globleTotalAmount ,"AND",this.printDrOrCr)
     
     
     // if(this.transactionData.controls.credit.value){
@@ -438,7 +466,6 @@ export class TestbookingTransactionComponent implements OnInit {
               //     this.drCrInTotal = "";
               //   }
               }
-              this.globleTotalAmount = this.sum;
               this.globleSum = this.sum;
               this.patientDatas = response;
               this.activepaymentForm = true;
@@ -570,6 +597,7 @@ export class TestbookingTransactionComponent implements OnInit {
       param['DiscountPer'] = 0;
       param['MoneyBack'] = 0;
       param['patientId'] = this.patientDatas[0].patient_id;
+      param['print'] = 1;
       // param['pl_balance'] = this.totalAmt;
       param['inv_particular'] = "INV-CREATED-TEST-BOOKED-TR"
       param['pl_particular'] = "PL-CREATED-TEST-BOOKED-TR"
@@ -714,7 +742,7 @@ export class TestbookingTransactionComponent implements OnInit {
   showTestList(){
     this.notify="Under Construction !"
     this.Notify = true;
-    this.notifyDismiss()    
+    this.notifyDismiss()
   }
   activeInvoice(id) {
     if (id == 0)
@@ -742,8 +770,11 @@ export class TestbookingTransactionComponent implements OnInit {
     }.bind(this), 3000);  
   }
   testbookingTransaction(id){
+
+
     var printContent = document.getElementById(id).innerHTML;
     var restorePage = document.body.innerHTML;
+
     
     var newWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto,menubar=no,titlebar=no,location=no,fullscreen=yes')
     newWin.document.body.innerHTML = printContent;

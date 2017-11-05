@@ -10,13 +10,13 @@
           </thead>
           <tbody>
             <tr *ngFor="let user of userdata?.user;let i = index">
-              <th scope="row">{{i+1}}</th>
+              <td>{{i+1}}</td>
               <td>{{user.name}}</td>
               <td>{{user.email}}</td>
               <td>{{user.status}}</td>
               <td>
-                <button class="btn btn-primary" type="button">&nbsp;<i class="fa fa-pencil-square-o" aria-hidden="true" data-toggle="modal" (click)="userUpdate(i)" data-target=".bd-example-modal-lg">&nbsp; </i></button>
-                <button class="btn btn-danger" type="button" value="Delete">&nbsp;<i class="fa fa-trash" aria-hidden="true"  (click) = "configDelete(i)" data-toggle="modal" data-target="#deleteModal"> &nbsp;</i></button>
+                 <button class="btn btn-primary" type="button" class="fa fa-pencil-square-o" aria-hidden="true" data-toggle="modal" (click)="userUpdate(i)" data-target=".bd-example-modal-lg">&nbsp;</button>
+                 <button class="btn btn-danger" type="button" value="Delete" class="fa fa-trash" aria-hidden="true"  (click) = "configDelete(i)" data-toggle="modal" data-target="#deleteModal"> &nbsp;</button>
               </td>
             </tr>
          </tbody>
@@ -24,6 +24,7 @@
       
 
     <!-- //Edit Model -->
+    <div *ngIf='ModefyUser'>
       <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
@@ -31,15 +32,32 @@
                 <div class="modal-body">
                       <div class="row"> 
                           <div class="form-group row">
-                              <label for="name" class="col-sm-2 col-form-label">User Name</label>
+                              <label for="name" class="col-sm-2 col-form-label">User Name:</label>
                               <div class="col-sm-10">
                                 <input type="text" class="form-control" formControlName="User_name" id="name" placeholder="User Name">
                               </div>
                             </div>
                             <div class="form-group row">
-                              <label for="email" class="col-sm-2 col-form-label">Email</label>
+                              <label for="email" class="col-sm-2 col-form-label">Email:</label>
                               <div class="col-sm-10">
                                 <input type="Email" class="form-control" id="email" formControlName="email" placeholder="Email">
+                              </div>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <label class="col-sm-2 col-form-label">Isactive</label>
+                                 <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" formControlName="status">
+                                 </label>
+                             </div>
+                            <div class="checkbox">
+                              <div formArrayName="Lists" class="form-group">
+                                  <div *ngFor="let menu of Menulists; let i=index" [formGroupName]="i">
+                                      <div class="form-check">
+                                          <label class="form-check-label">
+                                              <input type="checkbox" class="form-check-input" formControlName="selected">{{menu.name}}
+                                          </label>
+                                      </div>
+                                  </div>
                               </div>
                             </div>
                       </div>
@@ -71,8 +89,28 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="deleteUser()">Ok</button>
+              <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="deletUser()">Ok</button>
             </div>
           </div>
         </div>
       </div>
+      <div *ngIf = "Notify" class="container">
+          <div class="row" id="error-container">
+                   <div class="span12">  
+                           <div class="alert alert-info">
+                                  <!-- <button type="button" class="close" (click) = "datadismis()">�</button> -->
+                                   <span>{{notify}}</span>
+                           </div>
+                       </div>
+                  </div>
+          </div>  
+          <div *ngIf = "Delete" class="container">
+              <div class="row" id="error-container">
+                       <div class="span12">  
+                               <div class="alert alert-info">
+                                      <!-- <button type="button" class="close" (click) = "datadismis()">�</button> -->
+                                       <span>{{delte}}</span>
+                               </div>
+                           </div>
+                      </div>
+              </div>  

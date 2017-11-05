@@ -1,0 +1,25 @@
+#error-container {
+	position: fixed;
+	z-index: 9999999;
+	top: 2px;
+	right: 125px;
+	box-shadow: 2px 2px 2px #333;
+}
+.alert {
+    padding: 5px;
+    margin-bottom: 0px;
+    border: 1px solid transparent;
+	border-radius: 4px;
+}
+span{
+	padding: 0px;
+	padding-right: 15px;
+	font-weight: bold;
+}
+.checkbox{
+	margin-top: 11px;
+	padding-left: 115px;
+ }
+ button[type="submit"]{
+	margin-left: 115px;
+}

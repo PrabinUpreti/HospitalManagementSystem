@@ -4,13 +4,21 @@
   
   <form class="form-horizontal" [formGroup]="myForm" (ngSubmit)="getPatientByDate()">
 
-      <div class="form-group">
+      <!-- <div class="form-group"> -->
           <!-- <label class="control-label col-sm-6" for="email"></label> -->
-          <div class="col-sm-1">
+          <!-- <div class="col-sm-3"> -->
+            <div style="display: inline-block;float:left; margin-left:20px;">
               <my-date-range-picker *ngIf="activepatienttable" style="padding:0px; border-radius:0px; border:0px;" class="form-control" name="mydaterange" [options]="myDateRangePickerOptions" placeholder="Search By Date" formControlName="myDateRange"></my-date-range-picker>
-              <button  *ngIf="activepatienttable" class="btn btn-info" type="submit">Search</button>
-          </div>
-        </div>
+            </div>
+            <div style="display: inline-block;float:left">
+              <button *ngIf="activepatienttable" class="btn btn-info" type="submit">Search</button>
+            </div>
+            <div *ngIf="activepatienttable" style="margin-left:50px; float:right">
+              <!-- <div style="float:left ">Search</div> -->
+              <input [formControl] ="searchByName" style="height:34px; float:left" class="form-control" type="text" placeholder="Search By Name">
+            </div>
+          <!-- </div> -->
+        <!-- </div> -->
 
         
     <span></span>
@@ -38,9 +46,9 @@
     </form>
   </div> -->
 
-  <div *ngIf = "!activePayment && activepatienttable" class="pull-right col-sm-12">
-    <caption class="col-sm-12" ><h4 style="text-align:center; margin:0px;"><b>PATIENT LIST</b></h4></caption>
-    <!-- <div style=" height:80vh;" > -->
+  <caption *ngIf = "!activePayment && activepatienttable" class="col-sm-12" ><h4 style="text-align:center; margin:0px;"><b>PATIENT LIST</b></h4></caption>
+  <div style="height:80vh;overflow:auto;" *ngIf = "!activePayment && activepatienttable" class="pull-right col-sm-12">
+    <div style=" overflow:auto; display:block;" >
       <table class="table table-responsive table-hover table-striped">
         <thead>
           <tr>
@@ -66,7 +74,7 @@
           </tr>
         </tbody>
       </table>
-    <!-- </div> -->
+    </div>
   </div>
 
   <!-- <div *ngIf = "activePayment && activepatienttable" style="margin-bottom:10px;" class="pull-right col-sm-12">

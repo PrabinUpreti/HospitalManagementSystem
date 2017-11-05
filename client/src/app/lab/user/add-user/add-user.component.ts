@@ -12,10 +12,15 @@ import { FormBuilder, FormArray, FormGroup, Validators} from '@angular/forms';
     public Info=[];
     public MenuArray = [];
     public addUser: FormGroup;
+    public submit=false;
+    public Submit = "Submit";
+    public Notify = false;
+    public notify;
     constructor(private userService: UserroleService, private fb:FormBuilder) {
 
  }
     @Output() UserData = new EventEmitter<any>();
+    @Output() Menus = new EventEmitter<any>();
     get menuLists(): FormArray {
         return this.addUser.get('menuLists') as FormArray;
     };
@@ -25,6 +30,7 @@ import { FormBuilder, FormArray, FormGroup, Validators} from '@angular/forms';
           this.userService.getReport().subscribe(
             menus => {
               this.menus = menus
+              this.Menus.emit(this.menus)
               for(let x of menus.menu) {
                 this.MenuArray.push(this.fb.group({
                     selected: false,
@@ -42,6 +48,9 @@ import { FormBuilder, FormArray, FormGroup, Validators} from '@angular/forms';
              });       
           } 
     public Onsubmit(data: any):void{
+      if(this.addUser.valid){
+           this.Submit="Submitting..."
+           this.submit=true;
            let items = this.addUser.value;  
            this.SelectMenu = items.menuLists.filter(x => x.selected).map(x => { return { name: x.name, id: x.id, user_id: 0 }; });
            console.log(this.SelectMenu);
@@ -51,7 +60,7 @@ import { FormBuilder, FormArray, FormGroup, Validators} from '@angular/forms';
                (response)=> {
                 console.log('Select Menu', response);
                 console.log(response)
-                this.UserData.emit(response)
+                
                 let user_id= response[0].id;
                 console.log('I am new',user_id)
                 console.log('User ID : ', user_id);
@@ -62,15 +71,34 @@ import { FormBuilder, FormArray, FormGroup, Validators} from '@angular/forms';
                   console.log('After push', this.SelectMenu);
                  this.userService.access_menu(this.SelectMenu).subscribe(
                    (response)=>{
+                    this.UserData.emit(response)
+                    this.Submit = "Submit";
+                    this.submit = false;
+                    this.notify = "User Submitted!";
+                    this.Notify = true;
+                    setTimeout(function() {
+                      this.Notify = false;
+                  }.bind(this), 3000);
+                   },
+                      (error) => {
+                          this.Submit = "Submit";
+                          this.submit = false;
+                          this.notify = "please! Select Access Menus!!";
+                          this.Notify = true;
+                          setTimeout(function() {
+                              this.Notify = false;
+                          }.bind(this), 3000);
                    }
                  )
                },
                error => {
                 (error)= 'crendential didnt match';
-         });
+            }
+         );
        } 
     }
   }
+}
 
 
 

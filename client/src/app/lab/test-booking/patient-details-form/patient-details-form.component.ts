@@ -101,13 +101,14 @@ export class PatientDetailsFormComponent implements OnInit {
              Validators.required
            ]),
          patient_address: new FormControl('', [
-             Validators.minLength(5),
+             Validators.minLength(2),
+             Validators.maxLength(25),
              Validators.required
            ]),
          age: new FormControl('', [
+           Validators.required,
           Validators.minLength(0),
-          Validators.maxLength(3),
-          Validators.required
+          Validators.maxLength(2),
           ]),
          gender: new FormControl('', Validators.required),
          // dob: new FormControl(null, Validators.required),
@@ -121,6 +122,7 @@ export class PatientDetailsFormComponent implements OnInit {
          email: new FormControl('', Validators.pattern("[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})")),
          identity_card: new FormControl('', [
              Validators.minLength(1),
+             Validators.maxLength(40),
              Validators.required
            ]),
 
@@ -330,6 +332,7 @@ export class PatientDetailsFormComponent implements OnInit {
             }
             paramData['testID'] = testIdStoredInLocalStorage;
             paramData['invoice'] = localStorage.getItem('sum');
+            paramData['email'] = this.patientData.controls.email.value.toLowerCase();
 
             console.log(paramData);
             this.laravelService.getData(paramData)

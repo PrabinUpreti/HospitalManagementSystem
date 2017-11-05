@@ -4,18 +4,22 @@
     <form class="form-horizontal" [formGroup]="myForm" (ngSubmit)="getPatientByDate()">
     
       <div class="form-group">
-        <!-- <label class="control-label col-sm-6" for="email"></label> -->
-        <div class="col-sm-1">
-          <my-date-range-picker style="padding:0px; border-radius:0px; border:0px;" class="form-control" name="mydaterange" [options]="myDateRangePickerOptions"
-            placeholder="Search By Date" formControlName="myDateRange"></my-date-range-picker>
-          <button class="btn btn-info" type="submit">Search</button>
+        <div style="display: inline-block;float:left; margin-left:20px;">
+            <my-date-range-picker style="padding:0px; border-radius:0px; border:0px;" class="form-control" name="mydaterange" [options]="myDateRangePickerOptions" placeholder="Search By Date" formControlName="myDateRange"></my-date-range-picker>
+          </div>
+          <div style="display: inline-block;float:left">
+            <button style="height:34px;" class="btn btn-info" type="submit">Search</button>
+          </div>
+          <div style="margin-left:50px; float:right">
+            <!-- <div style="float:left ">Search</div> -->
+            <input [formControl] ="searchByName" style="height:34px; float:left" class="form-control" type="text" placeholder="Search By Name">
+          </div>
         </div>
-      </div>
     </form>
 
 
     <legend>Patient List</legend>
-    <div class="table-responsive" style="overflow:auto;height:100vh;">
+    <div class="table-responsive" style="overflow:auto;height:80vh;">
       <form>
         <table style="font-size:12px;" class="table table-hover">
           <thead>

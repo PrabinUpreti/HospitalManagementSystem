@@ -1,84 +1,77 @@
 
-      <form style="background-color:#f5f5f5; margin-top:0px;" class="form-horizontal container-fluid" [formGroup] = "patientData">
-             <legend>Patient Information</legend>
+        <form style="background-color:#f5f5f5; margin-top:0px;" class="form-horizontal container-fluid" [formGroup] = "patientData">
+                <legend>Patient Information</legend>
 
-                            <div class="row">
-                                      <div class="form-group col-sm-4 col-lg-4 col-md-4">
-                                        <label for="name" class="col-lg-4 control-label">Patient_ID</label>
-                                          <div class="col-lg-8">
-                                              <input type="text" class="form-control input-sm" id="name" formControlName="patient_ID">
-                                          </div>
-                                   </div>
+                                <div class="row">
+                                        <div class="form-group col-sm-4 col-lg-4 col-md-4">
+                                            <label for="name" class="col-lg-4 control-label">Patient_ID</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control input-sm" id="name" formControlName="patient_ID" readonly>
+                                            </div>
+                                         </div>
 
-                                    <div class="form-group col-sm-4 col-lg-4 col-md-4">
-                                      <label for="name" class="col-lg-4 control-label"> Name</label>
-                                        <div class="col-lg-8">
-                                            <input type="text" class="form-control input-sm" id="name" formControlName="patient_name">
-                                        </div>
-                                   </div>
-
-                                   <div class="form-group col-sm-4 col-lg-4 col-md-4">
-                                      <label for="address" class="col-lg-4 control-label"> Address</label>
-                                          <div class="col-lg-8">
-                                              <input type="text" class="form-control input-sm" id="address" formControlName="patient_address">
-                                          </div>
-                                   </div>
-
-                                   <div class="form-group col-sm-4 col-lg-4 col-md-4">
-                                      <label for="nationality" class="col-lg-4 control-label">Age</label>
-                                          <div class="col-lg-8">
-                                              <input type="text" class="form-control input-sm" id="nationality" formControlName="patient_age">
-                                          </div>
+                                        <div class="form-group col-sm-4 col-lg-4 col-md-4">
+                                        <label for="name" class="col-lg-4 control-label"> Name</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control input-sm" id="name" formControlName="patient_name" readonly>
+                                            </div>
                                     </div>
 
-                                  <div class="form-group col-sm-4 col-lg-4 col-md-4">
-                                      <label for="nationality" class="col-lg-4 control-label">Gender</label>
-                                        <div class="col-lg-8">
-                                            <input type="text" class="form-control input-sm" id="nationality" formControlName="patient_gender">
-                                        </div>
-                                </div>
-
-                                <div class="form-group col-sm-4 col-lg-4 col-md-4">
-                                    <label for="nationality" class="col-lg-4 control-label">DOB</label>
-                                          <div class="col-lg-8">
-                                              <input type="text" class="form-control input-sm" id="nationality" formControlName="patient_date">
-                                         </div>
-                                </div>
-
-                                <div class="form-group col-sm-4 col-lg-4 col-md-4">
-                                    <label for="nationality" class="col-lg-4 control-label">Status</label>
-                                          <div class="col-lg-8">
-                                              <input type="text" class="form-control input-sm" id="nationality" formControlName="patient_marital">
-                                          </div>
-                                </div>
-
-                                <div class="form-group col-sm-4 col-lg-4 col-md-4">
-                                        <label for="nationality" class="col-lg-4 control-label">Phone No</label>
+                                    <div class="form-group col-sm-4 col-lg-4 col-md-4">
+                                        <label for="address" class="col-lg-4 control-label"> Address</label>
                                             <div class="col-lg-8">
-                                                <input type="text" class="form-control input-sm" id="nationality" formControlName="patient_phone">
+                                                <input type="text" class="form-control input-sm" id="address" formControlName="patient_address" readonly>
                                             </div>
-                                  </div>
+                                    </div>
 
-                                  <div class="form-group col-sm-4 col-lg-4 col-md-4">
-                                      <label for="phone" pattern="[0-9]+" class="col-lg-4 control-label">Email</label>
-                                          <div class="col-lg-8">
-                                              <input type="text" class="form-control input-sm" id="phone" formControlName="patient_email">
-                                          </div>
-                                  </div>
-        
-                                  <div class="form-group col-sm-4 col-lg-4 col-md-4">
-                                      <label for="email" class="col-lg-4 control-label">Reffered</label>
-                                        <div class="col-lg-8">
-                                            <input type="text" class="form-control input-sm" id="email" formControlName="patient_reffered">
+                                    <div class="form-group col-sm-4 col-lg-4 col-md-4">
+                                        <label for="nationality" class="col-lg-4 control-label">Age</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control input-sm" id="nationality" formControlName="patient_age" readonly>
+                                            </div>
                                         </div>
-                                  </div>
 
-                                  <div class="form-group col-sm-4 col-lg-4 col-md-4">
-                                        <label for="email" class="col-lg-4 control-label">Nationality</label>
-                                          <div class="col-lg-8">
-                                              <input type="text" class="form-control input-sm" id="email" formControlName="patient_nationality">
-                                          </div>
-                                  </div>                     
-                           </div>
-                    </form>
-  
+                                    <div class="form-group col-sm-4 col-lg-4 col-md-4">
+                                        <label for="nationality" class="col-lg-4 control-label">Gender</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control input-sm" id="nationality" formControlName="patient_gender" readonly>
+                                            </div>
+                                    </div>
+
+                                    <div class="form-group col-sm-4 col-lg-4 col-md-4">
+                                        <label for="nationality" class="col-lg-4 control-label">Status</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control input-sm" id="nationality" formControlName="patient_marital" readonly>
+                                            </div>
+                                    </div>
+
+                                    <div class="form-group col-sm-4 col-lg-4 col-md-4">
+                                            <label for="nationality" class="col-lg-4 control-label">Phone No</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" class="form-control input-sm" id="nationality" formControlName="patient_phone" readonly>
+                                                </div>
+                                    </div>
+
+                                    <div class="form-group col-sm-4 col-lg-4 col-md-4">
+                                        <label for="phone" pattern="[0-9]+" class="col-lg-4 control-label">Email</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control input-sm" id="phone" formControlName="patient_email" readonly>
+                                            </div>
+                                    </div>
+            
+                                    <div class="form-group col-sm-4 col-lg-4 col-md-4">
+                                        <label for="email" class="col-lg-4 control-label">Reffered</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control input-sm" id="email" formControlName="patient_reffered" readonly>
+                                            </div>
+                                    </div>
+
+                                    <div class="form-group col-sm-4 col-lg-4 col-md-4">
+                                            <label for="email" class="col-lg-4 control-label">Nationality</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control input-sm" id="email" formControlName="patient_nationality" readonly>
+                                            </div>
+                                    </div>                     
+                            </div>
+                        </form>
+    

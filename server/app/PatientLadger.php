@@ -9,6 +9,6 @@ class PatientLadger extends Model
     //
     protected $dates = ['deleted_at'];
   protected $fillable = [
-    'patient_id','particular', 'invoice_id','dr', 'cr','balance','backed_money', 'remark'
+    'patient_id','particular', 'invoice_id','dr', 'cr','balance','backed_money', 'remark','print'
   ];
 }

@@ -1,9 +1,9 @@
 
 <section class="col-lg-3" style="float:right;">
-    <app-checkbutton (readyBtn)="OnreadyBtn($event)" (notreadyBtn)="OnnotreadyBtn($event)"></app-checkbutton>
-    <app-searchreports [inputreadyReport]="state" (getReportvalue)="OngetReportvalue($event)" ></app-searchreports>
+    <app-checkbutton (DateRange)="OnDaterange($event)" (readyBtn)="OnreadyBtn($event)" (notreadyBtn)="OnnotreadyBtn($event)"></app-checkbutton>
+    <app-searchreports [inputreadyReport]="state" [Inputreponse]="reponse_report" [InputDaterange]="inputdate"  (getReportvalue)="OngetReportvalue($event,$event)" ></app-searchreports>
 </section>
 <section class="col-lg-9">
-    <app-reports-form [inputgetReportvalue]="value"   [inputpatientData]="patientData"></app-reports-form>
-    <app-fill-report [inputgetReportvalue]="value" (patientData)="OnpatientData($event)"  (transactionData)= "OntransactionData($event)"></app-fill-report>
+    <app-reports-form [inputpatientData]="patientData"></app-reports-form>
+    <app-fill-report [inputgetReportvalue]="value"  [inputreadyReport]="state" (response_report)="Reponse_report($event)" (patientData)="OnpatientData($event)"  (transactionData)= "OntransactionData($event)"></app-fill-report>
 </section>

@@ -44,7 +44,43 @@ export class PatientComponent implements OnInit {
   public Notify = false;
   public notify;
   public idForUpdate;
+  public searchByName:FormControl;
   ngOnInit() {
+
+    
+    this.searchByName = new FormControl()
+    this.searchByName.valueChanges
+      .debounceTime(400)
+      .distinctUntilChanged()
+      .subscribe(term => {
+        if (term.length > 0) {
+          this.ModifyService.searchpatientbyName(term)
+            .subscribe((response) => {
+              if (response) {
+                this.responseDatas = response;
+              }
+
+            }, (error) => {
+
+            });
+        }
+        else {
+          this.ModifyService.getAllPatient()
+            .subscribe(
+            response => {
+              console.log(response);
+              if (response.length > 0) {
+                this.responseDatas = response;
+                console.log(this.responseDatas)
+              }
+              else {
+              }
+
+            },
+            error => {
+            });
+          }
+        });
 
     
     this.myForm = this.formBuilder.group({
@@ -210,6 +246,7 @@ export class PatientComponent implements OnInit {
       
       let param = this.patientGroup.value;
       param['id']=this.responseDatas[this.idForUpdate].id;
+      param['email'] = this.patientGroup.controls.email.value.toLowerCase();
     this.ModifyService.updatePatient(param)
     .subscribe(
       response=>{

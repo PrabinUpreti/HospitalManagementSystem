@@ -59,7 +59,7 @@
       </div>
     </div>
   </div> -->
-  <div *ngIf="activepaymentForm && !activePayment" class="col-sm-8">
+  <div style="margin:20px; padding:25px 0 0 50px;" *ngIf="activepaymentForm && !activePayment" class="col-sm-8">
   
     <div class="form-group">
       <label class="control-label col-sm-6" for="email"> Patient ID: </label>
@@ -89,10 +89,12 @@
       </div>
     </div>
   
-    <div class="form-group">
+    <div *ngIf ="totalExist" class="form-group">
         <label class="control-label col-sm-6" for="email"> Sub Total Amount: </label>
         <div class="col-sm-6">
-          <p class="form-control-static">Rs {{globleSum}} /- &nbsp;&nbsp;&nbsp;&nbsp; <i style="cursor:pointer;" (click)="showTestList()" class="fa fa-eye" aria-hidden="true"></i></p>
+          <p *ngIf="!TempglobleSum" class="form-control-static">Rs {{globleSum}} /- &nbsp;&nbsp;&nbsp;&nbsp; <i style="cursor:pointer;" (click)="showTestList()" class="fa fa-eye" aria-hidden="true"></i></p>
+
+          <p *ngIf="TempglobleSum" class="form-control-static">Rs {{TempglobleSum}} /- &nbsp;&nbsp;&nbsp;&nbsp; <i style="cursor:pointer;" (click)="showTestList()" class="fa fa-eye" aria-hidden="true"></i></p>
         </div>
       </div>
   
@@ -299,3 +301,63 @@
   
   
   <!-- <pre>{{ patientDatas | json }}</pre> -->
+
+
+  <div  [ngClass]="{'bodyBg':copyRecipt ==true}" id = "testbookingTransaction" style="padding: 0px; display: none;">
+      <div style="font-size: 15px; padding: 50px;">
+        <div style="font-size: 30px; text-align: center">{{hospitalName}}</div>
+        <div style="text-align: center">{{hospitalAddress}}</div>
+        <div style="text-align: center">Phone: {{hospitalNumber}}</div>
+        <div style="text-align: center">Pan Number: {{panNumber}}</div>
+        <div style="text-align: center">Reg Number: {{hospitalRegNo}}</div>
+        <div style="float: right">Date: {{PrintedDate}}</div>
+        <div style="float: left">Patient Name: {{patientName}}</div><br>
+        <div style="float: left">Patient Address: {{patientAddress}}</div>
+      </div><hr>
+    <div style="padding: 10px;">
+      <table *ngIf="globleParam">
+        <tr>
+          <td>Sub Total Amount</td>
+          <!-- <td>===> </td> -->
+          <td>
+          
+            <p *ngIf="!TempglobleSum" class="form-control-static">Rs {{globleSum}} /-</p>
+          
+            <p *ngIf="TempglobleSum" class="form-control-static">Rs {{TempglobleSum}} /-</p>
+          
+          </td>
+        </tr>
+        <tr>
+          <td>Previous Amount</td>
+          <!-- <td></td> -->
+          <td>Rs {{globlepreviousAmount}} /- {{drOrCr | uppercase}}</td>
+        </tr>
+        <tr>
+          <td>Discount Amount</td>
+          <td>Rs {{globleParam.DiscountAmount}} /-</td>
+        </tr>
+        <tr>
+          <td>Discount Percentage</td>
+          <td>{{globleParam.DiscountPer}} %</td>
+        </tr>
+        <tr>
+          <td>Total Amount</td>
+          <td>Rs {{globleTotalAmount}} /- {{printDrOrCr | uppercase}}</td>
+        </tr>
+        <tr>
+          <td>Cash</td>
+          <!-- <td>===> </td> -->
+          <td>Rs {{globleParam.cash}} /-</td>
+        </tr>
+        <tr>
+          <td>Balance</td>
+          <td>{{globleParam.pl_balance}} {{globleParam.invoiceRemark | uppercase}}/-</td>
+        </tr>
+        <tr>
+          <td>Returned Amount</td>
+          <!-- <td>===> </td> -->
+          <td>Rs {{globleParam.MoneyBack}} /-</td>
+        </tr>
+      </table>
+    </div>
+  </div>

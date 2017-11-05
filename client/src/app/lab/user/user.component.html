@@ -1,7 +1,7 @@
 
 <section class="col-lg-6">
-    <app-usertable></app-usertable>
+    <app-usertable [InputUserData]="UserData" [InputMenu]="menu"></app-usertable>
 </section>
 <section class="col-lg-6">
-    <app-add-user></app-add-user>
+    <app-add-user (UserData)="OnUserData($event)" (Menus)="OnMenus($event)" ></app-add-user>
 </section>

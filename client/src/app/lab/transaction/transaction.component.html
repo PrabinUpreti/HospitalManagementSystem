@@ -2,7 +2,7 @@
   <div class="row" id="error-container">
     <div class="span12">
       <div class="alert alert-danger">
-        <button type="button" class="close" (click)="datadismis()">×</button>
+        <!-- <button type="button" class="close" (click)="datadismis()">x</button> -->
         <span>{{notify}}</span>
       </div>
     </div>
@@ -34,12 +34,12 @@
 <!-- <pre>{{patientDatasDetails|json}}</pre> -->
 <div *ngIf="showTable" class="container">
   <div class="col-sm-4" id="search-container">
-    <div>
+    <div class="alert">
       <!-- <button type="button" class="close">X</button> -->
-      <a class="close" (click) = "SearchBarDismiss()">X</a>
+      <a class="close" (click) = "SearchBarDismiss()">x</a>
       <strong>Searched List of transaction</strong>
     </div>
-    <div style="height:100vh; overflow:auto;">
+    <div style="height:80vh; overflow:auto;">
       <table *ngIf = "!SearchNotify" class="table table-hover">
 
         <thead>
@@ -55,8 +55,8 @@
             <!-- <tr> -->
             <!-- <td class="text-info">{{patientDatas.length - i}}</td> -->
             <td class="text-info" style="cursor:pointer" (click)="invoice(patientData)">{{patientData?.reg_no}}</td>
-            <td>{{patientData?.patient_name}}</td>
-            <td>{{patientData?.created_at}}</td>
+            <td class="text-info" style="cursor:pointer" (click)="invoice(patientData)">{{patientData?.patient_name}}</td>
+            <td class="text-info" style="cursor:pointer" (click)="invoice(patientData)">{{patientData?.created_at}}</td>
           </tr>
         </tbody>
       </table>
@@ -81,7 +81,7 @@
     </div>
   </div>
 </div> -->
-<div *ngIf="activepaymentForm" class="col-sm-8">
+<div style="margin:20px; padding:25px 0 0 50px;" *ngIf="activepaymentForm" class="col-sm-8">
 
   <div class="form-group">
     <label class="control-label col-sm-6" for="email"> Patient ID: </label>
@@ -120,7 +120,7 @@
       </div>
     </div>
 
-  <div *ngIf = "drOrCr =='dr'" class="form-group">
+  <div *ngIf = "drOrCr =='dr' && !discountExist" class="form-group">
       <label class="control-label col-sm-6" for="email"> Discount Amount: </label>
       <div class="col-sm-6">
         <p class="form-control-static">Rs {{discountedAmount?discountedAmount:0}} /-</p>
@@ -132,7 +132,7 @@
      <div class="form-group">
 
       
-      <div class="row" *ngIf = "drOrCr =='dr'">
+      <div class="row" *ngIf = "drOrCr =='dr' && !discountExist">
         <div class="col-sm-6"><label for="">Discount:</label></div>
         <div class="col-sm-6">
           <label class="radio-inline ">
@@ -145,7 +145,7 @@
 
       </div>
 
-      <div class="row" *ngIf = "drOrCr =='dr'">
+      <div class="row" *ngIf = "drOrCr =='dr' && !discountExist">
         <div class="col-sm-6"></div>
         <div class="col-sm-2"  [ngClass]="{'has-error': transactionData.controls.discountcheck.invalid && transactionData.controls.discountcheck.dirty,
         'has-success':transactionData.controls.discountcheck.valid && !transactionData.controls.discountcheck.dirty}">
@@ -304,11 +304,14 @@
 
 
 
-<div  id = "testbookingTransaction" style="padding: 0px; display: none;">
+<div  [ngClass]="{'bodyBg':copyRecipt ==true}"  id = "testbookingTransaction" style="padding: 0px; display: none;">
     <div style="font-size: 15px; padding: 50px;">
-      <div style="font-size: 30px; text-align: center">Hetauda Hospital</div>
-      <div style="text-align: center">Hetauda,Makwanpur</div>
-      <div style="float: right">Date: {{registeredDate}}</div>
+      <div style="font-size: 30px; text-align: center">{{hospitalName}}</div>
+      <div style="text-align: center">{{hospitalAddress}}</div>
+      <div style="text-align: center">Phone: {{hospitalNumber}}</div>
+      <div style="text-align: center">Pan Number: {{panNumber}}</div>
+      <div style="text-align: center">Reg Number: {{hospitalRegNo}}</div>
+      <div style="float: right">Date: {{PrintedDate}}</div>
       <div style="float: left">Patient Name: {{patientName}}</div><br>
       <div style="float: left">Patient Address: {{patientAddress}}</div>
     </div><hr>
@@ -328,7 +331,7 @@
         </tr>
         <tr>
           <td>Total Amount</td>
-          <td>Rs {{totalAmt}} /-</td>
+          <td>Rs {{globleTotalAmount}} /- {{printDrOrCr | uppercase}}</td>
         </tr>
         <tr>
           <td>Cash</td>

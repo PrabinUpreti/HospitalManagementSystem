@@ -13,4 +13,7 @@ class Testbooking extends Model
   public function patient(){
     return $this->belongsTo('Patient::class');
   }
+  // public function invoicename(){
+  //   return $this->hasMany(Invoice::class);
+  // }
 }

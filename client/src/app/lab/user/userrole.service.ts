@@ -5,27 +5,19 @@ import 'rxjs/add/operator/catch';
 import { Router } from '@angular/router'
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
+import  { ENV } from "../../env";
 
 @Injectable()
 export class UserroleService {
-  private time;
-  private meantime;
-  private timecal;
-  private cal;
 constructor(private _http:Http,private router:Router){}
 
 getReport(){
-  var ed = new Date();
-  var time=ed.getHours();
-  console.log(time);
-  this.cal = localStorage.getItem("keyTime");
-   if(time - this.cal== 1){
-       this.router.navigate(['/']);  
-   }else{
-      localStorage.setItem("keyTime", JSON.stringify(time))
-   }
+  let checkSection = ENV.setSection()
+  if(checkSection == "sessionExpired"){
+    this.router.navigate(['/']);            
+  }
 
-    return this._http.get("http://server.hms.com/api/menu")
+    return this._http.get(ENV.Request_URL+"/api/menu")
     .map((res: Response) => {
       return res.json();
     })
@@ -35,17 +27,12 @@ getReport(){
   }
 
   getUser(){
-    var ed = new Date();
-    var time=ed.getHours();
-    console.log(time);
-    this.cal = localStorage.getItem("keyTime");
-     if(time - this.cal== 1){
-         this.router.navigate(['/']);  
-     }else{
-        localStorage.setItem("keyTime", JSON.stringify(time))
-     }
+    let checkSection = ENV.setSection()
+    if(checkSection == "sessionExpired"){
+      this.router.navigate(['/']);            
+    }
 
-    return this._http.get("http://server.hms.com/api/user")
+    return this._http.get(ENV.Request_URL+"/api/user")
     .map((res: Response) => {
       return res.json();
     })
@@ -54,19 +41,14 @@ getReport(){
     });
   }
   Useradd(data: any): Observable<any> {
-    var ed = new Date();
-    var time=ed.getHours();
-    console.log(time);
-    this.cal = localStorage.getItem("keyTime");
-     if(time - this.cal== 1){
-         this.router.navigate(['/']);  
-     }else{
-        localStorage.setItem("keyTime", JSON.stringify(time))
-     }
+    let checkSection = ENV.setSection()
+    if(checkSection == "sessionExpired"){
+      this.router.navigate(['/']);            
+    }
 
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
-    return this._http.post("http://server.hms.com/api/adduser", data, options)
+    return this._http.post(ENV.Request_URL+"/api/adduser", data, options)
            .map(this.extractData)
            .catch(this.handleError);
     }
@@ -80,58 +62,52 @@ getReport(){
     } 
 
   access_menu(Data){
-
-    var ed = new Date();
-    var time=ed.getHours();
-    console.log(time);
-    this.cal = localStorage.getItem("keyTime");
-     if(time - this.cal== 1){
-         this.router.navigate(['/']);  
-     }else{
-        localStorage.setItem("keyTime", JSON.stringify(time))
-     }
+    let checkSection = ENV.setSection()
+    if(checkSection == "sessionExpired"){
+      this.router.navigate(['/']);            
+    }
 
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers, withCredentials: true});
 
-    return this._http.post("http://server.hms.com/api/access_menu", Data, options)
+    return this._http.post(ENV.Request_URL+"/api/access_menu", Data, options)
     .map(this.extractData)
     .catch(this.handleError);
   }   
   Updatedata(FormData){
-    var ed = new Date();
-    var time=ed.getHours();
-    console.log(time);
-    this.cal = localStorage.getItem("keyTime");
-     if(time - this.cal== 1){
-         this.router.navigate(['/']);  
-     }else{
-        localStorage.setItem("keyTime", JSON.stringify(time))
-     }
+    let checkSection = ENV.setSection()
+    if(checkSection == "sessionExpired"){
+      this.router.navigate(['/']);            
+    }
 
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers, withCredentials: true});
     let id =  FormData.id;
     console.log(id);
-    return this._http.post("http://server.hms.com/api/edituser/"+id, FormData, options)
+    return this._http.post(ENV.Request_URL+"/api/edituser/"+id, FormData, options)
     .map(this.extractData)
     .catch(this.handleError);
   }
   DeleteUser(id){
-    var ed = new Date();
-    var time=ed.getHours();
-    console.log(time);
-    this.cal = localStorage.getItem("keyTime");
-     if(time - this.cal== 1){
-         this.router.navigate(['/']);  
-     }else{
-        localStorage.setItem("keyTime", JSON.stringify(time))
-     }
+    let checkSection = ENV.setSection()
+    if(checkSection == "sessionExpired"){
+      this.router.navigate(['/']);            
+    }
      
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers, withCredentials: true});
 
-    return this._http.post("http://server.hms.com/api/deleteuser/"+id,options)
+    return this._http.post(ENV.Request_URL+"/api/deleteuser/"+id,options)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
+
+  EditMenu(menus: any): Observable<any>{
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers,withCredentials: true});
+
+    return this._http.post(ENV.Request_URL+"/api/editmenu", menus)
     .map(this.extractData)
     .catch(this.handleError);
   }

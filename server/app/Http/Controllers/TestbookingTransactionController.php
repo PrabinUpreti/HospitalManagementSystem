@@ -46,7 +46,20 @@ class TestbookingTransactionController extends Controller
         $plParticuler = $request->input('pl_particular');
         $BackedMoney = $request->input('MoneyBack');
         $storedInInvoice = $request->input('updateInvoiceId');
+        $print = $request->input('print');
         // return $BackedMoney;
+        if($discountPer >0){
+            $DiscountPer = $discountPer;
+        }
+        else{
+            $DiscountPer = 0;
+        }
+        if($discountAmount>0){
+            $DiscountAmount = $discountAmount;
+        }
+        else{
+            $DiscountAmount = 0;
+        }
         
         DB::table('invoices')
             ->where('id', '=', $storedInInvoice)
@@ -55,8 +68,8 @@ class TestbookingTransactionController extends Controller
             'particular'=>$invParticuler,
             'cash'=>$cash,
             'balance'=>$invoiceBalance,
-            'discount_amount'=>$discountAmount,
-            'discount_percentage'=>$discountPer,
+            'discount_amount'=>$DiscountAmount,
+            'discount_percentage'=>$DiscountPer,
             'remark'=>$invoiceremark,
             // 'total'=>$total,
         ]);
@@ -72,10 +85,27 @@ class TestbookingTransactionController extends Controller
             'backed_money'=>$BackedMoney,
             'balance'=>$balance,
             'remark'=>$remark,
+            'print'=>$print,
         ]);
 
         return response()->Json([
             'status'=>"Successufally Stored"
         ]);
     }
+    public function InvoiceDetial($id){
+        // $invoice=Invoice::join('invoices','testbookings.id','=','invoices.testbooking_id')
+        //                   ->where('testbooking_id',$id)
+        //                   ->orderBy('created_at', 'desc')
+        //                   ->get();
+        //   return $invoice;
+        // $invoiceId = DB::table('patient_ladgers')->latest();
+        // return $invoiceId;
+        $invoice=DB::table('patient_ladgers')
+                ->leftJoin('invoices', 'invoices.id', '=', 'patient_ladgers.invoice_id' )
+                ->where('patient_ladgers.patient_id', $id )
+                ->select("invoices.*")
+                ->orderBy('created_at','desc')
+                ->get();
+                return $invoice;
+              }
 }

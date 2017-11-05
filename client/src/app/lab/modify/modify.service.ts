@@ -2,41 +2,55 @@ import { Injectable } from '@angular/core';
 
 import {Http, Response ,Headers, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
+import { Router } from '@angular/router';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
+import  { ENV } from "../../env";
 
 @Injectable()
 export class ModifyService {
 
-  constructor(private department:Http, private TestType:Http, private Test:Http) { }
+  constructor(private department:Http, private TestType:Http, private Test:Http, private router:Router) { }
 
 
   //THIS IS FOR DEPARTMENT 
 
 
   pushDepartment(departmentData){
+          let checkSection = ENV.setSection()
+          if(checkSection == "sessionExpired"){
+            this.router.navigate(['/']);            
+          }
     
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
-    return this.department.post("http://server.hms.com/api/modify", departmentData, options)
+    return this.department.post(ENV.Request_URL+"/api/modify", departmentData, options)
     .map(this.extractData)
     .catch(this.handleError)
     .retry(10);
   }
   getDepartment(){
+          let checkSection = ENV.setSection()
+          if(checkSection == "sessionExpired"){
+            this.router.navigate(['/']);            
+          }
     
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
-    return this.department.get("http://server.hms.com/api/modify", options)
+    return this.department.get(ENV.Request_URL+"/api/modify", options)
     .map(this.extractData)
     .catch(this.handleError)
     .retry(10);
   }
 
   updateDepartment(finalData){
+          let checkSection = ENV.setSection()
+          if(checkSection == "sessionExpired"){
+            this.router.navigate(['/']);            
+          }
     let id = finalData.id;
-    let url = "http://server.hms.com/api/modify/"+id;
+    let url = ENV.Request_URL+"/api/modify/"+id;
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.department.put(url, finalData, options)
@@ -46,7 +60,11 @@ export class ModifyService {
   }
   
   deleteDepartment(id){
-    let url = "http://server.hms.com/api/modify/"+id;
+          let checkSection = ENV.setSection()
+          if(checkSection == "sessionExpired"){
+            this.router.navigate(['/']);            
+          }
+    let url = ENV.Request_URL+"/api/modify/"+id;
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.department.delete(url, options)
@@ -61,16 +79,24 @@ export class ModifyService {
 
 
   pushTestType(TestTypeData){
+          let checkSection = ENV.setSection()
+          if(checkSection == "sessionExpired"){
+            this.router.navigate(['/']);            
+          }
     
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers, withCredentials: true});
-    return this.TestType.post("http://server.hms.com/api/testtype", TestTypeData, options)
+    return this.TestType.post(ENV.Request_URL+"/api/testtype", TestTypeData, options)
     .map(this.extractData)
     .catch(this.handleError)
     .retry(10);
   }
   getTestType(id){
-    let url = "http://server.hms.com/api/testtype/"+id;
+          let checkSection = ENV.setSection()
+          if(checkSection == "sessionExpired"){
+            this.router.navigate(['/']);            
+          }
+    let url = ENV.Request_URL+"/api/testtype/"+id;
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.TestType.get(url, options)
@@ -80,9 +106,13 @@ export class ModifyService {
   }
 
   updateTestType(finalData){
+          let checkSection = ENV.setSection()
+          if(checkSection == "sessionExpired"){
+            this.router.navigate(['/']);            
+          }
     let id = finalData.id;
     console.log(id);
-    let url = "http://server.hms.com/api/testtype/"+id;
+    let url = ENV.Request_URL+"/api/testtype/"+id;
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.TestType.put(url, finalData, options)
@@ -92,7 +122,11 @@ export class ModifyService {
   }
   
   deleteTestType(id){
-    let url = "http://server.hms.com/api/testtype/"+id;
+          let checkSection = ENV.setSection()
+          if(checkSection == "sessionExpired"){
+            this.router.navigate(['/']);            
+          }
+    let url = ENV.Request_URL+"/api/testtype/"+id;
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.TestType.delete(url, options)
@@ -108,17 +142,25 @@ export class ModifyService {
 
 
   pushTest(TestData){
+          let checkSection = ENV.setSection()
+          if(checkSection == "sessionExpired"){
+            this.router.navigate(['/']);            
+          }
     
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
-    return this.Test.post("http://server.hms.com/api/test", TestData, options)
+    return this.Test.post(ENV.Request_URL+"/api/test", TestData, options)
     .map(this.extractData)
     .catch(this.handleError)
     .retry(10);
   }
   getTest(id){
+          let checkSection = ENV.setSection()
+          if(checkSection == "sessionExpired"){
+            this.router.navigate(['/']);            
+          }
     console.log("This is Id" + id);
-    let url = "http://server.hms.com/api/test/"+id;   
+    let url = ENV.Request_URL+"/api/test/"+id;   
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.Test.get(url, options)
@@ -128,8 +170,12 @@ export class ModifyService {
   }
 
   updateTest(finalData){
+          let checkSection = ENV.setSection()
+          if(checkSection == "sessionExpired"){
+            this.router.navigate(['/']);            
+          }
     let id = finalData.id;
-    let url = "http://server.hms.com/api/test/"+id;
+    let url = ENV.Request_URL+"/api/test/"+id;
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.Test.put(url, finalData, options)
@@ -139,7 +185,11 @@ export class ModifyService {
   }
   
   deleteTest(id){
-    let url = "http://server.hms.com/api/test/"+id;
+          let checkSection = ENV.setSection()
+          if(checkSection == "sessionExpired"){
+            this.router.navigate(['/']);            
+          }
+    let url = ENV.Request_URL+"/api/test/"+id;
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.Test.delete(url, options)
@@ -150,7 +200,11 @@ export class ModifyService {
 
 
   testDetails(testDetails){
-    let url = "http://server.hms.com/api/testdetails";
+          let checkSection = ENV.setSection()
+          if(checkSection == "sessionExpired"){
+            this.router.navigate(['/']);            
+          }
+    let url = ENV.Request_URL+"/api/testdetails";
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.Test.post(url,testDetails,options)
@@ -159,8 +213,12 @@ export class ModifyService {
     .retry(10);
   }
   getTestDetails(id){
+          let checkSection = ENV.setSection()
+          if(checkSection == "sessionExpired"){
+            this.router.navigate(['/']);            
+          }
     console.log(id);
-    let url = "http://server.hms.com/api/testdetails/"+id;
+    let url = ENV.Request_URL+"/api/testdetails/"+id;
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.Test.get(url,options)
@@ -170,8 +228,12 @@ export class ModifyService {
   }
 
   testDetailsEdit(testDetails){
+          let checkSection = ENV.setSection()
+          if(checkSection == "sessionExpired"){
+            this.router.navigate(['/']);            
+          }
     console.log(testDetails)
-    let url = "http://server.hms.com/api/testdetails/"+testDetails.id;
+    let url = ENV.Request_URL+"/api/testdetails/"+testDetails.id;
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.Test.put(url,testDetails,options)
@@ -181,7 +243,11 @@ export class ModifyService {
   }
 
   deleteTestDetials(id){
-    let url = "http://server.hms.com/api/testdetails/"+id;
+          let checkSection = ENV.setSection()
+          if(checkSection == "sessionExpired"){
+            this.router.navigate(['/']);            
+          }
+    let url = ENV.Request_URL+"/api/testdetails/"+id;
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.TestType.delete(url, options)
@@ -191,19 +257,27 @@ export class ModifyService {
   }
 
   getDoctorList(){
+          let checkSection = ENV.setSection()
+          if(checkSection == "sessionExpired"){
+            this.router.navigate(['/']);            
+          }
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: false});
-    return this.department.get("http://server.hms.com/api/doctor", options)
+    return this.department.get(ENV.Request_URL+"/api/doctor", options)
     .map(this.extractData)
     .catch(this.handleError)
     .retry(10);    
   }
 
   putDoctor(id){
+          let checkSection = ENV.setSection()
+          if(checkSection == "sessionExpired"){
+            this.router.navigate(['/']);            
+          }
     console.log(id);
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
-    return this.department.post("http://server.hms.com/api/doctor",id, options)
+    return this.department.post(ENV.Request_URL+"/api/doctor",id, options)
     .map(this.extractData)
     .catch(this.handleError)
     .retry(10);     
@@ -211,7 +285,11 @@ export class ModifyService {
 
 
   commoncodes(){
-    let url = "http://server.hms.com/api/commoncodes";
+          let checkSection = ENV.setSection()
+          if(checkSection == "sessionExpired"){
+            this.router.navigate(['/']);            
+          }
+    let url = ENV.Request_URL+"/api/commoncodes";
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.department.get(url, options)
@@ -225,7 +303,11 @@ export class ModifyService {
   //THIS IS TO GET PATIENT DATA
 
   getPatient(id){
-    let url = "http://server.hms.com/api/getPatientData/"+id;
+          let checkSection = ENV.setSection()
+          if(checkSection == "sessionExpired"){
+            this.router.navigate(['/']);            
+          }
+    let url = ENV.Request_URL+"/api/getPatientData/"+id;
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.department.get(url, options)
@@ -235,7 +317,11 @@ export class ModifyService {
   }
 
   getAllPatient(){
-    let url = "http://server.hms.com/api/getPatientData";
+          let checkSection = ENV.setSection()
+          if(checkSection == "sessionExpired"){
+            this.router.navigate(['/']);            
+          }
+    let url = ENV.Request_URL+"/api/getPatientData";
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.department.get(url, options)
@@ -245,7 +331,11 @@ export class ModifyService {
   }
 
   getpatientFromDate(param){
-    let url = "http://server.hms.com/api/getpatientFromDate";
+          let checkSection = ENV.setSection()
+          if(checkSection == "sessionExpired"){
+            this.router.navigate(['/']);            
+          }
+    let url = ENV.Request_URL+"/api/getpatientFromDate";
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.department.post(url, param, options)
@@ -255,7 +345,11 @@ export class ModifyService {
   }
 
   deletePatient(id){
-    let url = "http://server.hms.com/api/getPatientData/"+id;
+          let checkSection = ENV.setSection()
+          if(checkSection == "sessionExpired"){
+            this.router.navigate(['/']);            
+          }
+    let url = ENV.Request_URL+"/api/getPatientData/"+id;
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.department.delete(url, options)
@@ -265,9 +359,13 @@ export class ModifyService {
   }
 
   updatePatient(param){
+          let checkSection = ENV.setSection()
+          if(checkSection == "sessionExpired"){
+            this.router.navigate(['/']);            
+          }
     console.log(param)
     let id = param.id;
-    let url = "http://server.hms.com/api/getPatientData/"+id;
+    let url = ENV.Request_URL+"/api/getPatientData/"+id;
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.department.put(url, param, options)
@@ -277,9 +375,13 @@ export class ModifyService {
   }
 
   editDoctor(param){
+          let checkSection = ENV.setSection()
+          if(checkSection == "sessionExpired"){
+            this.router.navigate(['/']);            
+          }
     console.log(param)
     let id = param.editableId;
-    let url = "http://server.hms.com/api/doctor/"+id;
+    let url = ENV.Request_URL+"/api/doctor/"+id;
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.department.put(url, param, options)
@@ -289,14 +391,29 @@ export class ModifyService {
   }
 
   deleteDoctor(id){
+          let checkSection = ENV.setSection()
+          if(checkSection == "sessionExpired"){
+            this.router.navigate(['/']);            
+          }
     console.log(id)
-    let url = "http://server.hms.com/api/doctor/"+id;
+    let url = ENV.Request_URL+"/api/doctor/"+id;
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.department.delete(url, options)
     .map(this.extractData)
     .catch(this.handleError)
     .retry(3);    
+  }
+  searchpatientbyName(id){
+          let checkSection = ENV.setSection()
+          if(checkSection == "sessionExpired"){
+            this.router.navigate(['/']);            
+          }
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers, withCredentials: true });
+    return this.department.get(ENV.Request_URL+"/api/search-by-name/"+id, options)
+      .map(this.extractData)
+      .catch(this.handleError);    
   }
 
 

@@ -25,6 +25,7 @@
     "core-js": "^2.4.1",
     "inputmask": "^3.3.9",
     "mydaterangepicker": "^4.1.9",
+    "ng2-search-filter": "^0.3.1",
     "rxjs": "^5.4.1",
     "zone.js": "^0.8.14"
   },

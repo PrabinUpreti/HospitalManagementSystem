@@ -6,6 +6,15 @@ body{
         -ms-user-select: none;
             user-select: none;
 }
+/* @font-face {
+    font-family: myFirstFont;
+    src: url(assets/);
+} */
+
+div {
+    font-family: RobotoCondensed-Regular;
+}
+
 div, input, button, select{
     border-radius: 0px !important;
 }

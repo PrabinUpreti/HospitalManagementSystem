@@ -25,7 +25,7 @@ class ReportController extends Controller
     public function ReportData(){
         $datas =patient::join('testbookings','patients.id','=','testbookings.patient_id')
                         ->join('reports','testbookings.id', '=', 'reports.testbooking_id')
-                        ->orderBy('testbooking_id', 'asc')
+                        ->orderBy('testbooking_id', 'desc')
                         ->get();
                           return response()->json(['datas'=>$datas]);    
      }
@@ -38,9 +38,9 @@ class ReportController extends Controller
                           ->join('test_types','test_types.id','=','tests.test_type_id') 
                           ->join('departments','departments.id','=','test_types.department_id')
                           ->join('doctor_lists','doctor_lists.id','=','testbookings.doctor_list_id')
-                          ->orderBy('reports.testbooking_id', 'asc')
+                          ->orderBy('reports.testbooking_id', 'desc')
                           ->where('testbooking_id', $id)
-                          ->select('patients.*','patients.id as patients_id','patients.gender as patient_gender','departments.name as department_name','test_types.name as test_type_name','reports.id as report_id','reports.*','reports.id as reports_id','test_details.*','tests.name as test_name','doctor_lists.name as doctor_name')
+                          ->select('patients.*','patients.id as patients_id','patients.gender as patient_gender','departments.name as department_name','test_types.name as test_type_name','reports.id as report_id','reports.*','reports.id as reports_id','test_details.*','tests.name as test_name','doctor_lists.name as doctor_name','doctor_lists.prefix')
                           ->get();
                           return response()->json(['datas'=>$datas]);
     }

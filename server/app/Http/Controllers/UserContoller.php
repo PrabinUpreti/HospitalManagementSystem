@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 use App\User;
+use App\Access_menu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 class UserContoller extends Controller
 {
     public function userdata(){
-        $user = DB::table('users')->get();
+        $user = User::with('access')->get();
         return response()->json(['user'=>$user]);
     }
     
@@ -32,17 +33,21 @@ class UserContoller extends Controller
   public function EditUser(Request $request, $id){
         $name = $request->input('User_name');
         $email =   $request->input('email');
+        $status = $request->input('status');
         User::where('id',$id)->update(array(
             'name' =>  $name,
-            'email' =>  $email
+            'email' =>  $email,
+            'status'=> $status
             ));
             return response()->json([
                 'name' => $name,
-                'email' => $email
+                'email' => $email,
+                'status'=> $status
             ]);
     }
 
     public function DeleteUser($id){
+        Access_menu::where('user_id',$id)->delete();
         User::find($id)->delete();
         return($id);
     }

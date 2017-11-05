@@ -38,8 +38,37 @@ export class ViewTransactionComponent implements OnInit {
   public patientAllLedgers = []
   public patientAllLedgersChk = false
   public myForm: FormGroup;
+  public searchByName:FormControl;
 
   ngOnInit() {
+
+    
+this.searchByName = new FormControl()
+this.searchByName.valueChanges
+.debounceTime(400)
+.distinctUntilChanged()
+.subscribe(term => {
+  if(term.length>0){
+    this.transactionService.searchpatientbyName(term)
+    .subscribe((response)=>{
+      if(response){
+        this.patientLists = response;
+      }
+
+    },(error)=>{
+
+    });
+  }
+  else{
+    this.transactionService.getpatient()
+    .subscribe(
+      (response)=>{
+        this.patientLists = response;
+      },(error)=>{
+        console.log("There is error in server");
+      })
+  }
+});
 
     // let date =  new Date();
     // let endyear = date.getFullYear()
@@ -180,6 +209,7 @@ getAllPatientLedger(id){
       console.log("Hey! There is error in server my darling");
     })
 }
+
 
   
 activeInvoice(id){

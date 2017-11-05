@@ -9,6 +9,7 @@ import { Observable } from 'rxjs/Observable';
 import { BrowserModule } from '@angular/platform-browser';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import 'rxjs/Rx';
+import { ENV } from "../../env";
 
 @Component({
   selector: 'app-transaction',
@@ -44,6 +45,7 @@ export class TransactionComponent implements OnInit, OnDestroy {
   public Searchnotify;
   public transactionData: FormGroup;
   public drOrCr;
+  public copyRecipt = false;
   // public processCash : FormControl;
   // public processDiscount : FormControl;
   // public processDiscountPer : FormControl;
@@ -59,10 +61,35 @@ export class TransactionComponent implements OnInit, OnDestroy {
   public discountedAmount;
   public globleParam;
   public patientAddress;
+  public discountExist = false;
+  public printDrOrCr;
+  public globleTotalAmount;
   // public tempGlobleVar;
   // public tempCashGlobleVar;
 
+
+
+  public hospitalName;
+  public panNumber;
+  public hospitalAddress;
+  public hospitalRegNo;
+  public hospitalNumber;
+  public PrintedDate;
+
   ngOnInit() {
+
+
+    this.hospitalName = ENV.hospital;
+    this.panNumber = ENV.pan_Numner;
+    this.hospitalAddress = ENV.address;
+    this.hospitalRegNo = ENV.RegNo;
+    this.hospitalNumber = ENV.phone_number;
+    let date = new Date();
+    let year= date.getFullYear();
+    let month= date.getMonth();
+    let day= date.getDate();
+    this.PrintedDate = year+'-'+month+'-'+day;
+    
     // this.SearchPayment = new FormGroup({
     //   Search_name:new FormControl('', Validators.required)
     // })
@@ -178,6 +205,8 @@ export class TransactionComponent implements OnInit, OnDestroy {
     this.discountedAmount = discountAmount;
     if (this.drOrCr == "cr") {
       this.sum = this.globleSum;
+      this.UseForCredit = true;
+      this.totalAmt = checksum;
     }
     else if(!this.drOrCr){
       this.returnableAmt = -checksum;
@@ -205,6 +234,11 @@ export class TransactionComponent implements OnInit, OnDestroy {
         this.tempDrOrCr = '';
       }
     }
+    if(!this.globleTotalAmount){
+      this.globleTotalAmount = this.totalAmt;
+      this.printDrOrCr = this.tempDrOrCr;
+    }
+
   }
 
 
@@ -404,7 +438,28 @@ export class TransactionComponent implements OnInit, OnDestroy {
           this.globleSum = this.sum;
           this.totalAmt = this.sum;
           this.returnableAmt = 0;
+
+          if(response[response.length-1].discount_amount > 0){
+            console.log('disamount',response[response.length-1].discount_amount)
+            // this.transactionData.controls.checkDiscount.setValue('0')
+            // this.transactionData.controls.discountcheck.setValue(response[response.length-1].discount_amount)
+            this.discountExist=true;
+            // this.globleParam = this.sum;
+            // this.totalAmt = this.
+            // this.globleSum = response[response.length-2].balance;
+          }
+          if(response[response.length-1].discount_percentage >0){
+            console.log('disper',response[response.length-1].discount_percentage)
+            // this.transactionData.controls.checkDiscount.setValue('1')
+            // this.transactionData.controls.discountcheck.setValue(response[response.length-1].discount_percentage)
+            this.discountExist = true;
+            console.log('disper',this.transactionData.controls.discountcheck.value)
+          }
           // console.log(this.sum)
+        }
+
+        if(response[response.length-1].print == 1){
+          this.copyRecipt ==true;
         }
         // for (let i in response) {
         // console.log(response[i].age_group);
@@ -452,6 +507,7 @@ export class TransactionComponent implements OnInit, OnDestroy {
     allData['dr'] = 0;
     allData['cash'] = 0;
     allData['balance'] = 0;
+    allData['print'] = 1;
 
     if(this.tempDrOrCr =='cr'){
       if(this.transactionData.controls.cash.value){
@@ -598,9 +654,17 @@ export class TransactionComponent implements OnInit, OnDestroy {
           padding: 5px;
           text-align: left;
         }
+        .bodyBg {
+          background-image: url("/assets/img/copy.png");
+          background-repeat: no-repeat;
+          background-position: center; 
+          background-size: contain;
+          opacity: 0.3;
+          filter: alpha(opacity=30);
+      }
       </style>
         </head>
-              <body onload="window.print();window.close()">${printContent}
+              <body [ngClass]="{'bodyBg':copyRecipt ==true}" onload="window.print();window.close()">${printContent}
         </body>
     </html>`
  );

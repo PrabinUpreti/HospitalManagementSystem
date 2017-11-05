@@ -9,26 +9,19 @@ import  { ENV } from "../../env";
 
 @Injectable()
 export class ReportService {
-  private time;
-  private meantime;
-  private timecal;
-  private cal;
 constructor(private _http: Http, private router:Router) { }
 
 getReportData(id){
-        var ed = new Date();
-        var time=ed.getHours();
-        this.cal = localStorage.getItem("keyTime");
-         if(time - this.cal== 1){
-             this.router.navigate(['/']);  
-         }else{
-            localStorage.setItem("keyTime", JSON.stringify(time))
-         }
+
+        let checkSection = ENV.setSection()
+        if(checkSection == "sessionExpired"){
+          this.router.navigate(['/']);            
+        }
 
         let headers =new Headers({'Content-type':'application/json'});
         let option = new RequestOptions({headers: headers, withCredentials: true});
 
-        return this._http.get("http://server.hms.com/api/report/"+id, option)
+        return this._http.get(ENV.Request_URL+"/api/report/"+id, option)
         .map((res: Response) => {
           return res.json();
         })
@@ -37,16 +30,12 @@ getReportData(id){
       });
 }
 getReport(){
-        var ed = new Date();
-        var time=ed.getHours();
-        this.cal = localStorage.getItem("keyTime");
-          if(time - this.cal == 1){
-              this.router.navigate(['/']);  
-          }else{
-            localStorage.setItem("keyTime", JSON.stringify(time))
-          }
+  let checkSection = ENV.setSection()
+  if(checkSection == "sessionExpired"){
+    this.router.navigate(['/']);            
+  }
 
-        return this._http.get("http://server.hms.com/api/reportdata")
+        return this._http.get(ENV.Request_URL+"/api/reportdata")
         .map((res: Response) => {
           return res.json();
         })
@@ -58,16 +47,12 @@ getReport(){
 getData(paramData){
           let headers =new Headers({'Content-type':'application/json'});
           let option = new RequestOptions({headers: headers, withCredentials: true});
-          var ed = new Date();
-          var time=ed.getHours();
-          this.cal = localStorage.getItem("keyTime");
-           if(time - this.cal== 1){
-               this.router.navigate(['/']);  
-           }else{
-              localStorage.setItem("keyTime", JSON.stringify(time))
-           }
+          let checkSection = ENV.setSection()
+          if(checkSection == "sessionExpired"){
+            this.router.navigate(['/']);            
+          }
           
-           return this._http.post("http://server.hms.com/api/reports", paramData , option)
+           return this._http.post(ENV.Request_URL+"/api/reports", paramData , option)
           .map(this.extractData)
           .catch(this.handleError);
             }
@@ -78,4 +63,10 @@ getData(paramData){
           private handleError(error: Response | any){
           return Observable.throw(error);
           }
+          getInvoice(testbooking_id: any): Observable<any>{
+            let headers = new Headers({'Content-Type': 'application/json'});
+            let options = new RequestOptions({headers: headers,withCredentials: true});
+            return this._http.get(ENV.Request_URL+"/api/getinvoice/"+testbooking_id, options)
+           .map(this.extractData)
+         }
     }

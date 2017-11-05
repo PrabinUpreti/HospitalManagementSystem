@@ -6,9 +6,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   styleUrls: ['./reports-form.component.css']
 })
 export class ReportsFormComponent implements OnInit {
-  @Input() set inputgetReportvalue(id){
-    this.getpatientData(id)
-  }
+
   @Input() set inputpatientData(patients){
     this.getpatients(patients)
   }
@@ -32,12 +30,11 @@ private alive =false
 
   ngOnInit() {
   }
-  getpatientData(id){
-     // console.log(id)
-}
+ 
  getpatients(patients){
    console.log(patients)
-   if(patients === undefined) return 0
+   if(patients != undefined){
+     if(patients.length > 0){
   //  this.alive =true;
    this.patientData.controls.patient_ID.setValue(patients[0].reg_no);
    this.patientData.controls.patient_name.setValue(patients[0].patient_name);
@@ -49,5 +46,7 @@ private alive =false
    this.patientData.controls.patient_email.setValue(patients[0].email);
    this.patientData.controls.patient_reffered.setValue(patients[0].doctor_name);
    this.patientData.controls.patient_nationality.setValue(patients[0].nationality);
+     }
+  }
   }
 }

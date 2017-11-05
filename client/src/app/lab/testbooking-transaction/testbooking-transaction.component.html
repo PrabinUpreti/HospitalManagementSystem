@@ -59,7 +59,7 @@
     </div>
   </div>
 </div> -->
-<div *ngIf="activepaymentForm && !activePayment" class="col-sm-8">
+<div style="margin:20px; padding:25px 0 0 50px;" *ngIf="activepaymentForm && !activePayment" class="col-sm-8">
 
   <div class="form-group">
     <label class="control-label col-sm-6" for="email"> Patient ID: </label>
@@ -92,7 +92,7 @@
   <div class="form-group">
       <label class="control-label col-sm-6" for="email"> Sub Total Amount: </label>
       <div class="col-sm-6">
-        <p class="form-control-static">Rs {{sum}} /- &nbsp;&nbsp;&nbsp;&nbsp; <i style="cursor:pointer;" (click)="showTestList()" class="fa fa-eye" aria-hidden="true"></i></p>
+        <p class="form-control-static">Rs {{globleSum}} /- &nbsp;&nbsp;&nbsp;&nbsp; <i style="cursor:pointer;" (click)="showTestList()" class="fa fa-eye" aria-hidden="true"></i></p>
       </div>
     </div>
 
@@ -101,7 +101,7 @@
   <div class="form-group">
     <label class="control-label col-sm-6" for="email"> Previous Amount: </label>
     <div class="col-sm-6">
-      <p class="form-control-static" [ngClass] = "{'text-danger': drOrCr == 'dr','text-success':drOrCr == 'cr'}">Rs {{previousAmount}} /- {{drOrCr | uppercase}}</p>
+      <p class="form-control-static" [ngClass] = "{'text-danger': drOrCr == 'dr','text-success':drOrCr == 'cr'}">Rs {{globlepreviousAmount}} /- {{drOrCr | uppercase}}</p>
     </div>
   </div>
 
@@ -254,9 +254,12 @@
 
     <div  id = "testbookingTransaction" style="padding: 0px; display: none;">
         <div style="font-size: 15px; padding: 50px;">
-          <div style="font-size: 30px; text-align: center">Hetauda Hospital</div>
-          <div style="text-align: center">Hetauda,Makwanpur</div>
-          <div style="float: right">Date: {{registeredDate}}</div>
+          <div style="font-size: 30px; text-align: center">{{hospitalName}}</div>
+          <div style="text-align: center">{{hospitalAddress}}</div>
+          <div style="text-align: center">Phone: {{hospitalNumber}}</div>
+          <div style="text-align: center">Pan Number: {{panNumber}}</div>
+          <div style="text-align: center">Reg Number: {{hospitalRegNo}}</div>
+          <div style="float: right">Date: {{PrintedDate}}</div>
           <div style="float: left">Patient Name: {{patientName}}</div><br>
           <div style="float: left">Patient Address: {{patientAddress}}</div>
         </div><hr>
@@ -283,7 +286,7 @@
             <tr>
               <td>Total Amount</td>
               <!-- <td>===> </td> -->
-              <td>Rs {{totalAmt}} /-</td>
+              <td>Rs {{globleTotalAmount}} /- {{printDrOrCr | uppercase}}</td>
             </tr>
             <tr>
               <td>Cash</td>

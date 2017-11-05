@@ -13,8 +13,11 @@
 	padding-left: 8px;
 	padding-right: 8px;
 }
-.input-sm, .form-control{
+/* .input-sm, .form-control{
 	height: 27px;
+} */
+.btn{
+	padding: 2px 8px;
 }
 .form-control{
 	font-size: 12px;
@@ -33,28 +36,31 @@ form{
 
 #error-container {
 	position: fixed;
-	z-index: 999;
-	bottom: 77px;
-	right: 10px;
-	box-shadow: 5px 5px 5px #888888;
+	z-index: 9999999;
+	top: 2px;
+	right: 125px;
+	box-shadow: 2px 2px 2px #333;
 }
 .alert {
-    padding: 15px;
+    padding: 5px;
     margin-bottom: 0px;
     border: 1px solid transparent;
 	border-radius: 4px;
 }
 span{
+	padding: 0px;
 	padding-right: 15px;
+	font-weight: bold;
 }
 
 #search-container{
-	border-top: 1px solid #17a2b8;
+	border: 1px solid #17a2b8;
+	border-bottom: 0px;
 	position: fixed;
 	z-index: 888;
 	top: 40px;
 	bottom: 10px;
 	right: 15px;
 	background-color: white;
-	box-shadow: 5px 5px 5px #888888;
+	/* box-shadow: 1px 5px 5px #888888; */
 }

@@ -1,21 +1,27 @@
 
-<!-- <div class="ready_botton">
-    <button>Ready</button>
-    <button>Not Ready</button>
-    <input type="text" placeholder="Search"> 
-</div> 
-<div class="ready_table"> 
-        <table>
-              <tbody>
-                <tr *ngFor="let patient of patients?.reports"  [hidden]="patient.result==ready">
-                  <td style="cursor:pointer;">{{patient.result}}</td>
-                </tr>
-             </tbody>
-      </table>
- </div> -->
-<div style="background-color:#f5f5f5;"> 
-    <ul class="nav nav-tabs">
-            <li><a (click)=ready()>Ready</a></li>
-            <li><a (click)=notready()>Not-Ready</a></li>
-    </ul>
-</div>
+  <!-- <div class="ready_botton">
+      <button>Ready</button>
+      <button>Not Ready</button>
+      <input type="text" placeholder="Search"> 
+  </div> 
+  <div class="ready_table"> 
+          <table>
+                <tbody>
+                  <tr *ngFor="let patient of patients?.reports"  [hidden]="patient.result==ready">
+                    <td style="cursor:pointer;">{{patient.result}}</td>
+                  </tr>
+              </tbody>
+        </table>
+  </div> -->
+  <div style="background-color:#f5f5f5;"> 
+          <form [formGroup]="myForm" (ngSubmit) = "timeRange()" novalidate>
+                  <my-date-range-picker name="mydaterange" [options]="myDateRangePickerOptions" formControlName="myDateRange">
+                  </my-date-range-picker>
+                <button type="submit" class="form-control" class="btn btn-default col-xs-2">Set</button>
+            </form>
+      <ul class="nav nav-tabs">
+              <li   [ngClass] = "{'active' : setclass == 1}"><a  (click)=ready()>Ready</a></li>
+              <li   [ngClass] = "{'active' : setclass == 0}"><a  (click)=notready()>Not-Ready</a></li>
+      </ul>
+  </div>
+  <!-- [ngClass] = "{'active' : setclass == i}" -->

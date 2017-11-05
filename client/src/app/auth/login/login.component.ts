@@ -14,6 +14,10 @@
           public loginForm: FormGroup;
         public timevalue;
         public usernice:any;
+        public  login=false;
+        public  Login="Login";
+        public Notify = false;
+        public notify;
         constructor(private loginservice: LoginService, private fb: FormBuilder,private router:Router) {
               this.loginForm = fb.group({
                   'email': [null, Validators.required],
@@ -25,6 +29,9 @@
          
         }
         public submitForm():void{
+            if(this.loginForm.valid){
+                this.Login="Login...."
+                this.login= true;
             var e_username = this.loginForm.controls.email.value;
             var e_password = this.loginForm.controls.password.value;
             let postData = this.loginForm.value;
@@ -42,6 +49,10 @@
                     this.loginservice.Userdata(response.access_token).subscribe(
                       response=>{
                       console.log(response)
+                      this.login=false;
+                      this.Login="Login"
+                      this.Notify=true;
+                      this.notify=" User Logged In "
                       var id;
                       for(let x in response.user){
                          if(response.user[x].email === e_username){
@@ -60,7 +71,7 @@
 
                              UserService.setLoggedInStatus(true)
                              this.loginForm.reset()
-                             this.router.navigate(['/lab']);
+                             this.router.navigate(['/lab/dashboard']);
                            }
                          )
                       })
@@ -69,8 +80,13 @@
                     // this.router.navigate(['/lab']);
                   }
                 },
-                error=>{
-                  (error)= 'crendential didnt match';
-              }); 
-            }  
-        }
+               (error)=>{
+                  this.login=false;
+                  this.Login="Login";
+                  this.Notify=true;
+                  this.notify="Please! Insert Valid Credential";
+                 }
+              ); 
+          } 
+       } 
+   }

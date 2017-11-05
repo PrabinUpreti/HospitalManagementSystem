@@ -59,7 +59,8 @@ import { TestbookingTransactionComponent } from './testbooking-transaction/testb
 import { RedirectJunctionComponent } from './redirect-junction/redirect-junction.component';
 import { DoctorReportComponent } from './doctor-report/doctor-report.component';
 import { ReportTransactionComponent } from './report-transaction/report-transaction.component';
-
+// import { MyDateRangePickerModule } from 'mydaterangepicker';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 @NgModule({
   imports: [
@@ -67,7 +68,8 @@ import { ReportTransactionComponent } from './report-transaction/report-transact
     FormsModule,
     ReactiveFormsModule,
 	UsersRouting,
-	MyDateRangePickerModule
+	MyDateRangePickerModule,
+	Ng2SearchPipeModule
   ],
   declarations: [
   					// MainMenuComponent,

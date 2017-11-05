@@ -229,7 +229,9 @@ export class DoctorComponent implements OnInit {
     }
     else {
       if (!this.editId) {
-        this.modifyService.putDoctor(this.DoctorForm.value).subscribe(
+        let paramData = this.DoctorForm.value;
+        paramData['email'] = this.DoctorForm.controls.email.value.toLowerCase();
+        this.modifyService.putDoctor(paramData).subscribe(
           (response) => {
             console.log(response);
             this.doctorDatas.splice(0, 0, response);

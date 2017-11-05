@@ -4,7 +4,7 @@ import { RequestOptions} from '@angular/http';
 import 'rxjs/add/operator/map';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
-import  { ENV } from "./../env";
+import  { ENV } from "../env";
 
 @Injectable()
 export class LoginService {
@@ -13,13 +13,15 @@ private meantime;
 private timecal;
 private cal;
 constructor(private _http: Http,private router:Router) {} 
-private oauthUrl = "http://server.hms.com/oauth/token";
-private usersUrl = "http://server.hms.com/api/user"
+private oauthUrl = ENV.Request_URL+"/oauth/token";
+private usersUrl = ENV.Request_URL+"/api/user"
 
 login(data: any): Observable<any>{
         var ed = new Date();
-        var time=ed.getHours();
-        localStorage.setItem("keyTime",JSON.stringify(time));
+        var hour=ed.getHours();
+        var minute=ed.getMinutes();
+        this.time=hour*60+minute;
+        localStorage.setItem("keyTime",JSON.stringify(this.time));
 
         var user_email=data.email;
         var user_password=data.password;
@@ -63,7 +65,7 @@ login(data: any): Observable<any>{
      let headers = new Headers({'Content-Type': 'application/json'});
      let options = new RequestOptions({headers: headers, withCredentials: true});
 
-     return this._http.get("http://server.hms.com/api/menubar/"+id, options)
+     return this._http.get(ENV.Request_URL+"/api/menubar/"+id, options)
     .map(this.extractData)
     .catch(this.handleError);
              } 
