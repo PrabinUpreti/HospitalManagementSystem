@@ -15,8 +15,8 @@ class CreateAccessMenusTable extends Migration
     {
         Schema::create('access_menus', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned();
             $table->integer('menu_id')->unsigned();
+            $table->integer('user_id')->unsigned();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->timestamps();

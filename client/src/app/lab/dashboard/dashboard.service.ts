@@ -24,7 +24,7 @@ export class DashboardService {
     return this.http.get(ENV.Request_URL+"/api/dashboard", options)
         .map(this.extractData)
         .catch(this.handleError)
-        .retry(10);
+        .retry(3);
 
   }
 

@@ -87,6 +87,31 @@ export class ViewTransactionService {
       .catch(this.handleError)
       .retry(3);
   }
+  getAllInvoices(param) {
+    let checkSection = ENV.setSection()
+    if (checkSection == "sessionExpired") {
+      this.router.navigate(['/']);
+    }
+    console.log(param)
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers, withCredentials: true });
+    return this.http.post(ENV.Request_URL + "/api/getAllInvoices", param, options)
+      .map(this.extractData)
+      .catch(this.handleError)
+      .retry(3);
+  }
+  updatePrint(id){
+    let checkSection = ENV.setSection()
+    if (checkSection == "sessionExpired") {
+      this.router.navigate(['/']);
+    }
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers, withCredentials: true });
+    return this.http.post(ENV.Request_URL + "/api/updatePrint", id, options)
+      .map(this.extractData)
+      .catch(this.handleError)
+      .retry(3);    
+  }
 
   private extractData(res: Response) {
     let response = res.json();

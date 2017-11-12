@@ -8,6 +8,17 @@
     </div>
   </div>
 </div>
+
+
+<div *ngIf="startLoading" class="loading">
+    <div class="loading-bar"></div>
+    <div class="loading-bar"></div>
+    <div class="loading-bar"></div>
+    <div class="loading-bar"></div>
+  </div>
+
+
+  
 <div class="row">
   <div class="col-sm-8 col-md-8 col-lg-8">
     <div class="panel panel-info">
@@ -63,7 +74,6 @@
       <!-- <pre> {{patientDatas | json}} </pre> -->
       <a *ngIf = "SearchNotify" class="text-danger"> <strong>{{Searchnotify}}</strong> </a>
     </div>
-    
   </div>
 </div>
 
@@ -114,13 +124,13 @@
  
 
     <div class="form-group">
-      <label class="control-label col-sm-6" for="email"> Your Amount: </label>
+      <label class="control-label col-sm-6" for="email"> Previous Balance: </label>
       <div class="col-sm-6">
         <p class="form-control-static" [ngClass] = "{'text-success':drOrCr == 'cr', 'text-danger':drOrCr == 'dr'}">Rs {{globleSum}} /-  {{drOrCr | uppercase}}</p>
       </div>
     </div>
 
-  <div *ngIf = "drOrCr =='dr' && !discountExist" class="form-group">
+  <div *ngIf = "!hidePayment" class="form-group">
       <label class="control-label col-sm-6" for="email"> Discount Amount: </label>
       <div class="col-sm-6">
         <p class="form-control-static">Rs {{discountedAmount?discountedAmount:0}} /-</p>
@@ -129,10 +139,10 @@
 
   <form [formGroup] = "transactionData" (ngSubmit)= "transactionDatas(transactionData.value)" autocomplete="off">
 
-     <div class="form-group">
+     <div *ngIf="!hidePayment" class="form-group">
 
       
-      <div class="row" *ngIf = "drOrCr =='dr' && !discountExist">
+      <div class="row">
         <div class="col-sm-6"><label for="">Discount:</label></div>
         <div class="col-sm-6">
           <label class="radio-inline ">
@@ -145,7 +155,7 @@
 
       </div>
 
-      <div class="row" *ngIf = "drOrCr =='dr' && !discountExist">
+      <div class="row">
         <div class="col-sm-6"></div>
         <div class="col-sm-2"  [ngClass]="{'has-error': transactionData.controls.discountcheck.invalid && transactionData.controls.discountcheck.dirty,
         'has-success':transactionData.controls.discountcheck.valid && !transactionData.controls.discountcheck.dirty}">
@@ -170,8 +180,8 @@
           <div class="col-sm-6">
             <p class="form-control-static" [ngClass] = "{'text-success':tempDrOrCr == 'cr', 'text-danger':tempDrOrCr == 'dr'}">Rs {{totalAmt}} /-  {{tempDrOrCr | uppercase}}
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <label *ngIf="!transactionData.controls.credit.value && tempDrOrCr == 'cr'" class="checkbox-inline">
-                  <input type="checkbox" name="backedMoney" (change)="calculateTotalAmount()" formControlName="backedMoney" value="1" />Return Back
+                <label *ngIf="!transactionData.controls.credit.value && tempDrOrCr == 'cr' && hidePayment" class="checkbox-inline">
+                  <input type="checkbox" name="backedMoney" (change)="calculateTotalAmount()" formControlName="backedMoney" value="1" />Pay Back
                 </label></p>
           </div>
         </div>
@@ -179,7 +189,7 @@
 
 
 
-    <div class="form-group">
+    <div *ngIf="!hidePayment" class="form-group">
       <label class="control-label col-sm-6" for="email"> Cash: </label>
       <div class="col-sm-2" [ngClass]="{'has-error': transactionData.controls.cash.invalid && transactionData.controls.cash.dirty,
             'has-success':transactionData.controls.cash.valid && !transactionData.controls.cash.dirty}">

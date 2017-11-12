@@ -46,9 +46,10 @@ export class TransactionComponent implements OnInit, OnDestroy {
   public transactionData: FormGroup;
   public drOrCr;
   public copyRecipt = false;
-  // public processCash : FormControl;
-  // public processDiscount : FormControl;
-  // public processDiscountPer : FormControl;
+  public hidePayment = false;
+  public startLoading = true;
+
+
   public selectedradioButton;
   public disableme = false;
   public activePayment = false;
@@ -61,11 +62,10 @@ export class TransactionComponent implements OnInit, OnDestroy {
   public discountedAmount;
   public globleParam;
   public patientAddress;
-  public discountExist = false;
   public printDrOrCr;
   public globleTotalAmount;
-  // public tempGlobleVar;
-  // public tempCashGlobleVar;
+
+  public empityTransaction = false;
 
 
 
@@ -78,7 +78,7 @@ export class TransactionComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-
+    this.startLoading = false;
     this.hospitalName = ENV.hospital;
     this.panNumber = ENV.pan_Numner;
     this.hospitalAddress = ENV.address;
@@ -89,27 +89,16 @@ export class TransactionComponent implements OnInit, OnDestroy {
     let month= date.getMonth();
     let day= date.getDate();
     this.PrintedDate = year+'-'+month+'-'+day;
-    
-    // this.SearchPayment = new FormGroup({
-    //   Search_name:new FormControl('', Validators.required)
-    // })
 
     this.transactionData = new FormGroup({
       cash: new FormControl('',[
         Validators.pattern("^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$"),
-      //  Validators.maxLength(6)
       ]),
       checkDiscount: new FormControl('0'),
       discountcheck: new FormControl('',Validators.pattern("^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$")),
       credit: new FormControl(''),
       backedMoney:new FormControl(''),
-      // discountPer  : new FormControl('')
     });
-
-    // console.log(this.transactionData.controls.checkDiscount.value);
-    // console.log(this.transactionData.controls.checkDiscounPert.value);
-
-
 
     this.transactionData.controls.cash.valueChanges
       .subscribe(term => {
@@ -123,9 +112,10 @@ export class TransactionComponent implements OnInit, OnDestroy {
 
     this.searchField = new FormControl;
     this.searchField.valueChanges
-      .debounceTime(400)
-      .distinctUntilChanged()
-      .subscribe(term => {
+    .debounceTime(400)
+    .distinctUntilChanged()
+    .subscribe(term => {
+      this.startLoading=true;
         this.searchpayment(term).subscribe();
       });
 
@@ -142,48 +132,16 @@ export class TransactionComponent implements OnInit, OnDestroy {
 
 
 
-
-        // let tempData;
         for (let x in response) {
           if (response[x].common_code.toUpperCase() == 'AGP') {
             if (this.ageGroupFromServer == undefined) {
-              // tempData = [
-              //   {age_group:response[x].common_description, enable:1},
-              // ]
               this.ageGroupFromServer = response[x].common_description;
             }
             else {
-              // tempData.push({age_group:response[x].common_description, enable:1})
               this.ageGroupFromServer.push(response[x].common_description);
             }
           }
-          // this.age_groupInDropdown = tempData;
         }
-
-
-        // this.routeParameter = this.route.params
-        // .subscribe(params => {
-        //   console.log(params);
-        //   this.paramId= params['id'];
-        //   if(this.paramId){
-        //     this.isurlid = true;
-        //     this.disableme = true;
-        //     this.searchpayment(this.paramId).subscribe(
-        //       success=>{
-        //         console.log(this.patientDatas);
-        //         // for (let i in this.patientDatas) {
-        //           this.invoice(this.patientDatas[0].testbooking_id);
-        //         // }
-        //     },err=>{
-        //       console.log(this.patientDatas);
-        //     })
-
-        //   }
-        // });
-
-
-
-        // console.log(this.FormUnits , this.genderInDropdowns, this.age_groupInDropdown)
       },
       (error) => {
         console.log("sorry error in server")
@@ -203,21 +161,27 @@ export class TransactionComponent implements OnInit, OnDestroy {
     let discountAmount = (this.transactionData.controls.checkDiscount.value == 0) ? this.transactionData.controls.discountcheck.value : (((this.transactionData.controls.discountcheck.value) / 100) * this.globleSum);
     let checksum = this.globleSum - (Number(this.transactionData.controls.cash.value) + Number(discountAmount));
     this.discountedAmount = discountAmount;
+    console.log('lets see',this.drOrCr,this.hidePayment)
     if (this.drOrCr == "cr") {
       this.sum = this.globleSum;
-      this.UseForCredit = true;
+      this.hidePayment = true;
+      this.tempDrOrCr = 'cr'
       this.totalAmt = checksum;
     }
     else if(!this.drOrCr){
       this.returnableAmt = -checksum;
+      console.log("!this.drorcr")
     }
     else {
+      this.hidePayment = false;
+      console.log("else")
       if (checksum < 0) {
         this.UseForCredit = true;
         this.sum = 0
         this.returnableAmt = -(checksum);
         this.tempDrOrCr = 'cr'
         this.totalAmt = -(checksum)
+        console.log("checksum<0")
       }
       else if(checksum > 0) {
         this.sum = checksum;
@@ -225,6 +189,7 @@ export class TransactionComponent implements OnInit, OnDestroy {
         this.UseForCredit = false;
         this.totalAmt = checksum;
         this.tempDrOrCr = 'dr'
+        console.log("checksum>0")
       }
       else{
         this.sum = checksum;
@@ -232,11 +197,13 @@ export class TransactionComponent implements OnInit, OnDestroy {
         this.UseForCredit = false;
         this.totalAmt = checksum;
         this.tempDrOrCr = '';
+        console.log("else")
       }
     }
     if(!this.globleTotalAmount){
       this.globleTotalAmount = this.totalAmt;
       this.printDrOrCr = this.tempDrOrCr;
+      console.log("!lastif")
     }
 
   }
@@ -245,33 +212,22 @@ export class TransactionComponent implements OnInit, OnDestroy {
 
   public searchpayment(id): Observable<any> {
     return new Observable(observer => {
+      this.startLoading =true;
       if (id) {
         this.transactionservice.getPatientTest(id)
           .subscribe(
           (response) => {
             if (response.length > 0) {
-              this.SearchNotify = false;
               console.log(response);
               this.patientDatas = [];
               this.patientDatas = response;
-              // if(response.length > 0){
-              //   this.SearchNotify = false;
-              //   this.sum = 0;
-              //   console.log(response);
-              //   this.genderinPatientTable = response[0].gender;
-              //   this.patientName = response[0].patient_name;
-              //   this.patientId = response[0].reg_no;
-              //   this.registeredDate = response[0].created_at;
-              //   // this.patientDatas = response;
-
+              this.startLoading =false;
               let ageRange = [];
               for (let i in this.ageGroupFromServer) ageRange.push(JSON.parse(JSON.stringify(this.ageGroupFromServer[i])))
-              // console.log(ageRange);
               let splitAge = [];
               for (let x in ageRange) {
                 splitAge.push(ageRange[x].split(" "));
               }
-              // console.log(splitAge);
               let changeInNum
               let intCollection = [];
               for (let y in splitAge) {
@@ -288,14 +244,10 @@ export class TransactionComponent implements OnInit, OnDestroy {
                       intCollection.push(200);
                     }
                   }
-                  // console.log((changeInNum));
-                  // if(changeInNum.toUpperCase() ==  )
                 }
               }
-              // console.log(intCollection);
               console.log("this is int list")
               for (let int = 0; int < intCollection.length; int += 2) {
-                // console.log(int);
                 let term = response[0].age;
                 if (term < 200) {
                   if (term >= intCollection[int] && term <= intCollection[int + 1]) {
@@ -319,111 +271,33 @@ export class TransactionComponent implements OnInit, OnDestroy {
               observer.next();
               observer.complete();
             }
+            this.startLoading=false;
 
           },
           (error) => {
+            this.startLoading =false;
             this.SearchNotify = true;
             this.Searchnotify = "Sorry Error in Server!!!"
             observer.complete();
           });
       }
+      // this.startLoading=false;
     });
   }
-  // }
-
-  // routedinvoice(term){
-  //   console.log(term)
-  //   let id = term.testbookings_id
-  //   this.activepaymentForm = false;
-  //   console.log(id);
-  //   this.transactionData.reset();
-  //   this.transactionData.controls.checkDiscount.setValue('0')
-  //   // this.sum = 0;
-  //   this.patientDatasDetails = [];
-  //     this.transactionservice.getDetialsOfTestbooking(id)
-  //     .subscribe(
-  //     (response) => {
-  //       console.log(response);
-  //       for (let i in response) {
-  //         // console.log(response[i].age_group);
-  //         // console.log(this.throwage);
-  //         // console.log(this.genderinPatientTable);
-  //         // console.log(response[i].genderdetails);
-
-
-  //         if (response[i].age_group == this.throwage && this.genderinPatientTable == response[i].genderdetails) {
-  //           this.patientDatasDetails.push(response[i]);
-  //         }
-  //       }
-  //       this.activepaymentForm = true;
-  //       console.log(this.patientDatasDetails);
-  //       // if(!(this.sum > 0)){
-  //       //   for(let x in this.patientDatasDetails){
-  //       //     this.sum = this.sum +  parseInt(this.patientDatasDetails[x].rate);
-  //       //     console.log(this.sum);
-  //       //     this.globleSum = this.sum;
-  //       //   }
-  //       // }
-  //     },
-  //     (error) => {
-  //       console.log("sorry error in server")
-  //     });
-
-
-  // }
   invoice(id) {
+    this.startLoading = true;
+    this.hidePayment = false;
     console.log(id);
     this.transactionData.reset();
-
-    // this.sum = 0;
     this.patientDatasDetails = [];
-    // // this.sum = null;
-    // let typeofInvoice = typeof id;
-    // console.log(typeofInvoice);
-    // console.log(id);
-    // if(typeofInvoice == 'number'){
-    // this.transactionservice.getDetialsOfPatients(id)
-    // .subscribe(
-    // (response) => {
-    //   console.log(response);
-    //     for (let i in response) {
-    //       console.log(response[i].age_group);
-    //       console.log(this.throwage);
-    //       console.log(this.genderinPatientTable);
-    //       console.log(response[i].genderdetails);
-
-
-    //       // if (response[i].age_group == this.throwage && this.genderinPatientTable == response[i].genderdetails) {
-    //         this.patientDatasDetails.push(response[i]);
-    //       // }
-    //     }
     this.activepaymentForm = true;
-    //     console.log(this.patientDatasDetails);
-    //     // if(!(this.sum > 0)){
-    //     //   // for(let x in this.patientDatasDetails){
-    //     //     this.sum = this.sum +  parseInt(this.patientDatasDetails[0].balance);
-    //     //     console.log(this.sum);
-    //     //     this.globleSum = this.sum;
-    //     //   // }
-    //     //   // this.previousAmount=0;
-    //     //   // this.previousAmount = this.previousAmount+ parseInt(this.patientDatasDetails[0].invoiceBalance);
-    //     // }
-    //   },
-    //   (error) => {
-    //     console.log("sorry error in server")
-    //   });
-
-    // }
-    // else{
     console.log(id)
     this.idToGetTest = id.id;
     console.log(this.idToGetTest);
-    // this.genderinPatientTable = id.gender;
     this.patientName = id.patient_name;
     this.patientId = id.reg_no;
     this.registeredDate = id.created_at;
     this.patientAddress = id.patient_address;
-    // for (let i in this.patientDatas) {
     this.transactionservice.getDetialsOfPatients(this.idToGetTest)
       .subscribe(
       (response) => {
@@ -438,144 +312,103 @@ export class TransactionComponent implements OnInit, OnDestroy {
           this.globleSum = this.sum;
           this.totalAmt = this.sum;
           this.returnableAmt = 0;
+          if(this.drOrCr =='cr'){
+            this.hidePayment = true;
+          }
+          if(this.drOrCr == 'dr'){
+            this.hidePayment = false;
+          }
 
-          if(response[response.length-1].discount_amount > 0){
-            console.log('disamount',response[response.length-1].discount_amount)
-            // this.transactionData.controls.checkDiscount.setValue('0')
-            // this.transactionData.controls.discountcheck.setValue(response[response.length-1].discount_amount)
-            this.discountExist=true;
-            // this.globleParam = this.sum;
-            // this.totalAmt = this.
-            // this.globleSum = response[response.length-2].balance;
-          }
-          if(response[response.length-1].discount_percentage >0){
-            console.log('disper',response[response.length-1].discount_percentage)
-            // this.transactionData.controls.checkDiscount.setValue('1')
-            // this.transactionData.controls.discountcheck.setValue(response[response.length-1].discount_percentage)
-            this.discountExist = true;
-            console.log('disper',this.transactionData.controls.discountcheck.value)
-          }
-          // console.log(this.sum)
+          // if(response[response.length-1].discount_amount > 0){
+          //   console.log('disamount',response[response.length-1].discount_amount)
+          //   this.discountExist=true;
+          // }
+          // if(response[response.length-1].discount_percentage >0){
+          //   console.log('disper',response[response.length-1].discount_percentage)
+          //   this.discountExist = true;
+          //   console.log('disper',this.transactionData.controls.discountcheck.value)
+          // }
+          this.startLoading =false;
         }
+        this.startLoading =false;
 
         if(response[response.length-1].print == 1){
           this.copyRecipt ==true;
         }
-        // for (let i in response) {
-        // console.log(response[i].age_group);
-        // console.log(this.throwage);
-        // console.log(this.genderinPatientTable);
-        // console.log(response[i].genderdetails);
-
-
-        // if (response[i].age_group == this.throwage && this.genderinPatientTable == response[i].genderdetails) {
-        //   this.patientDatasDetails.push(response[i]);
-        // }
-        // }
+        if(this.globleSum == 0 && this.totalAmt == 0){
+          this.empityTransaction = true;
+        }
         this.activepaymentForm = true;
-        // console.log(this.patientDatasDetails);
-        // if(!(this.sum > 0)){
-        //   for(let x in this.patientDatasDetails){
-        //     this.sum = this.sum +  parseInt(this.patientDatasDetails[x].rate);
-        //     this.globleSum = this.sum;
-        //     console.log(this.sum);
-        //   }
-        // }
       },
       (error) => {
+        this.startLoading =false;
         console.log("sorry error in server")
       });
-    // }
   }
 
-  // }
-
   transactionDatas(id) {
+    this.startLoading =true;
+    if(this.hidePayment){
+      this.transactionData.controls.cash.setValue('0');
+    }
     if(this.transactionData.valid && this.transactionData.controls.cash.value){
       this.pay = true;
       this.Pay = "Paying..."
     let allData = id;
-    // allData['invoiceBalance'] = this.globleSum
     allData['patientId'] = this.idToGetTest;
     allData['particular'] = "PL-TRANSACTION-AMT";
     allData['invoiceParticular'] = "INV-TRANSACTION-AMT";
     allData['testbookingid'] = null;
     allData['discountPer'] = 0;
     allData['discountAmt'] = 0;
-    allData['invoiceBalance'] = 0;
     allData['backedMoney'] = 0;
-    allData['dr'] = 0;
+    allData['subTotal'] = 0;
     allData['cash'] = 0;
     allData['balance'] = 0;
-    allData['print'] = 1;
+    allData['limCash'] = 0;
+    allData['remark'] = 1;
 
     if(this.tempDrOrCr =='cr'){
       if(this.transactionData.controls.cash.value){
         allData['cash'] = this.transactionData.controls.cash.value;
+        if(this.hidePayment == false){
+          allData['subTotal'] = this.globleSum;
+          allData['limCash'] = this.globleSum - this.discountedAmount;
+        }
       }
       
       if(this.transactionData.controls.credit.value){
         allData['remark']="cr"
         allData['balance'] = this.totalAmt;
-        // param['']
       }
-      else if(this.transactionData.controls.backedMoney.value){
+      else {
         allData['remark']=null;
         allData['backedMoney'] = this.totalAmt;
         allData['balance'] =0;
       }
-      else{
-        this.notify="Select Credit or Return Back !"
-        this.Notify = true;
-        this.notifyDismiss()
-        this.pay = false;
-        this.Pay = "Pay"
-        return 0;
-      }
     }
     else if(this.tempDrOrCr == 'dr'){
+          allData['cash'] = this.transactionData.controls.cash.value;
+          allData['subTotal'] = this.globleSum;
           allData['remark'] = "dr";
           allData['balance'] = this.sum;
-          allData['invoiceBalance'] = this.sum;
+          allData['limCash'] = this.transactionData.controls.cash.value;
     }
     else{
       allData['remark'] = null;
+      allData['limCash'] = this.globleSum;
     }
-
-    // if (this.drOrCr == "cr") {
-    //   if(this.transactionData.controls.cash.value){
-    //     allData['remark'] = "cr";
-    //     allData['balance'] = Number(this.transactionData.controls.cash.value) + Number(this.sum);
-    //   }
-    // }
-    // else if(this.drOrCr == "dr") {
-    //   if (this.transactionData.controls.credit.value) {
-    //     allData['remark'] = "cr";
-    //     allData['balance'] = this.returnableAmt;
-    //   }
-    //   else {
-    //     if (this.sum == 0) {
-    //       allData['remark'] = null;
-    //     }
-    //     else {
-    //       allData['remark'] = "dr";
-    //       allData['balance'] = this.sum;
-    //       allData['invoiceBalance'] = this.sum;
-    //       allData['balance'] = this.sum;
-    //     }
-    //   }
-    // }
         if(this.transactionData.controls.discountcheck.value){
           if(this.transactionData.controls.checkDiscount.value == 0){
             allData['discountAmt'] = this.transactionData.controls.discountcheck.value;
           }
           else{
             allData['discountPer'] = this.transactionData.controls.discountcheck.value;
+            allData['discountAmt'] = this.discountedAmount;
           }
         }
         this.globleParam = allData;
     console.log(allData);
-    console.log(this.patientDatasDetails)
     this.transactionservice.postInvoices(allData)
     .subscribe(
       (response)=>{
@@ -588,6 +421,7 @@ export class TransactionComponent implements OnInit, OnDestroy {
         this.router.navigate(['/lab/redirecting/'+"fromaddtransaction"]);
       },
       (error)=>{
+        this.startLoading =false;
         console.log(error);
         this.pay = false;
         this.Pay = "Pay"
@@ -635,8 +469,8 @@ export class TransactionComponent implements OnInit, OnDestroy {
 
   testbookingTransaction(id){
     var printContent = document.getElementById(id).innerHTML;
+    this.startLoading =false;
     var restorePage = document.body.innerHTML;
-    
     var newWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto,menubar=no,titlebar=no,location=no,fullscreen=yes')
     newWin.document.body.innerHTML = printContent;
     // newWin.window.print();

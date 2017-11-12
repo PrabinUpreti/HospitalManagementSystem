@@ -20,7 +20,7 @@ getPatientTest(id) {
   return this.PatientTest.get(ENV.Request_URL+"/api/transaction/" + id, options)
     .map(this.extractData)
     .catch(this.handleError)
-    .retry(10);
+    .retry(3);
 }
 getDetialsOfPatients(id) {
           let checkSection = ENV.setSection()
@@ -32,7 +32,7 @@ getDetialsOfPatients(id) {
   return this.PatientTest.get(ENV.Request_URL+"/api/transactions/" + id, options)
     .map(this.extractData)
     .catch(this.handleError)
-    .retry(10);
+    .retry(3);
 }
 
 postInvoices(param){
@@ -46,7 +46,7 @@ postInvoices(param){
   return this.PatientTest.post(ENV.Request_URL+"/api/transaction", param, options)
     .map(this.extractData)
     .catch(this.handleError)
-    .retry(10);
+    .retry(3);
 }
 
 getDetialsOfTestbooking(id){
@@ -59,7 +59,7 @@ getDetialsOfTestbooking(id){
   return this.PatientTest.get(ENV.Request_URL+"/api/transactionstestbooking/" + id, options)
     .map(this.extractData)
     .catch(this.handleError)
-    .retry(10);
+    .retry(3);
 }
 
 

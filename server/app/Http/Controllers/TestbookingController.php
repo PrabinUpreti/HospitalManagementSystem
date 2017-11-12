@@ -6,6 +6,7 @@ use App\Patient;
 use App\Report;
 use App\Invoice;
 use App\PatientLadger;
+use App\EasyAccess;
 
 use Illuminate\Http\Request;
 
@@ -30,6 +31,7 @@ class TestbookingController extends Controller
             $identity_card = $record['identity_card'];
             $reff_by = $record['reff_by'];
             $testId = $record['testID'];
+            $testDetails = $record['testDetails'];
             $amount = $record['invoice'];
 
         $patient = Patient::create([
@@ -62,15 +64,37 @@ class TestbookingController extends Controller
                 ]);
             }
 
+            foreach($testDetails as $testDetail){
+                $json  = $testDetail;
+                $jsons  =  json_encode($json);
+                $json = json_decode($jsons, true);
+                EasyAccess::create([
+                    "testbooking_id" => $testbooking_id,
+                    "patient_id" => $idForTestbooking,
+                    "test_id" => $json['test_id'],
+                    "age_group" => $json['age_group'],
+                    "gender" => $json['gender'],
+                    "lbound" => $json['lower_bound'],
+                    "ubound" => $json['upper_bound'],
+                    "rate" => $json['rate'],
+                    "unit" => $json['unit'],
+                ]);
+            }
+
 
 
             $InvoiceId = Invoice::create([
                 "testbooking_id" => $testbooking_id,
+                "patient_id" => $idForTestbooking,
                 "particular" => "INV-TEST-BOOKED_AMT",
                 "cash" => 0,
                 "balance" => $amount,
                 "discount_amount" => 0,
                 "discount_percentage" => 0,
+                'returned_cash' => 0,
+                'sub_total' =>$amount,
+                'total_balance' => $amount,
+                'print'=>0,
                 "remark" => 'dr'
             ]);
 
@@ -81,8 +105,12 @@ class TestbookingController extends Controller
                 "invoice_id" => $InvoiceId->id,
                 "dr" => $amount,
                 "cr" => 0,
+                'discount_amt'=>0,
+                'discount_per'=>0,
+                'returned_cash'=>0,
                 "balance" => $amount,
-                "remark" => 'dr'
+                "remark" => 'dr',
+                'print'=>0,
             ]);
 
             //setTestBooking();
@@ -113,6 +141,7 @@ class TestbookingController extends Controller
     $identity_card = $record['identity_card'];
     $reff_by = $record['reff_by'];
     $testId = $record['testID'];
+    $testDetails = $record['testDetails'];
     $amount = $record['invoice'];
 
     Patient::find($id)->update([
@@ -145,6 +174,23 @@ class TestbookingController extends Controller
             "test_id" => $testid
         ]);
     }
+    // $jsons = json_decode($testDetails);
+    foreach($testDetails as $testDetail){
+        $json  = $testDetail;
+        $jsons  =  json_encode($json);
+        $json = json_decode($jsons, true);
+        EasyAccess::create([
+            "testbooking_id" => $testbooking_id,
+            "patient_id" => $idForTestbooking,
+            "test_id" => $json['test_id'],
+            "age_group" => $json['age_group'],
+            "gender" => $json['gender'],
+            "lbound" => $json['lower_bound'],
+            "ubound" => $json['upper_bound'],
+            "rate" => $json['rate'],
+            "unit" => $json['unit'],
+        ]);
+    }
 
     $getInvoices = DB::table('invoices')
         ->leftJoin('patient_ladgers', 'patient_ladgers.invoice_id', '=', 'invoices.id')
@@ -157,7 +203,7 @@ class TestbookingController extends Controller
             if($id->balance > 0 && $id->remark =="dr"){
                 $updatebalance = $id->balance + $amount;
                 $updateInvoice_balance = $amount;
-                $invoice_Particular = "INV-UPDATED-AMT";
+                $invoice_Particular = "INV-TEST-BOOKED_AMT";
                 $cash = 0;
                 $total = $amount;
                 $invoice_remark = "dr";
@@ -184,7 +230,7 @@ class TestbookingController extends Controller
                     $remark = null;
                 }
                 $updateInvoice_balance = $amount;
-                $invoice_Particular = "INV-UPDATED-AMT";
+                $invoice_Particular = "INV-TEST-BOOKED_AMT";
                 $cash = 0;
                 $total = $amount;
                 $dr = $amount;
@@ -194,7 +240,7 @@ class TestbookingController extends Controller
             else{
                 $updatebalance = $id->balance + $amount;
                 $updateInvoice_balance = $amount;
-                $invoice_Particular = "INV-UPDATED-AMT";
+                $invoice_Particular = "INV-TEST-BOOKED_AMT";
                 $cash = 0;
                 $total = $amount;
                 $invoice_remark = "dr";
@@ -212,13 +258,17 @@ class TestbookingController extends Controller
 
         $InvoiceId = Invoice::create([
             "testbooking_id" => $testbooking_id,
+            "patient_id" => $idForTestbooking,
             "particular" => $invoice_Particular,
             "cash" => $cash,
             "balance" => $amount,
             "discount_amount" => 0,
             "discount_percentage" => 0,
+            'returned_cash' => 0,
+            'sub_total' =>$dr,
+            'total_balance' => $updatebalance,
+            'print'=>0,
             "remark" => $invoice_remark,
-            'total' => $total
         ]);
     }
     else{
@@ -230,12 +280,16 @@ class TestbookingController extends Controller
     
     PatientLadger::create([
         "patient_id" => $idForTestbooking,
-        "particular" => "PL-UPDATED-AMT",
+        "particular" => "PL-TEST-BOOKED_AMT",
         "invoice_id" => $InvoiceId->id,
         "dr" => $dr,
         "cr" => $cr,
+        'discount_amt'=>0,
+        'discount_per'=>0,
+        'returned_cash'=>0,
         "balance" => $updatebalance,
-        "remark" => $remark
+        "remark" => $remark,
+        'print'=>0,
     ]);
 
     //setTestBooking();

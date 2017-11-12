@@ -61,6 +61,7 @@ export class SelectTestComponent implements OnInit {
 
   public alive = false;
   public checkSelected = [];
+  public testDetailsToUpdate=[];
   public active;
   public idForForm = [];
   public testTables = [];
@@ -74,10 +75,12 @@ export class SelectTestComponent implements OnInit {
   public Notify = false;
   public notify;
   public info = "Please Input Gender and Age in above form.";
+  public startLoading = true;
 
   constructor(private modifyService: ModifyService) { }
 
   ngOnInit() {
+    this.startLoading=true;
     this.dataTables = new DataTable()
   }
   getTestFromServer(id){
@@ -122,10 +125,12 @@ export class SelectTestComponent implements OnInit {
                 }
             }
             this.testTables = stationResponse;
+            this.startLoading=false;
             
             // this.testTables = response;
           },
           (error)=>{
+            this.startLoading=false;
               console.log("Error in server");
           }
         );
@@ -196,7 +201,11 @@ export class SelectTestComponent implements OnInit {
                   this.dataTables.push(stationData);
                   // data.checkActive = true;
                   this.checkSelected.push(data.id);
+                  
+                  this.testDetailsToUpdate.push(this.tempData[x]);
+                  console.log(this.testDetailsToUpdate);
                   localStorage.setItem('test', JSON.stringify(this.checkSelected));
+                  localStorage.setItem('testDetails', JSON.stringify(this.testDetailsToUpdate));
                   console.log(this.checkSelected);
                   // ageRange.push(JSON.parse(JSON.stringify(this.ageGroupFromServer[i])))
                   console.log(this.dataTables);
@@ -258,6 +267,11 @@ export class SelectTestComponent implements OnInit {
         this.checkSelected.splice(this.checkSelected.indexOf(index.test_id), 1);
         localStorage.removeItem('test');
         localStorage.setItem('test', JSON.stringify(this.checkSelected));
+        console.log(this.dataTables)
+        this.testDetailsToUpdate.splice(id, 1);
+        console.log(this.testDetailsToUpdate);
+        localStorage.removeItem('testDetails');
+        localStorage.setItem('testDetails', JSON.stringify(this.testDetailsToUpdate));
       }
     }
   }
@@ -265,6 +279,7 @@ export class SelectTestComponent implements OnInit {
   filterAgeAndGender(){
     this.checkSelected = [];
     localStorage.removeItem('test');
+    localStorage.removeItem('testDetails');
     if((this.SelectedGender && this.SelectedAge)){
       // this.Notify = true;
       // this.notify = "All the selected data are cleared!"

@@ -12,7 +12,7 @@ class ViewTransaction extends Controller
     //
 
     public function getpatient(){
-        $patient = DB::table('patients')->orderBy('created_at','desc')->take(10)->get();
+        $patient = DB::table('patients')->orderBy('updated_at','desc')->take(10)->get();
         return $patient;
     }
 
@@ -27,7 +27,7 @@ class ViewTransaction extends Controller
         ->whereBetween('patients.created_at', [$startDate, $endDate])
         // ->where('testbookings.doctor_list_id', '=', $doctorId)
         // ->select('patients.*')
-        ->orderBy('created_at','desc')
+        ->orderBy('updated_at','desc')
         ->get();
         return $patient;
 }
@@ -37,9 +37,9 @@ class ViewTransaction extends Controller
         ->join('invoices','invoices.id', '=', 'patient_ladgers.invoice_id')
         ->where('patient_ladgers.patient_id', '=', $id)
         // ->select('invoices.id as invoices_id', 'invoices.remark as invoices_remark','invoices.particular as invoices_particular','invoices.balance as invoices_balance')
-        ->select('invoices.*')   
-        ->groupBy('invoices.id','invoices.testbooking_id','invoices.particular','invoices.cash','invoices.balance','invoices.discount_amount','invoices.discount_percentage','invoices.backed_money','invoices.remark','invoices.created_by','invoices.updated_by','invoices.created_at','invoices.updated_at')     
-        ->orderBy('created_at','desc')
+        ->select('invoices.*')
+        ->groupBy('invoices.id','invoices.patient_id','invoices.deleted_at','invoices.testbooking_id','invoices.particular','invoices.cash','invoices.balance','invoices.discount_amount','invoices.discount_percentage','invoices.remark','invoices.created_by','invoices.updated_by','invoices.created_at','invoices.updated_at','invoices.returned_cash','invoices.sub_total','invoices.total_balance','invoices.print','invoices.received_cash','narration')
+        ->orderBy('updated_at','desc')
         ->get();
         return $invoices;
     }
@@ -58,9 +58,43 @@ class ViewTransaction extends Controller
     }
     public function searchpatientByName($id){
         return DB::table('patients')
-        // ->where('reg_no', $id)
         ->where('patient_name','like', '%'.$id.'%')
         ->select('patients.*')
+        ->get();
+    }
+    public function getAllInvoices(Request $request){
+        $startDate = $request->input('startDate');
+        $endDate = $request->input('endDate');
+
+        return $invoices = DB::table('invoices')
+        ->leftJoin('patients','patients.id','=','invoices.patient_id')
+        // ->leftJoin('invoices','invoices.id','=','patient_ladgers.invoice_id')
+        ->orderBy('invoices.created_at','desc')
+        ->whereBetween('invoices.created_at', [$startDate, $endDate])
+        // ->groupBy('patient_ladgers.invoice_id')
+        // ->select('invoices.balance as invBalance','invoices.cash','invoices.discount_amount','invoices.discount_percentage','invoices.particular','patient_ladgers.cr','patient_ladgers.remark','patient_ladgers.dr','patient_ladgers.backed_money','patient_ladgers.balance','patient_ladgers.invoice_id')
+        ->select('invoices.*','patients.patient_name')
+        ->get();
+        // return response()->Json([
+        //     'status'=>"Hello world",
+        // ]);
+    }
+
+    public function updatePrint(Request $request){
+        $testbookingId = $request->input('testBookingId');
+        $print = $request->input('print');
+        if($print){
+            DB::table('invoices')
+            ->where('testbooking_id',$testbookingId)
+            ->update([
+                'print'=>$print,
+            ]);
+        }
+        return DB::table('easy_accesses')
+        ->leftJoin('tests','tests.id','=','easy_accesses.test_id')
+        ->leftJoin('patients','patients.id','=','easy_accesses.patient_id')
+        ->where('easy_accesses.testbooking_id',$testbookingId)
+        ->select('tests.name','easy_accesses.rate','patients.patient_name','patients.patient_address','patients.reg_no','patients.age','patients.gender','patients.marital_status','patients.nationality')
         ->get();
     }
 }

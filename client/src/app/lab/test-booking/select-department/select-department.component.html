@@ -3,4 +3,12 @@
             <a class="list-group-item" [ngClass] = "{'active': i == className}" *ngFor = "let department of departments; let i = index" (click) = pushdepartment(i)>
                 {{department.name}}
             </a>
+            
+<div *ngIf="startLoading" class="loading">
+		<div class="loading-bar"></div>
+		<div class="loading-bar"></div>
+		<div class="loading-bar"></div>
+		<div class="loading-bar"></div>
+    </div>
+    
     </div>

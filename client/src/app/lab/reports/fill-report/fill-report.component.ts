@@ -212,12 +212,12 @@
                                 if(response.length > 0){
                                   console.log('balance',response[0].balance)
                                   if(response[0].remark == 'dr'){
-                                      if(!(response[0].particular == "INV-CREATED-REPORT-TR")){
+                                    //   if(!(response[0].particular == "INV-CREATED-REPORT-TR")){
                                         this.Balance=1;
-                                      }
-                                      else{
-                                          this.Balance = 0;
-                                      }
+                                    //   }
+                                    //   else{
+                                    //       this.Balance = 0;
+                                    //   }
                                   }
                                   else{
                                       this.Balance = 0;
@@ -226,8 +226,8 @@
                                   
                             });
                         console.log('test',this.UserInformation)
-                });
-        }
+                   });
+            }
         reportresult(x, y, z, a, b, c, d) {
             return this.fb.group({
                 result: [x],

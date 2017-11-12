@@ -1,6 +1,6 @@
 .customBody{
 	padding:5px;
-	color: #f8f9fa;	
+	/* color: #f8f9fa;	 */
 }
 .customDashboard{
 	padding:10px;
@@ -14,4 +14,20 @@
 .customBody{
 	padding: 10px;
 	text-align: center;
+}
+.huge{
+	font-size: 25px;
+}
+
+.footer{
+	position: fixed;
+	bottom: 0px;
+	height:4vh;
+	width:100vw;
+	background-color: #28a745;
+	text-align: center;
+	font-size: 15px;
+}
+a{
+	color: #dc3545;
 }

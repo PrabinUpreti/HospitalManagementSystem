@@ -35,10 +35,10 @@
             var e_username = this.loginForm.controls.email.value;
             var e_password = this.loginForm.controls.password.value;
             let postData = this.loginForm.value;
-            console.log(postData); 
+            console.log(postData);
               this.loginservice.login(postData).subscribe(
                 response=>{
-                  console.log(response.access_token)
+                  console.log(response)
                   if(response.access_token){
                     //Local storage
 
@@ -57,6 +57,7 @@
                       for(let x in response.user){
                          if(response.user[x].email === e_username){
                             console.log('I ma In',response.user[x].id)
+                            localStorage.setItem("user",JSON.stringify(response.user[x]))
                              id =response.user[x].id;  
                              console.log(id)  
                              break;                   

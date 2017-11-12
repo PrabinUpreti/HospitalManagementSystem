@@ -1,10 +1,11 @@
 export class ENV {
-    public static hospital:string="Hetauda Hospital PVt.Ltd";
-    public static pan_Numner:string="HTd-200902-88";
+    public static hospital:string="Hetauda Hospital Pvt.Ltd";
+    public static pan_Numner:string="Htd-200902-88";
     public static address:string="Makawanpur,Hetauda-10";
     public static phone_number:string="057-2520092,057-688686";
     public static Request_URL = "http://server.hms.com";
     public static RegNo:string = "Reg-0123456789";
+    public static established:string ="2050 B.S"
     
     public static time;
     public static cal;

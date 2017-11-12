@@ -41,14 +41,12 @@ class TransactionController extends Controller
                 
         $testBookingId = $request->input('testbookingid');
         $invoiceParticular = $request->input('invoiceParticular');
-        $cash = $request->input('cash');
-        $invoiceBalance = $request->input('invoiceBalance');
+        $cash = $request->input('limCash');
         $discountAmount = $request->input('discountAmt');
         $discountPer = $request->input('discountPer');
-        $invoiceremark = $request->input('remark');
+        $receivedCash = $request->input('cash');
+        $subTotal = $request->input('subTotal');
         $patientId = $request->input('patientId');
-        $dR = $request->input('dr');
-        $cR = $request->input('cash');
         $balance = $request->input('balance');
         $remark = $request->input('remark');
         $particuler = $request->input('particular');
@@ -56,12 +54,18 @@ class TransactionController extends Controller
 
         $storedInInvoice = Invoice::create([
             'testbooking_id'=>$testBookingId,
+            'patient_id'=>$patientId,
             'particular'=>$invoiceParticular,
             'cash'=>$cash,
-            'balance'=>$invoiceBalance,
+            'sub_total' => $subTotal,
+            'balance'=>$balance,
             'discount_amount'=>$discountAmount,
             'discount_percentage'=>$discountPer,
-            'remark'=>$invoiceremark,
+            'received_cash' => $receivedCash,
+            'returned_cash' => $backedMoney,
+            'total_balance' => $balance,
+            'print'=>1,
+            'remark'=>$remark,
         ]);
         $invoiceId = $storedInInvoice->id;
 
@@ -69,11 +73,15 @@ class TransactionController extends Controller
             'patient_id'=>$patientId,
             'invoice_id'=>$invoiceId,
             'particular'=>$particuler,
-            'dr'=>$dR,
-            'cr'=>$cR,
-            'backed_money'=>$backedMoney,
+            'dr'=>$subTotal,
+            'cr'=>$cash,
+            'discount_amt'=>$discountAmount,
+            'discount_per'=>$discountPer,
+            'received_cash' => $receivedCash,
+            'returned_cash'=>$backedMoney,
             'balance'=>$balance,
             'remark'=>$remark,
+            'print'=>1,
         ]);
 
 
@@ -82,9 +90,6 @@ class TransactionController extends Controller
                 "status"=>'successfully stored'
             ]);
         }
-
-
-        
     }
 
     /**

@@ -36,7 +36,7 @@ export class DoctorReportService {
     return this.http_.post(url, param, options)
     .map(this.extractData)
     .catch(this.handleError)
-    .retry(10);
+    .retry(3);
   }
 
 

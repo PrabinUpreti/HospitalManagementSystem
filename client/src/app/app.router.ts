@@ -14,10 +14,10 @@ import { LoginComponent } from './auth/login/login.component';
 
 const appRoutes: Routes = [
     {path: '', redirectTo: 'login', pathMatch: 'full' },
+    { path: '**', component: LoginComponent },
    	{path:'login', component: LoginComponent},
     {path:'lab', component: LabComponent },
   // { path: 'lab/dashboard', component: DashboardComponent },
-  // { path: '**', component: TransactionComponent },
   // { path: 'lab/test-booking', component: TestBookingComponent },
   // { path: 'transaction', component: TransactionComponent },
   // { path: 'reports', component: ReportsComponent },  

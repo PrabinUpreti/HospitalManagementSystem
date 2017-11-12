@@ -12,17 +12,21 @@ export class SelectDepartmentComponent implements OnInit {
   public departments=[];
   public idForTestType;
   public  className;
+  public startLoading=true;
   
   constructor(private modifyService: ModifyService) { }
 
   ngOnInit() {
+    this.startLoading=true;
     localStorage.removeItem('test');
     localStorage.removeItem('sum');
+    localStorage.removeItem('testDetails');
     this.modifyService.getDepartment()
     .subscribe(
       (response)=>{
         console.log (response);
         this.departments = response;
+        this.startLoading=false;
       },
       (error)=>{
           console.log("Error in server")

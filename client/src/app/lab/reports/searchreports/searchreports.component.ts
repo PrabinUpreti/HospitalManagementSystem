@@ -34,6 +34,7 @@ export class SearchreportsComponent implements OnInit {
   public daterangevalue;
   public responseData=null;
   public term;
+  public test=-1;
 
   constructor(private laravelservice: ReportService,private formBuilder: FormBuilder){}
    ngOnInit() {
@@ -150,6 +151,7 @@ export class SearchreportsComponent implements OnInit {
 
   getvalue(i){
     let id=i;
+    // this.test=id;
     // var ed=new Date();
     // var time=ed.getMilliseconds();
     this.getReportvalue.emit(id)

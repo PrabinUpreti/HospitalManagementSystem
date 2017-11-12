@@ -32,21 +32,26 @@ class TestbookingTransactionController extends Controller
         
         $testbooking = $request->input('TestBookingId');
         // $invoiceParticular = $request->input('');
-        $cash = $request->input('cash');
         $invoiceBalance = $request->input('InvoiceAmount');
+        $invDiscountAmount = $request->input('invDiscountAmount');
+        $invDiscountPer = $request->input('invDiscountPer');
         $discountAmount = $request->input('DiscountAmount');
         $discountPer = $request->input('DiscountPer');
         $invoiceremark = $request->input('invoiceRemark');
         $patientId = $request->input('patientId');
         $dR = 0;
         $cR = $request->input('cash');
+        $Cash = $request->input('cash');
+        $invCash = $request->input('invCash');
+        $receivedCash = $request->input('receivedCash');
         $balance = $request->input('pl_balance');
-        $remark = $request->input('invoiceRemark');
+        $remark = $request->input('remark');
         $invParticuler = $request->input('inv_particular');
         $plParticuler = $request->input('pl_particular');
         $BackedMoney = $request->input('MoneyBack');
         $storedInInvoice = $request->input('updateInvoiceId');
         $print = $request->input('print');
+        $bookedAmt = $request->input('bookedAmt');
         // return $BackedMoney;
         if($discountPer >0){
             $DiscountPer = $discountPer;
@@ -66,12 +71,16 @@ class TestbookingTransactionController extends Controller
             ->update([
             // 'testbooking_id'=>$testbooking,
             'particular'=>$invParticuler,
-            'cash'=>$cash,
+            'cash'=>$invCash,
             'balance'=>$invoiceBalance,
-            'discount_amount'=>$DiscountAmount,
-            'discount_percentage'=>$DiscountPer,
+            'discount_amount'=>$invDiscountAmount,
+            'discount_percentage'=>$invDiscountPer,
+            // 'booked_amt' =>$bookedAmt,
+            'total_balance' => $balance,
+            'received_cash'=>$receivedCash,
+            'returned_cash' => $BackedMoney,
+            'print'=>$print,
             'remark'=>$invoiceremark,
-            // 'total'=>$total,
         ]);
 
         // $invoiceId = $storedInInvoice->id;
@@ -82,15 +91,24 @@ class TestbookingTransactionController extends Controller
             'particular'=>$plParticuler,
             'dr'=>$dR,
             'cr'=>$cR,
-            'backed_money'=>$BackedMoney,
+            'discount_amt'=>$DiscountAmount,
+            'discount_per'=>$DiscountPer,
+            'received_cash'=>$Cash,
+            'returned_cash'=>$BackedMoney,
             'balance'=>$balance,
             'remark'=>$remark,
-            'print'=>$print,
+            'print'=>1,
         ]);
 
-        return response()->Json([
-            'status'=>"Successufally Stored"
-        ]);
+        return DB::table('easy_accesses')
+        ->leftJoin('tests','tests.id','=','easy_accesses.test_id')
+        ->where('testbooking_id',$testbooking)
+        ->select('easy_accesses.rate','tests.name')
+        ->get();
+
+        // return response()->Json([
+        //     'status'=>"Successufally Stored"
+        // ]);
     }
     public function InvoiceDetial($id){
         // $invoice=Invoice::join('invoices','testbookings.id','=','invoices.testbooking_id')
@@ -107,5 +125,5 @@ class TestbookingTransactionController extends Controller
                 ->orderBy('created_at','desc')
                 ->get();
                 return $invoice;
-              }
+        }
 }

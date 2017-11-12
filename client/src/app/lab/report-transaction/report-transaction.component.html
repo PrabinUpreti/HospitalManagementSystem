@@ -8,6 +8,14 @@
       </div>
     </div>
   </div>
+
+
+<div *ngIf="startLoading" class="loading">
+    <div class="loading-bar"></div>
+    <div class="loading-bar"></div>
+    <div class="loading-bar"></div>
+    <div class="loading-bar"></div>
+  </div>
   
   <!-- <div *ngIf="showTable && routedList" class="container">
       <div class="col-sm-4" id="search-container">
@@ -92,9 +100,9 @@
     <div *ngIf ="totalExist" class="form-group">
         <label class="control-label col-sm-6" for="email"> Sub Total Amount: </label>
         <div class="col-sm-6">
-          <p *ngIf="!TempglobleSum" class="form-control-static">Rs {{globleSum}} /- &nbsp;&nbsp;&nbsp;&nbsp; <i style="cursor:pointer;" (click)="showTestList()" class="fa fa-eye" aria-hidden="true"></i></p>
+          <p *ngIf="!TempglobleSum" class="form-control-static">Rs {{previousSubTotal}} /- &nbsp;&nbsp;&nbsp;&nbsp; <i style="cursor:pointer;" (click)="showTestList()" class="fa fa-eye" aria-hidden="true"></i></p>
 
-          <p *ngIf="TempglobleSum" class="form-control-static">Rs {{TempglobleSum}} /- &nbsp;&nbsp;&nbsp;&nbsp; <i style="cursor:pointer;" (click)="showTestList()" class="fa fa-eye" aria-hidden="true"></i></p>
+          <p *ngIf="TempglobleSum" class="form-control-static">Rs {{previousSubTotal}} /- &nbsp;&nbsp;&nbsp;&nbsp; <i *ngIf="TESTBOOKINGID" style="cursor:pointer;" (click)="showTestList()" class="fa fa-eye" aria-hidden="true"></i></p>
         </div>
       </div>
   
@@ -103,7 +111,7 @@
     <div class="form-group">
       <label class="control-label col-sm-6" for="email"> Previous Amount: </label>
       <div class="col-sm-6">
-        <p class="form-control-static" [ngClass] = "{'text-danger': drOrCr == 'dr','text-success':drOrCr == 'cr'}">Rs {{globlepreviousAmount}} /- {{drOrCr | uppercase}}</p>
+        <p class="form-control-static" [ngClass] = "{'text-danger': drOrCr == 'dr','text-success':drOrCr == 'cr'}">Rs {{previousAmount}} /- {{drOrCr | uppercase}}</p>
       </div>
     </div>
   
@@ -163,9 +171,9 @@
           <div class="col-sm-6">
             <p class="form-control-static"  [ngClass] = "{'text-danger': drCrInTotal == 'dr','text-success':drCrInTotal == 'cr'}">
               Rs {{totalAmt}} /- {{drCrInTotal | uppercase}} &nbsp;&nbsp;&nbsp;&nbsp;
-              <label *ngIf="!transactionData.controls.credit.value && drCrInTotal == 'cr'"  class="checkbox-inline">
+              <!-- <label *ngIf="!transactionData.controls.credit.value && drCrInTotal == 'cr'"  class="checkbox-inline">
                     <input type="checkbox" name="backedMoney"  (change)="calculateTotalAmount()" formControlName = "backedMoney" value="1"/>Return Back
-              </label>
+              </label> -->
             </p>
           </div>
         </div>
@@ -185,7 +193,7 @@
           </span> -->
           <span>
             <label *ngIf = "UseForCredit" class="checkbox-inline">
-              <input (click)="transactionData.controls.backedMoney.setValue(0)" type="checkbox" value="" formControlName = "credit">Credit
+              <input type="checkbox" value="" formControlName = "credit">Credit
             </label>
           </span>
         </div>
@@ -303,61 +311,108 @@
   <!-- <pre>{{ patientDatas | json }}</pre> -->
 
 
-  <div  [ngClass]="{'bodyBg':copyRecipt ==true}" id = "testbookingTransaction" style="padding: 0px; display: none;">
-      <div style="font-size: 15px; padding: 50px;">
+  <div style="visibility:hidden">
+    <div id="testbookingTransaction" style="padding: 0px;">
+      <div style="font-size: 10px; padding: 50px; border-bottom:1px solid #888;">
         <div style="font-size: 30px; text-align: center">{{hospitalName}}</div>
         <div style="text-align: center">{{hospitalAddress}}</div>
         <div style="text-align: center">Phone: {{hospitalNumber}}</div>
         <div style="text-align: center">Pan Number: {{panNumber}}</div>
         <div style="text-align: center">Reg Number: {{hospitalRegNo}}</div>
         <div style="float: right">Date: {{PrintedDate}}</div>
-        <div style="float: left">Patient Name: {{patientName}}</div><br>
+        <div style="float: left">Patient Name: {{patientName}}</div>
+        <br>
         <div style="float: left">Patient Address: {{patientAddress}}</div>
-      </div><hr>
-    <div style="padding: 10px;">
-      <table *ngIf="globleParam">
-        <tr>
-          <td>Sub Total Amount</td>
-          <!-- <td>===> </td> -->
-          <td>
-          
-            <p *ngIf="!TempglobleSum" class="form-control-static">Rs {{globleSum}} /-</p>
-          
-            <p *ngIf="TempglobleSum" class="form-control-static">Rs {{TempglobleSum}} /-</p>
-          
-          </td>
-        </tr>
-        <tr>
-          <td>Previous Amount</td>
-          <!-- <td></td> -->
-          <td>Rs {{globlepreviousAmount}} /- {{drOrCr | uppercase}}</td>
-        </tr>
-        <tr>
-          <td>Discount Amount</td>
-          <td>Rs {{globleParam.DiscountAmount}} /-</td>
-        </tr>
-        <tr>
-          <td>Discount Percentage</td>
-          <td>{{globleParam.DiscountPer}} %</td>
-        </tr>
-        <tr>
-          <td>Total Amount</td>
-          <td>Rs {{globleTotalAmount}} /- {{printDrOrCr | uppercase}}</td>
-        </tr>
-        <tr>
-          <td>Cash</td>
-          <!-- <td>===> </td> -->
-          <td>Rs {{globleParam.cash}} /-</td>
-        </tr>
-        <tr>
-          <td>Balance</td>
-          <td>{{globleParam.pl_balance}} {{globleParam.invoiceRemark | uppercase}}/-</td>
-        </tr>
-        <tr>
-          <td>Returned Amount</td>
-          <!-- <td>===> </td> -->
-          <td>Rs {{globleParam.MoneyBack}} /-</td>
-        </tr>
-      </table>
+      </div>
+      <div class="center-block" style="width:50%;float:center">
+        <table style="width:100vw; border-bottom:1px solid #ddd">
+          <thead>
+            <tr>
+              <th>Test Name</th>
+              <th>Test Rate</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let testList of testAndRateForPrints">
+              <td style="text-align:center">{{testList.name}}</td>
+              <td style="text-align:center">Rs {{testList.rate}} /-</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="padding: 10px; padding-right:25px; float:right">
+        <table *ngIf="globleParam">
+          <tr>
+            <td>Sub Total Amount</td>
+            <!-- <td>===> </td> -->
+            <td>Rs {{globleSum?globleSum:TempglobleSum}} /-</td>
+          </tr>
+          <tr *ngIf="globlepreviousAmount">
+            <td>Previous Amount</td>
+            <!-- <td></td> -->
+            <td>Rs {{globlepreviousAmount}} /- {{drOrCr | uppercase}}</td>
+          </tr>
+          <tr *ngIf="globleParam.DiscountAmount">
+            <td>Discount Amount</td>
+            <td>Rs {{globleParam.DiscountAmount}} /-</td>
+          </tr>
+          <tr *ngIf="globleParam.DiscountPer">
+            <td>Discount Percentage</td>
+            <td>{{globleParam.DiscountPer}} %</td>
+          </tr>
+          <tr>
+            <td>Total Amount</td>
+            <!-- <td>===> </td> -->
+            <td>Rs {{globleTotalAmount}} /- {{printDrOrCr | uppercase}}</td>
+          </tr>
+          <tr *ngIf="globleParam.cash">
+            <td>Cash</td>
+            <!-- <td>===> </td> -->
+            <td>Rs {{globleParam.cash}} /-</td>
+          </tr>
+          <tr *ngIf="globleParam.pl_balance">
+            <td>Balance</td>
+            <td>{{globleParam.pl_balance}} {{globleParam.invoiceRemark | uppercase}}/-</td>
+          </tr>
+          <tr *ngIf="globleParam.MoneyBack">
+            <td>Returned Amount</td>
+            <!-- <td>===> </td> -->
+            <td>Rs {{globleParam.MoneyBack}} /-</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <hr>
+  </div>
+
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">VIEW TEST</h4>
+        </div>
+        <div class="modal-body">
+          <table *ngIf="testAndRateForPrints" class="table table-responsive table-hover table-striped">
+            <thead>
+              <tr>
+                <th>Test</th>
+                <th>Rate</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor=" let testList of testAndRateForPrints let i=index">
+                <td>{{testList.name}}</td>
+                <td>{{testList.rate}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <h3 *ngIf="showLog" class="text-info">{{value}}</h3>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+  
     </div>
   </div>

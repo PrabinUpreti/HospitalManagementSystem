@@ -20,10 +20,13 @@ class CreatePatientLadgersTable extends Migration
             $table->string('particular');
             $table->string('dr');
             $table->string('cr');
+            $table->string('discount_amt')->default(0);
+            $table->string('discount_per')->default(0);
             $table->string('balance');
-            $table->string('backed_money')->default(0);
+            $table->string('received_cash')->default(0);
+            $table->string('returned_cash')->default(0);
             $table->string('remark')->nullable();
-            $table->boolean('print')->default(0);
+            $table->string('print')->default(0);
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->timestamps();

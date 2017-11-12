@@ -25,7 +25,7 @@ export class LaravelService {
     return this.http.post(ENV.Request_URL+"/api/test-booking", paramData, options)
         .map(this.extractData)
         .catch(this.handleError)
-        .retry(10);
+        .retry(3);
   }
 
   UpdateData(allDatas){
@@ -40,7 +40,7 @@ export class LaravelService {
     return this.http.put(ENV.Request_URL+"/api/test-booking/" + id, allDatas, options)
         .map(this.extractData)
         .catch(this.handleError)
-        .retry(10);
+        .retry(3);
   }
 
   private extractData(res: Response) {

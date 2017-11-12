@@ -20,11 +20,14 @@ export class SelectTestypeComponent implements OnInit {
 
   public testypes;
   public className;
+  public startLoading = true;
 
 
   constructor(private modifyService: ModifyService) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.startLoading=true;
+  }
   
   public getDepFromServer(id){
     if(id == undefined) return 0
@@ -33,9 +36,11 @@ export class SelectTestypeComponent implements OnInit {
           (response)=>{
             console.log(response);
             this.testypes = response;
+            this.startLoading =false;
           },
           (error)=>{
               console.log("Error in server");
+              this.startLoading=false;
           }
         );
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Directive,Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { LaravelService } from './laravel.service';
 import { ModifyService } from './../../modify/modify.service';
@@ -80,9 +80,11 @@ export class PatientDetailsFormComponent implements OnInit {
   public forFutureUsePatientToSeeExistingPatient;
   public forFutureUsePatientToSeeExistingPatientName;
   public DisableInput = false;
+  public startLoading = true;
 
   constructor(private laravelService: LaravelService, private ModifyService: ModifyService, private router:Router) { }
   ngOnInit() {
+    this.startLoading = true;
     
     this.currentTime = new Date();
     let year = this.currentTime.getFullYear();
@@ -206,8 +208,10 @@ export class PatientDetailsFormComponent implements OnInit {
           (response)=>{
             this.reffBys=response
             console.log(response);
+            this.startLoading = false;
           },
           (error)=>{
+            this.startLoading=false;
               // this.submitButtonStatus=true
               console.log("ERROR successfully")
               this.Notify = true;
@@ -223,6 +227,7 @@ export class PatientDetailsFormComponent implements OnInit {
         this.ModifyService.commoncodes() .subscribe(
           (response)=>{
             if(response.length == 0){
+              this.startLoading = false;
               this.Notify = true;
               this.notify = "There is no any Data ";
               setTimeout(function () {
@@ -243,6 +248,7 @@ export class PatientDetailsFormComponent implements OnInit {
                 }
               }
             }
+            this.startLoading = false;
 
 
 
@@ -298,6 +304,7 @@ export class PatientDetailsFormComponent implements OnInit {
   public responseData=null;
 
   patientDatas(){
+    this.startLoading = true;
     if(!(this.forFutureUsePatientToSeeExistingPatient)){
       // alert(this.forFutureUsePatientToSeeExistingPatient);
       this.refresh = false;
@@ -316,6 +323,7 @@ export class PatientDetailsFormComponent implements OnInit {
         this.patientData.controls.day.setValue(day);
         this.patientData.controls.month.setValue(month);
         let testIdStoredInLocalStorage = JSON.parse(localStorage.getItem('test'))
+        let testDetailsStoredInLocalStorage = JSON.parse(localStorage.getItem('testDetails'))
         if (this.patientData.valid) {
           if(testIdStoredInLocalStorage && testIdStoredInLocalStorage.length > 0){
 
@@ -331,6 +339,7 @@ export class PatientDetailsFormComponent implements OnInit {
               }
             }
             paramData['testID'] = testIdStoredInLocalStorage;
+            paramData['testDetails'] = testDetailsStoredInLocalStorage;
             paramData['invoice'] = localStorage.getItem('sum');
             paramData['email'] = this.patientData.controls.email.value.toLowerCase();
 
@@ -338,8 +347,10 @@ export class PatientDetailsFormComponent implements OnInit {
             this.laravelService.getData(paramData)
               .subscribe(
                     (response)=>{
+                      this.startLoading = false;
                       localStorage.removeItem('test');
                       localStorage.removeItem('sum');
+                      localStorage.removeItem('testDetails');
                       this.title = "Do you want to pay?"
                       jQuery("#myModal").modal("show");
                       this.routeToPayment = {'link':'/lab/testbooking-transaction/'+ response.patientId};
@@ -354,8 +365,11 @@ export class PatientDetailsFormComponent implements OnInit {
                       this.patientData.controls.marital_status.setValue('');
                       this.patientData.controls.reff_by.setValue('');
                       this.submitButtonStatus=true
+                      this.Notify = true;
+                      this.notify = "SuccessFully Saved";
                     },
                     (error)=>{
+                      this.startLoading=false;
                         this.submitButtonStatus=true
                         this.Notify = true;
                         this.notify = "Sorry error in server";
@@ -366,6 +380,7 @@ export class PatientDetailsFormComponent implements OnInit {
                 )
               }
               else{
+                this.startLoading = false;
                 this.Notify = true;
                 this.notify = "Please select test."
                 setTimeout(function () {
@@ -374,6 +389,7 @@ export class PatientDetailsFormComponent implements OnInit {
 
       }
       else{
+        this.startLoading=false;
         
         this.Notify = true;
         this.notify = "Please fill the form properly."
@@ -422,6 +438,7 @@ export class PatientDetailsFormComponent implements OnInit {
   else{
     // alert(this.forFutureUsePatientToSeeExistingPatient);
     let testIdStoredInLocalStorage = JSON.parse(localStorage.getItem('test'))
+    let testDetailsStoredInLocalStorage = JSON.parse(localStorage.getItem('testDetails'))
     if (this.patientData.valid) {
       if(testIdStoredInLocalStorage && testIdStoredInLocalStorage.length > 0){
 
@@ -437,6 +454,7 @@ export class PatientDetailsFormComponent implements OnInit {
           }
         }
         paramData['testID'] = testIdStoredInLocalStorage;
+        paramData['testDetails'] = testDetailsStoredInLocalStorage;
         paramData['idToUpdate'] = this.forFutureUsePatientToSeeExistingPatient;
         paramData['invoice'] = localStorage.getItem('sum');
 
@@ -444,7 +462,9 @@ export class PatientDetailsFormComponent implements OnInit {
         this.laravelService.UpdateData(paramData)
           .subscribe(
                 (response)=>{
+                  this.startLoading=false;
                   localStorage.removeItem('test');
+                  localStorage.removeItem('testDetails');
                   this.title = "Do you want to pay?"
                   jQuery("#myModal").modal("show");
                   this.routeToPayment = {'link':'/lab/testbooking-transaction/'+ response.patientId};
@@ -459,8 +479,11 @@ export class PatientDetailsFormComponent implements OnInit {
                   this.patientData.controls.marital_status.setValue('');
                   this.patientData.controls.reff_by.setValue('');
                   this.submitButtonStatus=true
+                  this.Notify = true;
+                  this.notify = "SuccessFully Saved";
                 },
                 (error)=>{
+                  this.startLoading=false;
                     this.submitButtonStatus=true
                     this.Notify = true;
                     this.notify = "Sorry error in server";
@@ -471,6 +494,7 @@ export class PatientDetailsFormComponent implements OnInit {
             )
           }
           else{
+            this.startLoading=false;
             this.Notify = true;
             this.notify = "Please select test."
             setTimeout(function () {
@@ -479,6 +503,7 @@ export class PatientDetailsFormComponent implements OnInit {
 
   }
     else {
+      this.startLoading=false;
       this.Notify = true;
       this.notify = "Please fill the form properly."
       setTimeout(function () {
@@ -544,15 +569,21 @@ export class PatientDetailsFormComponent implements OnInit {
     this.title = "Do you want to pay?"
   }
 
+  resetFun(){
+    this.router.navigate(['/lab/redirecting/'+"fromtestbooking"]);
+  }
+
 
   searchpatient(id):Observable<any>{
     return new Observable(observer=>{
+      this.startLoading=true;
       console.log(id);
       if(id){
       
       this.ModifyService.getPatient(id)
       .subscribe(
         response=>{
+          this.startLoading=false;
           console.log(response);
           if(response.length > 0){
             this.showTable = true;
@@ -566,6 +597,7 @@ export class PatientDetailsFormComponent implements OnInit {
 
           },
           error=>{
+            this.startLoading=false;
             this.showTable = false;
           }
         );
@@ -574,13 +606,14 @@ export class PatientDetailsFormComponent implements OnInit {
       observer.complete();
       }
       else{
+        this.startLoading=false;
         this.showTable = false;
       }
     });
     
   }
   SetPatientToForm(id){
-    this.DisableInput = false;
+    this.DisableInput = true;
     this.forFutureUsePatientToSeeExistingPatient = this.searchedDatas[id].id;
     this.forFutureUsePatientToSeeExistingPatientName = this.searchedDatas[id].patient_name;
     this.agecontrol.setValue(this.searchedDatas[id].age);

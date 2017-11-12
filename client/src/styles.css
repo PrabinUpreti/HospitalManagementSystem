@@ -1,10 +1,10 @@
 body{
-    overflow: hidden;
+    /* overflow: hidden;
     cursor: default;
     -webkit-user-select: none;
        -moz-user-select: -moz-none;
         -ms-user-select: none;
-            user-select: none;
+            user-select: none; */
 }
 /* @font-face {
     font-family: myFirstFont;
@@ -100,3 +100,50 @@ legend{
 ::-webkit-scrollbar-corner {
     background-color: transparent;
 }
+
+
+
+
+/* --------------------LOADER------------------------ */
+
+.loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 9999999;
+    }
+    .loading-bar {
+    display: inline-block;
+    width: 8px;
+    height: 36px;
+    border-radius: 8px;
+    animation: loading 1s ease-in-out infinite;
+    }
+    .loading-bar:nth-child(1) {
+    background-color: #3498db;
+    animation-delay: 0;
+    }
+    .loading-bar:nth-child(2) {
+    background-color: #c0392b;
+    animation-delay: 0.09s;
+    }
+    .loading-bar:nth-child(3) {
+    background-color: #f1c40f;
+    animation-delay: .18s;
+    }
+    .loading-bar:nth-child(4) {
+    background-color: #27ae60;
+    animation-delay: .27s;
+    }
+    
+    @keyframes loading {
+    0% {
+        transform: scale(1);
+    }
+    20% {
+        transform: scale(1, 2.2);
+    }
+    40% {
+        transform: scale(1);
+    }
+    }

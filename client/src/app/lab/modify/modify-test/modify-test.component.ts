@@ -483,6 +483,7 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
       this.addDetails = true;
       this.AddDetails = "Add";
       this.showAddDetailsBtn = true;
+      this.Age_groupAfterFilter = [];
       this.testDetails.reset();
       this.testDetails.controls.unit.setValue('');
       this.testDetails.controls.age.setValue('');

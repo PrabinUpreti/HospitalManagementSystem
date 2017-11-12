@@ -1,70 +1,132 @@
-<div class="customBody">
-	<div class="row">
-		<div class="col-sm-3 customDashboard">
-			<div class="customHeader">
-				<h3>Number of Patient</h3>
-			</div>
-			<div class="customBody">
-				<h2>{{totalPatient}}</h2>
-			</div>
+<div style="height:85vh; overflow:auto;" *ngIf="!startLoading" class="customBody">
+
+
+
+
+
+	<div class="row" style="margin-bottom:5px;">
+		<div class="col-lg-8 col-md-8">
+			<h1>{{title}}</h1>
+			<h4>{{hospitalAddress}}</h4>
+			<h6>Established: {{established}}</h6>
+			<h6>Pan No: {{panNum}}</h6>
+			<h6>Reg No: {{regNum}}</h6>
 		</div>
-		<div class="col-sm-3 customDashboard">
-			<div class="customHeader">
-				<h3>Number of Doctor</h3>
-			</div>
-			<div class="customBody">
-				<h2>{{totalDoctor}}</h2>
-			</div>
+		<div class="col-lg-4 col-md-4">
+			<img class="center-block img img-responsive" style="height:180px;" src="/assets/img/hospital.png">
 		</div>
-		<div class="col-sm-3 customDashboard">
-			<div class="customHeader">
-				<h3>Number of Patient today</h3>
-			</div>
-			<div class="customBody">
-				<h2>{{totalPatientToday}}</h2>
-			</div>
-		</div>
-		<div class="col-sm-3 customDashboard">
-			<div class="customHeader">
-				<h3>Number of Department</h3>
-			</div>
-			<div class="customBody">
-				<h2>{{totalDepartment}}</h2>
+	</div>
+	<div class="col-lg-3 col-md-6">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-xs-3">
+						<i class="fa fa-wheelchair-alt fa-5x"></i>
+					</div>
+					<div class="col-xs-9 text-right">
+						<div class="huge">{{totalPatient}}</div>
+						<div>Number of Patient</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-sm-3 customDashboard">
-			<div class="customHeader">
-				<h3>Number of Test Type</h3>
-			</div>
-			<div class="customBody">
-				<h2>{{totalTestType}}</h2>
-			</div>
-		</div>
-		<div class="col-sm-3 customDashboard">
-			<div class="customHeader">
-				<h3>Number of Test</h3>
-			</div>
-			<div class="customBody">
-				<h2>{{totalTest}}</h2>
+	<div class="col-lg-3 col-md-6">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-xs-3">
+						<i class="fa fa-user-md fa-5x"></i>
+					</div>
+					<div class="col-xs-9 text-right">
+						<div class="huge">{{totalDoctor}}</div>
+						<div>Number of Doctor</div>
+					</div>
+				</div>
 			</div>
 		</div>
-		<!-- <div class="col-sm-3 customDashboard">
-			<div class="customHeader">
-				<h3>Number of Patient today</h3>
-			</div>
-			<div class="customBody">
-				<h2>{{totalPatientToday}}</h2>
-			</div>
-		</div>
-		<div class="col-sm-3 customDashboard">
-			<div class="customHeader">
-				<h3>Number of Department</h3>
-			</div>
-			<div class="customBody">
-				<h2>{{totalDepartment}}</h2>
-			</div>
-		</div> -->
 	</div>
+	<div class="col-lg-3 col-md-6">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-xs-3">
+						<i class="fa fa-bed fa-5x"></i>
+					</div>
+					<div class="col-xs-9 text-right">
+						<div class="huge">{{totalPatientToday}}</div>
+						<div>Number of Patient today</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-3 col-md-6">
+		<div class="panel panel-success">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-xs-3">
+						<i class="fa fa-sitemap fa-5x"></i>
+					</div>
+					<div class="col-xs-9 text-right">
+						<div class="huge">{{totalDepartment}}</div>
+						<div>Number of Department</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-3 col-md-6">
+		<div class="panel panel-danger">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-xs-3">
+						<i class="fa fa-wheelchair fa-5x"></i>
+					</div>
+					<div class="col-xs-9 text-right">
+						<div class="huge">{{totalTestType}}</div>
+						<div>Number of Test Type</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-3 col-md-6">
+		<div class="panel panel-warning">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-xs-3">
+						<i class="fa fa-medkit fa-5x"></i>
+					</div>
+					<div class="col-xs-9 text-right">
+						<div class="huge">{{totalTest}}</div>
+						<div>Number of Test</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div *ngIf="Notify" class="container">
+	<div class="row" id="error-container">
+		<div class="span12">
+			<div class="alert alert-danger">
+				<span>{{notify}}</span>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="footer">
+	<p>Developed and Maintain By <a href="http://www.softwebdevelopers.com"  target="_blank">SoftWeb Developers Company</a>
+		</p>
+</div>
+
+
+<div *ngIf="startLoading" class="loading">
+	<div class="loading-bar"></div>
+	<div class="loading-bar"></div>
+	<div class="loading-bar"></div>
+	<div class="loading-bar"></div>
 </div>

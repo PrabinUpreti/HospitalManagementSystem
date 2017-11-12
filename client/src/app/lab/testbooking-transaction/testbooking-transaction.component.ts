@@ -3,6 +3,7 @@ import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angula
 import { TestbookingTransactionService } from './testbooking-transaction.service';
 import { ModifyService } from './../modify/modify.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ViewTransactionService } from '../view-transaction/view-transaction.service';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -10,6 +11,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import 'rxjs/Rx';
 import { ENV } from "../../env";
+declare var jQuery:any;
 
 
 
@@ -22,6 +24,7 @@ export class TestbookingTransactionComponent implements OnInit {
 
   constructor(
     private testbookingtransactionservice: TestbookingTransactionService,
+    private viewtransaction:ViewTransactionService,
     private ModifyService: ModifyService, 
     private route: ActivatedRoute,
     private router:Router,
@@ -72,6 +75,19 @@ export class TestbookingTransactionComponent implements OnInit {
   public ShowDiscount = true;
   public globleParam;
   public printDrOrCr;
+  public previousCash = 0;
+  public previousDr = 0;
+  public existPrint = 0;
+  public previousInvBalance = 0;
+  public previousInvReturn = 0;
+  public updateDiscountPer = 0;
+  public updateDiscountAmt = 0;
+  public testAndRateForPrints = [];
+  public startLoading =false;
+  public TESTBOOKINGID;
+
+  public showLog =false;
+  public value;
 
 
 
@@ -84,6 +100,7 @@ export class TestbookingTransactionComponent implements OnInit {
 
 
   ngOnInit() {
+    this.startLoading = true;
 
 
     this.hospitalName = ENV.hospital;
@@ -137,10 +154,11 @@ export class TestbookingTransactionComponent implements OnInit {
         if (response.length == 0) {
           this.Notify = true;
           this.notify = "There is no any Data ";
+          this.startLoading = false;
         }
         console.log(response);
         this.commoncodes = response;
-
+        this.startLoading = false;
 
         for (let x in response) {
           if (response[x].common_code.toUpperCase() == 'AGP') {
@@ -398,6 +416,13 @@ export class TestbookingTransactionComponent implements OnInit {
             this.patientDatas = [];
             this.showTable = true;
             if (response.length > 2) {
+              this.updateDiscountPer = response[response.length - 1].discount_percentage;
+              this.previousInvBalance = Number(response[response.length - 1].invoices_balance);
+              this.previousInvReturn = Number(response[response.length - 1].returned_cash);
+              this.previousCash = Number(response[response.length - 1].received_cash);
+              this.previousDr = Number(response[response.length - 1].dr);
+              this.existPrint = Number(response[response.length - 1].print);
+              this.TESTBOOKINGID = response[response.length-1].testbooking_id;
               // if(response[response.length - 1].dr != 0){
                 if(response[response.length - 2].remark == "dr"){
                   this.previousAmount = Number(response[response.length - 2].balance);
@@ -420,6 +445,15 @@ export class TestbookingTransactionComponent implements OnInit {
                 // }
                 }
                 else if(response.length > 1){
+                  if(!this.previousCash){
+                    this.updateDiscountPer = response[response.length - 1].discount_percentage;
+                    this.previousInvBalance = Number(response[response.length - 1].invoices_balance);
+                    this.previousInvReturn = Number(response[response.length - 1].returned_cash);
+                    this.previousCash = Number(response[response.length - 1].received_cash);
+                    this.previousDr = Number(response[response.length - 1].dr);
+                    this.existPrint = Number(response[response.length - 1].print);
+                    this.TESTBOOKINGID = response[response.length-1].testbooking_id;
+                  }
 
                 if(response[response.length - 1].remark == "dr"){
                   this.previousAmount = Number(response[response.length - 1].balance);
@@ -443,6 +477,7 @@ export class TestbookingTransactionComponent implements OnInit {
               else {
                 this.previousAmount = 0.00;
                 this.drOrCr = ""
+                this.TESTBOOKINGID = response[response.length-1].testbooking_id;
               }
               if(response[response.length - 1].invoices_particular != "INV-CREATED-TR-AMT"){
                 this.sum = Number(response[response.length - 1].invoices_balance);
@@ -581,7 +616,8 @@ export class TestbookingTransactionComponent implements OnInit {
 
   }
 
-  transactionDatas(id) {    
+  transactionDatas(id) {
+    this.startLoading = true;
     if(this.transactionData.valid && this.transactionData.controls.cash.value){
       this.pay = true;
       this.Pay = "Paying..."
@@ -590,11 +626,19 @@ export class TestbookingTransactionComponent implements OnInit {
       // console.log(allData);
       // console.log(this.transactionData.value);
       // console.log(this.patientDatas[this.patientDatas.length-1].testbooking_id);
+      
       let param = this.transactionData.value;
+      
+      param['invDiscountAmount'] = this.updateDiscountAmt;
+      param['invDiscountPer'] = this.updateDiscountPer;
+
       param['TestBookingId'] = this.patientDatas[this.patientDatas.length - 1].testbooking_id;
       param['InvoiceAmount'] = this.sum;
+
       param['DiscountAmount'] = 0;
       param['DiscountPer'] = 0;
+      // param['invDiscountAmount'] = 0;
+      // param['invDiscountPer'] = 0;
       param['MoneyBack'] = 0;
       param['patientId'] = this.patientDatas[0].patient_id;
       param['print'] = 1;
@@ -602,13 +646,17 @@ export class TestbookingTransactionComponent implements OnInit {
       param['inv_particular'] = "INV-CREATED-TEST-BOOKED-TR"
       param['pl_particular'] = "PL-CREATED-TEST-BOOKED-TR"
       param['updateInvoiceId'] = this.idForInvoiceUpdate;
+      param['receivedCash'] = Number(this.transactionData.controls.cash.value) + this.previousCash;
+      // param['bookedAmt'] = this.previousDr;
+      param['print'] = this.existPrint + 1;
+      param['invBackedMoney'] = this.previousInvReturn;
 
 
 
       ///////////////==============UPDATED InvoiceAmount=======================\\\\\\\\\\\\\\\\\\
-      if(this.transactionData.controls.cash.value ==0){
-        param['InvoiceAmount'] = 0;
-      }
+      // if(this.transactionData.controls.cash.value ==0){
+      //   param['InvoiceAmount'] = 0;
+      // }
 
 
 
@@ -616,11 +664,24 @@ export class TestbookingTransactionComponent implements OnInit {
       if(this.transactionData.controls.discountcheck.value){
         if(this.transactionData.controls.checkDiscount.value == 1){
           param['DiscountPer'] = this.transactionData.controls.discountcheck.value
+          param['invDiscountPer'] = this.transactionData.controls.discountcheck.value
+          // param['DiscountAmount'] = this.discountedAmount;
+          param['invDiscountAmount'] = this.discountedAmount;
+          param['DiscountAmount'] = this.discountedAmount;
         }
         else{
           param['DiscountAmount'] = this.transactionData.controls.discountcheck.value;
+          param['invDiscountAmount'] = this.transactionData.controls.discountcheck.value;
         }
-
+      }
+      // let tempdiscountchk = this.
+      if(this.sum > 0){
+        param['invoiceRemark']="dr"
+        param['invCash'] = Number(this.transactionData.controls.cash.value);
+      }
+      else{
+        param['invoiceRemark']= null;
+        param['invCash'] = this.globleSum - this.discountedAmount;
       }
 
       ////////////============UPDATE MONEY BACK===============\\\\\\\\\\\
@@ -631,23 +692,24 @@ export class TestbookingTransactionComponent implements OnInit {
 
       ////////////============UPDATE DR CR===============\\\\\\\\\\\
       if((this.drCrInTotal != "cr") && (this.drCrInTotal != "dr")){
-          param['invoiceRemark'] = null;
+          param['remark'] = null;
           param['pl_balance'] = 0;
       }
       else{
         if(this.drCrInTotal == "dr"){
-          param['invoiceRemark']="dr"
+          param['remark']="dr"
           param['pl_balance'] = this.totalAmt;
         }
         else{
           if(this.transactionData.controls.credit.value){
-            param['invoiceRemark']="cr"
+            param['remark']="cr"
             param['pl_balance'] = this.totalAmt;
             // param['']
           }
           else if(this.transactionData.controls.backedMoney.value){
-            param['invoiceRemark']=null;
+            param['remark']=null;
             param['MoneyBack'] = this.totalAmt;
+            param['invBackedMoney'] = this.previousInvReturn + this.totalAmt;
             param['pl_balance'] =0;
           }
           else{
@@ -712,11 +774,19 @@ export class TestbookingTransactionComponent implements OnInit {
       this.testbookingtransactionservice.setpatienttransaction(param)
       .subscribe((response)=>{
         console.log(response)
+        // this.globleParam.push(response);
+        this.testAndRateForPrints = response;
+        this.pay = false;
+        this.Pay = "Pay"
         this.notify="SuccessFully payed !"
         this.Notify = true;
         this.notifyDismiss()
+        // this.conuntDown(5);
+        setTimeout(function () {
+          this.testbookingTransaction("testbookingTransaction");
+        }.bind(this), 1000);
         
-        this.testbookingTransaction("testbookingTransaction");
+        this.startLoading = false;
         this.router.navigate(['/lab/test-booking']);
       },
       (error)=>{
@@ -738,11 +808,52 @@ export class TestbookingTransactionComponent implements OnInit {
     }
 
   }
+  
+  // conuntDown(time) {
+  //   var x = time;
+  //   var y;
+
+  //   function startClock() {
+  //     alert(x);
+  //     if (y !== 'Done') {
+  //       x = x - 1;
+  //       this.timeCount = x;
+  //       console.log(this.timeCount);
+  //       setTimeout("startClock()", 1000);
+  //     }
+  //     if (x == 0) {
+  //       y = 'Done';
+  //       // document.getElementById('IDclock').innerHTML = 'Download....';
+  //     }
+  //   }
+  // }
 
   showTestList(){
-    this.notify="Under Construction !"
-    this.Notify = true;
-    this.notifyDismiss()
+    jQuery("#myModal").modal("show");
+    if(this.TESTBOOKINGID){
+      let param={}
+      param['testBookingId'] = this.TESTBOOKINGID;
+      
+    this.viewtransaction.updatePrint(param)
+    .subscribe(
+      (response)=>{
+        console.log(response);
+        if(response.length >0){
+        this.testAndRateForPrints = response;
+        }
+        else{
+        this.showLog =true;
+        this.value="Something Wrong!";
+        }
+      },
+      (error)=>{
+        console.log(error);
+        this.showLog =true;
+        this.value="sorry Error in server";
+      }
+    )
+
+    }
   }
   activeInvoice(id) {
     if (id == 0)
@@ -771,32 +882,49 @@ export class TestbookingTransactionComponent implements OnInit {
   }
   testbookingTransaction(id){
 
+    // alert(id);
 
     var printContent = document.getElementById(id).innerHTML;
+    // alert(printContent);
     var restorePage = document.body.innerHTML;
 
     
-    var newWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto,menubar=no,titlebar=no,location=no,fullscreen=yes')
+    var newWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto')
     newWin.document.body.innerHTML = printContent;
     // newWin.window.print();
-    
     newWin.document.write(`
     <html>
         <head>
         <style type="text/css">
-        table{
-          border:0px;
-          border-style: dotted;
-          width: 100%;
+          table{
+            border:0px;
+            border-style: dotted;
+            width: 100%;
+          }
+          td{
+            padding: 5px;
+            text-align: left;
+          }
+                  
+        .bodyBg {
+          background-image: url("/assets/img/copy.png");
+          background-repeat: no-repeat;
+          background-position: center; 
+          background-size: contain;
+          // opacity: 0.3;
+          // filter: alpha(opacity=30);
         }
-        td{
-          padding: 5px;
-          text-align: left;
-        }
-      </style>
+        </style>
         </head>
               <body onload="window.print();window.close()">${printContent}
         </body>
+        <script type="text/javascript">
+        var existPrint = ${this.existPrint};
+        
+          if(existPrint > 0){
+            document.body.className += ' bodyBg';
+          }
+          </script>
     </html>`
  );
     newWin.document.close()

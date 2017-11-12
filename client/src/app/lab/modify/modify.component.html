@@ -1,4 +1,4 @@
-    <section class="col-lg-2 col-md-2 col-sm-2">
+    <section style="padding-top:10px;padding-left:10px" class="col-lg-2 col-md-2 col-sm-2">
         <div class="list-group">
             <a (click) = "showDepartmentFun()" class="list-group-item" [ngClass] = "{'active': active1}">Test Lab</a>
             <!-- <a (click) = "showTestTypeFun()" class="list-group-item" [ngClass] = "{'active': activeTestType}">Test Type</a>
@@ -10,7 +10,7 @@
             <a (click) = "showDepartment" class="list-group-item" [ngClass] = "{'active': active6}">Dashboard Setting</a> -->
         </div>
     </section>
-    <section class="col-lg-10 col-md-10 col-sm-10">
+    <section style="padding-top:10px;padding-right:10px;padding-left:10px;" class="col-lg-10 col-md-10 col-sm-10">
         <app-modify-dep *ngIf="showDepartment" (hideDepartment)="onHideDepartment($event)"></app-modify-dep>
         <app-modify-test-type *ngIf="showTestType" [processTestType]="passToTestType" (reloadDepartment)="onReloadDepartment($event)"  (hideTestType)="onHideTestType($event)" (backToDepartment)="showDepartmentFun()"></app-modify-test-type>
         <app-modify-test *ngIf="showTest" (reloadDepartment)="onReloadDepartment($event)" [processTest]="passToTest"(backToTestType)="ShowTestType()" ></app-modify-test>

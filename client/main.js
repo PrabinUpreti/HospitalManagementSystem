@@ -34,7 +34,11 @@ function createWindow () {
 
   // and load the index.html of the app.
 
-  mainWindow.loadURL("http://hms.com/lab/test-booking")
+  mainWindow.loadURL(url.format({
+    pathname:"/dist/index.html",
+    protocol:'file',
+    slashes:true,
+  }));
 
 
 

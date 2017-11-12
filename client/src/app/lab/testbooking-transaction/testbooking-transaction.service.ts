@@ -21,7 +21,7 @@ export class TestbookingTransactionService {
     return this.PatientTest.get(ENV.Request_URL+"/api/testbooking-transaction/" + id, options)
       .map(this.extractData)
       .catch(this.handleError)
-      .retry(10);
+      .retry(3);
   }
 
   getDetialsOfPatientsTestbooking(id){
@@ -34,7 +34,7 @@ export class TestbookingTransactionService {
     return this.PatientTest.get(ENV.Request_URL+"/api/transactionstestbooking/" + id, options)
       .map(this.extractData)
       .catch(this.handleError)
-      .retry(10);
+      .retry(3);
   }
 
   setpatienttransaction(term){
@@ -47,7 +47,7 @@ export class TestbookingTransactionService {
     return this.PatientTest.post(ENV.Request_URL+"/api/postinvoice", term, options)
       .map(this.extractData)
       .catch(this.handleError)
-      .retry(10);
+      .retry(3);
   }
 
 

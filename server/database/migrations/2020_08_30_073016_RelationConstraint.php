@@ -37,6 +37,7 @@ class RelationConstraint extends Migration
 
         Schema::table('invoices', function($table) {
             $table->foreign('testbooking_id')->references('id')->on('testbookings');
+            $table->foreign('patient_id')->references('id')->on('patients');
         });
 
         Schema::table('patient_ladgers', function($table) {
@@ -47,6 +48,13 @@ class RelationConstraint extends Migration
         Schema::table('reports', function($table) {
             $table->foreign('test_id')->references('id')->on('tests');
             $table->foreign('testbooking_id')->references('id')->on('testbookings');
+
+        });
+
+        Schema::table('easy_accesses', function($table) {
+            $table->foreign('testbooking_id')->references('id')->on('testbookings');
+            $table->foreign('patient_id')->references('id')->on('patients');
+            $table->foreign('test_id')->references('id')->on('tests');
 
         });
     }
@@ -67,7 +75,7 @@ class RelationConstraint extends Migration
 
         Schema::table('access_menus', function($table) {
             $table->dropForeign(['menu_id']);
-            $table->dropForeign(['uesr_id']);
+            $table->dropForeign(['user_id']);
         });
 
         Schema::table('test_details', function($table) {
@@ -80,6 +88,7 @@ class RelationConstraint extends Migration
 
         Schema::table('invoices', function($table) {
             $table->dropForeign(['testbooking_id']);
+            $table->dropForeign(['patient_id']);
         });
 
         Schema::table('patient_ladgers', function($table) {
@@ -90,6 +99,12 @@ class RelationConstraint extends Migration
         Schema::table('reports', function($table) {
             $table->dropForeign(['test_id']);
             $table->dropForeign(['testbooking_id']);
+        });
+        
+        Schema::table('easy_accesses', function($table) {
+            $table->dropForeign(['testbooking_id']);
+            $table->dropForeign(['patient_id']);
+            $table->dropForeign(['test_id']);
         });
     }
 }
