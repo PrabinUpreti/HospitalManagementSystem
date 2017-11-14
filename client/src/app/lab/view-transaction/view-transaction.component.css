@@ -20,3 +20,34 @@
 .btn-info{
 	background-color: #17a2b8;
 }
+
+
+#error-container {
+	position: fixed;
+	z-index: 9999999;
+	top: 2px;
+	right: 125px;
+	box-shadow: 2px 2px 2px #333;
+}
+.alert {
+    padding: 5px;
+    margin-bottom: 0px;
+    border: 1px solid transparent;
+	border-radius: 4px;
+}
+span{
+	padding: 0px;
+	padding-right: 15px;
+	font-weight: bold;
+}
+.list-group-item > i{
+	font-size: 20px;
+}
+.namePatient{
+	background-color: transparent;
+}
+.namePatient:hover{
+	background-color: transparent;
+	/* color: none; */
+	/* border: transparent; */
+}

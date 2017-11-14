@@ -19,7 +19,7 @@
 
 
   <div style="float:right;">
-    <input type="button" class="btn btn-info" (click)="showModalToAdd()" value="Add Test" data-toggle="modal" data-target="#TestModal">
+    <button type="button" class="btn btn-primary" (click)="showModalToAdd()" data-toggle="modal" data-target="#TestModal"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Add Test</button>
     <!-- (click) = "departmentToggle()" -->
     <!-- <i style="padding: auto 15px; cursor:pointer;" class="fa fa-plus fa-lg"></i></button> -->
   </div>
@@ -117,10 +117,10 @@
           </div>
 
           <div class="modal-footer">
-            <button *ngIf="showAddBtn" type="submit" class="btn btn-primary" [disabled]="!add" (click)="addTests()">{{Add}}</button>
-            <button *ngIf="showUpdateBtn" type="submit" class="btn btn-info" [disabled]="!update" (click)="updateTest()">{{Update}}</button>
-            <button *ngIf="showDeleteBtn" type="button" class="btn btn-danger" data-dismiss="modal" (click)="deleteTest()">Delete</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button *ngIf="showAddBtn" type="submit" class="btn btn-primary" [disabled]="!add" (click)="addTests()"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;{{Add}}</button>
+            <button *ngIf="showUpdateBtn" type="submit" class="btn btn-primary" [disabled]="!update" (click)="updateTest()"><i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;{{Update}}</button>
+            <button *ngIf="showDeleteBtn" type="button" class="btn btn-danger" data-dismiss="modal" (click)="deleteTest()"><i class="fa fa-trash" aria-hidden="true"></i>&nbsp;Delete</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-eye-slash" aria-hidden="true"></i>&nbsp;Close</button>
           </div>
         </form>
       </div>
@@ -219,10 +219,10 @@
           </div>
 
           <div class="modal-footer">
-            <button *ngIf="showAddDetailsBtn" type="submit" class="btn btn-primary" [disabled]="!addDetails" (click)="addTestsDetails()">{{AddDetails}}</button>
+            <button *ngIf="showAddDetailsBtn" type="submit" class="btn btn-primary" [disabled]="!addDetails" (click)="addTestsDetails()"><i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;{{AddDetails}}</button>
             <!-- <button *ngIf="showUpdateDetailsBtn" type="submit" class="btn btn-info" [disabled]="!updateDetails" (click)="updateTestsDetails()">{{UpdateDetails}}</button> -->
             <!-- <button *ngIf="showDeleteDetailsBtn" type="button" class="btn btn-danger" data-dismiss="modal" (click)="deleteTestsDetails()">DeleteDetails</button>-->
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-eye-slash" aria-hidden="true"></i>&nbsp;Close</button>
           </div>
         </form>
       </div>
@@ -240,7 +240,7 @@
     <input type="button" class="btn btn-default" value="Close" (click)="reload()">
   </div>
   <div style="float:right;">
-    <input type="button" class="btn btn-info" value="Add New" data-toggle="modal" data-target="#TestDetails" (click)="configTestDetails()">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#TestDetails" (click)="configTestDetails()"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Add New</button>
   </div>
 
   <div *ngIf="showTest">

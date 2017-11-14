@@ -44,9 +44,11 @@ export class ViewTransactionComponent implements OnInit {
   public active2 = false;
   public active3 = false;
   public testAndRateForPrints;
-  public startLoading = false;
+  public startLoading = true;
 
 
+  public notify;
+  public Notify = false;
 
   
   public existPrint;
@@ -81,6 +83,7 @@ export class ViewTransactionComponent implements OnInit {
   public toDate;
 
   ngOnInit() {
+        this.startLoading = true;
     
         this.hospitalName = ENV.hospital;
         this.panNumber = ENV.pan_Numner;
@@ -98,8 +101,9 @@ this.searchByName = new FormControl()
 this.searchByName.valueChanges
 .debounceTime(400)
 .distinctUntilChanged()
-.subscribe(term => {0
+.subscribe(term => {
   if(term){
+    this.startLoading = true;
     if(term.length>0){
       this.myForm.reset()
     if(this.active1){
@@ -107,23 +111,76 @@ this.searchByName.valueChanges
     .subscribe((response)=>{
       if(response){
         this.patientLists = response;
+        this.startLoading = false;
       }
 
     },(error)=>{
-
+      this.startLoading = false;
     });
   }
+  else if(this.active2){
+    this.totalBookedAmt = 0;
+    this.totalBal =0;
+    this.totalBck = 0;
+    this.totalCash = 0;
+    this.totalDrAmt =0;
+    this.totalDis = 0;
+    this.totalCrAmt = 0;
+  this.transactionService.searchInvoicesbyName(term)
+  .subscribe((response)=>{
+    if(response.length >0){
+    console.log(response);
+    this.allInvoicesLedgers = response;
+    this.startLoading = false;
+    for(let x in this.allInvoicesLedgers){
+      this.totalBookedAmt+= Number(this.allInvoicesLedgers[x].sub_total);
+      this.totalCash += Number(this.allInvoicesLedgers[x].cash);
+      this.totalDis += Number(this.allInvoicesLedgers[x].discount_amount);
+      this.totalBck += Number(this.allInvoicesLedgers[x].returned_cash);
+      // this.totalBal +=Number(this.allInvoicesLedgers[x].total_balance);
+      if(this.allInvoicesLedgers[x].remark =='dr'){
+        this.totalDrAmt += Number(this.allInvoicesLedgers[x].balance);
+      }
+      else if(this.allInvoicesLedgers[x].remark =='cr'){
+        this.totalDrAmt += Number(this.allInvoicesLedgers[x].balance);
+      }
+    }
+  }else{
+  this.startLoading = false;
+  this.Notify =true;
+  this.notify = "sorry no data found"
+  this.notifyDismiss();
+  this.allInvoices();
   }
+
+  },(error)=>{
+    this.startLoading = false;
+  });
+}
+}
 }
   else{
+    if(this.active1){
     this.transactionService.getpatient()
     .subscribe(
       (response)=>{
+        // if(response.lenght>0){
         this.patientLists = response;
+        this.startLoading = false;
+        // }else{
+          // this.startLoading = false;
+          // alert('Sorry no data found !');
+        // }
       },(error)=>{
         console.log("There is error in server");
+        this.startLoading = false;
       })
   }
+  else{
+    
+    // this.allInvoices();
+  }
+}
 });
 
     // let date =  new Date();
@@ -147,6 +204,7 @@ this.searchByName.valueChanges
 
     this.myForm = this.formBuilder.group({
       myDateRange: ['', Validators.required],
+      myDateRangeForinvoices:['',Validators.required],
     });
 
 
@@ -155,9 +213,16 @@ this.searchByName.valueChanges
     this.transactionService.getpatient()
     .subscribe(
       (response)=>{
+        if(response.length>0){
         this.patientLists = response;
+        this.startLoading = false;
+        }else{
+          this.startLoading = false;
+          alert('Sorry No Data !');
+        }
       },(error)=>{
         console.log("There is error in server");
+        this.startLoading = false;
       })
   
    
@@ -179,9 +244,23 @@ this.searchByName.valueChanges
             day: date.getDate()
         }
     }});
+    this.myForm.setValue({myDateRangeForinvoices: {
+      beginDate: {
+          year: date.getFullYear(),
+          month: date.getMonth() + 1,
+          day: date.getDate()
+      },
+      endDate: {
+          year: date.getFullYear(),
+          month: date.getMonth() + 1,
+          day: date.getDate()
+      }
+  }});
+  
 }
 
   getPatientByDate(){
+    this.startLoading = true;
     let param={};
     console.log(this.myForm.controls.myDateRange.value)
     if(this.myForm.controls.myDateRange.value && this.active1){
@@ -196,21 +275,110 @@ this.searchByName.valueChanges
           if(response.length>0){
             console.log(response)
             this.patientLists = response;
+            this.startLoading = false;
           }
           else{
-            alert("No datas")
+            this.startLoading = false;
+            
+            this.Notify =true;
+            this.notify = "sorry no data found"
+            this.notifyDismiss();
           }
         },(error)=>{
           console.log("There is error in server");
+          this.startLoading = false;
         })
       }
       else{
         this.transactionService.getpatient()
         .subscribe(
           (response)=>{
+            if(response.length>0){
             this.patientLists = response;
+            this.startLoading = false;
+            }else{
+              this.startLoading = false;
+              
+              this.Notify =true;
+              this.notify = "sorry no data found"
+              this.notifyDismiss();
+            }
           },(error)=>{
             console.log("There is error in server");
+            this.startLoading = false;
+          })
+      }
+  }
+
+
+
+  getInvoicesByDate(){
+    this.totalBookedAmt = 0;
+    this.totalBal =0;
+    this.totalBck = 0;
+    this.totalCash = 0;
+    this.totalDrAmt =0;
+    this.totalDis = 0;
+    this.totalCrAmt = 0;
+    this.startLoading = true;
+    let param={};
+    console.log(this.myForm.controls.myDateRangeForinvoices.value)
+    if(this.myForm.controls.myDateRangeForinvoices.value && this.active2){
+      let dateRange = this.myForm.controls.myDateRangeForinvoices.value.formatted.split(' - ');
+      param['startDate'] = dateRange[0];
+      param['endDate'] = dateRange[1] + " 23:59:59";
+      console.log(param);
+      this.searchByName.reset();
+      this.transactionService.getInvoicesFromDate(param)
+      .subscribe(
+        (response)=>{
+          if(response.length >0){
+          console.log(response);
+          this.allInvoicesLedgers = response;
+          this.startLoading = false;
+          for(let x in this.allInvoicesLedgers){
+            this.totalBookedAmt+= Number(this.allInvoicesLedgers[x].sub_total);
+            this.totalCash += Number(this.allInvoicesLedgers[x].cash);
+            this.totalDis += Number(this.allInvoicesLedgers[x].discount_amount);
+            this.totalBck += Number(this.allInvoicesLedgers[x].returned_cash);
+            // this.totalBal +=Number(this.allInvoicesLedgers[x].total_balance);
+            if(this.allInvoicesLedgers[x].remark =='dr'){
+              this.totalDrAmt += Number(this.allInvoicesLedgers[x].balance);
+            }
+            else if(this.allInvoicesLedgers[x].remark =='cr'){
+              this.totalDrAmt += Number(this.allInvoicesLedgers[x].balance);
+            }
+          }
+        }else{
+        this.startLoading = false;
+        
+        this.Notify =true;
+        this.notify = "sorry no data found"
+        this.notifyDismiss();
+        this.allInvoices();
+        }
+        },(error)=>{
+          console.log("There is error in server");
+          this.startLoading = false;
+        })
+      }
+      else{
+        this.transactionService.getpatient()
+        .subscribe(
+          (response)=>{
+            if(response.length>0){
+            this.patientLists = response;
+            this.startLoading = false;
+            }else{
+              this.startLoading = false;
+              
+              this.Notify =true;
+              this.notify = "sorry no data found"
+              this.notifyDismiss();
+            }
+          },(error)=>{
+            console.log("There is error in server");
+            this.startLoading = false;
           })
       }
   }
@@ -218,16 +386,24 @@ this.searchByName.valueChanges
 
 
   getPatientInvoice(id){
+    this.startLoading = true;
     this.activepatienttable = false;
     this.transactionService.getPatientInvoiceFromServer(id)
     .subscribe(
       (response)=>{
+        // if(response.lenght>0){
         this.patientInvoices = response;
+        this.startLoading = false;
         console.log(response);
         this.patientAllLedgersChk = false
+        // }else{
+          // this.startLoading = false;
+          // alert('Sorry There is No Invoices !');
+        // }
       },
       (error)=>{
-        console.log("Hey! There is error in server my darling");
+        alert("Error in server");
+        this.startLoading = false;
       })
   }
 
@@ -237,41 +413,65 @@ this.searchByName.valueChanges
   }
 
 getLedger(id){
+  this.startLoading = true;
   this.transactionService.getPatientLedgerFromServer(this.patientInvoices[id].id)
   .subscribe(
     (response)=>{
+      if(response.length>0){
       this.patientLedgers = response;
       console.log(response);
       this.activeInvoice(1)
       this.patientAllLedgersChk = false
+      this.startLoading = false;
+      }else{
+        this.startLoading = false;
+        alert('Sorry There is No Ledger !')
+      }
     },
     (error)=>{
       console.log("Hey! There is error in server my darling");
+      this.startLoading = false;
     })
 }
 
 getAllPatientLedger(id){
+  this.startLoading = true;
   console.log(id)
   this.transactionService.getAllPatientLedgerFromServer(id)
   .subscribe(
     (response)=>{
+      if(response.length>0){
       this.patientAllLedgers = response;
       console.log(response);
       this.patientAllLedgersChk = true
       this.activepatienttable = false;
       this.activeInvoice(1)
+      this.startLoading = false;
+      }else{
+        this.startLoading = false;
+        alert('Sorry There is no Ledger !')
+      }
     },
     (error)=>{
       console.log("Hey! There is error in server my darling");
+      this.startLoading = false;
     })
 }
 
 
 
 allInvoices(){
+  this.startLoading = true;
   this.active1 = false; 
   this.active2 = true;
   this.active3 = false;
+  this.totalBookedAmt = 0;
+  this.totalBal =0;
+  this.totalBck = 0;
+  this.totalCash = 0;
+  this.totalDrAmt =0;
+  this.totalDis = 0;
+  this.totalCrAmt = 0;
   this.myForm.reset();
   this.searchByName.reset();
   let invRaw={};
@@ -299,34 +499,10 @@ allInvoices(){
   this.transactionService.getAllInvoices(invRaw)
     .subscribe(
       (response)=>{
-        
+        if(response.length >0){
         console.log(response);
-        // let invoiceId = undefined;
-        // let totalTempInviceArray = [];
-        // let tempInvoicesArray=[];
-        // let tempCash = 0;
-        // let tempBackedAmt = 0;
-        // let tempDr = 0;
-        // let discount = 0;
-        // let balance = 0;
-
-        // for(let x in response){
-        //   for(let j in response){
-        //     if(!invoiceId){
-        //       invoiceId= response[j].invoice_id;
-        //     }
-        //     if(response[j].invoice_id == invoiceId){
-        //       tempInvoicesArray.push(response[j]);
-        //     }
-        //   }
-        //   for(let y in tempInvoicesArray){
-        //     tempCash = tempInvoicesArray[y].cr;
-        //   }
-        //   invoiceId = undefined;
-        // }
-        // console.log(tempInvoicesArray)
-        // // if(response.invoice)
         this.allInvoicesLedgers = response;
+        this.startLoading = false;
         for(let x in this.allInvoicesLedgers){
           this.totalBookedAmt+= Number(this.allInvoicesLedgers[x].sub_total);
           this.totalCash += Number(this.allInvoicesLedgers[x].cash);
@@ -340,14 +516,19 @@ allInvoices(){
             this.totalDrAmt += Number(this.allInvoicesLedgers[x].balance);
           }
         }
+      }else{
+      this.startLoading = false;
+      alert('Sorry No Invoices')
+      }
       },
       (error)=>{
         console.log(error)
+        this.startLoading = false;
       })
 }
 
 printInvoices(param){
-  this.startLoading = true;
+    this.startLoading = true;
     this.printInvoiceId =param.id;
     this.globleParam = param;
     let testBookingId = param.testbooking_id;
@@ -387,6 +568,12 @@ printInvoices(param){
         console.log(error);
       }
     )
+}
+
+notifyDismiss(){
+  setTimeout(function () {
+    this.Notify = false;
+  }.bind(this), 3000);  
 }
   
 printFun(printId){

@@ -1,10 +1,14 @@
 body{
-    /* overflow: hidden;
+    overflow: hidden;
     cursor: default;
     -webkit-user-select: none;
        -moz-user-select: -moz-none;
         -ms-user-select: none;
-            user-select: none; */
+            user-select: none;
+            background-image: url('/assets/img/soft.png');
+            background-size: 6px 6px;
+            background-repeat: repeat;
+            /* background-color: #d9edf7; */
 }
 /* @font-face {
     font-family: myFirstFont;
@@ -54,7 +58,8 @@ legend{
 
 
 .list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus{
-    background-color: #375a7f;
+    background-color: rgba(255, 132, 0, 0.856);
+    border-color: rgba(255, 132, 0, 0.856);
 }
 .list-group-item:first-child{
     border-radius: 0px;
@@ -82,6 +87,11 @@ legend{
 }
 .breadcrumb li {
     cursor: pointer;
+}
+
+
+.btn{
+	padding: 2px 8px;
 }
 
 

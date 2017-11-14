@@ -650,14 +650,20 @@ export class ReportTransactionComponent implements OnInit {
           param['invDiscountAmount'] = this.transactionData.controls.discountcheck.value;
         }
       }
-
-      let DiscountAmt = this.transactionData.controls.discountcheck.value?Number(this.transactionData.controls.discountcheck.value):Number(this.updateDiscountAmt);
+      let DiscountAmt
+      if(this.updateDiscountAmt > 0){
+        DiscountAmt = 0;
+      }
+      else{
+        DiscountAmt = this.transactionData.controls.discountcheck.value?Number(this.transactionData.controls.discountcheck.value):Number(this.updateDiscountAmt);
+      }
       console.log(DiscountAmt);
       if((this.previousInvBalance - (Number(this.transactionData.controls.cash.value)+DiscountAmt)) >0){
         // param['invoiceRemark']="dr"
-        console.log(this.previousInvBalance - (Number(this.transactionData.controls.cash.value)+(this.transactionData.controls.discountcheck.value)?Number(this.transactionData.controls.discountcheck.value):Number(this.updateDiscountAmt)))
+        console.log(this.previousInvBalance)
+        console.log(this.previousInvBalance - (Number(this.transactionData.controls.cash.value)+DiscountAmt))
         param['invCash'] = Number(this.transactionData.controls.cash.value) + this.previousCash;
-        param['InvoiceAmount'] = this.previousInvBalance - Number(this.transactionData.controls.cash.value);
+        param['InvoiceAmount'] = this.previousInvBalance - (Number(this.transactionData.controls.cash.value) + DiscountAmt);
         param['invoiceRemark'] = 'dr';
       }
       // else if(this.totalAmt > 0 && this.drCrInTotal == 'cr'){
@@ -674,7 +680,7 @@ export class ReportTransactionComponent implements OnInit {
         param['InvoiceAmount'] = 0;
         param['invoiceRemark'] = null;
       }
-      console.log(this.globleSum);
+      console.log(this.globleSum);DiscountAmt
 
       ////////////============UPDATE MONEY BACK===============\\\\\\\\\\\
       // if(!this.transactionData.controls.payOld.value){
@@ -776,8 +782,8 @@ export class ReportTransactionComponent implements OnInit {
         this.notifyDismiss();        
         setTimeout(function () {
           this.testbookingTransaction("testbookingTransaction");
+          this.router.navigate(['/lab/redirecting/'+"fromreport"]);
         }.bind(this), 1000);
-        this.router.navigate(['/lab/redirecting/'+"fromreport"]);
       },
       (error)=>{
         this.pay = false;
@@ -854,8 +860,8 @@ export class ReportTransactionComponent implements OnInit {
   
 
   testbookingTransaction(id){
-    var printContent = document.getElementById(id).innerHTML;
     this.startLoading =false;
+    var printContent = document.getElementById(id).innerHTML;
     var restorePage = document.body.innerHTML;
     
     var newWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto,menubar=no,titlebar=no,location=no,fullscreen=yes')

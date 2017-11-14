@@ -31,6 +31,21 @@ class ViewTransaction extends Controller
         ->get();
         return $patient;
 }
+public function getInvoicesFromDate(Request $request){
+    $startDate = $request->input('startDate');
+    $endDate = $request->input('endDate');
+
+    return $invoices = DB::table('invoices')
+    ->leftJoin('patients','patients.id','=','invoices.patient_id')
+    // ->leftJoin('invoices','invoices.id','=','patient_ladgers.invoice_id')
+    ->orderBy('invoices.created_at','desc')
+    ->whereBetween('invoices.created_at', [$startDate, $endDate])
+    // ->groupBy('patient_ladgers.invoice_id')
+    // ->select('invoices.balance as invBalance','invoices.cash','invoices.discount_amount','invoices.discount_percentage','invoices.particular','patient_ladgers.cr','patient_ladgers.remark','patient_ladgers.dr','patient_ladgers.backed_money','patient_ladgers.balance','patient_ladgers.invoice_id')
+    ->select('invoices.*','patients.patient_name')
+    ->get();
+    return $patient;
+}
 
     public function getpatientInvoices($id){
         $invoices = DB::table('patient_ladgers')
@@ -62,6 +77,28 @@ class ViewTransaction extends Controller
         ->select('patients.*')
         ->get();
     }
+
+
+    public function searchInvoicesByName($id){
+        // return DB::table('patients')
+        // ->where('patient_name','like', '%'.$id.'%')
+        // ->select('patients.*')
+        // ->get();
+
+
+    return $invoices = DB::table('invoices')
+    ->leftJoin('patients','patients.id','=','invoices.patient_id')
+    // ->leftJoin('invoices','invoices.id','=','patient_ladgers.invoice_id')
+    ->orderBy('invoices.created_at','desc')
+    ->where('patients.patient_name','like', '%'.$id.'%')
+    // ->whereBetween('invoices.created_at', [$startDate, $endDate])
+    // ->groupBy('patient_ladgers.invoice_id')
+    // ->select('invoices.balance as invBalance','invoices.cash','invoices.discount_amount','invoices.discount_percentage','invoices.particular','patient_ladgers.cr','patient_ladgers.remark','patient_ladgers.dr','patient_ladgers.backed_money','patient_ladgers.balance','patient_ladgers.invoice_id')
+    ->select('invoices.*','patients.patient_name')
+    ->get();
+    }
+
+
     public function getAllInvoices(Request $request){
         $startDate = $request->input('startDate');
         $endDate = $request->input('endDate');

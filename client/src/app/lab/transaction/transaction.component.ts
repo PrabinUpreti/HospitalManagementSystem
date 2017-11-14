@@ -115,8 +115,12 @@ export class TransactionComponent implements OnInit, OnDestroy {
     .debounceTime(400)
     .distinctUntilChanged()
     .subscribe(term => {
+      if(term){
       this.startLoading=true;
         this.searchpayment(term).subscribe();
+      }else{
+        this.startLoading =false;
+      }
       });
 
 
@@ -432,6 +436,7 @@ export class TransactionComponent implements OnInit, OnDestroy {
     );
   }
   else{
+    this.startLoading =false;
     this.notify="Enter input field properly !"
     this.Notify = true;
     this.notifyDismiss()

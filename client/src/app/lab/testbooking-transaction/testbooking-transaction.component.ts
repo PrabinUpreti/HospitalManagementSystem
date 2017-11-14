@@ -121,7 +121,7 @@ export class TestbookingTransactionComponent implements OnInit {
       discountcheck: new FormControl('',Validators.pattern("^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$")),
       // payOld: new FormControl(''),
       credit: new FormControl(''),
-      backedMoney:new FormControl('')
+      // backedMoney:new FormControl('')
     });
 
 
@@ -706,19 +706,11 @@ export class TestbookingTransactionComponent implements OnInit {
             param['pl_balance'] = this.totalAmt;
             // param['']
           }
-          else if(this.transactionData.controls.backedMoney.value){
+          else{
             param['remark']=null;
             param['MoneyBack'] = this.totalAmt;
             param['invBackedMoney'] = this.previousInvReturn + this.totalAmt;
             param['pl_balance'] =0;
-          }
-          else{
-            this.notify="Select Credit or Return Back !"
-            this.Notify = true;
-            this.notifyDismiss()
-            this.pay = false;
-            this.Pay = "Pay"
-            return 0;
           }
         }
         // param['invoiceRemark']=this.drCrInTotal;
@@ -784,10 +776,10 @@ export class TestbookingTransactionComponent implements OnInit {
         // this.conuntDown(5);
         setTimeout(function () {
           this.testbookingTransaction("testbookingTransaction");
+          this.router.navigate(['/lab/test-booking']);
         }.bind(this), 1000);
         
         this.startLoading = false;
-        this.router.navigate(['/lab/test-booking']);
       },
       (error)=>{
         this.pay = false;

@@ -38,6 +38,22 @@ export class ViewTransactionService {
       .catch(this.handleError)
       .retry(3);
   }
+  
+    getInvoicesFromDate(param){
+            let checkSection = ENV.setSection()
+            if(checkSection == "sessionExpired"){
+              this.router.navigate(['/']);            
+            }
+      console.log(param)
+      let headers = new Headers({ 'Content-Type': 'application/json' });
+      let options = new RequestOptions({ headers: headers, withCredentials: true });
+      return this.http.post(ENV.Request_URL+"/api/view-transaction-inv", param, options)
+        .map(this.extractData)
+        .catch(this.handleError)
+        .retry(3);
+    }
+
+
   getPatientInvoiceFromServer(id){
           let checkSection = ENV.setSection()
           if(checkSection == "sessionExpired"){
@@ -87,6 +103,21 @@ export class ViewTransactionService {
       .catch(this.handleError)
       .retry(3);
   }
+
+
+  searchInvoicesbyName(id){
+    let checkSection = ENV.setSection()
+    if(checkSection == "sessionExpired"){
+      this.router.navigate(['/']);            
+    }
+let headers = new Headers({ 'Content-Type': 'application/json' });
+let options = new RequestOptions({ headers: headers, withCredentials: true });
+return this.http.get(ENV.Request_URL+"/api/search-by-name-inv/"+id, options)
+.map(this.extractData)
+.catch(this.handleError)
+.retry(3);
+}
+
   getAllInvoices(param) {
     let checkSection = ENV.setSection()
     if (checkSection == "sessionExpired") {

@@ -1,7 +1,7 @@
 <div *ngIf="Notify" class="container">
   <div class="row" id="error-container">
     <div class="span12">
-      <div class="alert alert-danger">
+      <div class="alert alert-info">
         <!-- <button type="button" class="close" (click)="datadismis()">×</button> -->
         <span>{{notify}}</span>
       </div>
@@ -175,9 +175,9 @@
         <div class="col-sm-6">
           <p class="form-control-static"  [ngClass] = "{'text-danger': drCrInTotal == 'dr','text-success':drCrInTotal == 'cr'}">
             Rs {{totalAmt}} /- {{drCrInTotal | uppercase}} &nbsp;&nbsp;&nbsp;&nbsp;
-            <label *ngIf="!transactionData.controls.credit.value && drCrInTotal == 'cr'"  class="checkbox-inline">
+            <!-- <label *ngIf="!transactionData.controls.credit.value && drCrInTotal == 'cr'"  class="checkbox-inline">
                   <input type="checkbox" name="backedMoney"  (change)="calculateTotalAmount()" formControlName = "backedMoney" value="1"/>Return Back
-            </label>
+            </label> -->
           </p>
         </div>
       </div>
@@ -197,7 +197,7 @@
         </span> -->
         <span>
           <label *ngIf = "UseForCredit" class="checkbox-inline">
-            <input (click)="transactionData.controls.backedMoney.setValue(0)" type="checkbox" value="" formControlName = "credit">Credit
+            <input type="checkbox" value="" formControlName = "credit">Credit
           </label>
         </span>
       </div>
@@ -326,7 +326,7 @@
         </tr>
         <tr *ngIf="globleParam.pl_balance">
           <td>Balance</td>
-          <td>{{globleParam.pl_balance}} {{globleParam.invoiceRemark | uppercase}}/-</td>
+          <td>{{globleParam.pl_balance}} {{drCrInTotal| uppercase}}/-</td>
         </tr>
         <tr *ngIf="globleParam.MoneyBack">
           <td>Returned Amount</td>

@@ -19,15 +19,3 @@
 	font-size: 25px;
 }
 
-.footer{
-	position: fixed;
-	bottom: 0px;
-	height:4vh;
-	width:100vw;
-	background-color: #28a745;
-	text-align: center;
-	font-size: 15px;
-}
-a{
-	color: #dc3545;
-}

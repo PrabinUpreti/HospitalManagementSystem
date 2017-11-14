@@ -246,7 +246,9 @@ export class PatientComponent implements OnInit {
       
       let param = this.patientGroup.value;
       param['id']=this.responseDatas[this.idForUpdate].id;
-      param['email'] = this.patientGroup.controls.email.value.toLowerCase();
+      if(this.patientGroup.controls.email.value){
+        param['email'] = this.patientGroup.controls.email.value.toLowerCase();
+      }
     this.ModifyService.updatePatient(param)
     .subscribe(
       response=>{

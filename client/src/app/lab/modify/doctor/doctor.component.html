@@ -1,6 +1,6 @@
 <section *ngIf="showList">
   <div style="float:right;">
-    <input type="button" class="btn btn-info" (click)="configAddDoctor()" value="Add Doctor">
+    <button type="button" class="btn btn-primary" (click)="configAddDoctor()"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Add Doctor</button>
   </div>
   <div>
     <legend>Doctor List</legend>
@@ -56,7 +56,7 @@
 
 <section *ngIf="showForm">
   <div style="float:right;">
-    <input type="button" class="btn btn-info" (click)="backFromForm()" value="Back">
+    <button type="button" class="btn btn-primary" (click)="backFromForm()"><i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;Back</button>
   </div>
   <div>
     <legend>{{title}}</legend>
@@ -188,17 +188,17 @@
 
 
 
-      <div class="row">
+      <div style="padding-top:10px;" class="row">
         <div class="form-group">
-          <div class=" col-sm-4 col-md-4 col-lg-4 col-sm-offset-4  col-md-offset-4  col-lg-offset-4">
-            <div class=" col-sm-2 col-lg-2 col-md-2"></div>
-            <div class=" col-sm-4 col-lg-4 col-md-4">
-              <button type="reset" class="btn btn-default btn-xs btn-block">Reset</button>
+          <div style="padding-right:55px" class=" col-sm-12 col-md-12 col-lg-12">
+            <div class=" col-sm-10 col-lg-10 col-md-10"></div>
+            <div class=" col-sm-1 col-lg-1 col-md-1">
+              <button type="submit" class="btn btn-primary btn-block" [disabled] = "submit"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;{{Submit}}</button>
             </div>
-            <div class=" col-sm-4 col-lg-4 col-md-4">
-              <button type="submit" class="btn btn-primary btn-xs btn-block" [disabled] = "submit">{{Submit}}</button>
+            <div class=" col-sm-1 col-lg-1 col-md-1">
+              <button type="reset" class="btn btn-default btn-block"><i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;Reset</button>
             </div>
-            <div class=" col-sm-2 col-lg-2 col-md-2"></div>
+            <!-- <div class=" col-sm-1 col-lg-1 col-md-1"></div> -->
           </div>
         </div>
       </div>

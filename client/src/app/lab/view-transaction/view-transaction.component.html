@@ -216,7 +216,16 @@
   <div class="loading-bar"></div>
 </div>
 
-
+<div *ngIf="Notify" class="container">
+  <div class="row" id="error-container">
+    <div class="span12">
+      <div class="alert alert-info">
+        <!-- <button type="button" class="close" (click)="datadismis()">x</button> -->
+        <span>{{notify}}</span>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
@@ -225,9 +234,9 @@
 
 <section style="padding-top:10px;padding-left:10px" class="col-lg-2 col-md-2 col-sm-2">
   <div class="list-group">
-    <a (click)="active1 = true; active2 = false; active3=false" class="list-group-item" [ngClass]="{'active': active1}">View Transaction</a>
-    <a (click)="allInvoices()" class="list-group-item" [ngClass]="{'active': active2}">Invoices</a>
-    <a (click)="active1 = false; active2 = false; active3=true" class="list-group-item" [ngClass]="{'active': active3}">Patient</a>
+    <a (click)="active1 = true; active2 = false; active3=false" class="list-group-item" [ngClass]="{'active': active1}"><i class="fa fa-usd" aria-hidden="true"></i>&nbsp;View Transaction</a>
+    <a (click)="allInvoices()" class="list-group-item" [ngClass]="{'active': active2}"><i class="fa fa-list-alt" aria-hidden="true"></i>&nbsp;Invoices</a>
+    <!-- <a (click)="active1 = false; active2 = false; active3=true" class="list-group-item" [ngClass]="{'active': active3}">Patient</a> -->
   </div>
 </section>
 <section *ngIf="active1" style="padding-top:10px;padding-right:10px;padding-left:10px;" class="col-lg-10 col-md-10 col-sm-10">
@@ -239,18 +248,18 @@
 
     <form class="form-horizontal" [formGroup]="myForm" (ngSubmit)="getPatientByDate()">
 
-      <div style="display: inline-block;float:left; margin-left:20px;">
+      <div style="float:left; margin-left:20px;">
         <my-date-range-picker *ngIf="activepatienttable" style="padding:0px; border-radius:0px; border:0px;" class="form-control"
           name="mydaterange" [options]="myDateRangePickerOptions" placeholder="Search By Date" formControlName="myDateRange"></my-date-range-picker>
       </div>
-      <div style="display: inline-block;float:left">
-        <button style="height:36px;" *ngIf="activepatienttable" class="btn btn-info" type="submit">
-          <i class="glyphicon glyphicon-search"></i>
+      <div style="float:left">
+        <button style="height:36px; width:auto;" *ngIf="activepatienttable" class="btn btn-info" type="submit">
+          <span class="glyphicon glyphicon-search"></span>
         </button>
       </div>
       <div class="input-group col-sm-3" *ngIf="activepatienttable" style="margin-left:50px; float:right">
         <span class="input-group-addon">
-          <i class="glyphicon glyphicon-search"></i>
+          <span class="glyphicon glyphicon-search"></span>
         </span>
         <input [formControl]="searchByName" style="height:34px; float:left" class="form-control" type="text" placeholder="Search By Name">
       </div>
@@ -270,8 +279,8 @@
           <li *ngIf="activePayment && patientAllLedgersChk" [ngClass]="{'active': activePayment}">
             <a>Patient Ledgers</a>
           </li>
-          <li class="pull-right">
-            <a>{{patientName}}</a>
+          <li class="namePatient pull-right">
+            <a class="namePatient">{{patientName}}</a>
           </li>
         </ul>
       </div>
@@ -369,6 +378,7 @@
               <th>Balance</th>
               <th>Remark</th>
               <th>Print</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -385,6 +395,11 @@
               <td class="text-info" style="cursor:pointer;" (click)="getLedger(i)">Rs {{patientInvoice.balance}} /-</td>
               <td class="text-info" style="cursor:pointer;" (click)="getLedger(i)">{{patientInvoice.remark ? patientInvoice.remark : 'Null'}}</td>
               <td class="text-info" style="cursor:pointer;" (click)="getLedger(i)">{{patientInvoice.print}}</td>
+              <td style="border-left:1px solid #ddd">
+                <button (click)="printInvoices(patientInvoice)" class="btn btn-info btn-xs">
+                  <i class="glyphicon glyphicon-print"></i>&nbsp;Print
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -476,16 +491,22 @@
 </section>
 <section *ngIf="active2" style="padding-top:10px;padding-right:10px;padding-left:10px;" class="col-lg-10 col-md-10 col-sm-10">
   <div>
-    <form class="form-horizontal" [formGroup]="myForm" (ngSubmit)="getPatientByDate()">
+    <form class="form-horizontal" [formGroup]="myForm" (ngSubmit)="getInvoicesByDate()">
 
-      <div style="display: inline-block;float:left; margin-left:20px;">
+      <div style="float:left; margin-left:20px;">
         <my-date-range-picker style="padding:0px; border-radius:0px; border:0px;" class="form-control" name="mydaterange" [options]="myDateRangePickerOptions"
-          placeholder="Search By Date" formControlName="myDateRange"></my-date-range-picker>
+          placeholder="Search By Date" formControlName="myDateRangeForinvoices"></my-date-range-picker>
       </div>
-      <div style="display: inline-block;float:left">
+      <div style="float:left">
         <button style="height:36px;" class="btn btn-info" type="submit">
-          <i class="glyphicon glyphicon-search"></i>
+          <span class="glyphicon glyphicon-search"></span>
         </button>
+      </div>
+      <div class="input-group col-sm-3"  style="margin-left:50px; float:right">
+        <span class="input-group-addon">
+          <span class="glyphicon glyphicon-search"></span>
+        </span>
+        <input [formControl]="searchByName" style="height:34px; float:left" class="form-control" type="text" placeholder="Search By Name">
       </div>
       <div style="float:right; font-size:11px;">
         <!-- <div>
@@ -618,7 +639,7 @@
             <td>{{allInvoice.remark != null?allInvoice.remark:'Null'}}</td>
             <td style="border-left:1px solid #ddd">
               <button (click)="printInvoices(allInvoice)" class="btn btn-info btn-xs">
-                <span class="glyphicon glyphicon-print"></span> Print
+                <i class="glyphicon glyphicon-print"></i>&nbsp;Print
               </button>
             </td>
           </tr>

@@ -4,7 +4,7 @@
 				<div *ngIf = "Notify" class="container">
 					<div class="row" id="error-container">
 							 <div class="span12">  
-									 <div class="alert alert-danger">
+									 <div class="alert alert-info">
 											 <span>{{notify}}</span>
 									 </div>
 								 </div>
@@ -159,10 +159,10 @@
 						<div class="form-group col-sm-4 col-lg-4 col-md-4"
 							[ngClass]="{'has-error': patientData.controls.reff_by.invalid && patientData.controls.reff_by.touched,
 							'has-success': patientData.controls.reff_by.valid && !patientData.controls.reff_by.touched }">
-							<label for="reffiredBy" class="col-lg-4 control-label">Reffired By*</label>
+							<label for="reffiredBy" class="col-lg-4 control-label">Referred By*</label>
 							<div class="col-lg-8">
 									<select class="form-control" id="reffiredBy"  formControlName="reff_by">
-									  <option value="" selected="">Sellect Reffired Doctor</option>
+									  <option value="" selected="">Sellect Referred Doctor</option>
 									  <option *ngFor = "let reffBy of reffBys; let i = index">{{reffBy.prefix}}.{{reffBy.name}}</option>
 									</select>
 							</div>
@@ -173,14 +173,16 @@
 
 					<div style="margin-top:10px;" class="row">
 						<div class="form-group">
-							<div class=" col-sm-2 col-md-2 col-lg-2 col-sm-offset-5  col-md-offset-5  col-lg-offset-5 pull-right">
-								<div class=" col-sm-6 col-lg-6 col-md-6">
-									<button type="submit" [disabled]="!submitButtonStatus" class="btn btn-primary btn-block">{{submitButtonStatus?'save':'Saving....'}}</button>
+							<div style="margin-right:10px;" class=" col-sm-2 col-md-2 col-lg-2 col-sm-offset-5  col-md-offset-5  col-lg-offset-5 pull-right">
+								<div class=" col-sm-5 col-lg-5 col-md-5">
+									<button type="submit" [disabled]="!submitButtonStatus" class="btn btn-primary btn-block"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;
+										{{submitButtonStatus?'Save':'Saving....'}}</button>
 								</div>
 								<div class=" col-sm-5 col-lg-5 col-md-5">
-									<button type="reset" (click)="resetFun()" class="btn btn-default btn-block">Reset</button>
+									<button type="reset" (click)="resetFun()" class="btn btn-default btn-block"><i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;
+										Reset</button>
 								</div>
-								<div class=" col-sm-1 col-lg-1 col-md-1">
+								<div class=" col-sm-2 col-lg-2 col-md-2">
 									<!-- <button type="button" class="btn btn-info btn-xs btn-block" (click)="print()">Print</button> -->
 								</div>
 							</div>
@@ -211,8 +213,8 @@
 						</div>
 
 						<div class="modal-footer">
-							<button class="btn btn-default" data-dismiss="modal" (click) = refreshAndRedirect()> No </button>
 							<button [routerLink]="[routeToPayment?.link]" class="btn btn-primary" (click) = goToPayment()> Yes </button>
+							<button class="btn btn-default" data-dismiss="modal" (click) = refreshAndRedirect()> No </button>
 						</div>
 					</div>
 

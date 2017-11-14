@@ -2,7 +2,7 @@
 <section class="col-lg-2 col-sm-2 col-md-2">
     <div [hidden]="!alive">
         <legend>Select Test</legend>
-        <div class="list-group" style="height:60vh; overflow:auto;background-color:#f5f5f5">
+        <div class="list-group" style="height:58vh; overflow:auto;background-color:#f5f5f5">
                 <a class="list-group-item"  *ngFor = "let testTable of testTables; let i = index" (click) = "dragTr(testTable)" [ngClass] = "{'active':testTable.checkActive}">{{testTable?.name}}</a>
 
                 
@@ -73,7 +73,7 @@
     <div *ngIf="Notify" class="container">
         <div class="row" id="error-container">
             <div class="span12">
-                <div class="alert alert-danger">
+                <div class="alert alert-info">
                     <span>{{notify}}</span>
                 </div>
             </div>

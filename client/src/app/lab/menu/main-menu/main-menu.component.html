@@ -64,7 +64,7 @@
 				</ul>
 			  </li> -->
 			</ul>
-			<button type="button" style="background-color:transparent; color:#fff" class="btn pull-right" (click)="Logout_btn()"><i class="fa fa-sign-out" aria-hidden="true"> Log Out </i></button>
+			<button type="button" style="background-color:transparent; color:#fff" class="btn btn-lg pull-right" (click)="Logout_btn()"><i class="fa fa-sign-out" aria-hidden="true"> Log Out </i></button>
 		</div>
 		</div>
 	  </nav>
@@ -75,3 +75,9 @@
 				<li class="nav-li" *ngFor=" let menulist of menulists ; let i=index " (click) = addClass(i) [ngClass] = "{'active' : setclass == i}" [routerLink]="[menulist.link]" >{{menulist.name}}</li>
 			</ul>
 		</div><hr><hr> -->
+
+		
+<div class="footer">
+	<p>Developed and Maintain By <a href="http://www.softwebdevelopers.com"  target="_blank">SoftWeb Developers</a>
+		</p>
+</div>

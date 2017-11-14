@@ -78,6 +78,7 @@ Route::get('/dashboard', 'DashboardController@getpatient');
 
 Route::get('/view-transaction', 'ViewTransaction@getpatient');
 Route::post('/view-transaction', 'ViewTransaction@getpatientFromDate');
+Route::post('/view-transaction-inv', 'ViewTransaction@getInvoicesFromDate');
 Route::get('/view-transactionInv/{id}', 'ViewTransaction@getpatientInvoices');
 Route::get('/view-transactionPl/{id}', 'ViewTransaction@getpatientInvoiceledgers');
 Route::get('/view-transactionAllPl/{id}', 'ViewTransaction@getpatientInvoiceAllledgers');
@@ -92,6 +93,7 @@ Route::get('/getinvoice/{id}','TestbookingTransactionController@InvoiceDetial');
 // Route::post('/modify','DepartmentController@postDepartment');
 // Route::get('/modify','DepartmentController@getDepartment');
 Route::get('/search-by-name/{id}','ViewTransaction@searchpatientByName');
+Route::get('/search-by-name-inv/{id}','ViewTransaction@searchInvoicesByName');
 Route::post('/updatePrint','ViewTransaction@updatePrint');
 
 //User

@@ -1,20 +1,35 @@
+
+<div *ngIf="startLoading" class="loading">
+    <div class="loading-bar"></div>
+    <div class="loading-bar"></div>
+    <div class="loading-bar"></div>
+    <div class="loading-bar"></div>
+  </div>
+
+
 <section *ngIf="showTable" class="col-lg-12" style="vertical-align:center;">
   <div>
 
     <form class="form-horizontal" [formGroup]="myForm" (ngSubmit)="getPatientByDate()">
-    
-      <div class="form-group">
-        <div style="display: inline-block;float:left; margin-left:20px;">
-            <my-date-range-picker style="padding:0px; border-radius:0px; border:0px;" class="form-control" name="mydaterange" [options]="myDateRangePickerOptions" placeholder="Search By Date" formControlName="myDateRange"></my-date-range-picker>
-          </div>
-          <div style="display: inline-block;float:left">
-            <button style="height:34px;" class="btn btn-info" type="submit">Search</button>
-          </div>
-          <div style="margin-left:50px; float:right">
-            <!-- <div style="float:left ">Search</div> -->
-            <input [formControl] ="searchByName" style="height:34px; float:left" class="form-control" type="text" placeholder="Search By Name">
-          </div>
-        </div>
+
+      <div style="float:left; margin-left:20px;">
+        <my-date-range-picker style="padding:0px; border-radius:0px; border:0px;" class="form-control"
+          name="mydaterange" [options]="myDateRangePickerOptions" placeholder="Search By Date" formControlName="myDateRange"></my-date-range-picker>
+      </div>
+      <div style="float:left">
+        <button style="height:36px; width:auto;"  class="btn btn-info" type="submit">
+          <span class="glyphicon glyphicon-search"></span>
+        </button>
+      </div>
+      <div class="input-group col-sm-3"  style="margin-left:50px; float:right">
+        <span class="input-group-addon">
+          <span class="glyphicon glyphicon-search"></span>
+        </span>
+        <input [formControl]="searchByName" style="height:34px; float:left" class="form-control" type="text" placeholder="Search By Name">
+      </div>
+
+
+      <span></span>
     </form>
 
 
@@ -137,13 +152,16 @@
             <input type="text" class="form-control" id="email" placeholder="email" formControlName="email">
           </div>
         </div>
-
-        <div class="col-sm-2 col-md-2 col-lg-2 col-sm-offset-5 col-md-offset-5 col-lg-offset-5">
-          <input type="button" class="btn btn-default" (click)="showTable = true" value="Cancel">
-          <input class="btn btn-primary" type="submit" [disabled]="update" value="{{Update}}">
         </div>
 
-      </div>
+        <div style="padding-top:5px;" class="row">
+            <div class="col-sm-9 col-md-9 col-lg-9"></div>
+            <div class="pull-right col-sm-3 col-md-3 col-lg-3">
+              <button class="btn btn-primary" type="submit" [disabled]="update"><i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;{{Update}}</button>
+              <button type="button" class="btn btn-default" (click)="showTable = true"><i class="fa fa-eye-slash" aria-hidden="true"></i>&nbsp;Cancel</button>
+            </div>
+        </div>
+
 
     </form>
   </div>

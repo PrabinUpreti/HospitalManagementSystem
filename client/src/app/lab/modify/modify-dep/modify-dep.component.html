@@ -5,7 +5,7 @@
       </ol>
   </div>
   <div style="float:right;">
-    <input type="button" class="btn btn-info" (click)="showModalToAdd()" value="Add Department" data-toggle="modal" data-target="#myModal">
+    <button type="button" class="btn btn-primary" (click)="showModalToAdd()" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Add Department</button>
     <!-- (click) = "departmentToggle()" -->
     <!-- <i style="padding: auto 15px; cursor:pointer;" class="fa fa-plus fa-lg"></i></button> -->
   </div>
@@ -167,10 +167,10 @@ Invalid Department Description!
           </div>
 
           <div class="modal-footer">
-            <button *ngIf="showAddBtn" type="submit" class="btn btn-primary" [disabled] = "!add" (click)="addDepartments()">{{Add}}</button>
-            <button *ngIf="showUpdateBtn" type="submit" class="btn btn-info" [disabled] = "!update" (click)="updateDepartment()">{{Update}}</button>
-            <button *ngIf="showDeleteBtn" type="button" class="btn btn-danger" data-dismiss="modal" (click)="deleteDepartment()">Delete</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button *ngIf="showAddBtn" type="submit" class="btn btn-primary" [disabled] = "!add" (click)="addDepartments()"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;{{Add}}</button>
+            <button *ngIf="showUpdateBtn" type="submit" class="btn btn-primary" [disabled] = "!update" (click)="updateDepartment()"><i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;{{Update}}</button>
+            <button *ngIf="showDeleteBtn" type="button" class="btn btn-danger" data-dismiss="modal" (click)="deleteDepartment()"><i class="fa fa-trash" aria-hidden="true"></i>&nbsp;Delete</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-eye-slash" aria-hidden="true"></i>&nbsp;Close</button>
           </div>
         </form>
       </div>
