@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 // import { SearchService } from './search.service';
 // import { Subject } from 'rxjs/Subject';
 import { Router } from '@angular/router';
+import { ENV } from "./../../../env";
 
 @Component({
   selector: 'app-main-menu',
@@ -23,8 +24,10 @@ constructor(private router:Router) { }
 setclass = 0;
 public getUrl = window.location.pathname;
 public menulists=[];
+public user;
   ngOnInit() {
-	  console.log('I am console first')
+	  this.user = ENV.userName
+	  console.log(this.user)
 	this.menulists = JSON.parse(localStorage.getItem('SelectMenuIten'));
 	console.log('I am Menu',this.menulists)
   }

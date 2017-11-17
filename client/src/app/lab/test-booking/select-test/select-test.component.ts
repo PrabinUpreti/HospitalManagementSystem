@@ -46,6 +46,12 @@ export class SelectTestComponent implements OnInit {
   @Input() set inputSelectedtest(id){
     this.getTestFromServer(id)
   }
+  @Input() set resetTestList(id){
+    if(id == true)
+    this.alive = false;
+    // this.ShowTestSection = false;
+    // alert(id)
+  }
   @Input() set inputCatchAge(id){
     this.SelectedAge = id;
     this.filterAgeAndGender();
@@ -60,6 +66,7 @@ export class SelectTestComponent implements OnInit {
   // @Output() throwSelectedTest = new EventEmitter<any>();
 
   public alive = false;
+  // public ShowTestSection = false;
   public checkSelected = [];
   public testDetailsToUpdate=[];
   public active;
@@ -84,6 +91,7 @@ export class SelectTestComponent implements OnInit {
     this.dataTables = new DataTable()
   }
   getTestFromServer(id){
+    // this.ShowTestSection = true;
     if(id == undefined) return 0
     this.alive = true;
         this.modifyService.getTest(id)

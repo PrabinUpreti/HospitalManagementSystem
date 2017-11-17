@@ -49,6 +49,7 @@ export class ReportTransactionComponent implements OnInit {
   public globleSum;
   public sum = 0;
   public totalAmt;
+  public staticTot;
   public activepaymentForm = false;
   public routeParameter;
   public paramId;
@@ -72,6 +73,8 @@ export class ReportTransactionComponent implements OnInit {
   public drCrInTotal;
   public TEMPGlobletotalAmt;
   public ShowDiscount = true;
+  public previousPaidAmt;
+  public previousPaid = false;
   public SumFromReport;
   public TempglobleSum;
   public totalExist = true;
@@ -257,6 +260,9 @@ export class ReportTransactionComponent implements OnInit {
     }
     
     this.totalAmt = this.previousAmount;
+    if(!this.staticTot){
+      this.staticTot = this.totalAmt;
+    }
     if(this.drOrCr == "dr" || !(this.drOrCr)){
       this.totalAmt = this.previousAmount + this.sum;
       this.drCrInTotal = 'dr';
@@ -314,7 +320,7 @@ export class ReportTransactionComponent implements OnInit {
           let val=1;
           if (response.length > 0) {
             console.log(response)
-            this.idForInvoiceUpdate = response[response.length -1].invoice_id;
+            
             this.SearchNotify = false;
             this.sum = 0;
             console.log(response);
@@ -377,24 +383,28 @@ export class ReportTransactionComponent implements OnInit {
             
 
             if(response[response.length-1].invoices_particular == "INV-TRANSACTION-AMT"){
-              val = 1;
-              // alert("val is 2 now");
+              val = 2;
+              this.previousPaid =true;
+              this.previousPaidAmt = response[response.length-1].cr;
             }
 
             /////////////FOR UPDATE DATAS/////////////////
             if(response.length > 0){ /////////////CHECKED IF RESPONSE IS EXISTING OR NOT [OPT]//
-              this.previousReceivedCash = Number(response[response.length - val].received_cash);
-              this.previousCash = Number(response[response.length - val].cash);
-              this.previousInvBalance = Number(response[response.length - val].invoices_balance);
-              this.previousInvReturn = Number(response[response.length - val].returned_cash);
-              this.previousDr = Number(response[response.length - val].dr);
-              this.existPrint = Number(response[response.length - val].print);
+              this.previousReceivedCash = Number(response[response.length - 1].received_cash);
+              this.previousCash = Number(response[response.length - 1].cash);
+              this.previousInvBalance = Number(response[response.length - 1].invoices_balance);
+              this.previousInvReturn = Number(response[response.length - 1].returned_cash);
+              this.previousDr = Number(response[response.length - 1].dr);
+              this.existPrint = Number(response[response.length - 1].print);
               this.previousSubTotal = Number(response[response.length - val].sub_total);
               this.TESTBOOKINGID =response[response.length -val].testbooking_id
             }
             if (response.length >= 2) {
               if(response[response.length-val].dr >0){
                   this.previousAmount = Number(response[response.length - 2].balance);
+                  if(val == 2){
+                    this.previousAmount = Number(response[response.length - 1].balance);
+                  }
                   if(this.previousAmount>0){
                     this.drOrCr = response[response.length - val].remark;
                   }
@@ -402,9 +412,12 @@ export class ReportTransactionComponent implements OnInit {
                     this.drOrCr = '';
                   }
                   this.sum = Number(response[response.length-val].dr);
-                  this.globleSum = this.sum;
                   this.totalAmt = this.sum + this.previousAmount;
                   this.drCrInTotal = "dr"
+                  if(val == 2){
+                    this.sum = 0;
+                    this.globleSum = this.sum;
+                  }
                   // this.totalExist =true;
                   // else if(response[response.length-2].remark == null){
                   //   this.previousAmount = 0;
@@ -416,7 +429,7 @@ export class ReportTransactionComponent implements OnInit {
                   // }
               }
               else{
-                this.previousAmount = Number(response[response.length - val].balance);
+                this.previousAmount = Number(response[response.length - 1].balance);
                 // this.previousInvBalance = Number(response[response.length - val].invoices_balance);
                 this.drOrCr = 'dr';
                 this.TempglobleSum =  Number(response[response.length-2].dr);
@@ -448,6 +461,10 @@ export class ReportTransactionComponent implements OnInit {
                   // }
                 }
                 this.startLoading =false;
+
+
+
+                  this.idForInvoiceUpdate = response[response.length -val].invoice_id;
               }
               //   // }
               // else if(response.length < 2) {
@@ -484,20 +501,28 @@ export class ReportTransactionComponent implements OnInit {
               this.startLoading =false;
               this.patientDatas = response;
               this.activepaymentForm = true;
-            if(response[response.length-val].discount_amount > 0){
-              console.log('disamount',response[response.length-val].discount_amount)
+            if(response[response.length-1].discount_amount > 0){
+              console.log('disamount',response[response.length-1].discount_amount)
               this.ShowDiscount = false;
-              this.updateDiscountAmt = response[response.length-val].discount_amount;
+              this.updateDiscountAmt = response[response.length-1].discount_amount;
               // this.transactionData.controls.checkDiscount.setValue('0')
               // this.transactionData.controls.discountcheck.setValue(response[response.length-val].discount_amount)
             }
-            if(response[response.length-val].discount_percentage >0){
-              console.log('disper',response[response.length-val].discount_percentage)
-              this.updateDiscountPer = response[response.length-val].discount_percentage;
+            else if(response[response.length-2].discount_amount > 0){
+              this.ShowDiscount = false;
+              this.updateDiscountAmt = response[response.length-2].discount_amount;
+            }
+            if(response[response.length-1].discount_percentage >0){
+              console.log('disper',response[response.length-1].discount_percentage)
+              this.updateDiscountPer = response[response.length-1].discount_percentage;
               // this.transactionData.controls.checkDiscount.setValue('val')
               // this.transactionData.controls.discountcheck.setValue(response[response.length-val].discount_percentage)
               // console.log('disper',this.transactionData.controls.discountcheck.value)
               this.ShowDiscount = false;
+            }
+            else if(response[response.length-2].discount_percentage > 0){
+              console.log('disper',response[response.length-2].discount_percentage)
+              this.updateDiscountPer = response[response.length-2].discount_percentage;
             }
             if(response[response.length-val].print == val){
               this.copyRecipt ==true;
@@ -604,6 +629,9 @@ export class ReportTransactionComponent implements OnInit {
       // console.log(this.patientDatas[this.patientDatas.length-1].testbooking_id);
       let param = this.transactionData.value;
       param['TestBookingId'] = this.patientDatas[this.patientDatas.length - 1].testbooking_id;
+      if(this.previousPaid){
+        param['TestBookingId'] = this.patientDatas[this.patientDatas.length - 2].testbooking_id;
+      }
       param['InvoiceAmount'] = this.sum;
       // if(this.ShowDiscount = true){
       //   alert(this.updateDiscountAmt);

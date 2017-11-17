@@ -169,17 +169,18 @@ class DoctorListController extends Controller
         // $endtime = DateTime::createFromFormat("YYYY-MM-DD", $endDate);
         // $setStartDate = $starttime->getTimestamp();
         // $setEndDate = $endtime->getTimestamp();
-        $setStartDate = Carbon::createFromFormat('Y-m-d', $startDate)->timestamp;
-        $setEndDate = Carbon::createFromFormat("Y-m-d", $endDate)->timestamp;
+        // $setStartDate = Carbon::createFromFormat('Y-m-d', $startDate)->timestamp;
+        // $setEndDate = Carbon::createFromFormat("Y-m-d", $endDate)->timestamp;
 
 
         $result = DB::table('invoices')
         ->leftJoin('testbookings', 'testbookings.id', '=', 'invoices.testbooking_id')
         ->leftJoin('patient_ladgers', 'patient_ladgers.invoice_id','=','invoices.id')
         ->leftJoin('doctor_lists', 'doctor_lists.id','=', 'testbookings.doctor_list_id')
+        ->leftJoin('patients','patients.id','invoices.patient_id')
         ->whereBetween('invoices.created_at', [$startDate, $endDate])
         ->where('testbookings.doctor_list_id', '=', $doctorId)
-        ->select('patient_ladgers.*','doctor_lists.*')
+        ->select('patient_ladgers.*','doctor_lists.*','invoices.testbooking_id','patients.patient_name')
         ->get();
          return $result;
      }

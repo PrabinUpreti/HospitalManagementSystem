@@ -21,21 +21,18 @@
   
 <div class="row">
   <div class="col-sm-8 col-md-8 col-lg-8">
-    <div class="panel panel-info">
-      <div class="panel-heading">Search Bar</div>
+    <!-- <div class="panel panel-info"> -->
+      <!-- <div class="panel-heading">Search Bar</div> -->
       <div class="panel-body">
         <!-- <form class="form-inline" [formGroup]="SearchPayment" (ngSubmit)="searchPay()"> -->
-        <form class="form-inline" autocomplete="off">
+        <!-- <form class="form-inline" autocomplete="off">
           <div class="form-group col-lg-9">
             <label class=" col-lg-4" for="search"> Search </label>
             <input [readonly] = "disableme" class="form-control col-lg-8" type="text" name="search" [formControl]="searchField" placeholder="Input Patient ID (or Name)">
           </div>
-          <!-- <div class="form-group col-lg-3">
-            <button type="submit" class="form-control btn btn-primary col-lg-12">Search</button>
-          </div> -->
-        </form>
+        </form> -->
       </div>
-    </div>
+    <!-- </div> -->
   </div>
 
   <!-- <div class="col-sm-6 col-md-6 col-lg-6">
@@ -43,20 +40,32 @@
   </div> -->
 </div>
 <!-- <pre>{{patientDatasDetails|json}}</pre> -->
-<div *ngIf="showTable" class="container">
+<div  class="container">
   <div class="col-sm-4" id="search-container">
     <div class="alert">
       <!-- <button type="button" class="close">X</button> -->
-      <a class="close" (click) = "SearchBarDismiss()">x</a>
-      <strong>Searched List of transaction</strong>
+      <a style="padding-top:12px;" class="close" (click) = "SearchBarDismiss()">X</a>
+      <!-- <strong>Searched List of transaction</strong> -->
     </div>
-    <div style="height:80vh; overflow:auto;">
-      <table *ngIf = "!SearchNotify" class="table table-hover">
+
+
+    
+    <form class="form-horizontal" autocomplete="off">
+        <div class="input-group col-lg-11">
+            <i class="input-group-addon"><i class="glyphicon glyphicon-search"></i></i>
+          <input style="height:32px;" [readonly] = "disableme" class="form-control input-lg" type="text" name="search" [formControl]="searchField" placeholder="Input Patient ID (or Name)">
+        </div>
+      </form>
+
+
+
+    <div *ngIf="showTable" style="height:80vh; overflow:auto;">
+      <table  style="background-color:transparent;" *ngIf = "!SearchNotify" class="table table-hover">
 
         <thead>
           <tr>
             <!-- <th> S.N </th> -->
-            <th> ID </th>
+            <th> Id </th>
             <th> Name </th>
             <th> Date </th>
           </tr>
@@ -91,6 +100,7 @@
     </div>
   </div>
 </div> -->
+<legend *ngIf="activepaymentForm" class="col-sm-8">TRANSACTION</legend>
 <div style="margin:20px; padding:25px 0 0 50px;" *ngIf="activepaymentForm" class="col-sm-8">
 
   <div class="form-group">
@@ -126,7 +136,7 @@
     <div class="form-group">
       <label class="control-label col-sm-6" for="email"> Previous Balance: </label>
       <div class="col-sm-6">
-        <p class="form-control-static" [ngClass] = "{'text-success':drOrCr == 'cr', 'text-danger':drOrCr == 'dr'}">Rs {{globleSum}} /-  {{drOrCr | uppercase}}</p>
+        <p class="form-control-static" [ngClass] = "{'text-success':drOrCr == 'cr', 'text-danger':drOrCr == 'dr'}">Rs {{sum}} /-  {{drOrCr | uppercase}}</p>
       </div>
     </div>
 
@@ -180,8 +190,8 @@
           <div class="col-sm-6">
             <p class="form-control-static" [ngClass] = "{'text-success':tempDrOrCr == 'cr', 'text-danger':tempDrOrCr == 'dr'}">Rs {{totalAmt}} /-  {{tempDrOrCr | uppercase}}
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <label *ngIf="!transactionData.controls.credit.value && tempDrOrCr == 'cr' && hidePayment" class="checkbox-inline">
-                  <input type="checkbox" name="backedMoney" (change)="calculateTotalAmount()" formControlName="backedMoney" value="1" />Pay Back
+                <label *ngIf="!transactionData.controls.credit.value &&!transactionData.controls.cash.value && tempDrOrCr == 'cr' && hidePayment" class="checkbox-inline">
+                  <input type="checkbox" name="backedMoney" (click)="transactionData.controls.credit.setValue(0)" (change)="calculateTotalAmount()" formControlName="backedMoney" value="1" />Pay Back
                 </label></p>
           </div>
         </div>
@@ -189,13 +199,13 @@
 
 
 
-    <div *ngIf="!hidePayment" class="form-group">
+    <div class="form-group">
       <label class="control-label col-sm-6" for="email"> Cash: </label>
       <div class="col-sm-2" [ngClass]="{'has-error': transactionData.controls.cash.invalid && transactionData.controls.cash.dirty,
             'has-success':transactionData.controls.cash.valid && !transactionData.controls.cash.dirty}">
-        <input class="form-control" type="text" (change)="calculateTotalAmount()" formControlName="cash" maxlength="6">
+        <input class="form-control" type="text" (change)="calculateTotalAmount()" (change)="transactionData.controls.backedMoney.setValue(0)" formControlName="cash" maxlength="6">
         <span>
-          <label *ngIf=UseForCredit class="checkbox-inline">
+          <label *ngIf="UseForCredit && transactionData.controls.cash.value>0"  class="checkbox-inline">
             <input (click)="transactionData.controls.backedMoney.setValue(0)" type="checkbox" value="" formControlName="credit">Credit
           </label>
         </span>

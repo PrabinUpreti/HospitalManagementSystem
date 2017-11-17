@@ -211,7 +211,7 @@
                                 console.log('Invoice data',response)
                                 if(response.length > 0){
                                   console.log('balance',response[0].balance)
-                                  if(response[0].remark == 'dr' && response[0].particular !='PL-TRANSACTION-AMT'){
+                                  if(response[0].remark == 'dr'){
                                     //   if(!(response[0].particular == "INV-CREATED-REPORT-TR")){
                                         this.Balance=1;
                                     //   }

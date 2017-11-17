@@ -24,7 +24,7 @@ class ViewTransaction extends Controller
         // return var_dump($endDate);
 
         $patient = DB::table('patients')
-        ->whereBetween('patients.created_at', [$startDate, $endDate])
+        ->whereBetween('patients.updated_at', [$startDate, $endDate])
         // ->where('testbookings.doctor_list_id', '=', $doctorId)
         // ->select('patients.*')
         ->orderBy('updated_at','desc')

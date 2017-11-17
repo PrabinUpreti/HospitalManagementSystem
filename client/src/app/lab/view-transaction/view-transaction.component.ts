@@ -45,6 +45,7 @@ export class ViewTransactionComponent implements OnInit {
   public active3 = false;
   public testAndRateForPrints;
   public startLoading = true;
+  public resetdateForPatient;
 
 
   public notify;
@@ -95,6 +96,28 @@ export class ViewTransactionComponent implements OnInit {
         let month= date.getMonth()+1;
         let day= date.getDate();
         this.PrintedDate = year+'-'+month+'-'+day;
+
+
+
+        
+  let invRaw={};
+      let tempDay;
+      if(day < 10){
+        tempDay = "0"+day;
+        console.log(tempDay)
+      }
+      else{
+        tempDay = day;
+        console.log('not less');
+      }
+      let startDate = year+"-"+month+"-"+tempDay;
+  
+    invRaw['startDate'] = startDate;
+    invRaw['endDate'] = startDate+" 23:59:59";
+    this.resetdateForPatient = invRaw;
+
+
+
 
     
 this.searchByName = new FormControl()
@@ -161,7 +184,7 @@ this.searchByName.valueChanges
 }
   else{
     if(this.active1){
-    this.transactionService.getpatient()
+      this.transactionService.getpatientFromDate(this.resetdateForPatient)
     .subscribe(
       (response)=>{
         // if(response.lenght>0){
@@ -210,9 +233,10 @@ this.searchByName.valueChanges
 
 
     
-    this.transactionService.getpatient()
+    this.transactionService.getpatientFromDate(invRaw)
     .subscribe(
       (response)=>{
+        console.log(response)
         if(response.length>0){
         this.patientLists = response;
         this.startLoading = false;
@@ -290,7 +314,7 @@ this.searchByName.valueChanges
         })
       }
       else{
-        this.transactionService.getpatient()
+        this.transactionService.getpatientFromDate(this.resetdateForPatient)
         .subscribe(
           (response)=>{
             if(response.length>0){
@@ -363,7 +387,7 @@ this.searchByName.valueChanges
         })
       }
       else{
-        this.transactionService.getpatient()
+        this.transactionService.getpatientFromDate(this.resetdateForPatient)
         .subscribe(
           (response)=>{
             if(response.length>0){

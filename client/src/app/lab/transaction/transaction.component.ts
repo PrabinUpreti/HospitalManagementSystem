@@ -47,7 +47,9 @@ export class TransactionComponent implements OnInit, OnDestroy {
   public drOrCr;
   public copyRecipt = false;
   public hidePayment = false;
+  public hideDiscount = false;
   public startLoading = true;
+  // public ShowCash = true;
 
 
   public selectedradioButton;
@@ -162,6 +164,7 @@ export class TransactionComponent implements OnInit, OnDestroy {
 
   }
   calculateTotalAmount() {
+    this.hideDiscount = false;
     let discountAmount = (this.transactionData.controls.checkDiscount.value == 0) ? this.transactionData.controls.discountcheck.value : (((this.transactionData.controls.discountcheck.value) / 100) * this.globleSum);
     let checksum = this.globleSum - (Number(this.transactionData.controls.cash.value) + Number(discountAmount));
     this.discountedAmount = discountAmount;
@@ -170,13 +173,19 @@ export class TransactionComponent implements OnInit, OnDestroy {
       this.sum = this.globleSum;
       this.hidePayment = true;
       this.tempDrOrCr = 'cr'
-      this.totalAmt = checksum;
+      this.totalAmt = Number(this.globleSum) + Number(this.transactionData.controls.cash.value);
+      // this.ShowCash = false;
     }
     else if(!this.drOrCr){
       this.returnableAmt = -checksum;
       console.log("!this.drorcr")
+      this.UseForCredit = true;
+      this.hidePayment = true;
+      this.printDrOrCr = "cr";
+      // this.ShowCash = true;
     }
     else {
+      // this.ShowCash = true;
       this.hidePayment = false;
       console.log("else")
       if (checksum < 0) {
@@ -290,7 +299,8 @@ export class TransactionComponent implements OnInit, OnDestroy {
   }
   invoice(id) {
     this.startLoading = true;
-    this.hidePayment = false;
+    this.hidePayment = true;    
+    this.UseForCredit = false;
     console.log(id);
     this.transactionData.reset();
     this.patientDatasDetails = [];
@@ -317,10 +327,19 @@ export class TransactionComponent implements OnInit, OnDestroy {
           this.totalAmt = this.sum;
           this.returnableAmt = 0;
           if(this.drOrCr =='cr'){
+            // this.ShowCash = false;
             this.hidePayment = true;
+            this.UseForCredit = true;
           }
-          if(this.drOrCr == 'dr'){
+          else if(this.drOrCr == 'dr'){
+            // this.ShowCash = true;
             this.hidePayment = false;
+            this.UseForCredit = false;
+          }
+          else{
+            // this.ShowCash = true;
+            this.UseForCredit = false;
+            this.hidePayment = true;
           }
 
           // if(response[response.length-1].discount_amount > 0){
@@ -352,10 +371,31 @@ export class TransactionComponent implements OnInit, OnDestroy {
 
   transactionDatas(id) {
     this.startLoading =true;
-    if(this.hidePayment){
-      this.transactionData.controls.cash.setValue('0');
+    if(this.hidePayment && !this.transactionData.controls.cash.value && this.drOrCr){
+      // this.transactionData.controls.cash.setValue('0');
     }
-    if(this.transactionData.valid && this.transactionData.controls.cash.value){
+    if(this.transactionData.valid && this.transactionData.controls.cash.value || (this.drOrCr == "cr" && this.transactionData.controls.backedMoney.value && !this.transactionData.controls.cash.value)){
+
+      
+    if(this.globleSum == 0 && this.totalAmt == 0 && !this.transactionData.controls.credit.value){
+      this.notify="Check Credit"
+      this.Notify = true;
+      this.pay = false;
+      this.Pay = 'Pay';
+      this.notifyDismiss();
+      this.startLoading = false;
+      return 0;
+    }
+    if(this.drOrCr == "cr" && (this.transactionData.controls.cash.value == 0 || this.transactionData.controls.cash.value>0) && !this.transactionData.controls.credit.value && !this.transactionData.controls.backedMoney.value){
+      this.notify="Check Credit"
+      this.Notify = true;
+      this.pay = false;
+      this.Pay = 'Pay';
+      this.notifyDismiss();
+      this.startLoading = false;
+      return 0;
+    }
+
       this.pay = true;
       this.Pay = "Paying..."
     let allData = id;
@@ -399,8 +439,13 @@ export class TransactionComponent implements OnInit, OnDestroy {
           allData['limCash'] = this.transactionData.controls.cash.value;
     }
     else{
-      allData['remark'] = null;
-      allData['limCash'] = this.globleSum;
+      if(this.globleSum == 0 && this.totalAmt == 0 && this.transactionData.controls.credit.value){
+        allData['remark'] = 'cr';
+        allData['limCash'] = this.globleSum;
+        allData['cash'] = this.transactionData.controls.cash.value;
+        allData['subTotal'] = this.globleSum;
+        allData['balance'] = this.transactionData.controls.cash.value;
+      }
     }
         if(this.transactionData.controls.discountcheck.value){
           if(this.transactionData.controls.checkDiscount.value == 0){
@@ -458,6 +503,7 @@ export class TransactionComponent implements OnInit, OnDestroy {
   }
   SearchBarDismiss() {
     this.showTable = false;
+    this.searchField.reset();
   }
 
   ngOnDestroy() {

@@ -121,7 +121,7 @@ class TestbookingTransactionController extends Controller
         $invoice=DB::table('patient_ladgers')
                 ->leftJoin('invoices', 'invoices.id', '=', 'patient_ladgers.invoice_id' )
                 ->where('patient_ladgers.patient_id', $id )
-                ->select("invoices.*")
+                ->select("patient_ladgers.*")
                 ->orderBy('created_at','desc')
                 ->get();
                 return $invoice;

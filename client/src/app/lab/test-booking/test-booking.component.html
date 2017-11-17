@@ -9,7 +9,7 @@
         <app-select-testype [inputSelectedDep]="Dep" (selectedtestype)="onSelectedtestype($event)"></app-select-testype>
     </section>
     
-        <app-select-test [inputCatchAge] = "CatchAge" [inputCatchGender] = "CatchGender" [inputSelectedtest]="testype" (dragToSelected) = "onDragToSelected($event)"></app-select-test>
+        <app-select-test [resetTestList]="resetTest" [inputCatchAge] = "CatchAge" [inputCatchGender] = "CatchGender" [inputSelectedtest]="testype" (dragToSelected) = "onDragToSelected($event)"></app-select-test>
     
     <!-- <section class="col-lg-6 col-sm-6 col-md-6">
         <app-selected-test [inputCatchAge] = "CatchAge" [inputCatchGender] = "CatchGender" [inputDropToSelectedNow]="dragToSelectedNow" (setResponse)="onsetResponse($event)"></app-selected-test>

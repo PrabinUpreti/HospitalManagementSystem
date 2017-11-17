@@ -7,7 +7,7 @@
       <table class="table table-hover">
             <tbody>
               <tr *ngFor="let list of notreadyarray |filter:term; let i = index" (click)="getvalue(list.testbooking_id)" [class.active]="i == selectedRow">
-                <td style="cursor:pointer;">{{list.patient_name}}</td>
+                <td style="cursor:pointer;"><a>{{list.patient_name}}</a></td>
                 <td style="cursor:pointer;">{{list.created_at}}</td>
               </tr>
           </tbody>

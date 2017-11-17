@@ -167,7 +167,7 @@ export class PatientComponent implements OnInit {
     if(this.myForm.controls.myDateRange.value){
       let dateRange = this.myForm.controls.myDateRange.value.formatted.split(' - ');
       param['startDate'] = dateRange[0];
-      param['endDate'] = dateRange[1];
+      param['endDate'] = dateRange[1] +" 23:59:59";
       console.log(param);
       this.ModifyService.getpatientFromDate(param)
       .subscribe(

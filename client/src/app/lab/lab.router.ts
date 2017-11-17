@@ -29,7 +29,7 @@ import { ReportTransactionComponent } from './report-transaction/report-transact
 
 const usersRoutes: Routes = [
     { path: 'lab', component: LabComponent,
-      // canActivate:[AuthuserGuard],
+      canActivate:[AuthuserGuard],
     	children: [
               { path: 'dashboard', component: DashboardComponent},
       				{ path: 'test-booking', component: TestBookingComponent },

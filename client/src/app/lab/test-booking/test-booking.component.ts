@@ -14,6 +14,7 @@ export class TestBookingComponent implements OnInit {
   public setResponse;
   public CatchAge;
   public CatchGender;
+  public resetTest;
 
   constructor() { }
 
@@ -25,10 +26,12 @@ export class TestBookingComponent implements OnInit {
   }
   public onSelectedDep(id){
     this.Dep=id
+    this.resetTest = true;
     // console.log(this.Dep);
   }
   onSelectedtestype(id){
     this.testype = id;
+    this.resetTest = false;
     // console.log(id);
   }
   onDragToSelected(id){    

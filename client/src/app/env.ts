@@ -6,11 +6,15 @@ export class ENV {
     public static Request_URL = "http://server.hms.com";
     public static RegNo:string = "Reg-0123456789";
     public static established:string ="2050 B.S"
+    public static tempusername;
+    public static userName
     
     public static time;
     public static cal;
 
     public static setSection(){
+        this.tempusername =JSON.parse(localStorage.getItem('user'))
+        this.userName = this.tempusername.name
         var ed = new Date();
         var hour=ed.getHours();
         var minute=ed.getMinutes();

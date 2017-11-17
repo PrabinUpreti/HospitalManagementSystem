@@ -3,6 +3,8 @@ import {IMyDrpOptions} from 'mydaterangepicker';
 import { FormGroup,FormBuilder,  FormControl, Validators } from '@angular/forms';
 import { ModifyService } from './../modify/modify.service';
 import { DoctorReportService } from './doctor-report.service';
+import { ViewTransactionService } from '../view-transaction/view-transaction.service';
+declare var jQuery:any;
 
 @Component({
   selector: 'app-doctor-report',
@@ -33,8 +35,11 @@ export class DoctorReportComponent implements OnInit {
   public doctorDatas=[];
   public showTable = false;
   public commission = 0;
+  public testAndRateForPrints=[]
 
-  constructor(private formBuilder: FormBuilder,private ModifyService: ModifyService, private DoctorReport: DoctorReportService) { }
+  constructor(private formBuilder: FormBuilder,private ModifyService: ModifyService,
+    private viewtransaction:ViewTransactionService,
+     private DoctorReport: DoctorReportService) { }
 
   ngOnInit() {    
 
@@ -89,20 +94,30 @@ export class DoctorReportComponent implements OnInit {
         let dateRange = this.myForm.controls.myDateRange.value.formatted.split(' - ');
         param['doctorId'] = this.doctorlists[this.myForm.controls.selecteddoctor.value].id;
         param['startDate'] = dateRange[0];
-        param['endDate'] = dateRange[1];
+        param['endDate'] = dateRange[1] +" 23:59:59";
         // console.log(JSON.stringify(param));
         this.DoctorReport.getDoctorTestbookingTransaction(param)
         .subscribe(
           (response)=>{
+            if(response.length >0){
             this.doctorDatas=[];
-            this.doctorDatas = response;
+            let tempJson = [];
+            for(let x in response){
+              if(response[x].dr > 0){
+                tempJson.push(response[x]);
+              }
+            }
+            this.doctorDatas = tempJson;
             console.log(this.doctorDatas);
             this.showTable = true;
-            for(let x in response){
-              tempcommission += Number(response[x].dr);
+            for(let x in this.doctorDatas){
+              tempcommission += Number(this.doctorDatas[x].dr);
             }
             let totcommission = ((response[0].commission)/100)*tempcommission;
-            this.commission = totcommission;
+            this.commission = Number(totcommission.toFixed(2));
+          }else{
+            alert("No datas Found !");
+          }
           },
           (error)=>{
             console.log(error);
@@ -114,6 +129,26 @@ export class DoctorReportComponent implements OnInit {
         this.Notify = true;
         this.notify = "invalid"
       }
+    }
+
+    getCommissionDetials(id){
+      console.log(id);
+      let param={}
+      param['testBookingId'] = id.testbooking_id;
+      this.viewtransaction.updatePrint(param)
+      .subscribe(
+        (response)=>{
+          console.log(response);
+          if(response.length >0){
+          this.testAndRateForPrints = response;
+          jQuery("#myModal").modal("show");
+          }
+        },
+        (error)=>{
+          console.log(error);
+        }
+      )
+
     }
 
 
