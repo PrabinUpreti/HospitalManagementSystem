@@ -32,12 +32,12 @@ export class DashboardComponent implements OnInit {
     this.title = ENV.hospital;
     this.hospitalAddress = ENV.address;
     this.established =ENV.established;
-    this.panNum = ENV.pan_Numner;
+    this.panNum = ENV.pan_Number;
     this.regNum = ENV.RegNo;
     this.dashboardservice.getPatient()
       .subscribe(
       (response) => {
-        console.log(response)
+        //console.log(response)
         this.totalPatient = response.totalPatient;
         this.totalDoctor = response.totalDoctor;
         this.totalPatientToday = response.totalTodayPatient;

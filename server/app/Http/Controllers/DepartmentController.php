@@ -61,10 +61,14 @@ class DepartmentController extends Controller
      public function store(Request $request){
             $departmentName = $request->input('DepartmentName');
             $departmentDescription = $request->input('DepartmentDescription');
+            $createdBy = $request->input('createdBy');
+            $updatedBy = $request->input('updatedBy');
             
                $department = Department::create([
                     'name'=>$departmentName,
                     'description'=>$departmentDescription,
+                    'created_by'=>$createdBy,
+                    'updated_by'=>$updatedBy
                  ]);    
                  return $department;
      }

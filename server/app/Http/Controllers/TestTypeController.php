@@ -43,10 +43,14 @@ class TestTypeController extends Controller
         $departmentIdInInt = $request->input('selectdepartment');
         $testTypeName = $request->input('TestTypeName');
         $testTypeDescription = $request->input('TestTypeDescription');
+        $createdBy = $request->input('createdBy');
+        $updatedBy = $request->input('updatedBy');
            $testType = TestType::create([
                 'department_id' => $departmentIdInInt,
                 'name'=>$testTypeName,
                 'description'=>$testTypeDescription,
+                'created_by'=>$createdBy,
+                'updated_by'=>$updatedBy
              ]);
              return $testType;
      }
@@ -85,9 +89,12 @@ class TestTypeController extends Controller
      {
         $name =   $request->input('TestTypeName');
         $description =   $request->input('TestTypeDescription');
+        $updatedBy = $request->input('updatedBy');
         TestType::where('id',$id)->update(array(
            'name' =>  $name,
-           'description' =>  $description
+           'description' =>  $description,
+           'created_by'=>$createdBy,
+           'updated_by'=>$updatedBy
            ));
        return response()->json([
            'name' => $name,

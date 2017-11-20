@@ -12,7 +12,7 @@ canActivate(next: ActivatedRouteSnapshot,state: RouterStateSnapshot):boolean {
       return true;
    } else{
      this.router.navigate(['/']);
-     console.log('U are Not Authenticated')
+     //console.log('U are Not Authenticated')
      return false;
    }
   }

@@ -22,6 +22,7 @@
         @Output() patientData = new EventEmitter<any>();
         @Output() transactionData = new EventEmitter<any>();
         @Output() response_report = new EventEmitter<any>();
+        @Output() Emiited_data = new EventEmitter<any>();
         patients = [];
         
         public submitButtonStatus = true;
@@ -54,10 +55,12 @@
         public patientId;
         public showTable=false;
         public prefix;
+        public method
         // private hidemodel=false;
         constructor(private reportservice: ReportService, private fb: FormBuilder, private route: ActivatedRoute, private router: Router) { }
         model: any = {};
         test='';
+        Emitedvalue
         reports =  this.fb.array([
             
         ])
@@ -67,7 +70,7 @@
         ngOnInit() {
             this.hospital_name=ENV.hospital;
             this.hospital_address=ENV.address;
-            this.hospital_panNumber=ENV.pan_Numner;
+            this.hospital_panNumber=ENV.pan_Number;
             this.hospital_phoneNumber=ENV.phone_number;
         }
         public responseData = null;
@@ -76,7 +79,7 @@
                 this.Save = "Saving..."
                 this.save=true;
                 this.showTable=false;
-                console.log("Form Submitted");
+                //console.log("Form Submitted");
                 this.submitButtonStatus = false
                 let paramData: any = this.resultData.value;
                 this.reportservice.getData(paramData).
@@ -91,7 +94,7 @@
                             this.Notify = false;
                         }.bind(this), 3000);
                         this.responseData = response
-                        console.log('my response data',this.responseData)
+                        //console.log('my response data',this.responseData)
                         this.submitButtonStatus = true;
                     },
                     (error) => {
@@ -103,32 +106,39 @@
         }
         getReady(id){
             this.check=id;
-            console.log('checked',this.check)
+            //console.log('checked',this.check)
              if(this.check===undefined) return 0
              if(this.check == 1){
                   this.value=true;         
+                 this.getReportvalue(this.method)         
               }else{
                   this.value=false;
+                  this.getReportvalue(this.method)  
               }
               this.showTable=false;
-             console.log('value',this.check)
+             //console.log('value',this.check)
         }
         public getReportvalue(data){
             if(data === undefined) return 0
             this.showTable=true;
             this.save=false;
+            this.method=data
             this.print_status=false;
+            //console.log('with key value ',data.id)
             let toArray=[];
             this.UserInformation=[];
             for(let i in this.reports)this.reports.removeAt(parseInt(i))
             this.resultData.controls.reports = this.reports 
             let control = <FormArray>this.resultData.controls.reports;
-            this.reportservice.getReportData(data).subscribe(
+            this.reportservice.getReportData(data.id).subscribe(
                 patients => {
                 this.patients = patients
-                    
+                if(this.patients !== undefined){
+                    this.Emiited_data.emit(this.patients)
+                 }
+                 //console.log('Report data 130',this.patients)
                     this.globalPatient = patients.datas;
-                    console.log('patient data',this.patients)
+                    //console.log('patient data',this.patients)
                     for(let i = 0; i < patients.datas.length; i++){
                         var age_below =patients.datas[i].age_group.match(/below/g);
                             var age_above =patients.datas[i].age_group.match(/above/g);
@@ -154,7 +164,7 @@
                             toArray.push(patients.datas[i].age_group.split("to"));
                         }
                     } 
-                    console.log(toArray)
+                    //console.log(toArray)
                     for(let i = 0; i < toArray.length; i++){          
                                 if(toArray[i][0] <= patients.datas[i].age && toArray[i][1] >= patients.datas[i].age){
                                     if(patients.datas[i].patient_gender === patients.datas[i].gender){
@@ -172,11 +182,17 @@
                        this.patient_address=this.UserInformation[0].patient_address;
                        this.patient_gender=this.UserInformation[0].patient_gender;
                        this.age=this.UserInformation[0].age;
-                         var today = new Date();
-                         var end_dd = today.getDate();
-                         var end_mm = today.getMonth()+1;
-                         var end_yyyy =today.getFullYear();
-                         var end_date = end_yyyy+'-'+end_mm+'-'+end_dd;
+                           let start_dd;
+                           var today = new Date();
+                           var end_dd = today.getDate();
+                           var end_mm = today.getMonth()+1;
+                           var end_yyyy =today.getFullYear();
+                           if(end_dd<10){
+                                 start_dd='0'+end_dd;
+                           }else{
+                                 start_dd=end_dd;
+                           }
+                           var end_date = end_yyyy+'-'+end_mm+'-'+start_dd
                        this.date=end_date;
                        this.nationality=this.UserInformation[0].nationality;
                        this.referred_by=this.UserInformation[0].doctor_name;
@@ -184,7 +200,7 @@
                     let temp = this.UserInformation[0].test_type_name;
                     let flag:boolean = false;
                         for(let i = 0; i<this.UserInformation.length; i++) {
-                            console.log('I am test_type_name',this.UserInformation[i].test_type_name);  
+                            //console.log('I am test_type_name',this.UserInformation[i].test_type_name);  
                                 if(temp === this.UserInformation[i].test_type_name){
                                     if(flag) {
                                             this.UserInformation[i].id = 0;
@@ -204,13 +220,13 @@
                                 this.UserInformation[i].result=this.UserInformation[i].result+'*';
                             }
                         }
-                        console.log('Reports data',this.UserInformation);
+                        //console.log('Reports data',this.UserInformation);
                      this.reportservice.getInvoice(this.patientId).subscribe(
                             response=>{
-                                console.log(response)
-                                console.log('Invoice data',response)
+                                //console.log(response)
+                                //console.log('Invoice data',response)
                                 if(response.length > 0){
-                                  console.log('balance',response[0].balance)
+                                  //console.log('balance',response[0].balance)
                                   if(response[0].remark == 'dr'){
                                     //   if(!(response[0].particular == "INV-CREATED-REPORT-TR")){
                                         this.Balance=1;
@@ -225,7 +241,7 @@
                                 }
                                   
                             });
-                        console.log('test',this.UserInformation)
+                        //console.log('test',this.UserInformation)
                    });
             }
         reportresult(x, y, z, a, b, c, d) {
@@ -240,7 +256,7 @@
             })
         }
         getMethod(){
-            console.log('i ma global variable',this.globalPatient)
+            //console.log('i ma global variable',this.globalPatient)
         for(let i = 0; i < this.globalPatient.length;i++){
             this.test=this.globalPatient[0].patient_id;
         }
@@ -253,17 +269,17 @@
     }
     // modelHandle(){
     //     jQuery("#myModel").modal("hide");
-    //     console.log("hello this is modal")
+    //     //console.log("hello this is modal")
     // }
     print(): void{
-        console.log(this.Balance)
+        //console.log(this.Balance)
         if(this.Balance != 0){
             jQuery("#myModel").modal("show");
         }
         else{
             jQuery("#myModel").modal("hide");
         }
-        console.log('I am In');
+        //console.log('I am In');
         // this.print_status=true;
         // this.save=true;
         let printContents, popupWin;

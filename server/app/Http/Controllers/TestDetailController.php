@@ -47,6 +47,8 @@ class TestDetailController extends Controller
             $ubound = $request->input('ubound');
             $unit = $request->input('unit');
             $rate = $request->input('rate');
+            $createdBy = $request->input('createdBy');
+            $updatedBy = $request->input('updatedBy');
                $testDetails = TestDetail::create([
                     'test_id' => $testid,
                     'age_group'=>$age_group,
@@ -55,6 +57,8 @@ class TestDetailController extends Controller
                     'upper_bound'=>$ubound,
                     'rate'=>$rate,
                     'unit'=>$unit,
+                    'created_by'=>$createdBy,
+                    'updated_by'=>$updatedBy
                  ]);
                  return $testDetails;
          }
@@ -99,6 +103,7 @@ class TestDetailController extends Controller
             $ubound = $request->input('ubound');
             $unit = $request->input('unit');
             $rate = $request->input('rate');
+            $updatedBy = $request->input('updatedBy');
             DB::table('test_details')
                 ->where('id','=', $id)
                 ->update([
@@ -107,6 +112,7 @@ class TestDetailController extends Controller
                     'upper_bound'=>$ubound,
                     'rate'=>$rate,
                     'unit'=>$unit,
+                    'updated_by'=>$updatedBy
                 ]);
             return response()->Json(array([
                 'age'=>$age_group,

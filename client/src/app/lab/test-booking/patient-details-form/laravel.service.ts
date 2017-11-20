@@ -19,6 +19,8 @@ export class LaravelService {
             this.router.navigate(['/']);            
           }
   	
+          paramData['createdBy'] = ENV.userName;
+          paramData['updatedBy'] = ENV.userName;
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
 
@@ -33,6 +35,8 @@ export class LaravelService {
           if(checkSection == "sessionExpired"){
             this.router.navigate(['/']);            
           }
+          allDatas['createdBy'] = ENV.userName;
+          allDatas['updatedBy'] = ENV.userName;
     let id = allDatas.idToUpdate;
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});

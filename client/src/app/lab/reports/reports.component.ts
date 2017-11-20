@@ -18,9 +18,10 @@ export class ReportsComponent implements OnInit {
   // public timeid;
   public valueId;
   public reponse_report;
+  public Emit;
   constructor(private router:Router) {
     this.Menulists= JSON.parse(localStorage.getItem('SelectMenuIten'));
-    console.log(this.Menulists)
+    //console.log(this.Menulists)
     for(let x in this.Menulists){
       if(this.Menulists[x].link !== this.router.url){
         //  this.router.navigate(['**'])
@@ -44,14 +45,17 @@ export class ReportsComponent implements OnInit {
   }
   OntransactionData(id){
     this.valuetransactionData.emit(id);
-    console.log(id)
+    //console.log(id)
   }
   OnDaterange(date){
     this.inputdate=date;
-    console.log('new date range',this.inputdate)
+    //console.log('new date range',this.inputdate)
   }
   Reponse_report(data){
    this.reponse_report=data;
-   console.log('I am Response',this.reponse_report)
+   //console.log('I am Response',this.reponse_report)
+  }
+  OnEmittedData(data){
+   this.Emit=data
   }
 }

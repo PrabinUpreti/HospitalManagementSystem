@@ -312,16 +312,20 @@
               <th>Name</th>
               <th>Address</th>
               <th>Phone</th>
+              <th>Last Balance</th>
+              <th>Remark</th>
               <th>Date</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let patientList of patientLists; let i = index">
+            <tr *ngFor="let patientList of patientLists; let i = index" [ngClass]="{'success':patientList.remark == 'cr', 'danger':patientList.remark == 'dr'}">
               <td>{{i+1}}</td>
               <td>{{patientList.patient_name}}</td>
               <td>{{patientList.patient_address}}</td>
               <td>{{patientList.phone}}</td>
+              <td>{{patientList.balance}}</td>
+              <td>{{patientList.remark?patientList.remark:'Null'}}</td>
               <td>{{patientList.updated_at}}</td>
               <td>
                 <button class="btn btn-success btn-xs" (click)="patientName = patientList.patient_name" (click)="getPatientInvoice(patientList.id)">

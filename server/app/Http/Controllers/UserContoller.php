@@ -51,4 +51,7 @@ class UserContoller extends Controller
         User::find($id)->delete();
         return($id);
     }
+    public function hospitalInfo(){
+        return DB::table('init_hospitals')->get();
+    }
 }

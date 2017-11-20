@@ -16,7 +16,7 @@ export class RedirectJunctionComponent implements OnInit {
 
     this.routeParameter = this.route.params
     .subscribe(params => {
-      console.log(params);
+      //console.log(params);
       this.paramId = params['id'];
       if(this.paramId == 'fromtestbooking'){
         this.nevigateToTestbooking();
@@ -38,7 +38,7 @@ export class RedirectJunctionComponent implements OnInit {
     this.router.navigate(['/lab/reports']);
   }
   nevigateToAddTransaction(){
-    console.log('look')
+    //console.log('look')
     this.router.navigate(['/lab/add-transaction']);
   }
 

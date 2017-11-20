@@ -82,7 +82,7 @@ export class TransactionComponent implements OnInit, OnDestroy {
 
     this.startLoading = false;
     this.hospitalName = ENV.hospital;
-    this.panNumber = ENV.pan_Numner;
+    this.panNumber = ENV.pan_Number;
     this.hospitalAddress = ENV.address;
     this.hospitalRegNo = ENV.RegNo;
     this.hospitalNumber = ENV.phone_number;
@@ -132,7 +132,7 @@ export class TransactionComponent implements OnInit, OnDestroy {
           this.Notify = true;
           this.notify = "There is no any Data ";
         }
-        console.log(response);
+        //console.log(response);
         this.commoncodes = response;
 
 
@@ -150,7 +150,7 @@ export class TransactionComponent implements OnInit, OnDestroy {
         }
       },
       (error) => {
-        console.log("sorry error in server")
+        //console.log("sorry error in server")
         this.Notify = true;
         this.notify = "Sorry couldn't load data from server please refresh it."
       });
@@ -168,7 +168,7 @@ export class TransactionComponent implements OnInit, OnDestroy {
     let discountAmount = (this.transactionData.controls.checkDiscount.value == 0) ? this.transactionData.controls.discountcheck.value : (((this.transactionData.controls.discountcheck.value) / 100) * this.globleSum);
     let checksum = this.globleSum - (Number(this.transactionData.controls.cash.value) + Number(discountAmount));
     this.discountedAmount = discountAmount;
-    console.log('lets see',this.drOrCr,this.hidePayment)
+    //console.log('lets see',this.drOrCr,this.hidePayment)
     if (this.drOrCr == "cr") {
       this.sum = this.globleSum;
       this.hidePayment = true;
@@ -178,7 +178,7 @@ export class TransactionComponent implements OnInit, OnDestroy {
     }
     else if(!this.drOrCr){
       this.returnableAmt = -checksum;
-      console.log("!this.drorcr")
+      //console.log("!this.drorcr")
       this.UseForCredit = true;
       this.hidePayment = true;
       this.printDrOrCr = "cr";
@@ -187,14 +187,14 @@ export class TransactionComponent implements OnInit, OnDestroy {
     else {
       // this.ShowCash = true;
       this.hidePayment = false;
-      console.log("else")
+      //console.log("else")
       if (checksum < 0) {
         this.UseForCredit = true;
         this.sum = 0
         this.returnableAmt = -(checksum);
         this.tempDrOrCr = 'cr'
         this.totalAmt = -(checksum)
-        console.log("checksum<0")
+        //console.log("checksum<0")
       }
       else if(checksum > 0) {
         this.sum = checksum;
@@ -202,7 +202,7 @@ export class TransactionComponent implements OnInit, OnDestroy {
         this.UseForCredit = false;
         this.totalAmt = checksum;
         this.tempDrOrCr = 'dr'
-        console.log("checksum>0")
+        //console.log("checksum>0")
       }
       else{
         this.sum = checksum;
@@ -210,13 +210,13 @@ export class TransactionComponent implements OnInit, OnDestroy {
         this.UseForCredit = false;
         this.totalAmt = checksum;
         this.tempDrOrCr = '';
-        console.log("else")
+        //console.log("else")
       }
     }
     if(!this.globleTotalAmount){
       this.globleTotalAmount = this.totalAmt;
       this.printDrOrCr = this.tempDrOrCr;
-      console.log("!lastif")
+      //console.log("!lastif")
     }
 
   }
@@ -231,7 +231,7 @@ export class TransactionComponent implements OnInit, OnDestroy {
           .subscribe(
           (response) => {
             if (response.length > 0) {
-              console.log(response);
+              //console.log(response);
               this.patientDatas = [];
               this.patientDatas = response;
               this.startLoading =false;
@@ -259,7 +259,7 @@ export class TransactionComponent implements OnInit, OnDestroy {
                   }
                 }
               }
-              console.log("this is int list")
+              //console.log("this is int list")
               for (let int = 0; int < intCollection.length; int += 2) {
                 let term = response[0].age;
                 if (term < 200) {
@@ -301,13 +301,13 @@ export class TransactionComponent implements OnInit, OnDestroy {
     this.startLoading = true;
     this.hidePayment = true;    
     this.UseForCredit = false;
-    console.log(id);
+    //console.log(id);
     this.transactionData.reset();
     this.patientDatasDetails = [];
     this.activepaymentForm = true;
-    console.log(id)
+    //console.log(id)
     this.idToGetTest = id.id;
-    console.log(this.idToGetTest);
+    //console.log(this.idToGetTest);
     this.patientName = id.patient_name;
     this.patientId = id.reg_no;
     this.registeredDate = id.created_at;
@@ -315,8 +315,8 @@ export class TransactionComponent implements OnInit, OnDestroy {
     this.transactionservice.getDetialsOfPatients(this.idToGetTest)
       .subscribe(
       (response) => {
-        console.log(response);
-        console.log(response.length)
+        //console.log(response);
+        //console.log(response.length)
         if (response.length > 0) {
           this.drOrCr = response[response.length - 1].remark
           this.tempDrOrCr = this.drOrCr;
@@ -343,13 +343,13 @@ export class TransactionComponent implements OnInit, OnDestroy {
           }
 
           // if(response[response.length-1].discount_amount > 0){
-          //   console.log('disamount',response[response.length-1].discount_amount)
+          //   //console.log('disamount',response[response.length-1].discount_amount)
           //   this.discountExist=true;
           // }
           // if(response[response.length-1].discount_percentage >0){
-          //   console.log('disper',response[response.length-1].discount_percentage)
+          //   //console.log('disper',response[response.length-1].discount_percentage)
           //   this.discountExist = true;
-          //   console.log('disper',this.transactionData.controls.discountcheck.value)
+          //   //console.log('disper',this.transactionData.controls.discountcheck.value)
           // }
           this.startLoading =false;
         }
@@ -365,7 +365,7 @@ export class TransactionComponent implements OnInit, OnDestroy {
       },
       (error) => {
         this.startLoading =false;
-        console.log("sorry error in server")
+        //console.log("sorry error in server")
       });
   }
 
@@ -457,21 +457,23 @@ export class TransactionComponent implements OnInit, OnDestroy {
           }
         }
         this.globleParam = allData;
-    console.log(allData);
+    //console.log(allData);
     this.transactionservice.postInvoices(allData)
     .subscribe(
       (response)=>{
-        console.log(response);
+        //console.log(response);
         
         this.notify="SuccessFully payed !"
         this.Notify = true;
-        this.notifyDismiss()
-        this.testbookingTransaction("testbookingTransaction");
-        this.router.navigate(['/lab/redirecting/'+"fromaddtransaction"]);
+        this.notifyDismiss()        
+        setTimeout(function () {
+          this.testbookingTransaction("testbookingTransaction");
+          this.router.navigate(['/lab/redirecting/'+"fromaddtransaction"]);
+        }.bind(this), 1000);  
       },
       (error)=>{
         this.startLoading =false;
-        console.log(error);
+        //console.log(error);
         this.pay = false;
         this.Pay = "Pay"
         this.notify="Sorry Error in Server !"
@@ -498,7 +500,7 @@ export class TransactionComponent implements OnInit, OnDestroy {
 
 
   datadismis() {
-    console.log('Hide')
+    //console.log('Hide')
     this.Notify = false;
   }
   SearchBarDismiss() {

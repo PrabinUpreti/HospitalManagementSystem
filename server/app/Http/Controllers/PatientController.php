@@ -101,6 +101,7 @@ class PatientController extends Controller
          $mrts =   $request->input('marital_status');
          $phone =   $request->input('phone');
          $email =   $request->input('email');
+         $updatedBy = $request->input('updatedBy');
          $response = DB::table('patients')
          ->where('id','=',$id)
          ->update([
@@ -112,6 +113,7 @@ class PatientController extends Controller
              'marital_status'=>$mrts,
              'phone'=>$phone,
              'email'=>$email,
+             'updated_by'=>$updatedBy
          ]);
         return response()->Json(array([
             'patient_name'=>$name,

@@ -186,7 +186,7 @@
           <label class="control-label col-sm-6" for="email"> Total Amount: </label>
           <div class="col-sm-6">
             <p class="form-control-static"  [ngClass] = "{'text-danger': drCrInTotal == 'dr','text-success':drCrInTotal == 'cr'}">
-              Rs {{staticTot}} /- {{drOrCr | uppercase}} &nbsp;&nbsp;&nbsp;&nbsp;
+              Rs {{totalAmt}} /- {{drOrCr | uppercase}} &nbsp;&nbsp;&nbsp;&nbsp;
               <!-- <label *ngIf="!transactionData.controls.credit.value && drCrInTotal == 'cr'"  class="checkbox-inline">
                     <input type="checkbox" name="backedMoney"  (change)="calculateTotalAmount()" formControlName = "backedMoney" value="1"/>Return Back
               </label> -->

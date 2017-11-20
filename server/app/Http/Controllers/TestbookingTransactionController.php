@@ -52,6 +52,8 @@ class TestbookingTransactionController extends Controller
         $storedInInvoice = $request->input('updateInvoiceId');
         $print = $request->input('print');
         $bookedAmt = $request->input('bookedAmt');
+        $createdBy = $request->input('createdBy');
+        $updatedBy = $request->input('updatedBy');
         // return $BackedMoney;
         if($discountPer >0){
             $DiscountPer = $discountPer;
@@ -81,6 +83,7 @@ class TestbookingTransactionController extends Controller
             'returned_cash' => $BackedMoney,
             'print'=>$print,
             'remark'=>$invoiceremark,
+            'updated_by'=>$updatedBy
         ]);
 
         // $invoiceId = $storedInInvoice->id;
@@ -98,6 +101,8 @@ class TestbookingTransactionController extends Controller
             'balance'=>$balance,
             'remark'=>$remark,
             'print'=>1,
+            'created_by'=>$createdBy,
+            'updated_by'=>$updatedBy
         ]);
 
         return DB::table('easy_accesses')

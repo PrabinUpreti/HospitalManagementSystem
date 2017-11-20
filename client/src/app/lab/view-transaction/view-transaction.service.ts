@@ -30,7 +30,7 @@ export class ViewTransactionService {
           if(checkSection == "sessionExpired"){
             this.router.navigate(['/']);            
           }
-    console.log(param)
+    //console.log(param)
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers, withCredentials: true });
     return this.http.post(ENV.Request_URL+"/api/view-transaction", param, options)
@@ -44,7 +44,7 @@ export class ViewTransactionService {
             if(checkSection == "sessionExpired"){
               this.router.navigate(['/']);            
             }
-      console.log(param)
+      //console.log(param)
       let headers = new Headers({ 'Content-Type': 'application/json' });
       let options = new RequestOptions({ headers: headers, withCredentials: true });
       return this.http.post(ENV.Request_URL+"/api/view-transaction-inv", param, options)
@@ -123,7 +123,7 @@ return this.http.get(ENV.Request_URL+"/api/search-by-name-inv/"+id, options)
     if (checkSection == "sessionExpired") {
       this.router.navigate(['/']);
     }
-    console.log(param)
+    //console.log(param)
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers, withCredentials: true });
     return this.http.post(ENV.Request_URL + "/api/getAllInvoices", param, options)

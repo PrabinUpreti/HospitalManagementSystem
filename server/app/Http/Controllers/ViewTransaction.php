@@ -12,6 +12,23 @@ class ViewTransaction extends Controller
     //
 
     public function getpatient(){
+
+
+
+        // return DB:: select('SELECT 
+        // pt.`patient_name`, `balance`, `remark`
+        // FROM
+        // patient_ladgers b
+        //     INNER JOIN
+        // (SELECT 
+        //     patient_id, MAX(id) as id
+        // FROM
+        //     patient_ladgers
+        // GROUP BY patient_id) a on a.id = b.id
+        // inner join `patients` pt on pt.id = a.patient_id'); 
+
+
+
         $patient = DB::table('patients')->orderBy('updated_at','desc')->take(10)->get();
         return $patient;
     }
@@ -21,15 +38,30 @@ class ViewTransaction extends Controller
         
         $startDate = $request->input('startDate');
         $endDate = $request->input('endDate');
-        // return var_dump($endDate);
+        // // return var_dump($endDate);
 
-        $patient = DB::table('patients')
-        ->whereBetween('patients.updated_at', [$startDate, $endDate])
-        // ->where('testbookings.doctor_list_id', '=', $doctorId)
-        // ->select('patients.*')
-        ->orderBy('updated_at','desc')
-        ->get();
-        return $patient;
+        // $patient = DB::table('patients')
+        // ->whereBetween('patients.updated_at', [$startDate, $endDate])
+        // // ->where('testbookings.doctor_list_id', '=', $doctorId)
+        // // ->select('patients.*')
+        // ->orderBy('updated_at','desc')
+        // ->get();
+        // return $patient;
+
+        return DB:: select('SELECT pt.`id`,pt.`updated_at`,pt.`phone`,pt.`patient_address`,
+        pt.`patient_name`, `balance`, `remark`
+        FROM
+        patient_ladgers b
+            INNER JOIN
+        (SELECT 
+            patient_id, MAX(id) as id
+        FROM
+            patient_ladgers
+        GROUP BY patient_id) a on a.id = b.id
+        inner join `patients` pt on pt.id = a.patient_id
+        WHERE pt.updated_at BETWEEN \''.$startDate.'\' AND \''.$endDate.'\''
+        );
+
 }
 public function getInvoicesFromDate(Request $request){
     $startDate = $request->input('startDate');
@@ -135,3 +167,17 @@ public function getInvoicesFromDate(Request $request){
         ->get();
     }
 }
+
+//////////query By Sulav Sir//////////
+
+// SELECT 
+// pt.`patient_name`, `balance`, `remark`
+// FROM
+// patient_ladgers b
+//     INNER JOIN
+// (SELECT 
+//     patient_id, MAX(id) as id
+// FROM
+//     patient_ladgers
+// GROUP BY patient_id) a on a.id = b.id
+// inner join `patients` pt on pt.id = a.patient_id;

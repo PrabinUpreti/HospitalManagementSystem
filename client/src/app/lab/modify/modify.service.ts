@@ -111,7 +111,7 @@ export class ModifyService {
             this.router.navigate(['/']);            
           }
     let id = finalData.id;
-    console.log(id);
+    //console.log(id);
     let url = ENV.Request_URL+"/api/testtype/"+id;
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
@@ -159,7 +159,7 @@ export class ModifyService {
           if(checkSection == "sessionExpired"){
             this.router.navigate(['/']);            
           }
-    console.log("This is Id" + id);
+    //console.log("This is Id" + id);
     let url = ENV.Request_URL+"/api/test/"+id;   
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
@@ -217,7 +217,7 @@ export class ModifyService {
           if(checkSection == "sessionExpired"){
             this.router.navigate(['/']);            
           }
-    console.log(id);
+    //console.log(id);
     let url = ENV.Request_URL+"/api/testdetails/"+id;
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
@@ -232,7 +232,7 @@ export class ModifyService {
           if(checkSection == "sessionExpired"){
             this.router.navigate(['/']);            
           }
-    console.log(testDetails)
+    //console.log(testDetails)
     let url = ENV.Request_URL+"/api/testdetails/"+testDetails.id;
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
@@ -274,7 +274,7 @@ export class ModifyService {
           if(checkSection == "sessionExpired"){
             this.router.navigate(['/']);            
           }
-    console.log(id);
+    //console.log(id);
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});
     return this.department.post(ENV.Request_URL+"/api/doctor",id, options)
@@ -363,7 +363,7 @@ export class ModifyService {
           if(checkSection == "sessionExpired"){
             this.router.navigate(['/']);            
           }
-    console.log(param)
+    //console.log(param)
     let id = param.id;
     let url = ENV.Request_URL+"/api/getPatientData/"+id;
     let headers = new Headers({'Content-Type': 'application/json'});
@@ -379,7 +379,7 @@ export class ModifyService {
           if(checkSection == "sessionExpired"){
             this.router.navigate(['/']);            
           }
-    console.log(param)
+    //console.log(param)
     let id = param.editableId;
     let url = ENV.Request_URL+"/api/doctor/"+id;
     let headers = new Headers({'Content-Type': 'application/json'});
@@ -395,7 +395,7 @@ export class ModifyService {
           if(checkSection == "sessionExpired"){
             this.router.navigate(['/']);            
           }
-    console.log(id)
+    //console.log(id)
     let url = ENV.Request_URL+"/api/doctor/"+id;
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers,withCredentials: true});

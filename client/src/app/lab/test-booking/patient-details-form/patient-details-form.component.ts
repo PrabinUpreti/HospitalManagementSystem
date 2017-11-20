@@ -138,12 +138,12 @@ export class PatientDetailsFormComponent implements OnInit {
           .subscribe(term => {
             let ageRange = [];
             for(let i in this.age_groupInDropdowns) ageRange.push(JSON.parse(JSON.stringify(this.age_groupInDropdowns[i])))
-            console.log(ageRange);
+            //console.log(ageRange);
             let splitAge = [];
             for(let x in ageRange){
               splitAge.push(ageRange[x].split(" "));
             }
-            console.log(splitAge);
+            //console.log(splitAge);
             let changeInNum
             let intCollection=[];
             for(let y in splitAge){
@@ -160,14 +160,14 @@ export class PatientDetailsFormComponent implements OnInit {
                     intCollection.push(200);
                   }
                 }
-                // console.log((changeInNum));
+                // //console.log((changeInNum));
                 // if(changeInNum.toUpperCase() ==  )
               }
             }
-            console.log(intCollection);
-            console.log("this is int list")
+            //console.log(intCollection);
+            //console.log("this is int list")
             for(let int = 0; int < intCollection.length; int+=2){
-              console.log(int);
+              //console.log(int);
               if(term < 200){
                 if(term >=intCollection[int] && term <= intCollection[int+1]){
                   if(intCollection[int] == 0){
@@ -181,11 +181,11 @@ export class PatientDetailsFormComponent implements OnInit {
                   }
               }
             }
-            // console.log(intCollection[int] , intCollection[int+1]);
+            // //console.log(intCollection[int] , intCollection[int+1]);
           }
           this.patientData.controls.age.setValue(term);
           if(this.patientData.controls.gender){
-            console.log(this.patientData.value.gender);
+            //console.log(this.patientData.value.gender);
             this.showTable = false;
           }
 
@@ -207,13 +207,13 @@ export class PatientDetailsFormComponent implements OnInit {
       .subscribe(
           (response)=>{
             this.reffBys=response
-            console.log(response);
+            //console.log(response);
             this.startLoading = false;
           },
           (error)=>{
             this.startLoading=false;
               // this.submitButtonStatus=true
-              console.log("ERROR successfully")
+              //console.log("ERROR successfully")
               this.Notify = true;
               this.notify = "Sorry couldn't load Doctor from server please refresh it."
               setTimeout(function () {
@@ -234,7 +234,7 @@ export class PatientDetailsFormComponent implements OnInit {
                 this.Notify = false;
               }.bind(this), 3000);
             }
-            console.log(response);
+            //console.log(response);
             this.commoncodes = response;
 
 
@@ -285,10 +285,10 @@ export class PatientDetailsFormComponent implements OnInit {
 
 
             
-            // console.log(this.FormUnits , this.genderInDropdowns, this.age_groupInDropdown)
+            // //console.log(this.FormUnits , this.genderInDropdowns, this.age_groupInDropdown)
           },
           (error)=>{
-              console.log("sorry error in server")
+              //console.log("sorry error in server")
               this.Notify = true;
               this.notify = "Sorry couldn't load data from server please refresh it."
               setTimeout(function () {
@@ -343,7 +343,7 @@ export class PatientDetailsFormComponent implements OnInit {
             paramData['invoice'] = localStorage.getItem('sum');
             paramData['email'] = this.patientData.controls.email.value.toLowerCase();
 
-            console.log(paramData);
+            //console.log(paramData);
             this.laravelService.getData(paramData)
               .subscribe(
                     (response)=>{
@@ -397,7 +397,7 @@ export class PatientDetailsFormComponent implements OnInit {
           this.Notify = false;
         }.bind(this), 3000);
         this.testStatus = true;
-      console.log("error in client");
+      //console.log("error in client");
           for (let x in this.patientData.controls) {
             this.patientData.controls[x].markAsTouched();
             this.patientData.controls[x].markAsDirty();
@@ -411,7 +411,7 @@ export class PatientDetailsFormComponent implements OnInit {
           // this.myform.get(["name","patientName"]).markAsDirty()
 
           // let nameGroup = <FormGroup>this.myform.get("name")
-          // console.log(nameGroup.controls)
+          // //console.log(nameGroup.controls)
 
           // for(let x in nameGroup.controls)
           // {
@@ -423,7 +423,7 @@ export class PatientDetailsFormComponent implements OnInit {
 
 
       // let value = this.patientData.value
-      //   console.log(value);
+      //   //console.log(value);
       // let paramData : any = this.patientData.value;
       // this.laravelService.getData(paramData)
       //   .subscribe(
@@ -431,7 +431,7 @@ export class PatientDetailsFormComponent implements OnInit {
       //           this.responseData = response
       //         },
       //         (error)=>{
-      //             console.log("sorry error in server")
+      //             //console.log("sorry error in server")
       //         }
       //     )
   }
@@ -458,7 +458,7 @@ export class PatientDetailsFormComponent implements OnInit {
         paramData['idToUpdate'] = this.forFutureUsePatientToSeeExistingPatient;
         paramData['invoice'] = localStorage.getItem('sum');
 
-        console.log(paramData);
+        //console.log(paramData);
         this.laravelService.UpdateData(paramData)
           .subscribe(
                 (response)=>{
@@ -510,7 +510,7 @@ export class PatientDetailsFormComponent implements OnInit {
         this.Notify = false;
       }.bind(this), 3000);
       this.testStatus = true;
-      console.log("error in client");
+      //console.log("error in client");
       for (let x in this.patientData.controls) {
         this.patientData.controls[x].markAsTouched();
         this.patientData.controls[x].markAsDirty();
@@ -523,8 +523,8 @@ export class PatientDetailsFormComponent implements OnInit {
   public getPatientFromServer(id){
       if(id == undefined) return 0
       
-      console.log(id)
-      console.log(this.patientData);
+      //console.log(id)
+      //console.log(this.patientData);
 
       // this.patientData.controls.patientId.setValue(id)
   }
@@ -532,13 +532,13 @@ export class PatientDetailsFormComponent implements OnInit {
   public setResponse(id){
     if(id == undefined) return 0;
       if(id){
-        console.log(id);
+        //console.log(id);
         // this.selectedList.push(id)
-        // console.log("pushed to selectedList" + this.selectedList);
+        // //console.log("pushed to selectedList" + this.selectedList);
         // this.testStatus = true;
         // this.patientData.controls.Selectedtest.setValue(this.selectedList);
         // alert("hello world");
-        // console.log(this.patientData.controls.Selectedtest.value);
+        // //console.log(this.patientData.controls.Selectedtest.value);
       }
   }
   // selectAge(id){
@@ -549,7 +549,7 @@ export class PatientDetailsFormComponent implements OnInit {
   //   //     .subscribe(term => {
   //   //       this.searches.push(term);
   //   //     });
-  //   // console.log(id);
+  //   // //console.log(id);
   //   // this.throwage.emit(id.target.value);
   // }
   selectGender(id){
@@ -577,19 +577,19 @@ export class PatientDetailsFormComponent implements OnInit {
   searchpatient(id):Observable<any>{
     return new Observable(observer=>{
       this.startLoading=true;
-      console.log(id);
+      //console.log(id);
       if(id){
       
       this.ModifyService.getPatient(id)
       .subscribe(
         response=>{
           this.startLoading=false;
-          console.log(response);
+          //console.log(response);
           if(response.length > 0){
             this.showTable = true;
             this.IsAlreadyExist = true;
               this.searchedDatas = response;
-              console.log(this.searchedDatas)
+              //console.log(this.searchedDatas)
             }
             else{
               this.showTable = false;
@@ -629,14 +629,14 @@ export class PatientDetailsFormComponent implements OnInit {
     this.patientData.controls.identity_card.setValue(this.searchedDatas[id].identity_number);
     this.patientData.controls.phone.setValue(this.searchedDatas[id].phone);
 
-    console.log(this.patientData.value);
+    //console.log(this.patientData.value);
     this.throwgender.emit(this.searchedDatas[id].gender);
 
 
   }
 
   datadismis(){
-    console.log('Hide')
+    //console.log('Hide')
     this.Notify = false;
   }
   

@@ -17,7 +17,7 @@ export class ModifyTestTypeComponent implements OnInit {
   @Input() set processTestType(id){
     this.ServeId = id[0].id;
     this.selectedDepartment = id[0].name;
-    console.log(this.ServeId);
+    //console.log(this.ServeId);
     // this.processTestType(id)
   }
   constructor(private modifyService: ModifyService) { }
@@ -54,15 +54,15 @@ export class ModifyTestTypeComponent implements OnInit {
 
   ngOnInit() {
     let id = this.ServeId;
-    console.log(id);
+    //console.log(id);
     if(this.responseDatas == undefined){
       this.modifyService.getTestType(id) .subscribe(
         (response)=>{
-          console.log(response)
+          //console.log(response)
           this.responseDatas = response;
         },
         (error)=>{
-            console.log("sorry error in server")
+            //console.log("sorry error in server")
             this.notify = "sorry error in server !";
             this.Notify = true;
             this.notifyDismiss();
@@ -101,7 +101,7 @@ export class ModifyTestTypeComponent implements OnInit {
     //     this.departmentLists = response;
     //   },
     //   (error)=>{
-    //     console.log("sorry no department");
+    //     //console.log("sorry no department");
     //   });
   
     // if(this.showTestType){
@@ -126,7 +126,7 @@ export class ModifyTestTypeComponent implements OnInit {
       this.add = false;
       let TestTypeData = this.modefyTestType.value;
       TestTypeData['selectdepartment']=this.ServeId;
-      console.log(TestTypeData);
+      //console.log(TestTypeData);
       this.modifyService.pushTestType(TestTypeData)
       .subscribe(
         (response)=>{
@@ -140,7 +140,7 @@ export class ModifyTestTypeComponent implements OnInit {
           this.notifyDismiss();
         },
         (error)=>{
-            console.log("sorry error in server")
+            //console.log("sorry error in server")
             this.notify = "sorry error in server !";
             this.Notify = true;
             this.notifyDismiss();
@@ -183,7 +183,7 @@ export class ModifyTestTypeComponent implements OnInit {
       let finalData;
       finalData = this.modefyTestType.value;
       finalData['id']=this.idForUpdate;
-      console.log(finalData);
+      //console.log(finalData);
       this.modifyService.updateTestType(finalData)
       .subscribe(
         (response)=>{
@@ -200,7 +200,7 @@ export class ModifyTestTypeComponent implements OnInit {
           // this.responseDatas.push(response)
         },
         (error)=>{
-            console.log("sorry error in server")
+            //console.log("sorry error in server")
             this.notify = "sorry error in server !";
             this.Notify = true;
             this.notifyDismiss();
@@ -212,7 +212,7 @@ export class ModifyTestTypeComponent implements OnInit {
       //     this.responseDatas = response;
       //   },
       //   (error)=>{
-      //       console.log("sorry error in server")
+      //       //console.log("sorry error in server")
       //   });
         // this.showTestType=true;
         this.title = "Add Test Types";
@@ -265,7 +265,7 @@ export class ModifyTestTypeComponent implements OnInit {
     let packedData = [];
     let id = this.responseDatas[index];
     packedData.push(id);
-    console.log(packedData);
+    //console.log(packedData);
     this.hideTestType.emit(packedData);
   }
 

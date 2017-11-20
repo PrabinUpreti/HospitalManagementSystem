@@ -27,9 +27,9 @@ public menulists=[];
 public user;
   ngOnInit() {
 	  this.user = ENV.userName
-	  console.log(this.user)
+	  //console.log(this.user)
 	this.menulists = JSON.parse(localStorage.getItem('SelectMenuIten'));
-	console.log('I am Menu',this.menulists)
+	//console.log('I am Menu',this.menulists)
   }
   Logout_btn(){	
 	   localStorage.removeItem("SelectMenuIten")

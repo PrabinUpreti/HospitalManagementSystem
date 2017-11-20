@@ -15,7 +15,7 @@ export class DoctorReportService {
 
 
   
-  //   console.log(param)
+  //   //console.log(param)
   //   let headers = new Headers({'Content-Type': 'application/json'});
   //   let options = new RequestOptions({headers: headers, withCredentials: true});
   //   return this.http.get(ENV.Request_URL+"/api/doctor/"+param, options)
@@ -28,7 +28,7 @@ export class DoctorReportService {
     if(checkSection == "sessionExpired"){
       this.router.navigate(['/']);            
     }
-    console.log(param);
+    //console.log(param);
     // let id = param.doctorId;
     let url = ENV.Request_URL+"/api/getDoctorReportDatas";
     let headers = new Headers({'Content-Type': 'application/json'});

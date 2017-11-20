@@ -108,7 +108,7 @@ export class ReportTransactionComponent implements OnInit {
     this.startLoading =true;
 
     this.hospitalName = ENV.hospital;
-    this.panNumber = ENV.pan_Numner;
+    this.panNumber = ENV.pan_Number;
     this.hospitalAddress = ENV.address;
     this.hospitalRegNo = ENV.RegNo;
     this.hospitalNumber = ENV.phone_number;
@@ -159,7 +159,7 @@ export class ReportTransactionComponent implements OnInit {
           this.Notify = true;
           this.notify = "There is no any Data ";
         }
-        console.log(response);
+        //console.log(response);
         this.commoncodes = response;
 
 
@@ -178,18 +178,18 @@ export class ReportTransactionComponent implements OnInit {
         this.routeParameter = this.route.params
           .subscribe(params => {
             this.startLoading =true;
-            console.log(params);
+            //console.log(params);
             this.paramId = params['id'];
             if (this.paramId) {
               // this.isurlid = true;
               this.disableme = true;
               this.searchpayment(this.paramId).subscribe(
                 success => {
-                  console.log(this.patientDatas);
+                  //console.log(this.patientDatas);
                   this.invoice(this.patientDatas[0].testbooking_id);
                 }, err => {
                   this.startLoading =false;
-                  console.log(this.patientDatas);
+                  //console.log(this.patientDatas);
                 })
 
             }
@@ -198,7 +198,7 @@ export class ReportTransactionComponent implements OnInit {
 
       },
       (error) => {
-        console.log("sorry error in server")
+        //console.log("sorry error in server")
         this.Notify = true;
         this.notify = "Sorry couldn't load data from server please refresh it."
       });
@@ -215,9 +215,9 @@ export class ReportTransactionComponent implements OnInit {
     // this.ShowDiscount = true;
     let discountAmount = (this.transactionData.controls.checkDiscount.value == 0) ? this.transactionData.controls.discountcheck.value : (((this.transactionData.controls.discountcheck.value) / 100) * this.globleSum);
     let checksum = this.globleSum - (Number(this.transactionData.controls.cash.value) + Number(discountAmount));
-    console.log(discountAmount);
+    //console.log(discountAmount);
     this.discountedAmount = discountAmount;
-    // console.log(checksum);
+    // //console.log(checksum);
     if(checksum < 0){
       this.sum = 0
       this.returnableAmt = -(checksum);
@@ -225,7 +225,7 @@ export class ReportTransactionComponent implements OnInit {
       // this.transactionData.controls.credit.setValue(false);
     }
     else{
-      this.sum = checksum;
+      this.sum = Number(checksum);
       this.returnableAmt = 0;
       (this.globlepreviousAmount) ? this.previousAmount = this.globlepreviousAmount : '';
       // if(this.transactionData.controls.credit.value)
@@ -236,8 +236,8 @@ export class ReportTransactionComponent implements OnInit {
       this.globlepreviousAmount = this.previousAmount;
     }
     let checkprevious = (checksum < 0)?this.globlepreviousAmount -  (-checksum) : this.globlepreviousAmount;
-    // console.log("checkprevious "+checkprevious);
-    // console.log("checksum "+ checksum)
+    // //console.log("checkprevious "+checkprevious);
+    // //console.log("checksum "+ checksum)
     // if(this.transactionData.controls.payOld.value){
       if(checkprevious < 0){
         this.previousAmount = 0;
@@ -262,6 +262,8 @@ export class ReportTransactionComponent implements OnInit {
     this.totalAmt = this.previousAmount;
     if(!this.staticTot){
       this.staticTot = this.totalAmt;
+      //console.log(this.staticTot)
+      //console.log(this.totalAmt)
     }
     if(this.drOrCr == "dr" || !(this.drOrCr)){
       this.totalAmt = this.previousAmount + this.sum;
@@ -277,14 +279,20 @@ export class ReportTransactionComponent implements OnInit {
         this.drCrInTotal = "dr"
         this.totalAmt = (this.totalAmt);        
       }
+      if(!this.staticTot){
+        this.staticTot = this.totalAmt;
+        //console.log(this.staticTot)
+        //console.log(this.totalAmt)
+        //console.log(this.sum)
+      }
     }
     else if(this.drOrCr == "cr"){
       // if(this.returnableAmt>0){
       //   this.totalAmt+= this.returnableAmt;
       // }
       let temptotalAmt = this.sum - this.previousAmount;
-      console.log(this.sum, this.previousAmount, this.TEMPGlobletotalAmt)
-      console.log(temptotalAmt)
+      //console.log(this.sum, this.previousAmount, this.TEMPGlobletotalAmt)
+      //console.log(temptotalAmt)
       if(temptotalAmt <= 0){
         this.drCrInTotal = "cr"
         this.UseForCredit = true;
@@ -298,6 +306,12 @@ export class ReportTransactionComponent implements OnInit {
       else{
         this.drCrInTotal = "";
       }
+
+    if(!this.staticTot){
+      this.staticTot = this.totalAmt;
+      //console.log(this.staticTot)
+      //console.log(this.totalAmt)
+    }
     }
     // if(this.SumFromReport){
     //   this.totalAmt = this.previousAmount;
@@ -312,18 +326,18 @@ export class ReportTransactionComponent implements OnInit {
   public searchpayment(id): Observable<any> {
     return new Observable(observer => {
       this.startLoading =true;
-      console.log(id);
+      //console.log(id);
       this.testbookingtransactionservice.getPatientTestbookingTest(id)
         .subscribe(
         (response) => {
-          console.log(response);
+          //console.log(response);
           let val=1;
           if (response.length > 0) {
-            console.log(response)
+            //console.log(response)
             
             this.SearchNotify = false;
             this.sum = 0;
-            console.log(response);
+            //console.log(response);
             this.genderinPatientTable = response[0].gender;
             this.patientName = response[0].patient_name;
             this.patientId = response[0].reg_no;
@@ -358,7 +372,7 @@ export class ReportTransactionComponent implements OnInit {
                 }
               }
             }
-            console.log("this is int list")
+            //console.log("this is int list")
             for (let int = 0; int < intCollection.length; int += 2) {
               let term = response[0].age;
               if (term < 200) {
@@ -413,10 +427,15 @@ export class ReportTransactionComponent implements OnInit {
                   }
                   this.sum = Number(response[response.length-val].dr);
                   this.totalAmt = this.sum + this.previousAmount;
+                  // alert("sum "+ this.sum +" totalAmt "+this.totalAmt+"")
+                  this.staticTot = this.totalAmt;
+                  this.globleSum = this.sum
+                  // alert('STATIC TOTAL '+this.staticTot)
                   this.drCrInTotal = "dr"
                   if(val == 2){
                     this.sum = 0;
-                    this.globleSum = this.sum;
+                    this.globleSum = 0;
+                    alert(val)
                   }
                   // this.totalExist =true;
                   // else if(response[response.length-2].remark == null){
@@ -502,7 +521,7 @@ export class ReportTransactionComponent implements OnInit {
               this.patientDatas = response;
               this.activepaymentForm = true;
             if(response[response.length-1].discount_amount > 0){
-              console.log('disamount',response[response.length-1].discount_amount)
+              //console.log('disamount',response[response.length-1].discount_amount)
               this.ShowDiscount = false;
               this.updateDiscountAmt = response[response.length-1].discount_amount;
               // this.transactionData.controls.checkDiscount.setValue('0')
@@ -513,15 +532,15 @@ export class ReportTransactionComponent implements OnInit {
               this.updateDiscountAmt = response[response.length-2].discount_amount;
             }
             if(response[response.length-1].discount_percentage >0){
-              console.log('disper',response[response.length-1].discount_percentage)
+              //console.log('disper',response[response.length-1].discount_percentage)
               this.updateDiscountPer = response[response.length-1].discount_percentage;
               // this.transactionData.controls.checkDiscount.setValue('val')
               // this.transactionData.controls.discountcheck.setValue(response[response.length-val].discount_percentage)
-              // console.log('disper',this.transactionData.controls.discountcheck.value)
+              // //console.log('disper',this.transactionData.controls.discountcheck.value)
               this.ShowDiscount = false;
             }
             else if(response[response.length-2].discount_percentage > 0){
-              console.log('disper',response[response.length-2].discount_percentage)
+              //console.log('disper',response[response.length-2].discount_percentage)
               this.updateDiscountPer = response[response.length-2].discount_percentage;
             }
             if(response[response.length-val].print == val){
@@ -529,17 +548,17 @@ export class ReportTransactionComponent implements OnInit {
             }
           //   if(response[response.length-1].dr >0){
           //     this.globleSum = response[response.length-1].dr
-          //     console.log(this.globleSum)
+          //     //console.log(this.globleSum)
           //   }
           //   else{
           //     this.globleSum = response[response.length-2].dr
-          //     console.log(this.globleSum)
+          //     //console.log(this.globleSum)
           //   }
 
 
           //   // this.activepaymentForm = false;
           //   this.activePayment = false;
-          //   console.log(this.patientDatas);
+          //   //console.log(this.patientDatas);
           // }
           // else {
           //   this.SearchNotify = true;
@@ -561,17 +580,17 @@ export class ReportTransactionComponent implements OnInit {
   }
 
   // routedinvoice(term) {
-  //   console.log(term)
+  //   //console.log(term)
   //   let id = term.testbookings_id
   //   this.activepaymentForm = false;
-  //   console.log(id);
+  //   //console.log(id);
   //   this.transactionData.reset();
   //   this.transactionData.controls.checkDiscount.setValue('0')
   //   this.patientDatasDetails = [];
   //   this.testbookingtransactionservice.getDetialsOfTestbookingTestbooking(id)
   //     .subscribe(
   //     (response) => {
-  //       console.log(response);
+  //       //console.log(response);
   //       for (let i in response) {
 
 
@@ -580,10 +599,10 @@ export class ReportTransactionComponent implements OnInit {
   //         }
   //       }
   //       this.activepaymentForm = true;
-  //       console.log(this.patientDatasDetails);
+  //       //console.log(this.patientDatasDetails);
   //     },
   //     (error) => {
-  //       console.log("sorry error in server")
+  //       //console.log("sorry error in server")
   //     });
 
 
@@ -591,28 +610,28 @@ export class ReportTransactionComponent implements OnInit {
 
 
   invoice(id) {
-    console.log(id);
+    //console.log(id);
     this.transactionData.reset();
     this.transactionData.controls.checkDiscount.setValue('0')
     this.patientDatasDetails = [];
     let typeofInvoice = typeof id;
-    console.log(typeofInvoice);
-    console.log(id);
+    //console.log(typeofInvoice);
+    //console.log(id);
     this.startLoading =false;
       // this.testbookingtransactionservice.getDetialsOfPatientsTestbooking(id)
       //   .subscribe(
       //   (response) => {
-      //     console.log(response);
+      //     //console.log(response);
       //     for (let i in response) {
 
 
       //       this.patientDatasDetails.push(response[i]);
       //     }
       //     this.activepaymentForm = true;
-      //     console.log(this.patientDatasDetails);
+      //     //console.log(this.patientDatasDetails);
       //   },
       //   (error) => {
-      //     console.log("sorry error in server")
+      //     //console.log("sorry error in server")
       //   });
 
   }
@@ -624,9 +643,9 @@ export class ReportTransactionComponent implements OnInit {
       this.Pay = "Paying..."
       // let allData = id;
       // allData['amount'] = this.globleSum
-      // console.log(allData);
-      // console.log(this.transactionData.value);
-      // console.log(this.patientDatas[this.patientDatas.length-1].testbooking_id);
+      // //console.log(allData);
+      // //console.log(this.transactionData.value);
+      // //console.log(this.patientDatas[this.patientDatas.length-1].testbooking_id);
       let param = this.transactionData.value;
       param['TestBookingId'] = this.patientDatas[this.patientDatas.length - 1].testbooking_id;
       if(this.previousPaid){
@@ -685,11 +704,11 @@ export class ReportTransactionComponent implements OnInit {
       else{
         DiscountAmt = this.transactionData.controls.discountcheck.value?Number(this.transactionData.controls.discountcheck.value):Number(this.updateDiscountAmt);
       }
-      console.log(DiscountAmt);
+      //console.log(DiscountAmt);
       if((this.previousInvBalance - (Number(this.transactionData.controls.cash.value)+DiscountAmt)) >0){
         // param['invoiceRemark']="dr"
-        console.log(this.previousInvBalance)
-        console.log(this.previousInvBalance - (Number(this.transactionData.controls.cash.value)+DiscountAmt))
+        //console.log(this.previousInvBalance)
+        //console.log(this.previousInvBalance - (Number(this.transactionData.controls.cash.value)+DiscountAmt))
         param['invCash'] = Number(this.transactionData.controls.cash.value) + this.previousCash;
         param['InvoiceAmount'] = this.previousInvBalance - (Number(this.transactionData.controls.cash.value) + DiscountAmt);
         param['invoiceRemark'] = 'dr';
@@ -708,7 +727,7 @@ export class ReportTransactionComponent implements OnInit {
         param['InvoiceAmount'] = 0;
         param['invoiceRemark'] = null;
       }
-      console.log(this.globleSum);DiscountAmt
+      //console.log(this.globleSum);DiscountAmt
 
       ////////////============UPDATE MONEY BACK===============\\\\\\\\\\\
       // if(!this.transactionData.controls.payOld.value){
@@ -799,11 +818,11 @@ export class ReportTransactionComponent implements OnInit {
       
 
       
-      console.log(param)
+      //console.log(param)
       this.globleParam = param;
       this.testbookingtransactionservice.setpatienttransaction(param)
       .subscribe((response)=>{
-        console.log(response)
+        //console.log(response)
         this.testAndRateForPrints = response;
         this.notify="SuccessFully payed !"
         this.Notify = true;
@@ -844,7 +863,7 @@ export class ReportTransactionComponent implements OnInit {
     this.viewtransaction.updatePrint(param)
     .subscribe(
       (response)=>{
-        console.log(response);
+        //console.log(response);
         if(response.length >0){
         this.testAndRateForPrints = response;
         }
@@ -854,7 +873,7 @@ export class ReportTransactionComponent implements OnInit {
         }
       },
       (error)=>{
-        console.log(error);
+        //console.log(error);
         this.showLog =true;
         this.value="sorry Error in server";
       }
@@ -872,7 +891,7 @@ export class ReportTransactionComponent implements OnInit {
 
 
   datadismis() {
-    console.log('Hide')
+    //console.log('Hide')
     this.Notify = false;
   }
 
@@ -888,8 +907,8 @@ export class ReportTransactionComponent implements OnInit {
   
 
   testbookingTransaction(id){
-    this.startLoading =false;
     var printContent = document.getElementById(id).innerHTML;
+    this.startLoading =false;
     var restorePage = document.body.innerHTML;
     
     var newWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto,menubar=no,titlebar=no,location=no,fullscreen=yes')

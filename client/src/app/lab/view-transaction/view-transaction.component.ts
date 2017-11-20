@@ -87,7 +87,7 @@ export class ViewTransactionComponent implements OnInit {
         this.startLoading = true;
     
         this.hospitalName = ENV.hospital;
-        this.panNumber = ENV.pan_Numner;
+        this.panNumber = ENV.pan_Number;
         this.hospitalAddress = ENV.address;
         this.hospitalRegNo = ENV.RegNo;
         this.hospitalNumber = ENV.phone_number;
@@ -104,11 +104,11 @@ export class ViewTransactionComponent implements OnInit {
       let tempDay;
       if(day < 10){
         tempDay = "0"+day;
-        console.log(tempDay)
+        //console.log(tempDay)
       }
       else{
         tempDay = day;
-        console.log('not less');
+        //console.log('not less');
       }
       let startDate = year+"-"+month+"-"+tempDay;
   
@@ -152,7 +152,7 @@ this.searchByName.valueChanges
   this.transactionService.searchInvoicesbyName(term)
   .subscribe((response)=>{
     if(response.length >0){
-    console.log(response);
+    //console.log(response);
     this.allInvoicesLedgers = response;
     this.startLoading = false;
     for(let x in this.allInvoicesLedgers){
@@ -195,7 +195,7 @@ this.searchByName.valueChanges
           // alert('Sorry no data found !');
         // }
       },(error)=>{
-        console.log("There is error in server");
+        //console.log("There is error in server");
         this.startLoading = false;
       })
   }
@@ -210,7 +210,7 @@ this.searchByName.valueChanges
     // let endyear = date.getFullYear()
     // let endmonth = date.getMonth()
     // let endday = date.getDate()
-    // // console.log(year)
+    // // //console.log(year)
     // let endDate = endyear+"-"+endmonth+"-"+endday;
 
     // let today = new Date();
@@ -219,7 +219,7 @@ this.searchByName.valueChanges
     // let startyear = today.getFullYear()
     // let startmonth = today.getMonth()
     // let startday = today.getDate()
-    // // console.log(year)
+    // // //console.log(year)
     // let startDate = startyear+"-"+startmonth+"-"+startday;
 
 
@@ -236,7 +236,7 @@ this.searchByName.valueChanges
     this.transactionService.getpatientFromDate(invRaw)
     .subscribe(
       (response)=>{
-        console.log(response)
+        //console.log(response)
         if(response.length>0){
         this.patientLists = response;
         this.startLoading = false;
@@ -245,7 +245,7 @@ this.searchByName.valueChanges
           alert('Sorry No Data !');
         }
       },(error)=>{
-        console.log("There is error in server");
+        //console.log("There is error in server");
         this.startLoading = false;
       })
   
@@ -286,18 +286,18 @@ this.searchByName.valueChanges
   getPatientByDate(){
     this.startLoading = true;
     let param={};
-    console.log(this.myForm.controls.myDateRange.value)
+    //console.log(this.myForm.controls.myDateRange.value)
     if(this.myForm.controls.myDateRange.value && this.active1){
       let dateRange = this.myForm.controls.myDateRange.value.formatted.split(' - ');
       param['startDate'] = dateRange[0];
       param['endDate'] = dateRange[1] + " 23:59:59";
-      console.log(param);
+      //console.log(param);
       this.searchByName.reset();
       this.transactionService.getpatientFromDate(param)
       .subscribe(
         (response)=>{
           if(response.length>0){
-            console.log(response)
+            //console.log(response)
             this.patientLists = response;
             this.startLoading = false;
           }
@@ -309,7 +309,7 @@ this.searchByName.valueChanges
             this.notifyDismiss();
           }
         },(error)=>{
-          console.log("There is error in server");
+          //console.log("There is error in server");
           this.startLoading = false;
         })
       }
@@ -328,7 +328,7 @@ this.searchByName.valueChanges
               this.notifyDismiss();
             }
           },(error)=>{
-            console.log("There is error in server");
+            //console.log("There is error in server");
             this.startLoading = false;
           })
       }
@@ -346,18 +346,18 @@ this.searchByName.valueChanges
     this.totalCrAmt = 0;
     this.startLoading = true;
     let param={};
-    console.log(this.myForm.controls.myDateRangeForinvoices.value)
+    //console.log(this.myForm.controls.myDateRangeForinvoices.value)
     if(this.myForm.controls.myDateRangeForinvoices.value && this.active2){
       let dateRange = this.myForm.controls.myDateRangeForinvoices.value.formatted.split(' - ');
       param['startDate'] = dateRange[0];
       param['endDate'] = dateRange[1] + " 23:59:59";
-      console.log(param);
+      //console.log(param);
       this.searchByName.reset();
       this.transactionService.getInvoicesFromDate(param)
       .subscribe(
         (response)=>{
           if(response.length >0){
-          console.log(response);
+          //console.log(response);
           this.allInvoicesLedgers = response;
           this.startLoading = false;
           for(let x in this.allInvoicesLedgers){
@@ -382,7 +382,7 @@ this.searchByName.valueChanges
         this.allInvoices();
         }
         },(error)=>{
-          console.log("There is error in server");
+          //console.log("There is error in server");
           this.startLoading = false;
         })
       }
@@ -401,7 +401,7 @@ this.searchByName.valueChanges
               this.notifyDismiss();
             }
           },(error)=>{
-            console.log("There is error in server");
+            //console.log("There is error in server");
             this.startLoading = false;
           })
       }
@@ -418,7 +418,7 @@ this.searchByName.valueChanges
         // if(response.lenght>0){
         this.patientInvoices = response;
         this.startLoading = false;
-        console.log(response);
+        //console.log(response);
         this.patientAllLedgersChk = false
         // }else{
           // this.startLoading = false;
@@ -443,7 +443,7 @@ getLedger(id){
     (response)=>{
       if(response.length>0){
       this.patientLedgers = response;
-      console.log(response);
+      //console.log(response);
       this.activeInvoice(1)
       this.patientAllLedgersChk = false
       this.startLoading = false;
@@ -453,20 +453,20 @@ getLedger(id){
       }
     },
     (error)=>{
-      console.log("Hey! There is error in server my darling");
+      //console.log("Hey! There is error in server my darling");
       this.startLoading = false;
     })
 }
 
 getAllPatientLedger(id){
   this.startLoading = true;
-  console.log(id)
+  //console.log(id)
   this.transactionService.getAllPatientLedgerFromServer(id)
   .subscribe(
     (response)=>{
       if(response.length>0){
       this.patientAllLedgers = response;
-      console.log(response);
+      //console.log(response);
       this.patientAllLedgersChk = true
       this.activepatienttable = false;
       this.activeInvoice(1)
@@ -477,7 +477,7 @@ getAllPatientLedger(id){
       }
     },
     (error)=>{
-      console.log("Hey! There is error in server my darling");
+      //console.log("Hey! There is error in server my darling");
       this.startLoading = false;
     })
 }
@@ -507,11 +507,11 @@ allInvoices(){
     let tempDay;
     if(day < 10){
       tempDay = "0"+day;
-      console.log(tempDay)
+      //console.log(tempDay)
     }
     else{
       tempDay = day;
-      console.log('not less');
+      //console.log('not less');
     }
     let startDate = year+"-"+month+"-"+tempDay;
 
@@ -519,12 +519,12 @@ allInvoices(){
   invRaw['endDate'] = startDate+" 23:59:59";
   this.fromDate = startDate;
   this.toDate = startDate+" 23:59:59";
-  console.log(invRaw)
+  //console.log(invRaw)
   this.transactionService.getAllInvoices(invRaw)
     .subscribe(
       (response)=>{
         if(response.length >0){
-        console.log(response);
+        //console.log(response);
         this.allInvoicesLedgers = response;
         this.startLoading = false;
         for(let x in this.allInvoicesLedgers){
@@ -546,7 +546,7 @@ allInvoices(){
       }
       },
       (error)=>{
-        console.log(error)
+        //console.log(error)
         this.startLoading = false;
       })
 }
@@ -560,11 +560,11 @@ printInvoices(param){
     let newPrintValue = {}
     newPrintValue['print']= Number(this.existPrint)+1;
     newPrintValue['testBookingId'] = testBookingId;
-    console.log(newPrintValue);
+    //console.log(newPrintValue);
     this.transactionService.updatePrint(newPrintValue)
     .subscribe(
       (response)=>{
-        console.log(response);
+        //console.log(response);
         if(response.length >0){
         this.testAndRateForPrints = response;
         this.printPatientId = response[0].reg_no;
@@ -578,8 +578,8 @@ printInvoices(param){
           if(this.globleParam){
             this.allowPrint = true;
           }
-          // console.log(this.printInvoiceId)
-          console.log(this.globleParam);
+          // //console.log(this.printInvoiceId)
+          //console.log(this.globleParam);
           
           setTimeout(function () {
             this.printFun('invoice')
@@ -589,7 +589,7 @@ printInvoices(param){
           
       },
       (error)=>{
-        console.log(error);
+        //console.log(error);
       }
     )
 }
@@ -608,7 +608,7 @@ printFun(printId){
   // printContents = document.getElementById('printSection').innerHTML;
   // popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
   
-  var newWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto,menubar=no,titlebar=no,location=no,fullscreen=yes')
+  var newWin = window.open('', '_blank', 'top=-10,left=-10,height=110%,width=100%,menubar=no,titlebar=no,location=no,fullscreen=yes')
   
   newWin.document.body.innerHTML = printContent;
   // newWin.document.open();

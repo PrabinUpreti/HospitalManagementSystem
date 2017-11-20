@@ -42,6 +42,8 @@ export class TestbookingTransactionService {
           if(checkSection == "sessionExpired"){
             this.router.navigate(['/']);            
           }
+          term['createdBy'] = ENV.userName;
+          term['updatedBy'] = ENV.userName;
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers, withCredentials: true });
     return this.PatientTest.post(ENV.Request_URL+"/api/postinvoice", term, options)

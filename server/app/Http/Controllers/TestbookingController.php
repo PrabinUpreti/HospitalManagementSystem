@@ -33,6 +33,8 @@ class TestbookingController extends Controller
             $testId = $record['testID'];
             $testDetails = $record['testDetails'];
             $amount = $record['invoice'];
+            $createdBy = $request->input('createdBy');
+            $updatedBy = $request->input('updatedBy');
 
         $patient = Patient::create([
                "reg_no" => $patientid,
@@ -47,20 +49,26 @@ class TestbookingController extends Controller
                "phone" => $phone,
                "email" => $email,
                "identity_number" => $identity_card,
-               "nationality" => $identity_card  
+               "nationality" => $identity_card,
+               'created_by'=>$createdBy,
+               'updated_by'=>$updatedBy
             ]);
 
             $idForTestbooking = $patient->id;
             $testbooking = Testbooking::create([
                 "patient_id" => $idForTestbooking,
                 "doctor_list_id" =>$reff_by,
+                'created_by'=>$createdBy,
+                'updated_by'=>$updatedBy
             ]);
             
             $testbooking_id = $testbooking->id;
             foreach($testId as $testid){
                 Report::create([
                     "testbooking_id" => $testbooking_id,
-                    "test_id" => $testid
+                    "test_id" => $testid,
+                    'created_by'=>$createdBy,
+                    'updated_by'=>$updatedBy
                 ]);
             }
 
@@ -78,6 +86,8 @@ class TestbookingController extends Controller
                     "ubound" => $json['upper_bound'],
                     "rate" => $json['rate'],
                     "unit" => $json['unit'],
+                    'created_by'=>$createdBy,
+                    'updated_by'=>$updatedBy
                 ]);
             }
 
@@ -95,7 +105,9 @@ class TestbookingController extends Controller
                 'sub_total' =>$amount,
                 'total_balance' => $amount,
                 'print'=>0,
-                "remark" => 'dr'
+                "remark" => 'dr',
+                'created_by'=>$createdBy,
+                'updated_by'=>$updatedBy
             ]);
 
             
@@ -111,6 +123,8 @@ class TestbookingController extends Controller
                 "balance" => $amount,
                 "remark" => 'dr',
                 'print'=>0,
+                'created_by'=>$createdBy,
+                'updated_by'=>$updatedBy
             ]);
 
             //setTestBooking();
@@ -143,6 +157,8 @@ class TestbookingController extends Controller
     $testId = $record['testID'];
     $testDetails = $record['testDetails'];
     $amount = $record['invoice'];
+    $createdBy = $request->input('createdBy');
+    $updatedBy = $request->input('updatedBy');
 
     Patient::find($id)->update([
        "reg_no" => $patientid,
@@ -157,7 +173,8 @@ class TestbookingController extends Controller
        "phone" => $phone,
        "email" => $email,
        "identity_number" => $identity_card,
-       "nationality" => $identity_card
+       "nationality" => $identity_card,
+       'updated_by'=>$updatedBy
     ]);
     $patient = Patient::find($id);
 
@@ -165,13 +182,17 @@ class TestbookingController extends Controller
     $testbooking = Testbooking::create([
         "patient_id" => $idForTestbooking,
         "doctor_list_id" =>$reff_by,
+        'created_by'=>$createdBy,
+        'updated_by'=>$updatedBy
     ]);
     
     $testbooking_id = $testbooking->id;
     foreach($testId as $testid){
         Report::create([
             "testbooking_id" => $testbooking_id,
-            "test_id" => $testid
+            "test_id" => $testid,
+            'created_by'=>$createdBy,
+            'updated_by'=>$updatedBy
         ]);
     }
     // $jsons = json_decode($testDetails);
@@ -189,6 +210,8 @@ class TestbookingController extends Controller
             "ubound" => $json['upper_bound'],
             "rate" => $json['rate'],
             "unit" => $json['unit'],
+            'created_by'=>$createdBy,
+            'updated_by'=>$updatedBy
         ]);
     }
 
@@ -269,6 +292,8 @@ class TestbookingController extends Controller
             'total_balance' => $updatebalance,
             'print'=>0,
             "remark" => $invoice_remark,
+            'created_by'=>$createdBy,
+            'updated_by'=>$updatedBy
         ]);
     }
     else{
@@ -290,6 +315,8 @@ class TestbookingController extends Controller
         "balance" => $updatebalance,
         "remark" => $remark,
         'print'=>0,
+        'created_by'=>$createdBy,
+        'updated_by'=>$updatedBy
     ]);
 
     //setTestBooking();

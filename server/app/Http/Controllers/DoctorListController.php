@@ -55,6 +55,8 @@ class DoctorListController extends Controller
         $email = $request->input('email');
         $prefix = $request->input('prefix');
         $commission = $request->input('commission');
+        $createdBy = $request->input('createdBy');
+        $updatedBy = $request->input('updatedBy');
            $doctor = DoctorList::create([
                 'name' => $name,
                 'address'=>$address,
@@ -68,6 +70,8 @@ class DoctorListController extends Controller
                 'commission'=>$commission,
                 'email'=>$email,
                 'department'=>$marital_status,
+                'created_by'=>$createdBy,
+                'updated_by'=>$updatedBy
              ]);
              return $doctor;
      }
@@ -115,6 +119,7 @@ class DoctorListController extends Controller
         $email = $request->input('email');
         $prefix = $request->input('prefix');
         $commission = $request->input('commission');
+        $updatedBy = $request->input('updatedBy');
         $updatedatas = DB::table('doctor_lists')
         ->where('id','=', $id)
         ->update([
@@ -130,6 +135,7 @@ class DoctorListController extends Controller
             'commission'=>$commission,
             'email'=>$email,
             'department'=>$marital_status,
+            'updated_by'=>$updatedBy
         ]);
         return response()->Json(array([
             'name' => $name,

@@ -12,7 +12,7 @@ public UserData;
 public menu;
   constructor(private router:Router) {
     this.Menulists= JSON.parse(localStorage.getItem('SelectMenuIten'));
-    console.log(this.Menulists)
+    //console.log(this.Menulists)
     for(let x in this.Menulists){
       if(this.Menulists[x].link !== this.router.url){
         //  this.router.navigate(['**'])

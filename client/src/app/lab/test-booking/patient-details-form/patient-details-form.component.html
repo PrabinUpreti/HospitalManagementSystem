@@ -162,7 +162,7 @@
 							<label for="reffiredBy" class="col-lg-4 control-label">Referred By*</label>
 							<div class="col-lg-8">
 									<select class="form-control" id="reffiredBy"  formControlName="reff_by">
-									  <option value="" selected="">Sellect Referred Doctor</option>
+									  <option value="" selected="">Select Referred Doctor</option>
 									  <option *ngFor = "let reffBy of reffBys; let i = index">{{reffBy.prefix}}.{{reffBy.name}}</option>
 									</select>
 							</div>

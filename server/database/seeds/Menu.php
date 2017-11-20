@@ -38,7 +38,7 @@ class Menu extends Seeder
         ]);
         DB::table('menus')->insert([
             'fa'=>'fa-stethoscope',
-            'name'=>'Doctor Report',
+            'name'=>'Doctor Commission',
             'link'=>'/lab/doctor-report'
         ]);
         DB::table('menus')->insert([

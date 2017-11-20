@@ -1,5 +1,4 @@
-
-  <!-- <div class="ready_botton">
+<!-- <div class="ready_botton">
       <button>Ready</button>
       <button>Not Ready</button>
       <input type="text" placeholder="Search"> 
@@ -13,15 +12,40 @@
               </tbody>
         </table>
   </div> -->
-  <div style="background-color:#f5f5f5;"> 
-          <form [formGroup]="myForm" (ngSubmit) = "timeRange()" novalidate>
-                  <my-date-range-picker name="mydaterange" [options]="myDateRangePickerOptions" formControlName="myDateRange">
-                  </my-date-range-picker>
-                <button type="submit" class="form-control" class="btn btn-default col-xs-2">Set</button>
-            </form>
-      <ul class="nav nav-tabs">
-              <li   [ngClass] = "{'active' : setclass == 1}"><a  (click)=ready()>Ready</a></li>
-              <li   [ngClass] = "{'active' : setclass == 0}"><a  (click)=notready()>Not-Ready</a></li>
-      </ul>
+
+<!-- <div style="float:left; margin-left:20px;">
+    <my-date-range-picker style="padding:0px; border-radius:0px; border:0px;" class="form-control"
+      name="mydaterange" [options]="myDateRangePickerOptions" placeholder="Search By Date" formControlName="myDateRange"></my-date-range-picker>
   </div>
-  <!-- [ngClass] = "{'active' : setclass == i}" -->
+  <div style="float:left">
+    <button style="height:36px; width:auto;"  class="btn btn-info" type="submit">
+      <i class="glyphicon glyphicon-search"></i>
+    </button>
+  </div> -->
+
+<div style="background-color:#f5f5f5;">
+  <div class="row">
+    <div style="float:left;" class="col-sm-10">
+      <form [formGroup]="myForm" (ngSubmit)="timeRange()" novalidate>
+        <my-date-range-picker name="mydaterange" [options]="myDateRangePickerOptions" formControlName="myDateRange">
+        </my-date-range-picker>
+      </form>
+    </div>
+    <div style="float:left" class="col-sm-2">
+      <button type="submit" class="btn btn-info btn-block">
+        <i class=" fa fa-search "></i>
+      </button>
+    </div>
+  </div>
+  <div class="row">
+    <ul class="nav nav-tabs">
+      <li style="cursor:pointer;" [ngClass]="{'active' : setclass == 1}">
+        <a (click)=ready()>Ready</a>
+      </li>
+      <li style="cursor:pointer;" [ngClass]="{'active' : setclass == 0}">
+        <a (click)=notready()>Not-Ready</a>
+      </li>
+    </ul>
+  </div>
+</div>
+<!-- [ngClass] = "{'active' : setclass == i}" -->

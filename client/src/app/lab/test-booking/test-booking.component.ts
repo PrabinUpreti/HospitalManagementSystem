@@ -14,7 +14,7 @@ export class TestBookingComponent implements OnInit {
   public setResponse;
   public CatchAge;
   public CatchGender;
-  public resetTest;
+  public resetTest = 0;
 
   constructor() { }
 
@@ -26,27 +26,28 @@ export class TestBookingComponent implements OnInit {
   }
   public onSelectedDep(id){
     this.Dep=id
-    this.resetTest = true;
-    // console.log(this.Dep);
+    this.testype =undefined;
+    this.resetTest = (Math.floor(Math.random() * 10) + 1)+this.resetTest;
+    // //console.log(this.Dep);
   }
   onSelectedtestype(id){
+    this.testype = undefined;
     this.testype = id;
-    this.resetTest = false;
-    // console.log(id);
+    // //console.log(id);
   }
   onDragToSelected(id){    
     this.dragToSelectedNow = id;
   }
   onsetResponse(id){
     this.setResponse = id;
-    // console.log("in parent" + id);
+    // //console.log("in parent" + id);
   }
   onThrowAge(id){
-    // console.log(id);
+    // //console.log(id);
     this.CatchAge = id;
   }
   onThrowGender(id){
-    // console.log(id);
+    // //console.log(id);
     this.CatchGender = id;
   }
 

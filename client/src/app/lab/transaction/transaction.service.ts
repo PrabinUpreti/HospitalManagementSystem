@@ -40,7 +40,9 @@ postInvoices(param){
           if(checkSection == "sessionExpired"){
             this.router.navigate(['/']);            
           }
-  console.log(param)
+          param['createdBy'] = ENV.userName;
+          param['updatedBy'] = ENV.userName;
+  //console.log(param)
   let headers = new Headers({ 'Content-Type': 'application/json' });
   let options = new RequestOptions({ headers: headers, withCredentials: true });
   return this.PatientTest.post(ENV.Request_URL+"/api/transaction", param, options)

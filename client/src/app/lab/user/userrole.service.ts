@@ -83,7 +83,7 @@ getReport(){
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers, withCredentials: true});
     let id =  FormData.id;
-    console.log(id);
+    //console.log(id);
     return this._http.post(ENV.Request_URL+"/api/edituser/"+id, FormData, options)
     .map(this.extractData)
     .catch(this.handleError);

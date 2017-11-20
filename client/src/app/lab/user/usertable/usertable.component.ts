@@ -60,14 +60,14 @@
               this.user.getUser().subscribe(
                 menus => {
                   this.userdata = menus
-                  console.log('User data',this.userdata)
-                  // console.log('menu User',this.userdata.user[1].access[0].menu_id)
+                  //console.log('User data',this.userdata)
+                  // //console.log('menu User',this.userdata.user[1].access[0].menu_id)
                   });
 
                 this.user.getReport().subscribe(
                     menus =>{
                         this.Menulists=menus.menu;
-                        console.log('menu',this.Menulists)
+                        //console.log('menu',this.Menulists)
                         for(let x of this.Menulists) { 
                           // for(let y of this.Access_MenusList ){
                                 // if(x.id == y.menu_id){
@@ -78,7 +78,7 @@
                                 }));
                               } 
                               //  else{
-                              //    console.log('false')
+                              //    //console.log('false')
                               //    this.MenuArray.push(this.fb.group({
                               //      selected: false,
                               //      name: x.name,
@@ -101,7 +101,7 @@
           }
 
         userUpdate(index){
-          console.log(index);
+          //console.log(index);
           this.MenuArray=[];
           this.idForUpdatecheck=index;
           this.idForUpdate=this.userdata.user[index].id;
@@ -109,7 +109,7 @@
           // this.ModefyUser.controls.email.setValue(this.userdata.user[index].email)
           // this.ModefyUser.controls.status.setValue(this.userdata.user[index].status)
           this.Access_MenusList=this.userdata.user[index].access;
-          console.log('Before access',this.Access_MenusList);
+          //console.log('Before access',this.Access_MenusList);
         
           let flag:boolean;
           for(let x of this.Menulists) { 
@@ -117,7 +117,7 @@
             for(let y of this.Access_MenusList ){
                   if(x.id == y.menu_id){
                     flag = true;
-                    console.log('true')
+                    //console.log('true')
                     break;
                   }
             }
@@ -129,7 +129,7 @@
               }));
             }
             else{
-              console.log('false')
+              //console.log('false')
               this.MenuArray.push(this.fb.group({
                 selected: false,
                 name: x.name,
@@ -137,7 +137,7 @@
             }));
           }
       }
-      console.log('checked',this.userdata.user[index].status)
+      //console.log('checked',this.userdata.user[index].status)
       let checked = this.userdata.user[index].status;
       if(checked == 0){
         this.ModefyUser = this.fb.group({
@@ -156,8 +156,8 @@
         });
       }
         
-          console.log(this.ModefyUser.value)
-          console.log('After access',this.Access_MenusList);
+          //console.log(this.ModefyUser.value)
+          //console.log('After access',this.Access_MenusList);
         }
 
 
@@ -165,15 +165,15 @@
           if(this.ModefyUser.valid){
             let FormData;
             FormData=this.ModefyUser.value;
-            console.log('User Id',FormData)
-            console.log(this.idForUpdate)
+            //console.log('User Id',FormData)
+            //console.log(this.idForUpdate)
             FormData['id']=this.idForUpdate;
             this.SelectMenu = FormData.Lists.filter(x => x.selected).map(x => { return { name: x.name, id: x.id, user_id: 0 }; });
-            console.log('Form Data',FormData);
-            console.log('Form After Data',this.SelectMenu);
+            //console.log('Form Data',FormData);
+            //console.log('Form After Data',this.SelectMenu);
             this.user.Updatedata(FormData).subscribe(
               response=>{ 
-                console.log('Respose after Edit',response);
+                //console.log('Respose after Edit',response);
                 for(let x in this.userdata.user){
                   if(x == this.idForUpdatecheck){
                       this.userdata.user[x].name=response.name;
@@ -187,16 +187,21 @@
             }
           this.user.EditMenu(this.SelectMenu).subscribe(
                 response=>{
-                     console.log(response); 
+                     //console.log(response); 
+                     this.initializeapp();
                      this.Notify=true;
                      this.notify=response
-                     this.notifyDismiss()
-                     this.initializeapp();
+                     setTimeout(function() {
+                      this.Notify = false;
+                   }.bind(this), 3000);
             },
             (error)=>
             {
               this.Notify=true;
-              this.notify="Unable to Update User!"
+                this.notify="Unable to Edit User";
+                setTimeout(function() {
+                  this.Notify = false;
+               }.bind(this), 3000);
             }
           );
              
@@ -209,30 +214,34 @@
           this.User_id=this.userdata.user[this.idForDeleteUser].id;
           this.user.DeleteUser(this.User_id).subscribe(
             response=>{
-              console.log(response)
+              //console.log(response)
               if(response == this.User_id){
                 this.userdata.user.splice(this.idForDeleteUser,1);
                 this.initializeapp()
                 this.Delete=true;
-                this.delte="Sucessfully Deleted User!";
-                this.notifyDismiss()
+                this.delte="Sucessfully Delete User!";
+                setTimeout(function() {
+                   this.Delete = false;
+                }.bind(this), 3000);
               }
             },
             (error)=>{
-              this.Delete=true;
-              this.delte="Unable to delete User!"
-              this.notifyDismiss()
+                this.Delete=true;
+                this.delte="Unable to  Delete User!";
+                setTimeout(function() {
+                   this.Delete = false;
+               }.bind(this), 3000);
             }
           )
         }
         InsertData(data){
           if(data === undefined) return 0
-            //  console.log('my data',data)
-            //  console.log('Zero index',data[0])
+            //  //console.log('my data',data)
+            //  //console.log('Zero index',data[0])
             // this.userdata.user.push(data[0])
             this.initializeapp();
         }
-        notifyDismiss(){
+   datadismis(){
           setTimeout(function () {
             this.Notify = false;
           }.bind(this), 3000);  

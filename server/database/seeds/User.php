@@ -16,6 +16,7 @@ class User extends Seeder
             'email'=>'softwebdevelopers@gmail.com',
             'password' => bcrypt('softwebdevelopers1234'),
             'status'=>'active',
+            'hide'=>'is_admin'
         ]);
 
         DB::table('access_menus')->insert([

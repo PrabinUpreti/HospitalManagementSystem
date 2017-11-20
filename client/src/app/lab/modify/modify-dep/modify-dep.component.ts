@@ -46,7 +46,7 @@ export class ModifyDepComponent implements OnInit {
     if(this.responseDatas == undefined){
       this.modifyService.getDepartment() .subscribe(
         (response)=>{
-          console.log(response);
+          //console.log(response);
           this.responseDatas = response;
         },
         (error)=>{
@@ -93,7 +93,7 @@ export class ModifyDepComponent implements OnInit {
       this.add = false;
       this.Add = "Adding...";
       let departmentData = this.modefyDepartment.value;
-      console.log(departmentData);
+      //console.log(departmentData);
       this.modifyService.pushDepartment(departmentData)
       .subscribe(
         (response)=>{
@@ -109,7 +109,7 @@ export class ModifyDepComponent implements OnInit {
         (error)=>{
             this.add = true;
             this.Add = "Add";
-            console.log("sorry error in server")
+            //console.log("sorry error in server")
             this.notify = "sorry error in server !";
             this.Notify = true;
             this.notifyDismiss();
@@ -171,7 +171,7 @@ export class ModifyDepComponent implements OnInit {
         (error)=>{
             this.update = true;
             this.Update = "Update";
-            console.log("sorry error in server")
+            //console.log("sorry error in server")
         }
       )
       // this.modifyService.getDepartment() .subscribe(
@@ -179,7 +179,7 @@ export class ModifyDepComponent implements OnInit {
       //     this.responseDatas = response;
       //   },
       //   (error)=>{
-      //       console.log("sorry error in server")
+      //       //console.log("sorry error in server")
       //   });
         // this.showDepartment=true;
         this.title = "Add Department";
@@ -196,7 +196,7 @@ export class ModifyDepComponent implements OnInit {
     }
   }
   configDelete(index){
-    console.log(index);
+    //console.log(index);
     this.idForClientDelete = index;
     this.showAddBtn = false;
     this.showDeleteBtn = true;
@@ -219,7 +219,7 @@ export class ModifyDepComponent implements OnInit {
           this.notifyDismiss();
       },
       (error)=>{
-        console.log("opps some thing wrong in server");
+        //console.log("opps some thing wrong in server");
         this.notify = "sorry You cannot Delete " + this.responseDatas[this.idForClientDelete].name;
         this.Notify = true;
         this.notifyDismiss();
@@ -228,11 +228,11 @@ export class ModifyDepComponent implements OnInit {
   }
 
   insideDepartment(index){
-    console.log(index);
+    //console.log(index);
     let packedData = [];
     let id = this.responseDatas[index];
     packedData.push(id);
-    console.log(packedData);
+    //console.log(packedData);
     this.hideDepartment.emit(packedData);
   }
 

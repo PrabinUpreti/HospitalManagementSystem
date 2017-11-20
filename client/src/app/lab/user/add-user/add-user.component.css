@@ -1,20 +1,18 @@
 #error-container {
 	position: fixed;
-	z-index: 9999999;
-	top: 2px;
-	right: 125px;
-	box-shadow: 2px 2px 2px #333;
+	z-index: 999;
+	bottom: 20px;
+	right: 10px;
+	box-shadow: 5px 5px 5px #888888;
 }
 .alert {
-    padding: 5px;
+    padding: 15px;
     margin-bottom: 0px;
     border: 1px solid transparent;
 	border-radius: 4px;
 }
 span{
-	padding: 0px;
 	padding-right: 15px;
-	font-weight: bold;
 }
 .checkbox{
 	margin-top: 11px;
@@ -22,4 +20,7 @@ span{
  }
  button[type="submit"]{
 	margin-left: 115px;
+}
+form{
+	margin-left: 30px;
 }

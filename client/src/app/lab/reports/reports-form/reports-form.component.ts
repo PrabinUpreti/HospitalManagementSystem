@@ -32,7 +32,7 @@ private alive =false
   }
  
  getpatients(patients){
-   console.log(patients)
+   //console.log(patients)
    if(patients != undefined){
      if(patients.length > 0){
   //  this.alive =true;

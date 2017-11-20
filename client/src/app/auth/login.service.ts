@@ -68,5 +68,13 @@ login(data: any): Observable<any>{
      return this._http.get(ENV.Request_URL+"/api/menubar/"+id, options)
     .map(this.extractData)
     .catch(this.handleError);
-             } 
-       }
+    }
+    getHospitalInFo(){
+        let headers = new Headers({'Content-Type': 'application/json'});
+        let options = new RequestOptions({headers: headers, withCredentials: true});
+
+        return this._http.get(ENV.Request_URL+"/api/gethospitalinfo", options)
+       .map(this.extractData)
+       .catch(this.handleError); 
+    } 
+ }

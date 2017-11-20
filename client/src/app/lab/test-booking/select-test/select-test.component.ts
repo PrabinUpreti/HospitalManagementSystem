@@ -44,11 +44,16 @@ export class SelectTestComponent implements OnInit {
   public SelectedGender;
   
   @Input() set inputSelectedtest(id){
+    this.testTables =[];
+    this.alive = false;
     this.getTestFromServer(id)
+    this.startLoading = true
   }
   @Input() set resetTestList(id){
-    if(id == true)
+    if(id > 0)
+    this.testTables =[];
     this.alive = false;
+    
     // this.ShowTestSection = false;
     // alert(id)
   }
@@ -58,7 +63,7 @@ export class SelectTestComponent implements OnInit {
   }
   @Input() set inputCatchGender(id){
     this.SelectedGender = id;
-    console.log(id);
+    //console.log(id);
     this.filterAgeAndGender();
   }
 
@@ -97,10 +102,10 @@ export class SelectTestComponent implements OnInit {
         this.modifyService.getTest(id)
         .subscribe(
           (response)=>{
-            console.log(response);
+            //console.log(response);
             let stationResponse = [];
             let testIdFromLocalStorage = (JSON.parse(localStorage.getItem('test')));
-            console.log(testIdFromLocalStorage);
+            //console.log(testIdFromLocalStorage);
             for(let x in response){
               if(testIdFromLocalStorage){
 
@@ -129,7 +134,7 @@ export class SelectTestComponent implements OnInit {
                   // alert("i do not have any stored data")
                   stationResponse.push(response[x]);
                   stationResponse[x]['checkActive'] = false;
-                  console.log(stationResponse);
+                  //console.log(stationResponse);
                 }
             }
             this.testTables = stationResponse;
@@ -139,14 +144,14 @@ export class SelectTestComponent implements OnInit {
           },
           (error)=>{
             this.startLoading=false;
-              console.log("Error in server");
+              //console.log("Error in server");
           }
         );
   }
 
   dragTr(data){
     
-    console.log(data)
+    //console.log(data)
     let sendingData;
      
 
@@ -211,23 +216,23 @@ export class SelectTestComponent implements OnInit {
                   this.checkSelected.push(data.id);
                   
                   this.testDetailsToUpdate.push(this.tempData[x]);
-                  console.log(this.testDetailsToUpdate);
+                  //console.log(this.testDetailsToUpdate);
                   localStorage.setItem('test', JSON.stringify(this.checkSelected));
                   localStorage.setItem('testDetails', JSON.stringify(this.testDetailsToUpdate));
-                  console.log(this.checkSelected);
+                  //console.log(this.checkSelected);
                   // ageRange.push(JSON.parse(JSON.stringify(this.ageGroupFromServer[i])))
-                  console.log(this.dataTables);
+                  //console.log(this.dataTables);
                   break;
                   }
                   else{
-                    // console.log("Age and Gender Not Found");
+                    // //console.log("Age and Gender Not Found");
                     // this.Notify = true;
                     // this.notify = "This Age or Gender is not registered by Administrator.";
                     // data.checkActive = false;
                   }
                 }
                 else{
-                  console.log('Undifined is Success');
+                  //console.log('Undifined is Success');
                   this.Notify = true;
                   this.notify = 'Please Input Gender and Age in above form.';
                   setTimeout(function () {
@@ -238,7 +243,7 @@ export class SelectTestComponent implements OnInit {
                 }
               }
               if(!checkData){
-                console.log("Age and Gender Not Found");
+                //console.log("Age and Gender Not Found");
                 this.Notify = true;
                 this.notify = "This Age or Gender is not registered by Administrator.";
                 setTimeout(function () {
@@ -257,7 +262,7 @@ export class SelectTestComponent implements OnInit {
             }
           },
           (error)=>{
-              console.log("Error in server")
+              //console.log("Error in server")
               data.checkActive = false;
           }
         );
@@ -267,7 +272,7 @@ export class SelectTestComponent implements OnInit {
 
 
   dataTablSplice(index , id){
-    console.log(index);
+    //console.log(index);
     for(let x in this.testTables){
       if(this.testTables[x].id == index.test_id){
         this.dataTables.splice(id , 1 , null);
@@ -275,9 +280,9 @@ export class SelectTestComponent implements OnInit {
         this.checkSelected.splice(this.checkSelected.indexOf(index.test_id), 1);
         localStorage.removeItem('test');
         localStorage.setItem('test', JSON.stringify(this.checkSelected));
-        console.log(this.dataTables)
+        //console.log(this.dataTables)
         this.testDetailsToUpdate.splice(id, 1);
-        console.log(this.testDetailsToUpdate);
+        //console.log(this.testDetailsToUpdate);
         localStorage.removeItem('testDetails');
         localStorage.setItem('testDetails', JSON.stringify(this.testDetailsToUpdate));
       }
@@ -305,7 +310,7 @@ export class SelectTestComponent implements OnInit {
   }
   
   datadismis(){
-    console.log('Hide')
+    //console.log('Hide')
     this.Notify = false;
   }
 

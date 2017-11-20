@@ -19,16 +19,22 @@ class ReportController extends Controller
                             ->update(['result'=>$answers[$i]['result']]); 
                        }
                        return response()->Json([
-                           'status'=>'Report Submitted Successfully !'
+                           'status'=> $Report_update
                        ]);
                   }
-    public function ReportData(){
-        $datas =patient::join('testbookings','patients.id','=','testbookings.patient_id')
-                        ->join('reports','testbookings.id', '=', 'reports.testbooking_id')
-                        ->orderBy('testbooking_id', 'desc')
-                        ->get();
-                          return response()->json(['datas'=>$datas]);    
-     }
+        public function ReportData(Request $request){
+        $data=$request->all();
+        $startdata =$request['startDate'];
+        $enddate=$request['endDate'];
+        $datas =Patient::join('testbookings','patients.id','=','testbookings.patient_id')
+                    ->join('reports','testbookings.id', '=', 'reports.testbooking_id')
+                    ->orderBy('testbooking_id', 'asc')
+                    ->whereBetween('testbookings.created_at',[$startdata,$enddate])
+                    ->get();
+                    return response()->json(['datas'=>$datas,
+                                        'start'=>$startdata,
+                                        'sss'=>$enddate]); 
+        }
 
  public function getReportData($id){
         $datas =patient::join('testbookings','patients.id','=','testbookings.patient_id')

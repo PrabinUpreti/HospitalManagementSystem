@@ -15,7 +15,7 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
   @Input() set processTest(id){
     this.ServeId = id[0].id;
     this.selectedTestType = id[0].name;
-    console.log(this.ServeId);
+    //console.log(this.ServeId);
     // this.processTestType(id)
   }
   constructor(private modifyService: ModifyService) { }
@@ -72,7 +72,7 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     let id = this.ServeId;
-    console.log(id);
+    //console.log(id);
     if(this.responseDatas == undefined){
       this.getTestWatchMan = this.modifyService.getTest(id) .subscribe(
         (response)=>{
@@ -81,11 +81,11 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
             this.Notify = true;
             this.notifyDismiss();
           }
-          console.log(response);
+          //console.log(response);
           this.responseDatas = response;
         },
         (error)=>{
-            console.log("sorry error in server")
+            //console.log("sorry error in server")
             this.notify = "sorry error in server !";
             this.Notify = true;
             this.notifyDismiss();
@@ -99,7 +99,7 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
             this.Notify = true;
             this.notifyDismiss();
             }
-            console.log(response);
+            //console.log(response);
             this.commoncodes = response;
 
 
@@ -149,10 +149,10 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
 
 
             
-            console.log(this.FormUnits , this.genderInDropdowns, this.age_groupInDropdown)
+            //console.log(this.FormUnits , this.genderInDropdowns, this.age_groupInDropdown)
           },
           (error)=>{
-              console.log("sorry error in server")
+              //console.log("sorry error in server")
               this.notify = "sorry error in server !";
               this.Notify = true;
               this.notifyDismiss();
@@ -217,7 +217,7 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
     //     this.TestTypeLists = response;
     //   },
     //   (error)=>{
-    //     console.log("sorry no Test Type");
+    //     //console.log("sorry no Test Type");
     //   });
   
     // if(this.showTest){
@@ -242,7 +242,7 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
       this.add = false;
       let TestData = this.modefyTest.value;
       TestData['selecttesttype']=this.ServeId;
-      console.log(TestData);
+      //console.log(TestData);
       this.modifyService.pushTest(TestData)
       .subscribe(
         (response)=>{
@@ -257,7 +257,7 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
           this.notifyDismiss();
         },
         (error)=>{
-            console.log("sorry error in server")
+            //console.log("sorry error in server")
             this.notify = "sorry error in server !";
             this.Notify = true;
             this.notifyDismiss();
@@ -299,7 +299,7 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
       let finalData;
       finalData = this.modefyTest.value;
       finalData['id']=this.idForUpdate;
-      console.log(finalData);
+      //console.log(finalData);
       this.modifyService.updateTest(finalData)
       .subscribe(
         (response)=>{
@@ -316,7 +316,7 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
           // this.responseDatas.push(response)
         },
         (error)=>{
-            console.log("sorry error in server")
+            //console.log("sorry error in server")
             this.notify = "sorry error in server !";
             this.Notify = true;
             this.notifyDismiss();
@@ -515,7 +515,7 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
           this.addDetails = false;
           let TestDetails = this.testDetails.value;
           TestDetails['selectedTest']=this.idToSaveTestDetails;
-          console.log(TestDetails);
+          //console.log(TestDetails);
           this.modifyService.testDetails(TestDetails)
           .subscribe(
 
@@ -540,7 +540,7 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
 
 
             (error)=>{
-                console.log("sorry error in server")
+                //console.log("sorry error in server")
                 this.notify = "sorry error in server !";
                 this.Notify = true;
                 this.notifyDismiss();
@@ -560,14 +560,14 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
         let TestDetails = this.testDetails.value;
         TestDetails['id']=this.testDetailDatas[this.idForEditTestdetials].id;
         TestDetails['selectedTest']=this.idToSaveTestDetails;
-        console.log(TestDetails);
+        //console.log(TestDetails);
         this.modifyService.testDetailsEdit(TestDetails)
         .subscribe(
 
 
 
           (response)=>{
-            console.log(response)
+            //console.log(response)
             if (response.length > 0) {
             this.testDetails.reset();
             this.testDetails.controls.unit.setValue('');
@@ -614,7 +614,7 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
 
           },
           (error)=>{
-              console.log("sorry error in server")
+              //console.log("sorry error in server")
               this.notify = "sorry error in server !";
               this.Notify = true;
               this.notifyDismiss();
@@ -622,7 +622,7 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
         }
       }
       else{
-        console.log("invalid");
+        //console.log("invalid");
         for(let x in this.testDetails.controls ){
           this.testDetails.controls[x].markAsTouched();
           this.testDetails.controls[x].markAsDirty();
@@ -647,14 +647,14 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
       this.testDetails.controls.unit.setValue('');
       this.testDetails.controls.age.setValue('');
       this.testDetails.controls.gender.setValue('');
-      console.log("this is fullTestSection" + id);
+      //console.log("this is fullTestSection" + id);
       this.idToSaveTestDetails = this.responseDatas[id].id;
-      console.log(this.idToSaveTestDetails);
+      //console.log(this.idToSaveTestDetails);
       this.fullTestSection = false;
       this.showTestDetails = true;
       
       let testDetailsid = this.idToSaveTestDetails;
-      console.log(testDetailsid);
+      //console.log(testDetailsid);
         this.modifyService.getTestDetails(testDetailsid) .subscribe(
           (response)=>{
             if(response.length == 0){
@@ -665,7 +665,7 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
             this.testDetailDatas = response;
           },
           (error)=>{
-              console.log("sorry error in server")
+              //console.log("sorry error in server")
               this.notify = "sorry error in server !";
               this.Notify = true;
               this.notifyDismiss();
@@ -717,7 +717,7 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
             }
           }
           this.Age_groupAfterFilter = finalDropDown
-          console.log(this.Age_groupAfterFilter)
+          //console.log(this.Age_groupAfterFilter)
 
     }
 
@@ -746,7 +746,7 @@ export class ModifyTestComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(){
       this.getTestWatchMan.unsubscribe();
-      console.log('get test watchman has been unsubscribed')      
+      //console.log('get test watchman has been unsubscribed')      
     }
 
 

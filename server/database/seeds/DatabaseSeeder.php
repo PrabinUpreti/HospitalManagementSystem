@@ -15,6 +15,6 @@ class DatabaseSeeder extends Seeder
         $this->call(Menu::class);
         // $this->call(SelectAge::class);
         $this->call(User::class);
-        // $this->call(Auth::class);
+        $this->call(InitHospital::class);
     }
 }

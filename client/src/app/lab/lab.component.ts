@@ -13,7 +13,7 @@ inputtransactionData(id) {
 	  }
    private TransactionData(id){
 	 this.td_id=id;
-	 console.log(this.td_id);
+	 //console.log(this.td_id);
     }
 }
 

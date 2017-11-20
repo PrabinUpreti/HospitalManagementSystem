@@ -51,6 +51,8 @@ class TransactionController extends Controller
         $remark = $request->input('remark');
         $particuler = $request->input('particular');
         $backedMoney = $request->input('backedMoney');
+        $createdBy = $request->input('createdBy');
+        $updatedBy = $request->input('updatedBy');
 
         $storedInInvoice = Invoice::create([
             'testbooking_id'=>$testBookingId,
@@ -66,6 +68,8 @@ class TransactionController extends Controller
             'total_balance' => $balance,
             'print'=>1,
             'remark'=>$remark,
+            'created_by'=>$createdBy,
+            'updated_by'=>$updatedBy
         ]);
         $invoiceId = $storedInInvoice->id;
 
@@ -82,6 +86,8 @@ class TransactionController extends Controller
             'balance'=>$balance,
             'remark'=>$remark,
             'print'=>1,
+            'created_by'=>$createdBy,
+            'updated_by'=>$updatedBy
         ]);
 
 

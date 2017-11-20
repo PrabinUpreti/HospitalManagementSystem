@@ -39,10 +39,10 @@ import { FormBuilder, FormArray, FormGroup, Validators} from '@angular/forms';
                 }));
             }
               this.addUser = this.fb.group({
-                  'name':[null,Validators.required],
-                  'email': [null,Validators.required],
-                  'password':[null,Validators.required],
-                  'status':[null,Validators.required],
+                  'name':[null,Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(10)])],
+                  'email': [null,Validators.pattern("[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})")],
+                  'password':[null,Validators.compose([Validators.required, Validators.minLength(8), Validators.maxLength(16)])],
+                  'status':[1,Validators.required],
                            menuLists:this.fb.array(this.MenuArray)
                  });
              });       
@@ -53,22 +53,22 @@ import { FormBuilder, FormArray, FormGroup, Validators} from '@angular/forms';
            this.submit=true;
            let items = this.addUser.value;  
            this.SelectMenu = items.menuLists.filter(x => x.selected).map(x => { return { name: x.name, id: x.id, user_id: 0 }; });
-           console.log(this.SelectMenu);
+           //console.log(this.SelectMenu);
            if(this.addUser.valid){
            this.userService.Useradd(items)
            .subscribe(
                (response)=> {
-                console.log('Select Menu', response);
-                console.log(response)
+                //console.log('Select Menu', response);
+                //console.log(response)
                 
                 let user_id= response[0].id;
-                console.log('I am new',user_id)
-                console.log('User ID : ', user_id);
+                //console.log('I am new',user_id)
+                //console.log('User ID : ', user_id);
                 for(let x in this.SelectMenu){
                     this.SelectMenu[x].user_id = user_id;
                     }
                 //  this.SelectedMenuItem.push(response,this.SelectMenu);
-                  console.log('After push', this.SelectMenu);
+                  //console.log('After push', this.SelectMenu);
                  this.userService.access_menu(this.SelectMenu).subscribe(
                    (response)=>{
                     this.UserData.emit(response)

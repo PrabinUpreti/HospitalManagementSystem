@@ -52,11 +52,11 @@ export class DoctorReportComponent implements OnInit {
   .subscribe(
       (response)=>{
         this.doctorlists=response
-        console.log(response);
+        //console.log(response);
       },
       (error)=>{
           // this.submitButtonStatus=true
-          console.log("ERROR successfully")
+          //console.log("ERROR successfully")
           this.Notify = true;
           this.notify = "Sorry couldn't load Doctor from server please refresh it."
       }
@@ -95,7 +95,7 @@ export class DoctorReportComponent implements OnInit {
         param['doctorId'] = this.doctorlists[this.myForm.controls.selecteddoctor.value].id;
         param['startDate'] = dateRange[0];
         param['endDate'] = dateRange[1] +" 23:59:59";
-        // console.log(JSON.stringify(param));
+        // //console.log(JSON.stringify(param));
         this.DoctorReport.getDoctorTestbookingTransaction(param)
         .subscribe(
           (response)=>{
@@ -108,7 +108,7 @@ export class DoctorReportComponent implements OnInit {
               }
             }
             this.doctorDatas = tempJson;
-            console.log(this.doctorDatas);
+            //console.log(this.doctorDatas);
             this.showTable = true;
             for(let x in this.doctorDatas){
               tempcommission += Number(this.doctorDatas[x].dr);
@@ -120,7 +120,7 @@ export class DoctorReportComponent implements OnInit {
           }
           },
           (error)=>{
-            console.log(error);
+            //console.log(error);
           }
         );
       }
@@ -132,20 +132,20 @@ export class DoctorReportComponent implements OnInit {
     }
 
     getCommissionDetials(id){
-      console.log(id);
+      //console.log(id);
       let param={}
       param['testBookingId'] = id.testbooking_id;
       this.viewtransaction.updatePrint(param)
       .subscribe(
         (response)=>{
-          console.log(response);
+          //console.log(response);
           if(response.length >0){
           this.testAndRateForPrints = response;
           jQuery("#myModal").modal("show");
           }
         },
         (error)=>{
-          console.log(error);
+          //console.log(error);
         }
       )
 
@@ -153,7 +153,7 @@ export class DoctorReportComponent implements OnInit {
 
 
     datadismis(){
-      console.log('Hide')
+      //console.log('Hide')
       this.Notify = false;
     }
 

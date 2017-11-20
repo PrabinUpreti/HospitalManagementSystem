@@ -26,3 +26,8 @@ tbody, tr, td {
 tbody>tr:hover{
 	background-color: rgb(171, 171, 171);
 } */
+button{
+height: 36px;
+/* width:auto; */
+margin-left:2px;
+}

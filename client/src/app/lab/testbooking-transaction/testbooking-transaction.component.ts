@@ -104,7 +104,7 @@ export class TestbookingTransactionComponent implements OnInit {
 
 
     this.hospitalName = ENV.hospital;
-    this.panNumber = ENV.pan_Numner;
+    this.panNumber = ENV.pan_Number;
     this.hospitalAddress = ENV.address;
     this.hospitalRegNo = ENV.RegNo;
     this.hospitalNumber = ENV.phone_number;
@@ -156,7 +156,7 @@ export class TestbookingTransactionComponent implements OnInit {
           this.notify = "There is no any Data ";
           this.startLoading = false;
         }
-        console.log(response);
+        //console.log(response);
         this.commoncodes = response;
         this.startLoading = false;
 
@@ -174,17 +174,17 @@ export class TestbookingTransactionComponent implements OnInit {
 
         this.routeParameter = this.route.params
           .subscribe(params => {
-            console.log(params);
+            //console.log(params);
             this.paramId = params['id'];
             if (this.paramId) {
               // this.isurlid = true;
               this.disableme = true;
               this.searchpayment(this.paramId).subscribe(
                 success => {
-                  console.log(this.patientDatas);
+                  //console.log(this.patientDatas);
                   this.invoice(this.patientDatas[0].testbooking_id);
                 }, err => {
-                  console.log(this.patientDatas);
+                  //console.log(this.patientDatas);
                 })
 
             }
@@ -193,7 +193,7 @@ export class TestbookingTransactionComponent implements OnInit {
 
       },
       (error) => {
-        console.log("sorry error in server")
+        //console.log("sorry error in server")
         this.Notify = true;
         this.notify = "Sorry couldn't load data from server please refresh it."
       });
@@ -211,7 +211,7 @@ export class TestbookingTransactionComponent implements OnInit {
     let discountAmount = (this.transactionData.controls.checkDiscount.value == 0) ? this.transactionData.controls.discountcheck.value : (((this.transactionData.controls.discountcheck.value) / 100) * this.globleSum);
     let checksum = this.globleSum - (Number(this.transactionData.controls.cash.value) + Number(discountAmount));
     this.discountedAmount = discountAmount;
-    // console.log(checksum);
+    // //console.log(checksum);
     if(checksum < 0){
       if(this.previousAmount !=0){
         this.CheckBoxdisabled=false;
@@ -234,8 +234,8 @@ export class TestbookingTransactionComponent implements OnInit {
       this.globlepreviousAmount = this.previousAmount;
     }
     let checkprevious = (checksum < 0)?this.globlepreviousAmount -  (-checksum) : this.globlepreviousAmount;
-    // console.log("checkprevious "+checkprevious);
-    // console.log("checksum "+ checksum)
+    // //console.log("checkprevious "+checkprevious);
+    // //console.log("checksum "+ checksum)
     // if(this.transactionData.controls.payOld.value){
       if(checkprevious < 0){
         this.previousAmount = 0;
@@ -279,10 +279,10 @@ export class TestbookingTransactionComponent implements OnInit {
       // }
       if(this.sum != 0){
       let temptotalAmt = Number(this.sum) - Number(this.previousAmount);
-      console.log(this.sum,"pa", this.previousAmount,'temp', this.TEMPGlobletotalAmt)
-      console.log(temptotalAmt)
-      console.log(this.returnableAmt)
-      // console.log(this.returnableAmt)
+      //console.log(this.sum,"pa", this.previousAmount,'temp', this.TEMPGlobletotalAmt)
+      //console.log(temptotalAmt)
+      //console.log(this.returnableAmt)
+      // //console.log(this.returnableAmt)
       // if(temptotalAmt){
       if(temptotalAmt < 0){
         this.drCrInTotal = "cr"
@@ -315,7 +315,7 @@ export class TestbookingTransactionComponent implements OnInit {
       this.globleTotalAmount = this.totalAmt;
       this.printDrOrCr = this.drCrInTotal;
     }
-    console.log("I HAVE THESE VALUES:",this.globleTotalAmount ,"AND",this.printDrOrCr)
+    //console.log("I HAVE THESE VALUES:",this.globleTotalAmount ,"AND",this.printDrOrCr)
     
     
     // if(this.transactionData.controls.credit.value){
@@ -325,7 +325,7 @@ export class TestbookingTransactionComponent implements OnInit {
     //     if(checkpreviousAmount < 0){
     //       this.previousAmount = 0;
     //       this.returnableAmt = (this.globlepreviousAmount - (-(checksum)));
-    //       console.log("hello")
+    //       //console.log("hello")
     //     }
     //     else{
     //       this.previousAmount = checkpreviousAmount;
@@ -337,7 +337,7 @@ export class TestbookingTransactionComponent implements OnInit {
     //   }
     //   else{
     //     this.returnableAmt = -(this.globlepreviousAmount - (-(checksum)));
-    //     console.log("this is check"+this.returnableAmt);
+    //     //console.log("this is check"+this.returnableAmt);
     //   }
       
     // }
@@ -348,17 +348,17 @@ export class TestbookingTransactionComponent implements OnInit {
 
   public searchpayment(id): Observable<any> {
     return new Observable(observer => {
-      console.log(id);
+      //console.log(id);
       this.testbookingtransactionservice.getPatientTestbookingTest(id)
         .subscribe(
         (response) => {
-          console.log(response);
+          //console.log(response);
           if (response.length > 0) {
-            console.log(response)
+            //console.log(response)
             this.idForInvoiceUpdate = response[response.length -1].invoice_id;
             this.SearchNotify = false;
             this.sum = 0;
-            console.log(response);
+            //console.log(response);
             this.genderinPatientTable = response[0].gender;
             this.patientName = response[0].patient_name;
             this.patientId = response[0].reg_no;
@@ -393,7 +393,7 @@ export class TestbookingTransactionComponent implements OnInit {
                 }
               }
             }
-            console.log("this is int list")
+            //console.log("this is int list")
             for (let int = 0; int < intCollection.length; int += 2) {
               let term = response[0].age;
               if (term < 200) {
@@ -518,7 +518,7 @@ export class TestbookingTransactionComponent implements OnInit {
 
             // else {
             //   for (let i in response) {
-            //     console.log(this.patientDatas);
+            //     //console.log(this.patientDatas);
             //     if (this.patientDatas.length > 0) {
             //       let MatchFound = false;
             //       for (let y in this.patientDatas) {
@@ -540,7 +540,7 @@ export class TestbookingTransactionComponent implements OnInit {
             this.showTable = true;
             // this.activepaymentForm = false;
             this.activePayment = false;
-            console.log(this.patientDatas);
+            //console.log(this.patientDatas);
           }
           else {
             this.SearchNotify = true;
@@ -561,17 +561,17 @@ export class TestbookingTransactionComponent implements OnInit {
   }
 
   // routedinvoice(term) {
-  //   console.log(term)
+  //   //console.log(term)
   //   let id = term.testbookings_id
   //   this.activepaymentForm = false;
-  //   console.log(id);
+  //   //console.log(id);
   //   this.transactionData.reset();
   //   this.transactionData.controls.checkDiscount.setValue('0')
   //   this.patientDatasDetails = [];
   //   this.testbookingtransactionservice.getDetialsOfTestbookingTestbooking(id)
   //     .subscribe(
   //     (response) => {
-  //       console.log(response);
+  //       //console.log(response);
   //       for (let i in response) {
 
 
@@ -580,10 +580,10 @@ export class TestbookingTransactionComponent implements OnInit {
   //         }
   //       }
   //       this.activepaymentForm = true;
-  //       console.log(this.patientDatasDetails);
+  //       //console.log(this.patientDatasDetails);
   //     },
   //     (error) => {
-  //       console.log("sorry error in server")
+  //       //console.log("sorry error in server")
   //     });
 
 
@@ -591,27 +591,27 @@ export class TestbookingTransactionComponent implements OnInit {
 
 
   invoice(id) {
-    console.log(id);
+    //console.log(id);
     this.transactionData.reset();
     this.transactionData.controls.checkDiscount.setValue('0')
     this.patientDatasDetails = [];
     let typeofInvoice = typeof id;
-    console.log(typeofInvoice);
-    console.log(id);
+    //console.log(typeofInvoice);
+    //console.log(id);
       // this.testbookingtransactionservice.getDetialsOfPatientsTestbooking(id)
       //   .subscribe(
       //   (response) => {
-      //     console.log(response);
+      //     //console.log(response);
       //     for (let i in response) {
 
 
       //       this.patientDatasDetails.push(response[i]);
       //     }
       //     this.activepaymentForm = true;
-      //     console.log(this.patientDatasDetails);
+      //     //console.log(this.patientDatasDetails);
       //   },
       //   (error) => {
-      //     console.log("sorry error in server")
+      //     //console.log("sorry error in server")
       //   });
 
   }
@@ -623,9 +623,9 @@ export class TestbookingTransactionComponent implements OnInit {
       this.Pay = "Paying..."
       // let allData = id;
       // allData['amount'] = this.globleSum
-      // console.log(allData);
-      // console.log(this.transactionData.value);
-      // console.log(this.patientDatas[this.patientDatas.length-1].testbooking_id);
+      // //console.log(allData);
+      // //console.log(this.transactionData.value);
+      // //console.log(this.patientDatas[this.patientDatas.length-1].testbooking_id);
       
       let param = this.transactionData.value;
       
@@ -761,11 +761,11 @@ export class TestbookingTransactionComponent implements OnInit {
       
 
       
-      console.log(param)
+      //console.log(param)
       this.globleParam = param;
       this.testbookingtransactionservice.setpatienttransaction(param)
       .subscribe((response)=>{
-        console.log(response)
+        //console.log(response)
         // this.globleParam.push(response);
         this.testAndRateForPrints = response;
         this.pay = false;
@@ -779,7 +779,6 @@ export class TestbookingTransactionComponent implements OnInit {
           this.router.navigate(['/lab/test-booking']);
         }.bind(this), 1000);
         
-        this.startLoading = false;
       },
       (error)=>{
         this.pay = false;
@@ -787,6 +786,7 @@ export class TestbookingTransactionComponent implements OnInit {
         this.notify="Sorry Error in Server !"
         this.Notify = true;
         this.notifyDismiss()
+        this.startLoading = false;
         
       })
     }
@@ -796,6 +796,7 @@ export class TestbookingTransactionComponent implements OnInit {
       this.notifyDismiss()
       this.transactionData.controls.cash.markAsDirty();
       this.transactionData.controls.discountcheck.markAsDirty();
+      this.startLoading = false;
 
     }
 
@@ -810,7 +811,7 @@ export class TestbookingTransactionComponent implements OnInit {
   //     if (y !== 'Done') {
   //       x = x - 1;
   //       this.timeCount = x;
-  //       console.log(this.timeCount);
+  //       //console.log(this.timeCount);
   //       setTimeout("startClock()", 1000);
   //     }
   //     if (x == 0) {
@@ -829,7 +830,7 @@ export class TestbookingTransactionComponent implements OnInit {
     this.viewtransaction.updatePrint(param)
     .subscribe(
       (response)=>{
-        console.log(response);
+        //console.log(response);
         if(response.length >0){
         this.testAndRateForPrints = response;
         }
@@ -839,7 +840,7 @@ export class TestbookingTransactionComponent implements OnInit {
         }
       },
       (error)=>{
-        console.log(error);
+        //console.log(error);
         this.showLog =true;
         this.value="sorry Error in server";
       }
@@ -856,7 +857,7 @@ export class TestbookingTransactionComponent implements OnInit {
 
 
   datadismis() {
-    console.log('Hide')
+    //console.log('Hide')
     this.Notify = false;
   }
   SearchBarDismiss() {
@@ -877,6 +878,7 @@ export class TestbookingTransactionComponent implements OnInit {
     // alert(id);
 
     var printContent = document.getElementById(id).innerHTML;
+    this.startLoading = false;
     // alert(printContent);
     var restorePage = document.body.innerHTML;
 

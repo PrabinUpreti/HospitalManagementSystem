@@ -29,13 +29,11 @@ getReportData(id){
           return Observable.throw(error);
       });
 }
-getReport(){
-  let checkSection = ENV.setSection()
-  if(checkSection == "sessionExpired"){
-    this.router.navigate(['/']);            
-  }
-
-        return this._http.get(ENV.Request_URL+"/api/reportdata")
+getReport(id){
+        let data=id;
+        let headers =new Headers({'Content-type':'application/json'});
+        let option = new RequestOptions({headers: headers, withCredentials: true});
+        return this._http.post(ENV.Request_URL+"/api/reportdata", data, option)
         .map((res: Response) => {
           return res.json();
         })

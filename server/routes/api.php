@@ -48,7 +48,7 @@ Route::put('/test-booking/{id}','TestbookingController@putTestBookingData');
 //Report 
 
 Route::post('/reports','ReportController@postReportData');
-Route::get('/reportdata','ReportController@ReportData');
+Route::post('/reportdata','ReportController@ReportData');
 Route::get('/report/{id}','ReportController@getReportData');
 
 //Transaction
@@ -106,4 +106,4 @@ Route::post('/deleteuser/{id}','UserContoller@DeleteUser');
 Route::post('/access_menu','Access_menu_Controller@Access_Menu');
 Route::get('/menubar/{id}','Access_menu_Controller@Menubar');
 Route::post('/editmenu','Access_menu_Controller@EditMenu');
-
+Route::get('/gethospitalinfo','UserContoller@hospitalInfo');

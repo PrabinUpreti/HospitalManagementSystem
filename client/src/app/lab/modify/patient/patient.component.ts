@@ -68,10 +68,10 @@ export class PatientComponent implements OnInit {
           this.ModifyService.getAllPatient()
             .subscribe(
             response => {
-              console.log(response);
+              //console.log(response);
               if (response.length > 0) {
                 this.responseDatas = response;
-                console.log(this.responseDatas)
+                //console.log(this.responseDatas)
               }
               else {
               }
@@ -105,10 +105,10 @@ export class PatientComponent implements OnInit {
     this.ModifyService.getAllPatient()
     .subscribe(
       response=>{
-        console.log(response);
+        //console.log(response);
         if(response.length > 0){
             this.responseDatas = response;
-            console.log(this.responseDatas)
+            //console.log(this.responseDatas)
           }
           else{
           }
@@ -151,10 +151,10 @@ export class PatientComponent implements OnInit {
                 }
               }
             }
-            // console.log(this.FormUnits , this.genderInDropdowns, this.age_groupInDropdown)
+            // //console.log(this.FormUnits , this.genderInDropdowns, this.age_groupInDropdown)
           },
           (error)=>{
-              console.log("sorry error in server")
+              //console.log("sorry error in server")
               this.Notify = true;
               this.notify = "Sorry couldn't load data from server please refresh it."
               this.notifyDismiss();
@@ -163,17 +163,17 @@ export class PatientComponent implements OnInit {
 
   getPatientByDate(){
     let param={};
-    console.log(this.myForm.controls.myDateRange.value)
+    //console.log(this.myForm.controls.myDateRange.value)
     if(this.myForm.controls.myDateRange.value){
       let dateRange = this.myForm.controls.myDateRange.value.formatted.split(' - ');
       param['startDate'] = dateRange[0];
       param['endDate'] = dateRange[1] +" 23:59:59";
-      console.log(param);
+      //console.log(param);
       this.ModifyService.getpatientFromDate(param)
       .subscribe(
         (response)=>{
           if(response.length>0){
-            console.log(response)
+            //console.log(response)
             this.responseDatas = response;
           }
           else{
@@ -193,10 +193,10 @@ export class PatientComponent implements OnInit {
         this.ModifyService.getAllPatient()
         .subscribe(
           response=>{
-            console.log(response);
+            //console.log(response);
             if(response.length > 0){
                 this.responseDatas = response;
-                console.log(this.responseDatas)
+                //console.log(this.responseDatas)
               }
               else{
               }
@@ -255,7 +255,7 @@ export class PatientComponent implements OnInit {
         this.Notify = true;
         this.notify = "Successfully Stored !"
         this.notifyDismiss();
-        console.log(response);
+        //console.log(response);
         if(response.length > 0){
           this.showTable= true;
           this.update = false;

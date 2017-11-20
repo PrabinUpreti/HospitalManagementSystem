@@ -58,7 +58,7 @@ export class DoctorComponent implements OnInit {
 
       this.modifyService.getDoctorList() .subscribe(
         (response)=>{
-          console.log(response);
+          //console.log(response);
           if(response.length != 0){
             this.doctorDatas = response;
           }
@@ -68,7 +68,7 @@ export class DoctorComponent implements OnInit {
           }
         },
         (error)=>{
-            console.log("sorry error in server")
+            //console.log("sorry error in server")
         });
 
         this.DoctorForm = new FormGroup({
@@ -133,7 +133,7 @@ export class DoctorComponent implements OnInit {
                 this.Notify = false;
               }.bind(this), 3000);
             }
-            console.log(response);
+            //console.log(response);
             for(let x in response){
               if(response[x].common_code.toUpperCase() == 'GEN'){
                 if(this.genderInDropdowns == undefined){
@@ -180,10 +180,10 @@ export class DoctorComponent implements OnInit {
 
 
             
-            // console.log(this.FormUnits , this.genderInDropdowns, this.age_groupInDropdown)
+            // //console.log(this.FormUnits , this.genderInDropdowns, this.age_groupInDropdown)
           },
           (error)=>{
-              console.log("sorry error in server")
+              //console.log("sorry error in server")
               this.Notify = true;
               this.notify = "Sorry couldn't load data from server please refresh it."
               setTimeout(function () {
@@ -235,7 +235,7 @@ export class DoctorComponent implements OnInit {
         }
         this.modifyService.putDoctor(paramData).subscribe(
           (response) => {
-            console.log(response);
+            //console.log(response);
             this.doctorDatas.splice(0, 0, response);
             this.backFromForm()
             this.Notify = true;
@@ -246,7 +246,7 @@ export class DoctorComponent implements OnInit {
             this.Submit = "Submit";
           },
           (error) => {
-            // console.log("sorry error in server")
+            // //console.log("sorry error in server")
 
             this.Notify = true;
             this.notify = "Sorry error in server";
@@ -263,7 +263,7 @@ export class DoctorComponent implements OnInit {
         param["editableId"] = this.editId;
         this.modifyService.editDoctor(param).subscribe(
           (response) => {
-            console.log(response);
+            //console.log(response);
             if (response.length > 0) {
               for (let x in this.doctorDatas) {
                 if (this.doctorDatas[x].id == this.editId) {
@@ -291,7 +291,7 @@ export class DoctorComponent implements OnInit {
             }
           },
           (error) => {
-            // console.log("sorry error in server")
+            // //console.log("sorry error in server")
 
             this.Notify = true;
             this.notify = "Sorry error in server";
@@ -304,7 +304,7 @@ export class DoctorComponent implements OnInit {
   }
 
 editDoctor(i){
-  console.log(this.doctorDatas[i].id)
+  //console.log(this.doctorDatas[i].id)
   this.editId=this.doctorDatas[i].id
   this.showForm = true;
   this.showList = false;
@@ -328,11 +328,11 @@ editDoctor(i){
 
 configDelete(i){
   let eventCheck = confirm("Are You sure you want to delete "+this.doctorDatas[i].prefix+". " + this.doctorDatas[i].name + "?");
-  console.log(this.doctorDatas[i].id);
+  //console.log(this.doctorDatas[i].id);
   if(eventCheck){
     this.modifyService.deleteDoctor(this.doctorDatas[i].id).subscribe(
       (response) => {
-        console.log(response);
+        //console.log(response);
         this.doctorDatas.splice(i, 1);
         this.backFromForm()
         this.Notify = true;
@@ -340,7 +340,7 @@ configDelete(i){
         this.notifyDismiss();
       },
       (error) => {
-        // console.log("sorry error in server")
+        // //console.log("sorry error in server")
 
         this.Notify = true;
         this.notify = "Sorry you cannot DELETE "+this.doctorDatas[i].prefix+". "+this.doctorDatas[i].name;

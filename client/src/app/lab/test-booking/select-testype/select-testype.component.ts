@@ -12,6 +12,8 @@ export class SelectTestypeComponent implements OnInit {
   @Output() selectedtestype = new EventEmitter<any>();
 
   @Input() set inputSelectedDep(id){
+    this.alive = false
+    this.startLoading = true
     this.getDepFromServer(id)
   }
 
@@ -34,17 +36,18 @@ export class SelectTestypeComponent implements OnInit {
         this.modifyService.getTestType(id)
         .subscribe(
           (response)=>{
-            console.log(response);
+            //console.log(response);
             this.testypes = response;
             this.startLoading =false;
+            this.alive =true;
           },
           (error)=>{
-              console.log("Error in server");
+              //console.log("Error in server");
               this.startLoading=false;
           }
         );
 
-      this.alive =true;
+      
       this.className = undefined;
       // for(let i in this.testypes){
       //   if(this.testypes[i].id==id){
@@ -59,10 +62,11 @@ export class SelectTestypeComponent implements OnInit {
 
 pushtestype(index){
   this.className = index;
-  console.log(index);
+  //console.log(index);
   let id = this.testypes[index].id;
-  console.log('this is id = '+id);
+  //console.log('this is id = '+id);
   this.selectedtestype.emit(id);
+  // alert(id)
 }
 
 }

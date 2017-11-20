@@ -33,7 +33,7 @@ export class SearchWindowComponent implements OnInit {
   }
 
   setSearchedData(index){
-    console.log(index)
+    //console.log(index)
     this.selectedPatient.emit(index)
   }
 

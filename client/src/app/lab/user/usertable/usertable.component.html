@@ -1,3 +1,4 @@
+    <legend>User Lists</legend>
        <table   class="table table-bordered">
           <thead>
             <tr>
@@ -10,13 +11,13 @@
           </thead>
           <tbody>
             <tr *ngFor="let user of userdata?.user;let i = index">
-              <td>{{i+1}}</td>
-              <td>{{user.name}}</td>
-              <td>{{user.email}}</td>
-              <td>{{user.status}}</td>
-              <td>
-                 <button class="btn btn-primary" type="button" class="fa fa-pencil-square-o" aria-hidden="true" data-toggle="modal" (click)="userUpdate(i)" data-target=".bd-example-modal-lg">&nbsp;</button>
-                 <button class="btn btn-danger" type="button" value="Delete" class="fa fa-trash" aria-hidden="true"  (click) = "configDelete(i)" data-toggle="modal" data-target="#deleteModal"> &nbsp;</button>
+              <td *ngIf="user.hide !== 'is_admin'">{{i}}</td>
+              <td *ngIf="user.hide !== 'is_admin'">{{user.name}}</td>
+              <td *ngIf ="user.hide !== 'is_admin'">{{user.email}}</td>
+              <td *ngIf ="user.hide !== 'is_admin'">{{user.status == '1'?'Active':'Inactive'}}</td>
+              <td *ngIf ="user.hide !== 'is_admin'">
+                 <button  data-toggle="modal" (click)="userUpdate(i)" data-target=".bd-example-modal-lg" class="btn btn-primary" type="button"><i class="fa fa-pencil-square-o" aria-hidden="true">&nbsp;</i></button>
+                 <button   (click) = "configDelete(i)" data-toggle="modal" data-target="#deleteModal" class="btn btn-danger" type="button"><i value="Delete" class="fa fa-trash" aria-hidden="true"> &nbsp;</i></button>
               </td>
             </tr>
          </tbody>
@@ -44,7 +45,7 @@
                               </div>
                             </div>
                             <div class="form-check form-check-inline">
-                                <label class="col-sm-2 col-form-label">Isactive</label>
+                                <label class="col-sm-2 col-form-label">Is-active?</label>
                                  <label class="form-check-label">
                                     <input class="form-check-input" type="checkbox" id="inlineCheckbox1" formControlName="status">
                                  </label>
@@ -98,7 +99,7 @@
           <div class="row" id="error-container">
                    <div class="span12">  
                            <div class="alert alert-info">
-                                  <!-- <button type="button" class="close" (click) = "datadismis()">�</button> -->
+                                  <button type="button" class="close" (click) = "datadismis()">×</button>
                                    <span>{{notify}}</span>
                            </div>
                        </div>
@@ -108,7 +109,7 @@
               <div class="row" id="error-container">
                        <div class="span12">  
                                <div class="alert alert-info">
-                                      <!-- <button type="button" class="close" (click) = "datadismis()">�</button> -->
+                                    <button type="button" class="close" (click) = "datadismis()">×</button>
                                        <span>{{delte}}</span>
                                </div>
                            </div>

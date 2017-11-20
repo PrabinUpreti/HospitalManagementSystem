@@ -16,7 +16,7 @@ export class TestDetailsComponent implements OnInit {
     //     this.responseDatas = response;
     //   },
     //   (error)=>{
-    //       console.log("sorry error in server")
+    //       //console.log("sorry error in server")
     //   });
     // }    
   }

@@ -24,21 +24,21 @@ export class SelectDepartmentComponent implements OnInit {
     this.modifyService.getDepartment()
     .subscribe(
       (response)=>{
-        console.log (response);
+        //console.log (response);
         this.departments = response;
         this.startLoading=false;
       },
       (error)=>{
-          console.log("Error in server")
+          //console.log("Error in server")
       }
   )
 
 }
   pushdepartment(index){
     this.className = index;
-    console.log(index);
+    //console.log(index);
     this.idForTestType = this.departments[index].id;
-    console.log(this.idForTestType);
+    //console.log(this.idForTestType);
     this.selectedDep.emit(this.idForTestType);
   }
 
