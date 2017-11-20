@@ -48,8 +48,8 @@ class ViewTransaction extends Controller
         // ->get();
         // return $patient;
 
-        return DB:: select('SELECT pt.`id`,pt.`updated_at`,pt.`phone`,pt.`patient_address`,
-        pt.`patient_name`, `balance`, `remark`
+        return DB:: select('SELECT pt.id,pt.updated_at,pt.phone,pt.patient_address,
+        pt.patient_name, balance, remark
         FROM
         patient_ladgers b
             INNER JOIN
@@ -58,8 +58,9 @@ class ViewTransaction extends Controller
         FROM
             patient_ladgers
         GROUP BY patient_id) a on a.id = b.id
-        inner join `patients` pt on pt.id = a.patient_id
-        WHERE pt.updated_at BETWEEN \''.$startDate.'\' AND \''.$endDate.'\''
+        inner join patients pt on pt.id = a.patient_id
+        WHERE pt.updated_at BETWEEN \''.$startDate.'\' AND \''.$endDate.'\' 
+        ORDER BY pt.updated_at DESC'        
         );
 
 }
@@ -104,10 +105,24 @@ public function getInvoicesFromDate(Request $request){
                 ->get();
     }
     public function searchpatientByName($id){
-        return DB::table('patients')
-        ->where('patient_name','like', '%'.$id.'%')
-        ->select('patients.*')
-        ->get();
+        // return DB::table('patients')
+        // ->where('patient_name','like', '%'.$id.'%')
+        // ->select('patients.*')
+        // ->get();
+        return DB::select('SELECT pt.id,pt.updated_at,pt.phone,pt.patient_address,
+        pt.patient_name, balance, remark
+    FROM
+        patient_ladgers b
+            INNER JOIN
+        (SELECT 
+            patient_id, MAX(id) AS id
+        FROM
+            patient_ladgers
+        GROUP BY patient_id) a ON a.id = b.id
+            INNER JOIN
+        patients pt ON pt.id = a.patient_id
+    WHERE
+        pt.patient_name LIKE \'%'.$id.'%\'');
     }
 
 

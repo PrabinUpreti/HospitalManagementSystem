@@ -49,16 +49,15 @@ tbody > tr > td, .table > tfoot > tr > td {
     line-height: 1.5;
     border-radius: 3px;
 }
-
 #error-container {
 	position: fixed;
-	z-index: 999;
-	bottom: 20px;
-	right: 10px;
-	box-shadow: 5px 5px 5px #888888;
+	z-index: 9999999;
+	top: 2px;
+	right: 125px;
+	box-shadow: 2px 2px 2px #333;
 }
 .alert {
-    padding: 15px;
+    padding: 5px;
     margin-bottom: 0px;
     border: 1px solid transparent;
 	border-radius: 4px;

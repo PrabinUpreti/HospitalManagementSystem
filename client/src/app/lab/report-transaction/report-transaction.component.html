@@ -186,7 +186,7 @@
           <label class="control-label col-sm-6" for="email"> Total Amount: </label>
           <div class="col-sm-6">
             <p class="form-control-static"  [ngClass] = "{'text-danger': drCrInTotal == 'dr','text-success':drCrInTotal == 'cr'}">
-              Rs {{totalAmt}} /- {{drOrCr | uppercase}} &nbsp;&nbsp;&nbsp;&nbsp;
+              Rs {{staticTot - (discountedAmount?discountedAmount: 0)}} /- {{drOrCr | uppercase}} &nbsp;&nbsp;&nbsp;&nbsp;
               <!-- <label *ngIf="!transactionData.controls.credit.value && drCrInTotal == 'cr'"  class="checkbox-inline">
                     <input type="checkbox" name="backedMoney"  (change)="calculateTotalAmount()" formControlName = "backedMoney" value="1"/>Return Back
               </label> -->
@@ -229,7 +229,7 @@
   
   
       <div *ngIf="returnableAmt>0 && !transactionData.controls.credit.value" class="form-group">
-        <label class="control-label col-sm-6" for="email"><h3> Returnable Money: </h3></label>
+        <label class="control-label col-sm-6" for="email"><h3> Return Amount: </h3></label>
         <div class="col-sm-2">
           <h3><p class="form-control-static">Rs {{returnableAmt}} /- </p></h3>
         </div>
@@ -381,7 +381,7 @@
           <tr>
             <td>Total Amount</td>
             <!-- <td>===> </td> -->
-            <td>Rs {{globleTotalAmount}} /- {{printDrOrCr | uppercase}}</td>
+            <td>Rs {{totalAmt}} /- {{printDrOrCr | uppercase}}</td>
           </tr>
           <tr *ngIf="globleParam.cash">
             <td>Cash</td>

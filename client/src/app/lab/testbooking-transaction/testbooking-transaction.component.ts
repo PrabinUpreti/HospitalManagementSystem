@@ -315,6 +315,8 @@ export class TestbookingTransactionComponent implements OnInit {
       this.globleTotalAmount = this.totalAmt;
       this.printDrOrCr = this.drCrInTotal;
     }
+    this.totalAmt = Number(Number(this.totalAmt).toFixed(2));
+    this.returnableAmt = Number(Number(this.returnableAmt).toFixed(2));
     //console.log("I HAVE THESE VALUES:",this.globleTotalAmount ,"AND",this.printDrOrCr)
     
     

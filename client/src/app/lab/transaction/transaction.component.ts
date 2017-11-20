@@ -61,11 +61,11 @@ export class TransactionComponent implements OnInit, OnDestroy {
   public totalAmt;
   public idToGetTest;
   public tempDrOrCr;
-  public discountedAmount;
+  public discountedAmount: number = 0;
   public globleParam;
   public patientAddress;
   public printDrOrCr;
-  public globleTotalAmount;
+  public globleTotalAmount:number = 0;
 
   public empityTransaction = false;
 
@@ -163,11 +163,16 @@ export class TransactionComponent implements OnInit, OnDestroy {
 
 
   }
+
   calculateTotalAmount() {
     this.hideDiscount = false;
-    let discountAmount = (this.transactionData.controls.checkDiscount.value == 0) ? this.transactionData.controls.discountcheck.value : (((this.transactionData.controls.discountcheck.value) / 100) * this.globleSum);
+    let discountAmount:number = (this.transactionData.controls.checkDiscount.value == 0) ? this.transactionData.controls.discountcheck.value : (((this.transactionData.controls.discountcheck.value) / 100) * this.globleSum);
     let checksum = this.globleSum - (Number(this.transactionData.controls.cash.value) + Number(discountAmount));
-    this.discountedAmount = discountAmount;
+    if(discountAmount) {
+    this.discountedAmount = Number(Number(discountAmount).toFixed(2));
+    } else {
+      this.discountedAmount =  Number(Number(discountAmount).toFixed(2));
+    }
     //console.log('lets see',this.drOrCr,this.hidePayment)
     if (this.drOrCr == "cr") {
       this.sum = this.globleSum;
@@ -214,10 +219,17 @@ export class TransactionComponent implements OnInit, OnDestroy {
       }
     }
     if(!this.globleTotalAmount){
-      this.globleTotalAmount = this.totalAmt;
-      this.printDrOrCr = this.tempDrOrCr;
+        this.globleTotalAmount = Number(Number(this.totalAmt).toFixed(2));
+        this.printDrOrCr = this.tempDrOrCr;
       //console.log("!lastif")
     }
+    
+    // if(this.totalAmt) {
+      this.totalAmt = Number(this.totalAmt).toFixed(2);
+    // } else {
+      // this.totalAmt = this.totalAmt;
+    // }
+    this.returnableAmt = Number(Number(this.returnableAmt).toFixed(2));
 
   }
 
@@ -353,6 +365,8 @@ export class TransactionComponent implements OnInit, OnDestroy {
           // }
           this.startLoading =false;
         }
+        this.globleTotalAmount = Number(Number(this.totalAmt).toFixed(2));
+        this.discountedAmount = 0;
         this.startLoading =false;
 
         if(response[response.length-1].print == 1){

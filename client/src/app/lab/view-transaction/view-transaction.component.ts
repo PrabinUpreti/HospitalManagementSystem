@@ -603,12 +603,13 @@ notifyDismiss(){
 printFun(printId){
   // var restorePage = document.body.innerHTML;
   var printContent = document.getElementById(printId).innerHTML;
-   
+  
+  this.startLoading = false;
   // let printContents, popupWin;
   // printContents = document.getElementById('printSection').innerHTML;
   // popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
   
-  var newWin = window.open('', '_blank', 'top=-10,left=-10,height=110%,width=100%,menubar=no,titlebar=no,location=no,fullscreen=yes')
+  var newWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto,menubar=no,titlebar=no,location=no,fullscreen=yes')
   
   newWin.document.body.innerHTML = printContent;
   // newWin.document.open();

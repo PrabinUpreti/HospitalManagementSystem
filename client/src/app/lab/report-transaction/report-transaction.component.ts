@@ -321,6 +321,8 @@ export class ReportTransactionComponent implements OnInit {
       this.globleTotalAmount = this.totalAmt;
       this.printDrOrCr = this.drCrInTotal;
     }
+    this.totalAmt = Number(this.totalAmt).toFixed(2);
+    this.returnableAmt = Number(Number(this.returnableAmt).toFixed(2));
   }
 
   public searchpayment(id): Observable<any> {

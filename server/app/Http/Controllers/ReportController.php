@@ -28,7 +28,7 @@ class ReportController extends Controller
         $enddate=$request['endDate'];
         $datas =Patient::join('testbookings','patients.id','=','testbookings.patient_id')
                     ->join('reports','testbookings.id', '=', 'reports.testbooking_id')
-                    ->orderBy('testbooking_id', 'asc')
+                    ->orderBy('testbooking_id', 'desc')
                     ->whereBetween('testbookings.created_at',[$startdata,$enddate])
                     ->get();
                     return response()->json(['datas'=>$datas,
