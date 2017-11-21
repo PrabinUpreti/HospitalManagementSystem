@@ -529,10 +529,12 @@ export class ReportTransactionComponent implements OnInit {
               // this.transactionData.controls.checkDiscount.setValue('0')
               // this.transactionData.controls.discountcheck.setValue(response[response.length-val].discount_amount)
             }
-            else if(response[response.length-2].discount_amount > 0){
+            else if(response.length > 1){
+            if(response[response.length-2].discount_amount > 0){
               this.ShowDiscount = false;
               this.updateDiscountAmt = response[response.length-2].discount_amount;
             }
+          }
             if(response[response.length-1].discount_percentage >0){
               //console.log('disper',response[response.length-1].discount_percentage)
               this.updateDiscountPer = response[response.length-1].discount_percentage;
@@ -541,10 +543,12 @@ export class ReportTransactionComponent implements OnInit {
               // //console.log('disper',this.transactionData.controls.discountcheck.value)
               this.ShowDiscount = false;
             }
-            else if(response[response.length-2].discount_percentage > 0){
+            else if(response.length>1){
+            if(response[response.length-2].discount_percentage > 0){
               //console.log('disper',response[response.length-2].discount_percentage)
               this.updateDiscountPer = response[response.length-2].discount_percentage;
             }
+          }
             if(response[response.length-val].print == val){
               this.copyRecipt ==true;
             }
@@ -929,26 +933,11 @@ export class ReportTransactionComponent implements OnInit {
         td{
           padding: 5px;
           text-align: left;
-        }          
-        .bodyBg {
-          background-image: url("/assets/img/copy.png");
-          background-repeat: no-repeat;
-          background-position: center; 
-          background-size: contain;
-          // opacity: 0.3;
-          // filter: alpha(opacity=30);
         }
       </style>
         </head>
               <body onload="window.print();window.close()">${printContent}
         </body>
-        <script type="text/javascript">
-        var existPrint = ${this.existPrint};
-        
-          if(existPrint > 0){
-            document.body.className += ' bodyBg';
-          }
-          </script>
     </html>`
  );
     newWin.document.close()

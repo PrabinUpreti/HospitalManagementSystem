@@ -629,24 +629,10 @@ printFun(printId){
           padding: 5px;
           text-align: left;
         }
-                 
-        .bodyBg {
-          background-image: url("/assets/img/copy.png");
-          background-repeat: no-repeat;
-          background-position: center; 
-          background-size: contain;
-        }
-      </style>
+          </style>
         </head>
               <body onload="window.print();window.close()">${printContent}
         </body>
-        <script type="text/javascript">
-        var existPrint = ${this.existPrint};
-        
-          if(existPrint > 0){
-            document.body.className += ' bodyBg';
-          }
-          </script>
     </html>`
  );
     newWin.document.close()

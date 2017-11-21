@@ -85,6 +85,7 @@ export class TestbookingTransactionComponent implements OnInit {
   public testAndRateForPrints = [];
   public startLoading =false;
   public TESTBOOKINGID;
+  public tempTotJust2Show;
 
   public showLog =false;
   public value;
@@ -210,7 +211,7 @@ export class TestbookingTransactionComponent implements OnInit {
     this.ShowDiscount = true;
     let discountAmount = (this.transactionData.controls.checkDiscount.value == 0) ? this.transactionData.controls.discountcheck.value : (((this.transactionData.controls.discountcheck.value) / 100) * this.globleSum);
     let checksum = this.globleSum - (Number(this.transactionData.controls.cash.value) + Number(discountAmount));
-    this.discountedAmount = discountAmount;
+    this.discountedAmount = Number(discountAmount).toFixed(2);
     // //console.log(checksum);
     if(checksum < 0){
       if(this.previousAmount !=0){
@@ -312,11 +313,12 @@ export class TestbookingTransactionComponent implements OnInit {
   }
 }
     if(!this.globleTotalAmount){
-      this.globleTotalAmount = this.totalAmt;
+      this.globleTotalAmount = Number(Number(this.totalAmt).toFixed(2));
       this.printDrOrCr = this.drCrInTotal;
     }
     this.totalAmt = Number(Number(this.totalAmt).toFixed(2));
     this.returnableAmt = Number(Number(this.returnableAmt).toFixed(2));
+    this.tempTotJust2Show = Number(this.globleTotalAmount - (this.discountedAmount?this.discountedAmount: 0)).toFixed(2);
     //console.log("I HAVE THESE VALUES:",this.globleTotalAmount ,"AND",this.printDrOrCr)
     
     
@@ -901,26 +903,10 @@ export class TestbookingTransactionComponent implements OnInit {
             padding: 5px;
             text-align: left;
           }
-                  
-        .bodyBg {
-          background-image: url("/assets/img/copy.png");
-          background-repeat: no-repeat;
-          background-position: center; 
-          background-size: contain;
-          // opacity: 0.3;
-          // filter: alpha(opacity=30);
-        }
         </style>
         </head>
               <body onload="window.print();window.close()">${printContent}
         </body>
-        <script type="text/javascript">
-        var existPrint = ${this.existPrint};
-        
-          if(existPrint > 0){
-            document.body.className += ' bodyBg';
-          }
-          </script>
     </html>`
  );
     newWin.document.close()

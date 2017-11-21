@@ -555,13 +555,6 @@ export class TransactionComponent implements OnInit, OnDestroy {
           padding: 5px;
           text-align: left;
         }
-        .bodyBg {
-          background-image: url("/assets/img/copy.png");
-          background-repeat: no-repeat;
-          background-position: center; 
-          background-size: contain;
-          opacity: 0.3;
-          filter: alpha(opacity=30);
       }
       </style>
         </head>
