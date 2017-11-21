@@ -39,7 +39,7 @@ import { FormBuilder, FormArray, FormGroup, Validators} from '@angular/forms';
                 }));
             }
               this.addUser = this.fb.group({
-                  'name':[null,Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(10)])],
+                  'name':[null,Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(25)])],
                   'email': [null,Validators.pattern("[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})")],
                   'password':[null,Validators.compose([Validators.required, Validators.minLength(8), Validators.maxLength(16)])],
                   'status':[1,Validators.required],
