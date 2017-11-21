@@ -95,6 +95,7 @@ export class ReportTransactionComponent implements OnInit {
   public showLog =false;
   public value;
   public startLoading =true;
+  public tempGlobTotToShow;
 
 
   public hospitalName;
@@ -216,7 +217,7 @@ export class ReportTransactionComponent implements OnInit {
     let discountAmount = (this.transactionData.controls.checkDiscount.value == 0) ? this.transactionData.controls.discountcheck.value : (((this.transactionData.controls.discountcheck.value) / 100) * this.globleSum);
     let checksum = this.globleSum - (Number(this.transactionData.controls.cash.value) + Number(discountAmount));
     //console.log(discountAmount);
-    this.discountedAmount = discountAmount;
+    this.discountedAmount = Number(discountAmount).toFixed(2);
     // //console.log(checksum);
     if(checksum < 0){
       this.sum = 0
@@ -318,11 +319,14 @@ export class ReportTransactionComponent implements OnInit {
     // }
 
     if(!this.globleTotalAmount){
-      this.globleTotalAmount = this.totalAmt;
+      this.globleTotalAmount = Number(Number(this.totalAmt.toFixed(2)));
       this.printDrOrCr = this.drCrInTotal;
     }
     this.totalAmt = Number(this.totalAmt).toFixed(2);
     this.returnableAmt = Number(Number(this.returnableAmt).toFixed(2));
+    this.staticTot = Number(Number(this.staticTot).toFixed(2));
+    this.globlepreviousAmount = Number(Number(this.globlepreviousAmount).toFixed(2));
+    this.tempGlobTotToShow = Number(this.staticTot - Number((Number(this.discountedAmount?this.discountedAmount: 0)))).toFixed(2);
   }
 
   public searchpayment(id): Observable<any> {
@@ -530,7 +534,7 @@ export class ReportTransactionComponent implements OnInit {
               // this.transactionData.controls.discountcheck.setValue(response[response.length-val].discount_amount)
             }
             else if(response.length > 1){
-            if(response[response.length-2].discount_amount > 0){
+            if(response[response.length-val].discount_amount > 0){
               this.ShowDiscount = false;
               this.updateDiscountAmt = response[response.length-2].discount_amount;
             }
@@ -544,7 +548,7 @@ export class ReportTransactionComponent implements OnInit {
               this.ShowDiscount = false;
             }
             else if(response.length>1){
-            if(response[response.length-2].discount_percentage > 0){
+            if(response[response.length-val].discount_percentage > 0){
               //console.log('disper',response[response.length-2].discount_percentage)
               this.updateDiscountPer = response[response.length-2].discount_percentage;
             }

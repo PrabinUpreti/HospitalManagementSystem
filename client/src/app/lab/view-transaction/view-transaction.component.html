@@ -35,7 +35,7 @@
         </div>
         <div style="width:100%;display:inline-block">
           <div *ngIf="printPatientNation" style="float: left">Nationality: {{printPatientNation}}</div>
-          <div style="float: right">Print: {{existPrint>0?'Copy':'Original'}}</div>
+          <div *ngIf="existPrint>0" style="float: right">Print: {{existPrint>0?'Copy Of Original':''}}</div>
         </div>
       </section>
       <br>
